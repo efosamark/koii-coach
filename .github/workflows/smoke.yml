@@ -1,0 +1,50 @@
+name: Coach browser smoke test
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/smoke.yml'
+      - 'tests/smoke.mjs'
+      - 'index.html'
+      - 'course.js'
+      - 'knowledge.js'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'icon.svg'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Install browser testing tools
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Start local app server
+        run: |
+          python3 -m http.server 8080 --bind 127.0.0.1 > /tmp/coach-server.log 2>&1 &
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:8080/ > /dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/ > /dev/null
+      - name: Test repository and live Pages app
+        env:
+          LOCAL_URL: http://127.0.0.1:8080/
+          LIVE_URL: https://leonardovitolowork-hash.github.io/koii-coach/
+        run: node tests/smoke.mjs
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coach-browser-evidence
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 7
