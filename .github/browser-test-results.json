@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-10-10T21:55:33.194Z",
+  "runId": "38089421921",
+  "sourceCommit": "ebb63709b6cf5716c495d04afa0637991f2fae35",
+  "browserJobResult": "success",
+  "note": "Tests exercise UI and Web Audio scheduling, not perceptual sound quality, complete guide accuracy, physical hardware or offline caching.",
+  "results": [
+    {
+      "target": "repository",
+      "url": "http://127.0.0.1:8080/",
+      "checks": [
+        "Homepage and first-beat chapter load",
+        "Recipe navigation and exact note-position helper",
+        "Clickable control explanations",
+        "Manual completion, help search and firmware preference",
+        "64-cell rhythm grid, clear/preset and note toggles",
+        "Web Audio starts; Stop and navigation stop scheduling new sounds",
+        "First-beat progress survives reload",
+        "Mobile controls and screenshot"
+      ],
+      "pageErrors": [],
+      "badAssets": [],
+      "edition": "original-coach",
+      "status": "passed"
+    },
+    {
+      "target": "live-pages",
+      "url": "https://leonardovitolowork-hash.github.io/koii-coach/",
+      "checks": [
+        "Homepage and first-beat chapter load",
+        "Recipe navigation and exact note-position helper",
+        "Clickable control explanations",
+        "Manual completion, help search and firmware preference",
+        "64-cell rhythm grid, clear/preset and note toggles",
+        "Web Audio starts; Stop and navigation stop scheduling new sounds",
+        "First-beat progress survives reload",
+        "Mobile controls and screenshot"
+      ],
+      "pageErrors": [],
+      "badAssets": [],
+      "edition": "original-coach",
+      "status": "passed"
+    }
+  ]
+}
