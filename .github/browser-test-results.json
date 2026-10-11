@@ -1,7 +1,7 @@
 {
-  "recordedAt": "2026-10-11T11:55:33.643Z",
-  "runId": "38137293858",
-  "sourceCommit": "6c76b745584ed0c39d51c39def9ceedcbeef85b2",
+  "recordedAt": "2026-10-11T12:24:23.039Z",
+  "runId": "38139081518",
+  "sourceCommit": "57a53992e6de06053c584c91055f2de6a6bdc559",
   "browserJobResult": "success",
   "note": "Tests exercise UI and Web Audio scheduling, not perceptual sound quality, complete guide accuracy, physical hardware or offline caching.",
   "results": [
