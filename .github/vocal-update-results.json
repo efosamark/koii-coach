@@ -1,7 +1,7 @@
 {
   "testedAt": "2026-10-11T17:23:59.301Z",
   "repositoryBrowser": "passed",
-  "live": "pending",
+  "live": "passed HTTP content checks",
   "checks": [
     "Existing first-beat view loads",
     "Chapter link works",
@@ -11,5 +11,7 @@
     "390px mobile layout",
     "No browser errors or failed local assets"
   ],
-  "limitations": "No physical hardware, sample audio or musical timing verification."
+  "limitations": "No physical hardware, sample audio or musical timing verification.",
+  "liveVerifiedAt": "2026-10-11T17:24:08Z",
+  "deploymentRunId": "38159432948"
 }
