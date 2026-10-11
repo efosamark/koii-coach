@@ -1,7 +1,7 @@
 {
   "testedAt": "2026-10-11T13:59:18.886Z",
   "repositoryBrowser": "passed",
-  "live": "pending",
+  "live": "passed HTTP content checks",
   "checks": [
     "Six recovered views load",
     "New chapter reachable",
@@ -10,5 +10,7 @@
     "390px mobile layout",
     "No browser errors or failed local assets"
   ],
-  "limitations": "UI checks do not verify physical hardware operations or musical quality."
+  "limitations": "UI checks do not verify physical hardware operations or musical quality.",
+  "liveVerifiedAt": "2026-10-11T13:59:27Z",
+  "deploymentRunId": "38145316765"
 }
