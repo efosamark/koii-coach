@@ -1,0 +1,156 @@
+name: Update artist vocal tutorial
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/vocal-update.yml']
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: coach-repair-publish
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: https://leonardovitolowork-hash.github.io/koii-coach/
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Revise only the inspected full-beat chapter
+        run: |
+          python3 - <<'PY'
+          import pathlib,re,subprocess
+          path=pathlib.Path('hiphop.html')
+          actual=subprocess.check_output(['git','rev-parse','HEAD:hiphop.html'],text=True).strip()
+          if actual!='35ac8b09fb406c374507559e2ba23719e8937fc5':
+              raise SystemExit('Chapter changed since review; refusing to overwrite it.')
+          text=path.read_text()
+          changes={
+          4:'Select C, press MAIN, then SHIFT + A to choose the next empty pattern for this group. While stopped, tap RECORD to arm and use + to extend this empty one-bar pattern to two bars; disarm RECORD. Repeat for D. Press TEMPO and turn X to 90. Press TIMING and turn X until the display shows 16: not 1 and not 16T. Press minus for quantized entry, then MAIN. Check that all four groups are two bars. Keep swing neutral for the first pass.',
+          7:'Play your record and listen for the artist singing TWO TO FOUR WORDS you like. Choose a compact phrase about one to two seconds long, ideally where the backing music is quiet. This is your MAIN PHRASE, not a piano or horn chord. Recording from vinyl captures the backing music too; the sampler does not automatically isolate the singer.',
+          8:'Replay those words and remember where they begin. Write the approximate location as MAIN PHRASE. Pick one short word or syllable from that phrase as your ANSWER, ideally half a second or less. You will record the same passage a second time, so you do not need to hunt for another song. Do not aim for a perfect sample yet.',
+          10:'Select C and press SAMPLE. Check line input again. Replay the MAIN PHRASE on the turntable. Just BEFORE the artist begins the first word, hold unused C1; keep holding through the words, then release just AFTER the last word. Press MAIN and tap C1. You should hear the artist singing your phrase. A little extra audio before and after is fine: we trim it next. Use a disposable pad assignment, not a sound you need to keep.',
+          11:'Replay the SAME passage. Select C, press SAMPLE, and check line input. Hold unused C2 around your chosen ANSWER word, then release after it. Press MAIN and tap C2. It is fine if you captured more than one word: the next steps cut playback down to the word you want. C1 is the phrase; C2 is the short answer.',
+          12:'Press SOUND and tap C1 to select it. Briefly press SHIFT + SOUND, then use minus or plus to find trim. Turn X a little at a time and tap C1 between changes. Stop when playback starts just before the first consonant or syllable of the first word. Do not cut off the start of the word. This removes the unwanted lead-in without trying to remove the backing music.',
+          13:'Stay on trim. Turn Y gradually until playback ends just after the LAST word. Keep all the words intelligible: do not shorten the phrase into a tiny stab. At 90 BPM one bar lasts about 2.67 seconds; choose a phrase shorter than that for this first recipe. Then select C2 and repeat X start/Y length trimming around just the answer word, ideally half a second or less. Do not hold SHIFT + SOUND on trim: it permanently crops the audio file.',
+          14:'For C1: press SOUND, select C1, briefly press SHIFT + SOUND and use minus or plus to find the sound play-mode page. Turn X to oneshot. Repeat for C2. In oneshot, a tap plays the trimmed phrase without you holding the pad. Return to ordinary SOUND and use X amplitude so the words are clear but not louder than everything else. Leave Y pitch unchanged to keep the voice natural, then MAIN.',
+          15:'Stop playback, press MAIN and select C. If you already followed the old chord recipe in this working copy, first briefly erase C1 at 1.1.1 and 2.1.1, and C2 at 1.2.3 and 2.3.1. Navigate to each position before using ERASE plus its pad. Otherwise leave the empty pattern alone. Now navigate to 1.1.1, hold RECORD, tap C1 once and release. This writes the FULL sung phrase at the start of bar 1.',
+          16:'Press PLAY and listen to one two-bar pass, then stop. The artist should sing the full phrase once, starting near the beginning of bar 1, with room afterwards. If the first word starts noticeably late, select C1 and shorten only its silent lead-in on trim X. Quantization places the trigger on the grid; it does not automatically retime every word inside the recording.',
+          17:'Return to stopped MAIN and select C. Navigate to 2.3.1: bar 2, beat 3, first subdivision. Hold RECORD, tap C2 once and release. This places the short ANSWER word later in bar 2, after the full phrase has finished. Simply tapping without RECORD only auditions it.',
+          18:'Leave the other C positions EMPTY. Your entire two-bar vocal pattern is C1 at 1.1.1, then C2 at 2.3.1. Count: full phrase in bar 1, space, short answer in bar 2. Do not add the old chord notes at 1.2.3 or 2.1.1. If the phrase still overlaps the answer, choose a shorter phrase rather than cutting a word in half.',
+          19:'Press PLAY for two complete two-bar passes, then stop. You should hear your drums underneath the artist singing the phrase and the answer. If the sampled backing rhythm fights the drums, choose a more exposed or rhythmically simpler vocal passage; it will not automatically match 90 BPM. For a wrong trigger, in stopped MAIN navigate to it and briefly use ERASE plus its pad. Never ERASE + SOUND to fix note timing.',
+          21:'Play the loop and listen to bass plus the sung words. If the bass clashes with the singing, stop, press SOUND, select B1 and change its Y pitch a little, then play again. Keep the voice C1 and C2 at its original pitch for now; tune the bass to support the vocal rather than changing the singer to fit the bass.',
+          22:'If no bass pitch fits the voice, in SOUND with B1 selected try another short bass from 400-499 using minus or plus. Custom libraries may differ. If it still clashes, in this disposable working scene briefly erase B1 at 1.1.1, 1.3.1, 2.1.1 and 2.3.1. Drums plus a good vocal sample can work without added bass. Check every scene if you later change the shared pad sound.',
+          23:'Balance the parts in SOUND: select A3 and reduce X if the hats mask the words; select C1 and C2 and set X so you can understand the phrase and answer; select B1 and keep it low enough that the kick stays distinct. Make one small adjustment, listen, then stop. Do not turn X in MAIN expecting pad volume.',
+          24:'Write the current WORK scene number as HOOK. Play it and confirm drums, optional bass, C1 full vocal phrase at 1.1.1 and C2 answer at 2.3.1 repeat across two bars. Stop. Press SHIFT + MAIN to duplicate HOOK before making the next section. Write the new scene number as MAIN.',
+          25:'In the new MAIN scene, select C and stopped MAIN. Navigate to 1.1.1 and briefly erase C1 with ERASE plus pad 1. Navigate to 2.3.1 and briefly erase C2 with ERASE plus pad 2. These are the only TWO vocal triggers in the new recipe. Keep the audio sample files; do not use ERASE + SOUND.',
+          26:'Press PLAY. MAIN should have drums and optional bass but no artist vocal. Stop. Hold MAIN with minus or plus to reselect HOOK and confirm its phrase and answer are still there. Return to MAIN. If the earlier section changed too, stop and undo if available before continuing; do not assume copies are independent without checking.',
+          35:'Stop playback. Keep the turntable connected and select D, then SAMPLE. Use minus or plus to choose LINE input, not the microphone. Replay the same artist passage and find a very short word or syllable for a repeated-word effect in RETURN. You are sampling the artist again, not recording your own voice.',
+          36:'In SAMPLE with D selected and line input checked, replay that word. Hold unused D1 just before it, then release after it. Press MAIN and tap D1. It should be the artist voice again. If you captured extra words, keep going: the next step trims playback to one short fragment.',
+          37:'Press SOUND and select D1. Briefly press SHIFT + SOUND, find trim with minus or plus, then adjust X start and Y length to keep one short word or syllable, ideally about 0.2 seconds. Keep it recognizable and remove silent lead-in. On the sound play-mode page turn X to oneshot. Return to ordinary SOUND and lower X amplitude so this is a little detail.',
+          38:'In RETURN select D and stopped MAIN. Navigate to 2.4.1, hold RECORD and tap D1 once, then release. Repeat at 2.4.3. Play two passes: the artist fragment should go word-word near the end of bar 2. If the hits cut each other off, shorten the fragment gently or briefly erase the second trigger at 2.4.3. Stop before editing.',
+          39:'Stop and verify HOOK has no D1 repeated words but RETURN does. Select INTRO and duplicate it with SHIFT + MAIN; write the new number as END. In END briefly erase A1 at 1.2.3, 1.3.1, 1.4.3 and those same positions in bar 2, leaving only the first kick in each bar plus the hats. Check END, then stop.',
+          45:'Play from the beginning at a comfortable volume. Listen for kick and snare, then optional bass, then whether the artist words are understandable. Stop and change only one pad amplitude in SOUND if needed. Shared pad sound changes may affect more than one scene, so listen through again.',
+          47:'Listen to BREAK followed by RETURN. The sparse drums should make the full sung phrase, answer and little repeated-word detail feel bigger. If the D1 repetition is distracting, in RETURN briefly erase D1 at 2.4.1 AND 2.4.3. Keep the main C1 phrase and C2 answer. Do not change every part trying to fix one sound.'
+          }
+          matches=list(re.finditer(r'<li>.*?</li>',text,re.S))
+          if len(matches)!=50: raise SystemExit('Unexpected step structure')
+          for i in sorted(changes,reverse=True):
+              m=matches[i]; text=text[:m.start()]+'<li>'+changes[i]+'</li>'+text[m.end():]
+          replacements={
+          '64-bar old-school instrumental: warm vinyl chords, steady drums, simple bass, a stripped-down break and a surprise vocal in the final return.':'64-bar old-school hip-hop beat: a few words sung by the artist, steady drums, optional bass, a stripped-down break and a repeated-word twist in the final return.',
+          '02 / Connect the turntable and choose two sounds':'02 / Connect the turntable and choose the artist vocal',
+          '03 / Capture and trim your vinyl chords':'03 / Record the sung phrase and trim the words',
+          '04 / Write the two-bar sampled melody':'04 / Put the phrase and answer into your beat',
+          '05 / Make bass and melody work together':'05 / Make the bass support the artist voice',
+          '08 / Add the twist: your own vocal answer':'08 / Add the twist: repeat a word from the artist',
+          'koii-hiphop-checklist-v1':'koii-hiphop-vocal-checklist-v2'
+          }
+          for old,new in replacements.items():
+              if old not in text: raise SystemExit('Missing expected text: '+old)
+              text=text.replace(old,new)
+          text=text.replace('vinyl melody','artist vocal').replace('C melody','C vocal').replace('chord melody','artist vocal').replace('melody','vocal hook').replace('chords','vocals')
+          assert len(re.findall(r'<li>',text))==50 and 'piano, guitar or horn' not in text
+          path.write_text(text)
+          PY
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Install browser testing tools
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Test the revised chapter before committing
+        run: |
+          python3 -m http.server 8080 --bind 127.0.0.1 > /tmp/vocal-server.log 2>&1 &
+          sleep 2
+          node --input-type=module <<'JS'
+          import {chromium} from 'playwright';
+          import fs from 'node:fs';
+          const b=await chromium.launch(),p=await b.newPage(),errors=[];
+          p.on('pageerror',e=>errors.push(e.message));
+          p.on('response',r=>{if(r.status()>=400&&r.url().startsWith('http://127.0.0.1'))errors.push(r.url());});
+          await p.goto('http://127.0.0.1:8080/');
+          await p.locator('#step-title').waitFor();
+          await p.locator('a[href="./hiphop.html"]').click();
+          if(await p.locator('#tutorial details').count()!==10||await p.locator('#tutorial li').count()!==50)throw Error('Missing sections or steps');
+          const text=await p.locator('#tutorial').innerText();
+          if(!text.includes('artist vocal'))throw Error('Vocal heading missing');
+          await p.locator('#tutorial details').nth(1).locator('summary').click();
+          if(!(await p.locator('#tutorial details').nth(1).innerText()).includes('TWO TO FOUR WORDS'))throw Error('Artist phrase instructions missing');
+          await p.locator('input[type=checkbox]').first().check();
+          await p.reload();
+          if(!await p.locator('input[type=checkbox]').first().isChecked())throw Error('Checklist persistence failed');
+          await p.setViewportSize({width:390,height:844});
+          if(await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))throw Error('Mobile overflow');
+          if(errors.length)throw Error(errors.join('\n'));
+          await b.close();
+          fs.writeFileSync('.github/vocal-update-results.json',JSON.stringify({testedAt:new Date().toISOString(),repositoryBrowser:'passed',live:'pending',checks:['Existing first-beat view loads','Chapter link works','10 sections and 50 steps','Artist vocal instructions present','Checklist persists','390px mobile layout','No browser errors or failed local assets'],limitations:'No physical hardware, sample audio or musical timing verification.'},null,2));
+          JS
+      - name: Commit only the revised chapter and actual test report
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add hiphop.html .github/vocal-update-results.json
+          git commit -m 'Teach artist vocal sampling throughout the full hip-hop chapter'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - uses: actions/configure-pages@v5
+      - name: Prepare website only
+        run: |
+          mkdir -p /tmp/coach-site
+          cp index.html course.js hiphop.html sw.js manifest.webmanifest icon.svg .nojekyll /tmp/coach-site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: /tmp/coach-site
+      - uses: actions/deploy-pages@v4
+      - name: Check the published vocal chapter and record evidence
+        run: |
+          python3 - <<'PY'
+          import json,time,pathlib,urllib.request,os
+          base='https://leonardovitolowork-hash.github.io/koii-coach/'
+          for attempt in range(30):
+              try:
+                  stamp=str(time.time_ns())
+                  def read(name): return urllib.request.urlopen(base+name+'?verify='+stamp,timeout=20).read().decode()
+                  chapter=read('hiphop.html'); home=read('index.html')
+                  assert 'choose the artist vocal' in chapter and 'TWO TO FOUR WORDS' in chapter and 'koii-hiphop-vocal-checklist-v2' in chapter
+                  assert 'piano, guitar or horn' not in chapter and '07 / Full hip-hop beat' in home
+                  break
+              except Exception:
+                  if attempt==29: raise
+                  time.sleep(10)
+          p=pathlib.Path('.github/vocal-update-results.json'); report=json.loads(p.read_text())
+          report.update(live='passed HTTP content checks',liveVerifiedAt=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),deploymentRunId=os.environ['GITHUB_RUN_ID'])
+          p.write_text(json.dumps(report,indent=2)+'\n')
+          PY
+          git add .github/vocal-update-results.json
+          git commit -m 'Record published artist-vocal chapter verification'
+          git pull --rebase origin main
+          git push origin HEAD:main
