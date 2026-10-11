@@ -1,0 +1,45 @@
+name: Correct icon source encoding
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/icon-source-fix.yml']
+permissions:
+  contents: write
+  actions: write
+jobs:
+  correct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Remove only the identified five-character duplication
+        run: |
+          python3 - <<'PY'
+          import pathlib,hashlib,base64
+          p=pathlib.Path('icons/logo-source.webp.b64'); text=p.read_text()
+          data=text.encode()
+          sha=hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
+          assert sha=='ee6a330128732182d5d23262ac48475fffcd7087', 'Source changed; refusing correction'
+          assert text[1429:1434]=='PGJ4x'
+          text=text[:1429]+text[1434:]
+          raw=base64.b64decode(text.strip(),validate=True)
+          assert hashlib.sha256(raw).hexdigest()=='467d9792c907f7e96562859526c07406e4c0e5ed6df3d75ea5b1742422496112'
+          p.write_text(text)
+          p=pathlib.Path('.github/workflows/phone-icon.yml'); text=p.read_text()
+          assert text.count('on:\n  push:')==1
+          p.write_text(text.replace('on:\n  push:','on:\n  workflow_dispatch:\n  push:',1))
+          PY
+      - name: Commit the verified correction
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add icons/logo-source.webp.b64 .github/workflows/phone-icon.yml
+          git commit -m 'Correct five extra icon encoding characters and enable deployment retry'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Rerun the approved icon deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run phone-icon.yml --repo leonardovitolowork-hash/koii-coach --ref main
