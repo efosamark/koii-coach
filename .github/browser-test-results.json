@@ -1,27 +1,18 @@
 {
-  "recordedAt": "2026-10-11T12:24:23.039Z",
-  "runId": "38139081518",
-  "sourceCommit": "57a53992e6de06053c584c91055f2de6a6bdc559",
-  "browserJobResult": "success",
+  "recordedAt": "2026-10-11T13:33:01.526Z",
+  "runId": "38143537507",
+  "sourceCommit": "0e5889e3cf7dc758c3d31e1463bcfd34826213b5",
+  "browserJobResult": "failure",
   "note": "Tests exercise UI and Web Audio scheduling, not perceptual sound quality, complete guide accuracy, physical hardware or offline caching.",
   "results": [
     {
       "target": "repository",
       "url": "http://127.0.0.1:8080/",
-      "checks": [
-        "Homepage and first-beat chapter load",
-        "Recipe navigation and exact note-position helper",
-        "Clickable control explanations",
-        "Manual completion, help search and firmware preference",
-        "64-cell rhythm grid, clear/preset and note toggles",
-        "Web Audio starts; Stop and navigation stop scheduling new sounds",
-        "First-beat progress survives reload",
-        "Mobile controls and screenshot"
-      ],
+      "checks": [],
       "pageErrors": [],
       "badAssets": [],
-      "edition": "original-coach",
-      "status": "passed"
+      "status": "failed",
+      "error": "locator.textContent: Timeout 15000ms exceeded.\nCall log:\n  - waiting for locator('h1').first()\n\n    at /home/runner/work/koii-coach/koii-coach/tests/smoke.mjs:35:53"
     },
     {
       "target": "live-pages",
@@ -32,14 +23,13 @@
         "Clickable control explanations",
         "Manual completion, help search and firmware preference",
         "64-cell rhythm grid, clear/preset and note toggles",
-        "Web Audio starts; Stop and navigation stop scheduling new sounds",
-        "First-beat progress survives reload",
-        "Mobile controls and screenshot"
+        "Web Audio starts; Stop and navigation stop scheduling new sounds"
       ],
       "pageErrors": [],
       "badAssets": [],
       "edition": "original-coach",
-      "status": "passed"
+      "status": "failed",
+      "error": "locator.getAttribute: Timeout 15000ms exceeded.\nCall log:\n  - waiting for locator('[data-step=\"1\"]')\n\n    at position (/home/runner/work/koii-coach/koii-coach/tests/smoke.mjs:39:151)\n    at /home/runner/work/koii-coach/koii-coach/tests/smoke.mjs:93:13"
     }
   ]
 }
