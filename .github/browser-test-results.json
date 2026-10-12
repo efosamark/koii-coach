@@ -1,27 +1,45 @@
 {
-  "recordedAt": "2026-10-11T13:48:25.598Z",
-  "runId": "38143544710",
-  "sourceCommit": "a90b65b98663a3531f54097a1995e00047cc7783",
-  "browserJobResult": "failure",
+  "recordedAt": "2026-10-12T10:22:33.224Z",
+  "runId": "38235841963",
+  "sourceCommit": "9b7df13f755b687ae85415de4f56afbf3354d118",
+  "browserJobResult": "success",
   "note": "Tests exercise UI and Web Audio scheduling, not perceptual sound quality, complete guide accuracy, physical hardware or offline caching.",
   "results": [
     {
       "target": "repository",
       "url": "http://127.0.0.1:8080/",
-      "checks": [],
+      "checks": [
+        "Homepage and first-beat chapter load",
+        "Recipe navigation and exact note-position helper",
+        "Clickable control explanations",
+        "Manual completion, help search and firmware preference",
+        "64-cell rhythm grid, clear/preset and note toggles",
+        "Web Audio starts; Stop and navigation stop scheduling new sounds",
+        "First-beat progress survives reload",
+        "Mobile controls and screenshot"
+      ],
       "pageErrors": [],
       "badAssets": [],
-      "status": "failed",
-      "error": "locator.textContent: Timeout 15000ms exceeded.\nCall log:\n  - waiting for locator('h1').first()\n\n    at /home/runner/work/koii-coach/koii-coach/tests/smoke.mjs:35:53"
+      "edition": "original-coach",
+      "status": "passed"
     },
     {
       "target": "live-pages",
       "url": "https://leonardovitolowork-hash.github.io/koii-coach/",
-      "checks": [],
+      "checks": [
+        "Homepage and first-beat chapter load",
+        "Recipe navigation and exact note-position helper",
+        "Clickable control explanations",
+        "Manual completion, help search and firmware preference",
+        "64-cell rhythm grid, clear/preset and note toggles",
+        "Web Audio starts; Stop and navigation stop scheduling new sounds",
+        "First-beat progress survives reload",
+        "Mobile controls and screenshot"
+      ],
       "pageErrors": [],
       "badAssets": [],
-      "status": "failed",
-      "error": "locator.textContent: Timeout 15000ms exceeded.\nCall log:\n  - waiting for locator('h1').first()\n\n    at /home/runner/work/koii-coach/koii-coach/tests/smoke.mjs:35:53"
+      "edition": "original-coach",
+      "status": "passed"
     }
   ]
 }
