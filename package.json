@@ -1,0 +1,9 @@
+{
+  "name": "koii-coach",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx --yes serve -l 3000 .",
+    "preview": "npx --yes serve -l 3000 ."
+  }
+}
