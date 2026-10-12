@@ -1,8 +1,8 @@
 {
-  "recordedAt": "2026-10-12T10:22:33.224Z",
-  "runId": "38235841963",
-  "sourceCommit": "9b7df13f755b687ae85415de4f56afbf3354d118",
-  "browserJobResult": "success",
+  "recordedAt": "2026-10-12T11:05:24.109Z",
+  "runId": "38240334697",
+  "sourceCommit": "3c691a59d64730e2e187f013ed64aa59cbfbb98c",
+  "browserJobResult": "failure",
   "note": "Tests exercise UI and Web Audio scheduling, not perceptual sound quality, complete guide accuracy, physical hardware or offline caching.",
   "results": [
     {
@@ -11,17 +11,13 @@
       "checks": [
         "Homepage and first-beat chapter load",
         "Recipe navigation and exact note-position helper",
-        "Clickable control explanations",
-        "Manual completion, help search and firmware preference",
-        "64-cell rhythm grid, clear/preset and note toggles",
-        "Web Audio starts; Stop and navigation stop scheduling new sounds",
-        "First-beat progress survives reload",
-        "Mobile controls and screenshot"
+        "Clickable control explanations"
       ],
       "pageErrors": [],
       "badAssets": [],
       "edition": "original-coach",
-      "status": "passed"
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(await page.locator('#results details').count()>0)\n\n    at file:///home/runner/work/koii-coach/koii-coach/tests/smoke.mjs:65:16"
     },
     {
       "target": "live-pages",
@@ -29,17 +25,13 @@
       "checks": [
         "Homepage and first-beat chapter load",
         "Recipe navigation and exact note-position helper",
-        "Clickable control explanations",
-        "Manual completion, help search and firmware preference",
-        "64-cell rhythm grid, clear/preset and note toggles",
-        "Web Audio starts; Stop and navigation stop scheduling new sounds",
-        "First-beat progress survives reload",
-        "Mobile controls and screenshot"
+        "Clickable control explanations"
       ],
       "pageErrors": [],
       "badAssets": [],
       "edition": "original-coach",
-      "status": "passed"
+      "status": "failed",
+      "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(await page.locator('#results details').count()>0)\n\n    at file:///home/runner/work/koii-coach/koii-coach/tests/smoke.mjs:65:16"
     }
   ]
 }
