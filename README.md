@@ -14,18 +14,6 @@ Chapter zero has 19 guided steps: 90 BPM, one bar in 4/4, A1 kick, A2 snare, A3 
 
 Keep index.html, course.js and the other files together. Open index.html, or serve the folder over HTTPS/localhost for service-worker offline caching. Installation support varies by browser; the manifest supplies an SVG icon. External documentation always needs internet.
 
-## Preview before deploy
-
-From the project folder, run:
-
-```bash
-npm run dev
-```
-
-Then open <http://localhost:3000> in your browser. This local preview uses the same files that will be deployed, including the service worker. Use it to check navigation, layout, checklists, offline behaviour and new guides before pushing to `main`.
-
-`npm run preview` does the same thing and is intended as the final check before deployment.
-
 ## GitHub Pages
 
 In Settings > Pages choose Deploy from a branch, main and / (root), then Save. A successful deployment is required before the app is live; committing files does not enable Pages by itself.
