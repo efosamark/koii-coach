@@ -1,0 +1,116 @@
+name: Repair and publish Tech House Coach chapter
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/tech-house-repair.yml']
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: coach-repair-publish
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: https://leonardovitolowork-hash.github.io/koii-coach/
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Link existing chapter and refresh offline cache
+        run: |
+          python3 - <<'PY'
+          import pathlib,subprocess
+          expected={'index.html':'41ae90b7a1b684d83dbf6c1e2fa3874471a35bb9','tech-house.html':'7b02d5ed1f3dc3473025918d97a6bb76d301921c','sw.js':'583cc2597d4763e7b5a95daccfb16ce721aefe0f'}
+          for path,sha in expected.items():
+              if subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()!=sha: raise SystemExit('Refusing to overwrite changed file: '+path)
+          p=pathlib.Path('index.html'); text=p.read_text()
+          assert text.count('</nav>')==1 and '08 / Tech House' not in text
+          text=text.replace('</nav>','<a class="btn light" style="white-space:nowrap;text-decoration:none" href="./tech-house.html">08 / Tech House</a></nav>')
+          p.write_text(text)
+          p=pathlib.Path('sw.js'); text=p.read_text()
+          assert "'./tech-house.html'" not in text
+          text=text.replace('koii-coach-recovery-hiphop-v1','koii-coach-tech-house-v1')
+          text=text.replace("'./hiphop.html',","'./hiphop.html','./tech-house.html',")
+          p.write_text(text)
+          PY
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - name: Install browser testing tools
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium
+      - name: Verify current Coach plus Tech House before deployment
+        run: |
+          python3 -m http.server 8080 --bind 127.0.0.1 > /tmp/tech-house-repair.log 2>&1 &
+          sleep 2
+          node --input-type=module <<'JS'
+          import {chromium} from 'playwright';
+          import fs from 'node:fs';
+          const browser=await chromium.launch(),page=await browser.newPage(),errors=[];
+          page.on('pageerror',e=>errors.push(e.message));
+          page.on('response',r=>{if(r.status()>=400&&r.url().startsWith('http://127.0.0.1'))errors.push(r.url());});
+          await page.goto('http://127.0.0.1:8080/');
+          await page.locator('#step-title').waitFor();
+          for(let i=0;i<6;i++){await page.locator('nav button').nth(i).click();if(!await page.locator('main h1').count())throw Error('Existing view '+i+' did not load');}
+          await page.locator('a[href="./tech-house.html"]').click();
+          await page.locator('#tech-house').waitFor();
+          if(await page.locator('#tech-house details').count()!==12)throw Error('Expected 12 chapter sections');
+          if(await page.locator('#tech-house li').count()!==48)throw Error('Expected 48 steps');
+          const content=await page.locator('#tech-house').innerText();
+          for(const phrase of ['display shows 16','1.1.1','4.4.2','DROP A','Song list','112 bars'])if(!content.includes(phrase))throw Error('Missing: '+phrase);
+          await page.locator('input[type=checkbox]').first().check();await page.reload();
+          if(!await page.locator('input[type=checkbox]').first().isChecked())throw Error('Checklist does not persist');
+          await page.setViewportSize({width:390,height:844});
+          if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2))throw Error('Mobile overflow');
+          if(errors.length)throw Error(errors.join('\n'));
+          await browser.close();
+          fs.writeFileSync('.github/tech-house-results.json',JSON.stringify({testedAt:new Date().toISOString(),repositoryBrowser:'passed',live:'pending',checks:['Six existing views load','Tech House link works','12 sections and 48 explicit steps','Required positions and arrangement present','Checklist persists','390px mobile layout','No browser errors or failed local assets'],limitations:'No test of physical K.O. II actions, installed OS, actual samples, speaker system or musical outcome.'},null,2));
+          JS
+      - name: Commit integrated and tested app files
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add index.html sw.js .github/tech-house-results.json
+          git commit -m 'Repair Tech House chapter link and record passing local checks'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - uses: actions/configure-pages@v5
+      - name: Assemble complete Pages site
+        run: |
+          mkdir -p /tmp/coach-site
+          cp index.html course.js hiphop.html tech-house.html sw.js manifest.webmanifest icon.svg .nojekyll /tmp/coach-site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: /tmp/coach-site
+      - uses: actions/deploy-pages@v4
+      - name: Confirm live content after publishing
+        run: |
+          python3 - <<'PY'
+          import urllib.request,time,json,pathlib,os
+          base='https://leonardovitolowork-hash.github.io/koii-coach/'
+          for attempt in range(30):
+              try:
+                  stamp=str(time.time_ns())
+                  def read(path): return urllib.request.urlopen(base+path+'?verify='+stamp,timeout=20).read().decode()
+                  home,chapter=read('index.html'),read('tech-house.html')
+                  assert '08 / Tech House' in home
+                  assert 'Tech House / party-ready track' in chapter and chapter.count('<li>')==48 and '112 bars' in chapter
+                  break
+              except Exception:
+                  if attempt==29: raise
+                  time.sleep(10)
+          p=pathlib.Path('.github/tech-house-results.json'); result=json.loads(p.read_text())
+          result.update(live='passed HTTP content checks',liveVerifiedAt=time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),deploymentRunId=os.environ['GITHUB_RUN_ID'])
+          p.write_text(json.dumps(result,indent=2)+'\n')
+          PY
+          git add .github/tech-house-results.json
+          git commit -m 'Record successful live Tech House chapter verification'
+          git pull --rebase origin main
+          git push origin HEAD:main
