@@ -13,7 +13,7 @@ body:
     id: page
     attributes:
       label: Page or chapter
-      description: Which part of the coach? For example "02 Make it a song", "08 Tech House" or "06 Help & reference".
+      description: Which part of the coach? For example "00 Start here", "02 Make it a song", "10 Tech House" or "06 Help & reference".
       placeholder: 02 Make it a song
     validations:
       required: true
@@ -47,8 +47,8 @@ body:
     attributes:
       label: Firmware (OS) version
       description: >-
-        For example 2.5 or 2.0.5 (the official guide's "What's new" page lists the releases:
-        https://teenage.engineering/guides/ep-133/whats-new). Write "not sure" if you don't know.
+        For example 2.5.1 or 2.0.5. The official downloads page lists every release:
+        https://teenage.engineering/downloads/ep-133. Write "not sure" if you don't know.
       placeholder: not sure
     validations:
       required: true
