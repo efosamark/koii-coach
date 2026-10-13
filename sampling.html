@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chapter 07: Sample, chop &amp; resample / K.O. II Coach</title>
+  <meta name="description" content="Chapter 07 of K.O. II Coach, an unofficial EP-133 course: record with the built-in mic, build a drum kit from your own voice, sample your phone, then shape, reverse, chop and resample sounds on OS 2.5.">
+  <meta name="theme-color" content="#18251e">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="chapter.css">
+  <script src="chapter.js" defer></script>
+</head>
+<body data-chapter="sampling">
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <a href="./index.html">← Back to K.O. II Coach</a>
+    <p class="eyebrow">CHAPTER 07 / ABOUT 2–3 HOURS</p>
+  </header>
+  <main id="main" tabindex="-1">
+    <h1>Sample, chop &amp; resample</h1>
+    <p>In chapters 01 and 02 you built a beat from factory sounds. Now you make the sounds yourself. You will record your voice with the built-in mic, turn mouth noises into a drum kit, sample your phone, shape and reverse a sound, chop a recording into slices and bounce a whole beat onto one pad. Each section is one small project with a check at the end. Take a break between sections whenever you like: your recordings are saved automatically.</p>
+    <div class="notice"><b>Safety, read this first.</b> Only press SHIFT + ERASE while the K.O. II is already switched on: that opens system settings, which this chapter uses in sections 03 and 04. Holding SHIFT + ERASE while you switch the unit on does something completely different: it formats the drive and erases all your work and every factory sound, and the official guide warns that factory sounds cannot be recovered. Before you change settings, back up with the official EP sample tool (see <a href="./setup.html">00 / Start here</a>). Two more actions are permanent: holding ERASE + SOUND deletes the selected sample from the device, and holding SHIFT + SOUND on the trim page crops a sample file (one optional step below). Work in an empty project so nothing you care about is overwritten.</div>
+    <section class="card">
+      <h2>What you need</h2>
+      <p>Your K.O. II on OS 2.5 or newer; this chapter was checked against the official guide for the current OS 2.5 series (latest release OS 2.5.1). Sample reverse, USB audio, 40-second mono samples, the lo/mid/hi recording rates, equal-length chop, cropping and FX tweaks while resampling arrived in OS 2.5; hands-free sampling and resampling in OS 2.0. Older OS: update first with the <a href="https://teenage.engineering/apps/update">official update utility</a>, as described in <a href="./setup.html">00 / Start here</a>.</p>
+      <p>Headphones or a speaker at a comfortable level. For section 03, optionally a phone with a 3.5 mm stereo cable (or a headphone adapter) for the line input, or a USB-C cable for USB audio.</p>
+      <p>Finish <a href="./index.html#first">01 / First beat</a> and <a href="./index.html#song">02 / Make it a song</a> first. This chapter reuses their moves without explaining them again: choosing a project, SOUND, placing notes with RECORD + pad, commit with SHIFT + MAIN and undo with SHIFT + B.</p>
+      <p>Sample your own voice, sounds you make, or audio you are allowed to use. If you publish music containing someone else's recording, check and obtain the necessary permissions first; sampling does not automatically grant rights.</p>
+    </section>
+    <section class="card">
+      <h2>Your pad plan</h2>
+      <p>You work in empty project 7. Each group gets one job, so you always know where a sound lives:</p>
+      <div class="grid">
+        <div><b>Group A · your drum kit</b><br>A1 kick, A2 snare, A3 hat (section 02), A4 reversed snare (05)</div>
+        <div><b>Group B · resampled bounces</b><br>B1 your beat on one pad, B2 the same with a filter sweep (07)</div>
+        <div><b>Group C · chopped slices</b><br>Your spoken count, cut into four slices (06)</div>
+        <div><b>Group D · raw recordings</b><br>D1 first sample (01), D2 count and D3 phone (03), D4 and D5 the quality test (04)</div>
+      </div>
+      <p>The official get-started guide suggests keeping group D for loops and samples. Every recording goes into the K.O. II's shared sound library (up to 999 samples or 128 MB); a pad only points to a sample.</p>
+    </section>
+    <div id="progress" class="progress" hidden>
+      <p id="progress-count" role="status"></p>
+      <button class="button" id="resume" type="button" hidden></button>
+    </div>
+    <p id="progress-note" class="notice" hidden></p>
+    <section id="sampling" class="steps" aria-label="Steps">
+      <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. No nested lists inside a step. chapter.js numbers the steps and saves ticks by id. -->
+      <details open>
+        <summary>01 / Record your first sample</summary>
+        <p><b>Goal:</b> record a sound with the built-in microphone onto pad D1, hear it back and put it in a beat.</p>
+        <ol start="1">
+          <li data-step="open-empty-project">Press MAIN. If the K.O. II is playing, press PLAY to stop it. Hold MAIN, hold pad 7 as well, then release both: the official guide says “hold main and one of the pads (1-9) to select an empty project”, and project 7 is empty on a new unit. Your chapter 01–02 work in project 6 stays untouched. Tap a few pads in groups A, B, C and D. Check: none of them makes a sound.</li>
+          <li data-step="set-tempo-grid">Press TEMPO and turn X until the display shows 90 (or hold TEMPO and type 9, 0). Press TIMING, turn X until the display shows 16 (not 16T) and press − for quantize. Press MAIN. Check: this is the same 90 BPM, 16-step setup as chapter 01, so every position in this chapter means what you are used to.</li>
+          <li data-step="choose-mic-source">Tap D to select group D, then press SAMPLE. Check: the pads light up and blink, which means you are in sample mode. Press − or + until the display shows mic; the official icon map’s MIC icon is “lit when the microphone is in use” (LINE-IN lights for a line input). The guide lists the sources as mic, line in mono and stereo (in), resample mono and stereo (rsp), line in left and right (L.IN, R.IN) and USB mono and stereo (usb).</li>
+          <li data-step="set-level-threshold">Turn Y (threshold) all the way down, so recording starts as soon as you hold a pad. Set X (input level) to about halfway. Check that the pads are still blinking before you turn: in sample mode X is input level and Y is threshold, which are different jobs from SOUND mode.</li>
+          <li data-step="record-first-sample">Get close to the K.O. II. Hold D1, say “hey!” or clap once, then release D1. The guide: “as soon as you let go it will stop sampling.” Check: D1 stops blinking and stays lit, which means it now holds a recording.</li>
+          <li data-step="audition-first-sample">Tap D1. You should hear your sound. Too quiet: turn X up. Crunchy or distorted: turn X down. To try again, the guide says you “get a second chance by pressing sample again and retaking it”: press SAMPLE, hold D1 and record again.</li>
+          <li data-step="note-sample-number">Press SOUND and tap D1. Check: the display shows a number. That is the library slot where your recording was stored (“samples are stored in the next available slot”). Write it down as FIRST. It is saved automatically, and you could load it on any pad in any project by holding SOUND and typing that number. Press MAIN.</li>
+          <li data-step="place-first-sample">In MAIN, stopped, with group D selected: hold SHIFT and press − until the display shows 1.1.1. Hold RECORD, tap D1, release RECORD. Press PLAY. Check: your sound plays at the start of every loop, about every 2.7 seconds. Press PLAY to stop.</li>
+        </ol>
+        <p><b>Mono, stereo and length.</b> A stereo source records left and right; a mono source records one channel. On OS 2.5 a mono sample can be up to 40 seconds long; stereo recordings stop sooner (the update notes offer 40-second mono as the answer to “20 seconds not enough?”). To record a long sample, choose a source the guide marks as mono; the guide doesn't say which the built-in mic counts as. If pressing SAMPLE shows a “disk low” warning, there isn't room for 20 seconds of audio: back up, then remove recordings you no longer need. Holding ERASE + SOUND until SND blinks deletes the selected sample permanently, so check its number first.</p>
+        <p class="good"><b>Checkpoint:</b> your own sound plays on D1 at the start of every bar.<br><b>If it doesn't:</b> D1 still blinks after recording? Nothing was captured: turn Y down, check the mic source and keep holding the pad while you make the sound. D1 lit but silent? Press SOUND, tap D1 and check X (amplitude) isn't at zero; in MAIN, check the fader (group level) isn't at the bottom. Pads already made sounds in step 1? On OS 2.0 and newer, MAIN + a number can also select a scene, so you may still be in your old project: hold MAIN and pad 7 together again and check the display. See help “My sample will not start recording” in <a href="./index.html#help">06 / Help &amp; reference</a>.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">10.1 sample</a> · <a href="https://teenage.engineering/guides/ep-133/get-started">7.1 get started, steps 1 and 11–13</a> · <a href="https://teenage.engineering/guides/ep-133/modes">8.1 sound</a></p>
+      </details>
+      <details id="make-your-own-kit">
+        <summary>02 / Build a drum kit from your voice</summary>
+        <p><b>Goal:</b> record a kick, a snare and a hi-hat with the mic onto A1, A2 and A3, then program the chapter 01 rhythm with them. If your unit has no factory sounds, for example after a drive format, this kit is your fallback for the whole course.</p>
+        <ol start="9">
+          <li data-step="erase-test-note">In MAIN, stopped, with group D selected, go to 1.1.1 and briefly press ERASE + D1. Check: D1 no longer lights at 1.1.1 and PLAY stays silent. Erasing a note only removes it from the pattern; your recording stays on the pad and in the library.</li>
+          <li data-step="kit-sample-setup">Tap A, then press SAMPLE. Check that the microphone source is still selected (press − / + if not). Turn Y (threshold) up a little from the bottom. Now recording waits until your sound is loud enough, so it starts right on the hit with no silent gap: the guide says threshold lets you “trigger the recording to start only when you make just the right amount of noise”.</li>
+          <li data-step="record-kick">Hold A1, make one short, low sound close to the K.O. II, such as a deep “dm” or “boom” or a knock on the table next to it, then release A1. Tap A1. Check: a short, low thud. Not punchy enough? Press SAMPLE and retake it.</li>
+          <li data-step="record-snare">Hold A2, make one sharp sound, such as “psh”, “k” or a single hand clap, then release A2 and tap it. Check: brighter and snappier than the kick.</li>
+          <li data-step="record-hat">Hold A3, make a short “ts” or “t”, release and tap it. Check: a short, bright tick. If a recording never starts, lower Y a little; if background noise starts it too early, raise Y a little.</li>
+          <li data-step="shape-kit">Press SOUND and tap A1. Turn Y (pitch) down a little: your mouth kick gets deeper. Tap A3 and turn X (amplitude) down until the hat is quieter than the kick and snare. Check: kick low and solid, hat in the background. Press MAIN.</li>
+          <li data-step="place-kit-kicks">In MAIN, stopped, with group A selected, hold SHIFT and press − until the display shows 1.1.1. Hold RECORD + A1 at 1.1.1, 1.2.3, 1.3.1 and 1.4.3, moving between positions with − / +. Check: A1 lights at each of the four positions, the same kick rhythm as chapter 01.</li>
+          <li data-step="place-kit-snares">Hold RECORD + A2 at 1.2.1 and 1.4.1. Check: A2 lights at both positions.</li>
+          <li data-step="place-kit-hats">Hold RECORD + A3 at 1.1.1, 1.1.3, 1.2.1, 1.2.3, 1.3.1, 1.3.3, 1.4.1 and 1.4.3. Check: A3 lights at all eight positions; some share a step with a kick or snare, which is correct.</li>
+          <li data-step="commit-voice-kit">Press PLAY, listen to a few loops and press PLAY to stop. Hold MAIN, read the scene number and write it down as VOICE KIT. Release MAIN and press SHIFT + MAIN once to commit. Check: holding MAIN now shows a different number. You are working in a copy, and VOICE KIT stays as it is.</li>
+        </ol>
+        <p class="good"><b>Checkpoint:</b> kick, snare and hats made from your own voice, in the chapter 01 rhythm: kick on 1, the “and” of 2, 3 and the “and” of 4, snare on 2 and 4, hats on every eighth.<br><b>If it doesn't:</b> a sound starts late? There is silence at the start of the recording: section 05 trims it, or retake with Y slightly higher. Extra or missing hits? Press SHIFT + B (undo) while the umbrella icon is lit, or go to the wrong position and briefly press ERASE + that pad, as in chapter 01.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">10.1 sample (threshold)</a> · <a href="https://teenage.engineering/guides/ep-133/modes">8.1 sound (amplitude, pitch)</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record">9.2 step sequence</a></p>
+      </details>
+      <details>
+        <summary>03 / Hands-free sampling and sampling your phone</summary>
+        <p><b>Goal:</b> record without holding a pad, then capture a few seconds from your phone, either through the line input or over USB. Do the line-input steps or the USB steps, whichever suits your phone; both end with a phone sample on D3.</p>
+        <ol start="19">
+          <li data-step="handsfree-count">Tap D and press SAMPLE; check the mic source. Leave Y slightly up so the recording waits for your voice. Hold SHIFT and press D2, an empty, blinking pad: the K.O. II now “holds the pad for you”. Count “one, two, three, four” evenly and briskly, about two words per second, then press SAMPLE straight after “four” to stop. Check: D2 stays lit; tap it to hear your count. You will chop this in section 06, so the spacing matters. Uneven? Record it again on an empty pad such as D6 and use that pad instead of D2.</li>
+          <li data-step="line-connect">Line input: connect your phone's headphone output (or its headphone adapter) to the K.O. II's audio INPUT with a 3.5 mm stereo cable. The input sits with the other sockets on the top side; do not use OUTPUT, MIDI or SYNC. Set the phone's volume to about half.</li>
+          <li data-step="line-handsfree-record">Choose 2–8 seconds of something you made or may use, such as a voice memo or your own loop. Tap D, press SAMPLE and press − / + until the display shows in (line input; the mono and stereo versions share this label, and either is fine here). Leave Y slightly up. Hold SHIFT and press D3, start the phone, and press SAMPLE when your part has finished. Tap D3. Check: you hear the phone's sound, clean and undistorted. Distorted: turn X down and record again on an empty pad. Too quiet: raise X or the phone's volume.</li>
+          <li data-step="usb-connect">USB audio (OS 2.5), for example if your phone has no headphone output: connect the K.O. II to the phone or a computer with a USB-C cable. On the phone or computer, choose the K.O. II as the audio output device. The guide says any “class compliant usb audio host” works.</li>
+          <li data-step="usb-live-monitor">Optional, to hear the phone through the K.O. II while you sample: with the K.O. II already on, press SHIFT + ERASE to open system settings, type 5, 1, 1 on the pads, press ENTER, then press MAIN. Setting 511 is “sampler + live monitoring”; the default, 510, is “sampler only”. Type 510 the same way to switch back.</li>
+          <li data-step="usb-handsfree-record">Tap D, press SAMPLE and press − / + until the display shows usb (mono and stereo share this label). Leave Y slightly up. Hold SHIFT and press D3 (or the next empty pad if D3 already holds a line-in sample), start the audio on the phone and press SAMPLE when it has finished. Tap the pad. Check: you hear the phone's sound from the K.O. II.</li>
+        </ol>
+        <p class="good"><b>Checkpoint:</b> D2 plays your evenly spaced count; D3 plays a few clean seconds from your phone.<br><b>If it doesn't:</b> hands-free didn't start? Use a pad that is still blinking; hands-free needs an empty pad and OS 2.0 or newer. If you forget to stop, it stops by itself at the maximum length. Line input: the cable must be in INPUT, the phone's volume up, the source in, X up and Y not too high. USB: the phone or computer must use the K.O. II as its output and the source must be usb; USB audio needs OS 2.5. See help “Where did USB or reverse go?” in <a href="./index.html#help">06 / Help &amp; reference</a>.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">10.1 sample (hands free sampling, stereo/mono/l/r)</a> · <a href="https://teenage.engineering/guides/ep-133/hardware-overview">1.1 inputs/outputs</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">12.11 record a sample using usb audio</a> · <a href="https://teenage.engineering/guides/ep-133/system">14 system settings 510/511</a></p>
+      </details>
+      <details>
+        <summary>04 / Recording quality: lo versus hi</summary>
+        <p><b>Goal:</b> record the same bright sound at the default hi rate and at lo, hear the difference, then set it back.</p>
+        <ol start="25">
+          <li data-step="quality-record-hi">The K.O. II records at hi quality by default (46,875 Hz, setting 502). Tap D, press SAMPLE and choose the mic source. Hold D4, jingle a bunch of keys close to the K.O. II for about two seconds, then release. Check: D4 is lit, and tapping it plays bright jingling.</li>
+          <li data-step="quality-set-lo">With the K.O. II already on, press SHIFT + ERASE to open system settings. Type 5, 0, 0 on the pads, press ENTER, then press MAIN. Setting 500 is the lo rate, 26,250 Hz. Menu route instead of the code: SHIFT + ERASE, press + until the display shows smp, press ENTER, rec appears, press ENTER again, use − / + to select lo, then press ENTER.</li>
+          <li data-step="quality-record-lo">Tap D, press SAMPLE, choose the mic, hold D5 and jingle the same keys the same way. Release. Check: D5 is lit.</li>
+          <li data-step="quality-compare">Tap D4, then D5, several times. Check: D5 (lo) sounds duller and grittier, and the sparkle of the keys is softer. The guide's reason to use it: “add character and use less storage”. Curious about the middle? Type 501 the same way for mid (32,000 Hz) and record a third take on an empty pad.</li>
+          <li data-step="quality-set-hi">Set it back: press SHIFT + ERASE, type 5, 0, 2, press ENTER, then press MAIN. The setting only affects new recordings, so D5 keeps its lo-fi sound. Check: you are back on 502. Otherwise every sample you record from now on is lo-fi.</li>
+        </ol>
+        <p class="good"><b>Checkpoint:</b> D4 and D5 sound clearly different: D5 is darker and rougher.<br><b>If it doesn't:</b> use a bright sound such as keys or a long “sss”, because dull sounds hide the difference. To see the current rate, use the menu route (smp, then rec) and read the display. Typed a wrong code? Type the right one and press ENTER; every code is listed on the official system page. Lower rates need OS 2.5. Audio files you import with the EP sample tool keep their own rate if it is lower than 46,875 Hz.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new, OS 2.5 (sample rate)</a> · <a href="https://teenage.engineering/guides/ep-133/system">14 system settings 500–502</a> · <a href="https://teenage.engineering/guides/ep-133/functions">10.2 sample tool</a></p>
+      </details>
+      <details>
+        <summary>05 / Shape and reverse a sound in SOUND EDIT</summary>
+        <p><b>Goal:</b> tidy your snare with trim, envelope and play mode, then make a reversed copy that swells into the next bar.</p>
+        <ol start="30">
+          <li data-step="edit-open">Press SOUND, tap A, then tap A2 (your snare). Briefly press SHIFT + SOUND: sound edit opens. Press − / + to step through its six pages: sound (play mode and pan), trim, envelope, time, midi and mute group. Check: the display changes with each page; the guide calls the trim page TRI and the time page tim. Always press SHIFT + SOUND briefly: holding it for two seconds saves your edits to the sound, and on the trim page holding it crops the file.</li>
+          <li data-step="edit-trim">Go to the trim page. Turn X (start point) a little at a time, tapping A2 between turns, until the snare starts the instant you tap. Turn Y (length) down until the tail ends cleanly. Hold SHIFT while turning for finer steps. Check: A2 is quick and tight. Trim changes how the sound plays in this project only; it does not write back to the stored file.</li>
+          <li data-step="edit-envelope">Press + to the envelope page. Turn X (attack) up and tap A2: the snare fades in and loses its crack. Turn X back down. Y is release: whether the sound keeps playing after you let go of the pad or is cut off at once. Check: A2 has its crack back.</li>
+          <li data-step="edit-play-mode">Press − until you reach the sound page. Turn X to oneshot; the guide names the three play modes oneshot, key and legato, so check the display as you turn. Tap A2 very briefly. Check: the whole snare plays even though you let go at once. Oneshot plays the whole sample, one at a time; key lets copies of the sample overlap (good for KEYS); legato continues from the same point when you change notes while holding. Y on this page is pan.</li>
+          <li data-step="copy-snare-pad">Press MAIN, then press SOUND and tap A2. Hold SHIFT and press C once: this copies A2's sound. Tap A4, an empty pad, then hold SHIFT and press D: this pastes it. Tap A4. Check: A4 plays your snare too. Press SHIFT + C only once; pressing it twice copies every sound in the group.</li>
+          <li data-step="reverse-copy">With A4 selected in SOUND, briefly press SHIFT + SOUND, then press − / + until the display shows tim. Turn X until it shows rev. Tap A4. Check: the snare plays backwards, a soft swell that ends in a snap. Tap A2: it still plays forwards.</li>
+          <li data-step="place-reverse">Press MAIN. Stopped, with group A selected, go to 1.4.3, hold RECORD + A4 and release. Press PLAY. Check: the reversed snare swells up and its loud end lands as the loop starts again. Too early or too late? Briefly press ERASE + A4 at 1.4.3 and try 1.4.2 or 1.4.4 instead. Press PLAY to stop.</li>
+          <li data-step="crop-optional">Optional and permanent: skip this if you are unsure. Cropping rewrites the sample file to its trim points; the guide says it “will overwrite the file and cannot be undone”. Only crop a recording you made today, never a factory sound. To crop your kick: press SOUND, tap A1, briefly press SHIFT + SOUND, go to the trim page and set X and Y so only the kick remains. Then hold SHIFT + SOUND. Because the file itself changes, every pad in every project that uses this sample plays the cropped version from now on.</li>
+        </ol>
+        <p class="good"><b>Checkpoint:</b> A2 is tight, and A4 swells backwards into the start of each loop.<br><b>If it doesn't:</b> turning X or Y changed volume or pitch? You were in SOUND, not sound edit: press SHIFT + SOUND briefly. No rev on the tim page? Reverse needs OS 2.5. Don't like an edit? Turn the knob back: trim, envelope and play mode are not permanent. Did A2 also play backwards? Check that A4 was selected (tap it in SOUND) before you opened sound edit.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">8.2 sound edit (8.2.1 sound, 8.2.2 trim, 8.2.3 envelope, 8.2.4 time)</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new, OS 2.5 (reverse, crop)</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record">9.5 copy sounds</a></p>
+      </details>
+      <details>
+        <summary>06 / Chop a sample into slices</summary>
+        <p><b>Goal:</b> cut your count on D2 into four equal slices on group C, then make a new pattern from the slices.</p>
+        <ol start="38">
+          <li data-step="chop-live-optional">Optional first look at manual chopping, which the guide calls live chop: in CHOP mode you “press a pad to CHOP… keep pressing pads as the sample plays”, and the time between presses decides where each cut falls. The guide doesn't say how playback starts or what the display shows, so treat this as an experiment: in MAIN tap D, tap D2, tap C, press SHIFT + SAMPLE and tap C pads in time with the words. Whatever happens, press MAIN when done; the next steps overwrite group C anyway.</li>
+          <li data-step="chop-select-source">In MAIN, tap D, then tap D2: you hear the count, and D2 is now the selected sample. Tap C: group C becomes the destination. Chopping from one group into another needs OS 2.0.1 or newer. Auto chop “will reset any pad assignments” in the destination group, which is why you use the empty group C.</li>
+          <li data-step="chop-equal-mode">Press SHIFT + SAMPLE to enter CHOP. Hold the C button and press − / + until the display shows EQU (equal-length slices; the other auto mode, attack, cuts at the loudest moments). Release C.</li>
+          <li data-step="chop-slice-count">Press − / + until the slice count on the display is 4, then press MAIN. The guide: “go back to (main) and your sample has been chopped.”</li>
+          <li data-step="chop-find-slices">In MAIN, tap C if it isn't selected, then tap its pads starting at the bottom-left one, going right along the bottom row and then up: slices fill the pads “from bottom left to top right”. Check: four pads say “one”, “two”, “three” and “four”. Write down which pad says which.</li>
+          <li data-step="chop-write-pattern">Stopped, with group C selected, go to 1.1.1 (hold SHIFT and press −). Hold RECORD and tap the “one” pad at 1.1.1, the “two” pad at 1.2.1, the “three” pad at 1.3.1 and the “four” pad at 1.4.1. Press PLAY. Check: your voice counts the four beats over your drum kit and the reversed snare. Press PLAY to stop.</li>
+          <li data-step="chop-remix">Remix it: go to 1.3.1, briefly press ERASE + the “three” pad, then hold RECORD and tap the “one” pad there. Press PLAY. Check: the count now goes one, two, one, four. Rearranging slices like this is the heart of chopping. Press PLAY to stop.</li>
+        </ol>
+        <p class="good"><b>Checkpoint:</b> four pads in group C each hold one word, and your pattern plays them on the beats.<br><b>If it doesn't:</b> slices cut words in half? Your count wasn't evenly spaced. Record a new, more even count on an empty pad and chop again, or choose attack mode instead of EQU, which cuts at the loudest moments, the start of each word. To nudge a single slice, try the trim page from section 05 on that pad (X start, Y length). Slices landed in the wrong group? Select C before pressing SHIFT + SAMPLE. EQU missing? Equal-length chop needs OS 2.5.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">10.3 chop</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new, OS 2.5 (equal length auto chop) and OS 2.0.1 (chop from one group to another)</a></p>
+      </details>
+      <details>
+        <summary>07 / Resample: bounce your beat onto one pad</summary>
+        <p><b>Goal:</b> record the K.O. II's own output onto B1 so the whole beat plays from one pad, then capture a filter sweep while resampling.</p>
+        <ol start="45">
+          <li data-step="resample-source">Stop playback. Tap B: the empty group B will receive the recording. Press SAMPLE, then press − / + until the display shows rsp (resample; mono and stereo share this label). Check: rsp is on the display.</li>
+          <li data-step="resample-record">Hold SHIFT and press B1: hands-free sampling is engaged and waits. Do not press − / + now, because that changes how many bars it records. Press PLAY. Check: the beat plays and the K.O. II records the length of the selected pattern, one bar, about 2.7 seconds, from the pattern start. If the beat keeps playing afterwards, press PLAY to stop.</li>
+          <li data-step="resample-listen">Press MAIN and tap B1. Check: the whole bar, with kick, snare, hats, the reversed snare and your counting voice, plays from a single pad.</li>
+          <li data-step="bounce-scene">Press SHIFT + MAIN to commit, then hold MAIN and write the new scene number down as BOUNCE. In BOUNCE, tap A and press SHIFT + A: group A switches to its next empty pattern in this scene. Tap C and press SHIFT + A too. Press PLAY. Check: silence, because A and C now play empty patterns here; your notes are safe in the previous scene. Press PLAY to stop.</li>
+          <li data-step="bounce-place">Tap B. In MAIN, stopped, go to 1.1.1, hold RECORD + B1 and release. Press PLAY. Check: your beat is back, but now it is one sample triggered once per bar. The K.O. II plays up to 16 mono or 12 stereo sounds at once; a bounced loop needs one of them instead of several, which leaves room for new parts in groups A and C. Press PLAY to stop.</li>
+          <li data-step="fx-setup">Set up an effect for group B: press PLAY, tap B, press FX and press − / + until you reach the filter (the guide lists delay, reverb, distortion, chorus, filter and compressor). Raise the fader: in FX it sets group B's send. Turn X and listen: “turn left to cut the highs and right to cut the lows.” Do not hold FX while pressing a group button: that solos the group. Press PLAY to stop.</li>
+          <li data-step="fx-resample">Tap B, press SAMPLE and check that rsp is still the source. Hold SHIFT and press B2. For more time, press + once or twice now to record more bars, and watch the display. Press PLAY. While it records, hold FX and turn X slowly from fully left towards the middle, then release FX. Turn only the knobs while holding FX: pads trigger punch-in effects and group buttons solo. Press MAIN and tap B2. Check: the beat opens up from muffled to bright. Then press PLAY, tap B, press FX and pull the fader down, so group B plays dry again in the next section. Press PLAY to stop.</li>
+        </ol>
+        <p class="good"><b>Checkpoint:</b> B1 plays your whole beat from one pad, and B2 the same beat with a filter sweep.<br><b>If it doesn't:</b> B1 silent or empty? rsp wasn't the source, or nothing was playing: select the scene with your beat (hold MAIN, − / +) and try again on an empty pad. Recording too long or too short? You pressed − / + after SHIFT + B1, which sets the number of bars. X changed the input level instead of the filter? Hold FX while turning. Resampling and hands-free sampling need OS 2.0; turning FX X/Y during latched resampling needs OS 2.5.</p>
+        <p>Resampling can also combine sounds: the official how-to resamples a chord played in KEYS mode onto one pad, and the guide notes resample can “stack and time stretch whole sections of your beat”.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">10.1 sample (resample pattern, resample bars)</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">12.10 resample a chord</a> · <a href="https://teenage.engineering/guides/ep-133/effects">11 effects, 11.5 filter</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new, OS 2.0 and OS 2.5</a></p>
+      </details>
+      <details>
+        <summary>08 / Fit a loop to any tempo, then keep your samples</summary>
+        <p><b>Goal:</b> make B1 follow the project tempo with time-stretch, try tempo match and LOOP, and learn how to keep your samples safe.</p>
+        <ol start="52">
+          <li data-step="stretch-hear-problem">In BOUNCE, press PLAY. Press TEMPO and turn X up until the display shows 110. Check: B1 still plays at the speed you recorded it, so it no longer fits the shorter bar; the end of the loop gets cut off or runs into the next one. Press PLAY to stop. (If B1 already follows the tempo, its time-stretch is already on: with B1 selected, the stopwatch TIME icon, which “indicates if active sound has time stretch enabled”, is lit. The next step shows where to change it.)</li>
+          <li data-step="stretch-bar-mode">Press SOUND, tap B, then tap B1. Briefly press SHIFT + SOUND and press − / + until the display shows tim. Turn X (time stretch mode: BPM, BAR or reverse) until BAR shows. Turn Y (sample length) until the display shows 1 bar. The guide: “if you choose 1 bar it stretches your sample to be 1 bar long.”</li>
+          <li data-step="stretch-check">Press MAIN, then PLAY. Check: at 110 BPM B1 now fits the bar, faster but in time. Press TEMPO and turn X back to 90 while it plays: the loop follows. Press PLAY to stop. Heavy stretching changes the sound a little (OS 2.5 made it cleaner), and stretched samples can use more of the K.O. II's voices. The BPM mode works too: choose BPM and set Y to 90, the tempo you recorded the loop at.</li>
+          <li data-step="tempo-match-optional">Optional, tempo match: hold SAMPLE + TEMPO and play a song from your phone into the line input, or close to the mic. The guide: the K.O. II “will listen, find the tempo, display it on screen and then set the project tempo to match”. Press PLAY: your stretched B1 follows the new tempo. Set TEMPO back to 90 afterwards.</li>
+          <li data-step="loop-optional">Optional, LOOP, a performance trick: while the beat plays, press SHIFT + TEMPO. The K.O. II repeats a short piece of the music. Turn X to slide the loop position (it stays locked to the tempo) and Y to change its length. Press MAIN to leave at the next bar, or TEMPO to leave at once. <a href="./perform.html">08 / Play &amp; perform</a> has more live tricks.</li>
+          <li data-step="keep-samples">Keep your work: write down project 7, the scene numbers VOICE KIT and BOUNCE, and the sample number FIRST. Your recordings are already stored on the K.O. II. To copy them to a computer, load audio files onto the K.O. II or make a backup, use the official <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a> over USB-C. Press MAIN to leave SAMPLE mode before transferring: older OS versions could corrupt uploads made while in SAMPLE. Check: you know where each of your sounds lives.</li>
+        </ol>
+        <p class="good"><b>Checkpoint:</b> B1 stays in time at both 90 and 110 BPM.<br><b>If it doesn't:</b> the tim page must show BAR (not BPM or rev) and Y must be 1 bar. Using BPM mode instead? Y must match the tempo you recorded at, 90. Still out of time? Check that you edited B1: press SOUND and tap B1, then open sound edit again. The tempo knob turns from 60 to 180 BPM; hold TEMPO and type a number for anything outside that.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">8.2.4 time, 8.4 tempo, 8.4.2 tempo match</a> · <a href="https://teenage.engineering/guides/ep-133/functions">10.5 loop, 10.2 sample tool</a></p>
+      </details>
+    </section>
+    <section class="card">
+      <h2>Sampling quick reference</h2>
+      <table>
+        <thead>
+          <tr><th>To do this</th><th>Press</th><th>Added in</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Record a sample</td><td>Select a group, SAMPLE, − / + for the source, X input level, Y threshold, hold an empty pad, release to stop</td><td>original</td></tr>
+          <tr><td>Record hands-free</td><td>In SAMPLE: SHIFT + an empty pad; SAMPLE stops</td><td>OS 2.0</td></tr>
+          <tr><td>Resample a pattern</td><td>SAMPLE, − / + until rsp, SHIFT + an empty pad, PLAY (− / + first to choose a number of bars)</td><td>OS 2.0</td></tr>
+          <tr><td>Tweak FX while resampling</td><td>Hold FX and turn X / Y during a latched resample</td><td>OS 2.5</td></tr>
+          <tr><td>Equal-length chop</td><td>Tap the sample's pad, tap the destination group, SHIFT + SAMPLE, hold the group button, − / + to EQU, release, − / + slice count, MAIN</td><td>OS 2.5</td></tr>
+          <tr><td>Sound edit</td><td>SOUND, tap the pad, brief SHIFT + SOUND, − / + pages</td><td>original</td></tr>
+          <tr><td>Reverse</td><td>Sound edit, − / + to tim, X to rev</td><td>OS 2.5</td></tr>
+          <tr><td>Time-stretch to bars</td><td>Sound edit, − / + to tim, X to BAR, Y bars</td><td>OS 2.0.1 or earlier</td></tr>
+          <tr><td>Recording rate</td><td>SHIFT + ERASE (unit already on), type 500 lo, 501 mid or 502 hi, ENTER, MAIN</td><td>OS 2.5</td></tr>
+          <tr><td>USB live monitoring</td><td>SHIFT + ERASE (unit already on), type 511 on or 510 off, ENTER, MAIN</td><td>OS 2.5</td></tr>
+          <tr><td>Crop to trim (permanent)</td><td>On the trim page, hold SHIFT + SOUND</td><td>OS 2.5</td></tr>
+          <tr><td>Delete a sample (permanent)</td><td>In SOUND with the pad selected, hold ERASE + SOUND until SND blinks</td><td>original</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="card">
+      <h2>Button instructions and sources</h2>
+      <p>Original teaching recipe; every button sequence was checked against teenage engineering's official EP-133 guide on 13 October 2026, using its OS 2.5 notes (latest release OS 2.5.1). Where the guide does not describe a detail, such as the exact display text for the mic source or how live chop starts, the step says so. UI checks cannot validate your installed firmware, your recordings or physical device actions.</p>
+      <p><a href="https://teenage.engineering/guides/ep-133/functions">Sample, chop, timing, loop and sample tool</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Sound, sound edit, tempo and tempo match</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record">Step sequence, copy/paste, erase and undo</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">How-to: resample a chord, sample over USB</a> · <a href="https://teenage.engineering/guides/ep-133/system">System settings</a> · <a href="https://teenage.engineering/guides/ep-133/effects">Effects</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">What's new (OS 2.0–2.5)</a> · <a href="https://teenage.engineering/guides/ep-133/erase-drive">Erase drive (format warning)</a> · <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a></p>
+      <p class="notice">Safety recap: SHIFT + ERASE held while switching on formats the drive, and factory sounds cannot be recovered. ERASE + SOUND deletes a sample file. Holding SHIFT + SOUND on trim crops it. Auto chop resets the destination group's pad assignments. Back up with the EP sample tool before experimenting with anything you want to keep.</p>
+      <div class="actions">
+        <button class="button" id="reset" type="button" hidden>Reset this chapter's checklist</button>
+        <button class="button" id="print" type="button" hidden>Print all steps</button>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <nav class="chapters" aria-label="Chapters">
+      <a class="prev" href="./index.html#song" rel="prev"><span>Previous chapter</span>02 / Make it a song</a>
+      <a class="next" href="./perform.html" rel="next"><span>Next chapter</span>08 / Play &amp; perform</a>
+    </nav>
+    <p><a href="./index.html">← Back to the main app</a></p>
+    <p><a href="https://github.com/leonardovitolowork-hash/koii-coach/issues/new?template=wrong-instruction.yml">Report a wrong instruction</a>: tell us the chapter, the step number and what your EP-133 did instead.</p>
+    <p>Unofficial. Not affiliated with or endorsed by teenage engineering. EP-133 and K.O. II are trademarks of teenage engineering.</p>
+  </footer>
+</body>
+</html>
