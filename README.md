@@ -66,9 +66,8 @@ Where the guide is silent or unclear, for example about what the display shows a
 
 Every push to `main`, every pull request into `main` and every manual run start the **Test and deploy** workflow (`.github/workflows/deploy.yml`):
 
-1. `.github/scripts/build_site.py` copies only the app files into `_site/` and checks them. It fails if a file is missing or looks like placeholder text. It also fails if a page links to a file that isn't there, if `sw.js` precaches a missing file (one missing file stops offline install), or if a page isn't precached.
-2. `node --check` checks the syntax of every script.
-3. `tests/smoke.mjs` opens the `_site/` copy in Chromium on a local server, at desktop and 390 px phone width. It fails on any JavaScript error, console error or failed request. It checks that:
+1. `.github/scripts/build_site.py` copies only the app files into `_site/` and checks them. It fails if a file is missing or looks like placeholder text. It also fails if a page links to a file that isn't there, if `sw.js` precaches a missing file (one missing file stops offline install), if a page isn't precached, or if the release version in `sw.js`, `course.js` and `CHANGELOG.md` differs.
+2. `tests/test_smoke.py` (pytest and Playwright for Python) opens the `_site/` copy in Chromium on a local server, at desktop and 390 px phone width. It fails on any JavaScript error, console error or failed request. It checks that:
    - the main app loads with the "Start here" card, the right chapter numbers in the menu, the step and note helpers, the control map, the lessons and the Rhythm lab with its practice sounds;
    - Help search finds troubleshooting topics, and the OS picker changes the "Needs OS" badges;
    - your place in 02 Make it a song survives a reload, every hash route (`#first`, `#song`, `#manual`, `#controls`, `#lab`, `#help`) opens its view, and Reset asks before it clears anything;
@@ -78,15 +77,16 @@ Every push to `main`, every pull request into `main` and every manual run start 
 
 **Not tested automatically:** real EP-133 hardware, how the sounds sound, Safari on iPhone, offline use on a real phone, the progress file dialogs, and the live site (the workflow leaves `LIVE_URL` empty; set it to test a deployed copy as well).
 
-To run the same checks on your computer (Python 3 and Node.js 22):
+To run the same checks on your computer you only need Python 3 (no Node.js). On Windows, from the repository folder:
 
 ```sh
-python3 .github/scripts/build_site.py _site
-npm install --no-save --no-package-lock playwright@1.64.0
-npx playwright install chromium
-python3 -m http.server 8080 --bind 127.0.0.1 --directory _site &
-LOCAL_URL=http://127.0.0.1:8080/ node tests/smoke.mjs
+python .github/scripts/build_site.py _site
+python -m venv .venv
+.venv\Scripts\python -m pip install -r requirements-dev.txt
+.venv\Scripts\python -m pytest --browser-channel chrome
 ```
+
+`--browser-channel chrome` uses the Google Chrome you already have. To use Playwright's own Chromium instead, run `.venv\Scripts\python -m playwright install chromium` once and leave the option out. On macOS or Linux, use `python3` and `.venv/bin/python`. The test serves `_site/` itself; set `LOCAL_URL` to test a copy that is already being served. Rebuild `_site/` after you change a file.
 
 Screenshots, traces and `artifacts/results.json` are written to `artifacts/`. In GitHub Actions they are attached to each run as the `coach-browser-evidence` artifact, and a short result appears in the run summary. Results are no longer committed to the repository.
 
@@ -98,7 +98,7 @@ A push to `main` goes live only after the tests pass:
 2. **deploy** (`needs: test`) publishes exactly that tested `_site/` folder with `actions/upload-pages-artifact` and `actions/deploy-pages`. README, tests and `.github/` are not published.
 3. **verify-live** then checks that the live site serves the same files. It runs after the deploy and only reports. A red result here means "look at the live site". It never blocks a fix from going out.
 
-Pull requests run only the **test** job. If a test fails, nothing is deployed and the live site keeps the last good version.
+Pull requests run only the **test** job. If a test fails, nothing is deployed and the live site keeps the last good version. To undo a release that went out, revert its commit on `main` and push; the workflow tests and deploys the reverted version.
 
 **One-time settings (required):**
 
@@ -107,9 +107,9 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 2. **Protect `main`:** in Settings > Rules > Rulesets (or Settings > Branches), add a rule for `main` that requires the **test** status check to pass. No workflow pushes to `main` any more, so this won't block automation.
 3. Optional: create a `wrong-instruction` label so reports from the form are tagged automatically. You can also set the repository's website to the app URL.
 
-**Releasing a content change:** change `VERSION` in `sw.js` and `courseInfo.version` in `course.js` to today's date (add `.2`, `.3` and so on for another release on the same day), and add an entry to `CHANGELOG.md`. Note the guide date and firmware version you checked against. A new page, script or stylesheet must also be added to `ASSETS` in `sw.js`, or the build check fails.
+**Releasing a content change:** change `VERSION` in `sw.js` and `courseInfo.version` in `course.js` to today's date (add `.2`, `.3` and so on for another release on the same day), and add an entry to `CHANGELOG.md` with the same version as its heading; the build check fails if the three differ. Note the guide date and firmware version you checked against. A new page, script or stylesheet must also be added to `ASSETS` in `sw.js`, or the build check fails.
 
-**Keeping tools up to date:** every action in the workflow is pinned to a full commit SHA, with the version in a comment. Dependabot (`.github/dependabot.yml`) opens a monthly pull request to update them. The Playwright version is pinned in `deploy.yml` (`PLAYWRIGHT_VERSION`); update it by hand.
+**Keeping tools up to date:** every action in the workflow is pinned to a full commit SHA, with the version in a comment. Dependabot (`.github/dependabot.yml`) opens a monthly pull request to update them. pytest and Playwright are pinned in `requirements-dev.txt`; update them by hand.
 
 ## Files
 
@@ -123,9 +123,11 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 | `chapter.css`, `chapter.js` | Shared styles and checklist code for the chapter pages (00 and 07 to 11). |
 | `sw.js` | Offline support (service worker). |
 | `manifest.webmanifest`, `icon.svg`, `icons/` | Home-screen app name and icons. |
-| `tests/smoke.mjs` | Browser smoke test. |
+| `tests/test_smoke.py`, `tests/conftest.py`, `tests/support.py`, `pytest.ini` | Browser smoke test (pytest and Playwright for Python). |
+| `requirements-dev.txt` | Test tools and their pinned versions. Never published. |
 | `.github/` | Test-and-deploy workflow, site build and live-check scripts, issue form, Dependabot settings. |
 | `CHANGELOG.md` | What changed in each release, and which guide version it was checked against. |
+| `docs/overhaul-plan.md` | The plan for the UI and UX overhaul. |
 
 ## License
 

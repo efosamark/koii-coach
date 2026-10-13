@@ -1,0 +1,4 @@
+# Test-only tools for tests/ (pytest + Playwright for Python). Nothing here is published.
+pytest==9.1.1
+pytest-playwright==0.10.0
+playwright==1.63.0

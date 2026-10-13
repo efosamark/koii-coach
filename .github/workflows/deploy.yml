@@ -16,8 +16,6 @@ concurrency:
   group: test-and-deploy-${{ github.ref }}
   # Newer pushes to a pull request replace older runs; runs on main never cancel a deploy half-way.
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
-env:
-  PLAYWRIGHT_VERSION: '1.64.0'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -26,22 +24,18 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: '22'
       - name: Build the site folder (app files only) and check it
         run: python3 .github/scripts/build_site.py _site
-      - name: Check JavaScript syntax
-        run: for f in _site/*.js; do echo "node --check $f"; node --check "$f"; done
       - name: Cache Playwright browser
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
-      - name: Install Playwright ${{ env.PLAYWRIGHT_VERSION }} (exact version)
+          key: playwright-${{ runner.os }}-${{ hashFiles('requirements-dev.txt') }}
+      - name: Install the test tools (versions pinned in requirements-dev.txt)
         run: |
-          npm install --no-save --no-package-lock --no-audit --no-fund "playwright@${PLAYWRIGHT_VERSION}"
-          npx playwright install --with-deps chromium
+          python3 -m venv .venv
+          .venv/bin/pip install --quiet -r requirements-dev.txt
+          .venv/bin/python -m playwright install --with-deps chromium
       - name: Serve the site folder on localhost
         run: |
           python3 -m http.server 8080 --bind 127.0.0.1 --directory _site > /tmp/coach-server.log 2>&1 &
@@ -54,20 +48,26 @@ jobs:
         env:
           LOCAL_URL: http://127.0.0.1:8080/
           LIVE_URL: ''
-        run: node tests/smoke.mjs
+        run: .venv/bin/python -m pytest
       - name: Write results to the run summary
         if: always()
         run: |
-          node --input-type=commonjs <<'NODE'
-          const fs=require('node:fs');
-          let s='### Browser smoke test\n\n';
-          try{
-            const d=JSON.parse(fs.readFileSync('artifacts/results.json','utf8'));
-            for(const r of d.results||[])s+=`- **${r.target}**: ${String(r.status).toUpperCase()}${r.error?' - '+String(r.error).split('\n')[0]:''}\n`;
-            if(d.note)s+=`\n${d.note}\n`;
-          }catch(e){s+='No results file was written. Check the job log; no pass is claimed.\n';}
-          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,s);
-          NODE
+          python3 - <<'PY'
+          import json, os
+          s = '### Browser smoke test\n\n'
+          try:
+              with open('artifacts/results.json', encoding='utf-8') as f:
+                  d = json.load(f)
+              for r in d.get('results', []):
+                  error = str(r.get('error') or '').split('\n')[0]
+                  s += f"- **{r['target']}**: {str(r.get('status')).upper()}" + (f' - {error}' if error else '') + '\n'
+              if d.get('note'):
+                  s += f"\n{d['note']}\n"
+          except (OSError, ValueError, KeyError):
+              s += 'No results file was written. Check the job log; no pass is claimed.\n'
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as f:
+              f.write(s)
+          PY
       - name: Upload test evidence (screenshots, traces, results.json)
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

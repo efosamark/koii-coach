@@ -8,7 +8,8 @@ Fails (exit 1) when:
 - manifest.webmanifest is not valid JSON or names an icon that is not in the site,
 - a page links to a local file that is not in the site,
 - sw.js precaches a file that is not in the site (one 404 stops the offline install),
-- a page, script or stylesheet in the site is not precached by sw.js (it would not work offline).
+- a page, script or stylesheet in the site is not precached by sw.js (it would not work offline),
+- VERSION in sw.js, courseInfo.version in course.js and the newest CHANGELOG.md heading differ.
 Standard library only, so it runs anywhere Python 3.8+ does.
 """
 import json, pathlib, re, shutil, sys
@@ -107,6 +108,24 @@ def main():
         for name in files:
             if name.endswith(('.html', '.js', '.css')) and name != 'sw.js' and name not in precached:
                 errors.append(f'{name} is not in the sw.js ASSETS list, so it will not work offline')
+
+    # One release version everywhere: the service worker cache name, the app footer and the changelog.
+    versions = {}
+    m = re.search(r'''\bVERSION\s*=\s*['"]([^'"]+)['"]''', sw)
+    versions['VERSION in sw.js'] = m.group(1) if m else None
+    course = (out / 'course.js').read_text(encoding='utf-8') if 'course.js' in have else ''
+    m = re.search(r'''courseInfo\s*=\s*\{[^}]*?\bversion\s*:\s*['"]([^'"]+)['"]''', course)
+    versions['courseInfo.version in course.js'] = m.group(1) if m else None
+    changelog = ROOT / 'CHANGELOG.md'
+    text = changelog.read_text(encoding='utf-8') if changelog.is_file() else ''
+    m = re.search(r'^## +(\S+)', text, re.M)
+    versions['newest CHANGELOG.md heading'] = m.group(1) if m else None
+    for where, value in versions.items():
+        if value is None:
+            errors.append(f'could not find the {where}')
+    if None not in versions.values() and len(set(versions.values())) > 1:
+        errors.append('release versions differ: ' + ', '.join(f'{w} is {v}' for w, v in versions.items())
+                      + '. Set all three to the same value (see README, "Releasing a content change").')
 
     print(f'Site folder {out.name}/ has {len(files)} files:')
     for name in files:

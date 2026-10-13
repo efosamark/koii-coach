@@ -1,5 +1,5 @@
 # Keeps the SHA-pinned actions in .github/workflows up to date (it updates the SHA and the version comment).
-# Playwright is pinned in deploy.yml (PLAYWRIGHT_VERSION) and is updated by hand.
+# pytest and Playwright are pinned in requirements-dev.txt and are updated by hand.
 version: 2
 updates:
   - package-ecosystem: github-actions

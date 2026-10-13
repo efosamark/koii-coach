@@ -1,6 +1,6 @@
 'use strict';
 // Bump VERSION on every release (same value as courseInfo.version in course.js and the newest CHANGELOG.md heading).
-const VERSION='2026.10.13.2',CACHE='koii-coach-'+VERSION,TIMEOUT=3000;
+const VERSION='2026.10.13.3',CACHE='koii-coach-'+VERSION,TIMEOUT=3000;
 // Every page, script, stylesheet and icon. CI (.github/scripts/build_site.py) fails if one is missing or a page is left out.
 const ASSETS=['./','./index.html','./course.js','./chapter.css','./chapter.js','./setup.html','./sampling.html','./perform.html','./hiphop.html','./tech-house.html','./thodorakis-house.html','./manifest.webmanifest','./icon.svg','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
 // Install only succeeds when every asset is cached, so navigator.serviceWorker.ready means "works offline".
