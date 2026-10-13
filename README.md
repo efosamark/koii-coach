@@ -2,9 +2,11 @@
 
 An unofficial, beginner-friendly course for the teenage engineering EP-133 K.O. II. It is made to sit on your phone next to the device: each step says what to press, what you should see or hear, and what to check before you move on.
 
-**Open the app:** https://leonardovitolowork-hash.github.io/koii-coach/
+**Open the app:** https://efosamark.github.io/koii-coach/
 
-[![Test and deploy](https://github.com/leonardovitolowork-hash/koii-coach/actions/workflows/deploy.yml/badge.svg)](https://github.com/leonardovitolowork-hash/koii-coach/actions/workflows/deploy.yml)
+This is a personal fork of [leonardovitolowork-hash/koii-coach](https://github.com/leonardovitolowork-hash/koii-coach), the original K.O. II Coach.
+
+[![Test and deploy](https://github.com/efosamark/koii-coach/actions/workflows/deploy.yml/badge.svg)](https://github.com/efosamark/koii-coach/actions/workflows/deploy.yml)
 
 > Unofficial. Not affiliated with or endorsed by teenage engineering. EP-133 and K.O. II are trademarks of teenage engineering.
 
@@ -52,7 +54,7 @@ You can add the coach to your phone's home screen from the browser's share or me
 
 ## Report a wrong instruction
 
-If a step doesn't match what your EP-133 does, please [open a "Wrong instruction" report](https://github.com/leonardovitolowork-hash/koii-coach/issues/new?template=wrong-instruction.yml). Every page has the same link in its footer. The form asks for the page, the step, what the app says, what the device did, and your firmware version. You need a free GitHub account to send it. Reports from people with the device in front of them are the best way to keep the course correct.
+If a step doesn't match what your EP-133 does, please [open a "Wrong instruction" report](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml). Every page has the same link in its footer. The form asks for the page, the step, what the app says, what the device did, and your firmware version. You need a free GitHub account to send it. Reports from people with the device in front of them are the best way to keep the course correct.
 
 ## Accuracy
 
@@ -100,6 +102,7 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 
 **One-time settings (required):**
 
+0. **In a fork:** open the **Actions** tab and enable workflows (GitHub turns them off in new forks), and turn on **Settings > General > Features > Issues** so the report links work.
 1. **Settings > Pages > Build and deployment > Source: GitHub Actions.** Until you change this, GitHub keeps publishing the whole `main` branch directly, with no test step.
 2. **Protect `main`:** in Settings > Rules > Rulesets (or Settings > Branches), add a rule for `main` that requires the **test** status check to pass. No workflow pushes to `main` any more, so this won't block automation.
 3. Optional: create a `wrong-instruction` label so reports from the form are tagged automatically. You can also set the repository's website to the app URL.
