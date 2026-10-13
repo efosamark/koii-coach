@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+"""Copy only the app files into a site folder and check it before anything is published.
+
+Usage: python3 .github/scripts/build_site.py _site
+
+Fails (exit 1) when:
+- a required file is missing, or a page/script is suspiciously small (placeholder text),
+- manifest.webmanifest is not valid JSON or names an icon that is not in the site,
+- a page links to a local file that is not in the site,
+- sw.js precaches a file that is not in the site (one 404 stops the offline install),
+- a page, script or stylesheet in the site is not precached by sw.js (it would not work offline).
+Standard library only, so it runs anywhere Python 3.8+ does.
+"""
+import json, pathlib, re, shutil, sys
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+# App files only. README, CHANGELOG, tests/ and .github/ are never published.
+INCLUDE = ['*.html', '*.js', '*.css', 'manifest.webmanifest', 'icon.svg', 'icons/*.png', 'icons/*.svg']
+REQUIRED = ['index.html', 'course.js', 'sw.js', 'manifest.webmanifest', 'icon.svg']
+MIN_BYTES = {'.html': 2000, '.js': 500, '.css': 200}
+SKIP_LINK = re.compile(r'^(?:[a-z][a-z0-9+.-]*:|//|#)', re.I)  # http:, mailto:, data:, //host, #anchor
+
+errors, warnings = [], []
+
+
+def build(out):
+    if out.exists():
+        shutil.rmtree(out)
+    out.mkdir(parents=True)
+    for pattern in INCLUDE:
+        for src in sorted(ROOT.glob(pattern)):
+            if src.is_file():
+                dst = out / src.relative_to(ROOT)
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(src, dst)
+    return sorted(p.relative_to(out).as_posix() for p in out.rglob('*') if p.is_file())
+
+
+def local_path(ref):
+    ref = ref.strip()
+    if not ref or SKIP_LINK.match(ref) or '${' in ref or '{{' in ref:
+        return None
+    ref = re.split(r'[?#]', ref, 1)[0]
+    if ref.startswith('./'):
+        ref = ref[2:]
+    if ref in ('', '.', '/'):
+        return 'index.html'
+    return ref.lstrip('/')
+
+
+def main():
+    if len(sys.argv) != 2:
+        sys.exit('usage: build_site.py <output-folder>')
+    out = (ROOT / sys.argv[1]).resolve()
+    if out == ROOT or ROOT not in out.parents:
+        sys.exit('output folder must be inside the repository, e.g. _site')
+    files = build(out)
+    have = set(files)
+
+    for name in REQUIRED:
+        if name not in have:
+            errors.append(f'{name} is missing')
+    for name in files:
+        size = (out / name).stat().st_size
+        minimum = MIN_BYTES.get(pathlib.PurePosixPath(name).suffix)
+        if minimum and size < minimum:
+            errors.append(f'{name} is only {size} bytes; is it placeholder text?')
+
+    # Manifest
+    try:
+        manifest = json.loads((out / 'manifest.webmanifest').read_text(encoding='utf-8'))
+        for icon in manifest.get('icons', []):
+            p = local_path(icon.get('src', ''))
+            if p and p not in have:
+                errors.append(f'manifest icon {icon.get("src")} is not in the site')
+        if not any('maskable' in i.get('purpose', '') for i in manifest.get('icons', [])):
+            warnings.append('manifest has no maskable icon')
+    except (OSError, ValueError) as e:
+        errors.append(f'manifest.webmanifest is not valid JSON: {e}')
+
+    # Local links in every page
+    for name in [f for f in files if f.endswith('.html')]:
+        text = (out / name).read_text(encoding='utf-8')
+        for ref in re.findall(r'''\b(?:href|src)\s*=\s*["']([^"']*)["']''', text, re.I):
+            p = local_path(ref)
+            if p and p not in have:
+                errors.append(f'{name} links to {ref}, which is not in the site')
+        head = text.split('</head>', 1)[0]
+        for need, what in [('rel="manifest"', 'manifest link'), ('rel="apple-touch-icon"', 'apple-touch-icon'),
+                           ('name="description"', 'meta description'), ('name="theme-color"', 'theme-color')]:
+            if need not in head:
+                warnings.append(f'{name} has no {what} in <head>')
+
+    # Service worker precache list
+    sw = (out / 'sw.js').read_text(encoding='utf-8') if 'sw.js' in have else ''
+    m = re.search(r'ASSETS\s*=\s*\[(.*?)\]', sw, re.S)
+    if not m:
+        errors.append('could not find the ASSETS list in sw.js')
+    else:
+        assets = re.findall(r'''["']([^"']+)["']''', m.group(1))
+        precached = set()
+        for a in assets:
+            p = local_path(a)
+            precached.add(p)
+            if p not in have:
+                errors.append(f'sw.js precaches {a}, which is not in the site (offline install would fail)')
+        for name in files:
+            if name.endswith(('.html', '.js', '.css')) and name != 'sw.js' and name not in precached:
+                errors.append(f'{name} is not in the sw.js ASSETS list, so it will not work offline')
+
+    print(f'Site folder {out.name}/ has {len(files)} files:')
+    for name in files:
+        print(f'  {name}  ({(out / name).stat().st_size} bytes)')
+    for w in warnings:
+        print(f'::warning::{w}')
+    for e in errors:
+        print(f'::error::{e}')
+    if errors:
+        sys.exit(1)
+    print('Site checks passed.')
+
+
+if __name__ == '__main__':
+    main()

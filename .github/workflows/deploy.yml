@@ -1,0 +1,116 @@
+# One workflow for the whole site:
+#   pull request -> test only
+#   push to main / manual run -> test, then deploy the tested files, then check the live site
+# Requires Settings > Pages > Build and deployment > Source: "GitHub Actions" (see README).
+# Actions are pinned to full commit SHAs; Dependabot (.github/dependabot.yml) proposes updates.
+name: Test and deploy
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: test-and-deploy-${{ github.ref }}
+  # Newer pushes to a pull request replace older runs; runs on main never cancel a deploy half-way.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+env:
+  PLAYWRIGHT_VERSION: '1.64.0'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+      - name: Build the site folder (app files only) and check it
+        run: python3 .github/scripts/build_site.py _site
+      - name: Check JavaScript syntax
+        run: for f in _site/*.js; do echo "node --check $f"; node --check "$f"; done
+      - name: Cache Playwright browser
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ env.PLAYWRIGHT_VERSION }}
+      - name: Install Playwright ${{ env.PLAYWRIGHT_VERSION }} (exact version)
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund "playwright@${PLAYWRIGHT_VERSION}"
+          npx playwright install --with-deps chromium
+      - name: Serve the site folder on localhost
+        run: |
+          python3 -m http.server 8080 --bind 127.0.0.1 --directory _site > /tmp/coach-server.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8080/ > /dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/ > /dev/null
+      - name: Browser smoke test (local copy only, never the live site)
+        env:
+          LOCAL_URL: http://127.0.0.1:8080/
+          LIVE_URL: ''
+        run: node tests/smoke.mjs
+      - name: Write results to the run summary
+        if: always()
+        run: |
+          node --input-type=commonjs <<'NODE'
+          const fs=require('node:fs');
+          let s='### Browser smoke test\n\n';
+          try{
+            const d=JSON.parse(fs.readFileSync('artifacts/results.json','utf8'));
+            for(const r of d.results||[])s+=`- **${r.target}**: ${String(r.status).toUpperCase()}${r.error?' - '+String(r.error).split('\n')[0]:''}\n`;
+            if(d.note)s+=`\n${d.note}\n`;
+          }catch(e){s+='No results file was written. Check the job log; no pass is claimed.\n';}
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,s);
+          NODE
+      - name: Upload test evidence (screenshots, traces, results.json)
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: coach-browser-evidence
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Upload the tested site for GitHub Pages
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site/
+
+  deploy:
+    needs: test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  verify-live:
+    # Report only: runs after the deploy, so a slow or broken live site can never block a fix.
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Rebuild the site folder
+        run: python3 .github/scripts/build_site.py _site
+      - name: Check the live site serves the tested files
+        env:
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
+        run: python3 .github/scripts/check_live.py _site "$PAGE_URL"

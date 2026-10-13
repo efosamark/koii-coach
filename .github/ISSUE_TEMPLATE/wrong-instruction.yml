@@ -1,0 +1,64 @@
+name: Wrong instruction
+description: A step told you to do something, and your EP-133 K.O. II did something else.
+title: "[Wrong instruction] "
+labels: ["wrong-instruction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Reports from people with the device in their hands are how this course stays correct.
+        Please report one step at a time. The official guide is the reference: https://teenage.engineering/guides/ep-133
+        You do not need to know the fix. Describing what happened is enough.
+  - type: input
+    id: page
+    attributes:
+      label: Page or chapter
+      description: Which part of the coach? For example "02 Make it a song", "08 Tech House" or "06 Help & reference".
+      placeholder: 02 Make it a song
+    validations:
+      required: true
+  - type: input
+    id: step
+    attributes:
+      label: Step
+      description: The step number and title as the app shows them.
+      placeholder: "Step 5 / Copy the beat into a new scene"
+    validations:
+      required: true
+  - type: textarea
+    id: app-says
+    attributes:
+      label: What the app says
+      description: Copy the instruction from the app, or describe it.
+    validations:
+      required: true
+  - type: textarea
+    id: device-did
+    attributes:
+      label: What your EP-133 did
+      description: What you pressed, in order, and what you saw on the screen or heard.
+      placeholder: |
+        I pressed ... then ...
+        The screen showed ...
+    validations:
+      required: true
+  - type: input
+    id: firmware
+    attributes:
+      label: Firmware (OS) version
+      description: >-
+        For example 2.5 or 2.0.5 (the official guide's "What's new" page lists the releases:
+        https://teenage.engineering/guides/ep-133/whats-new). Write "not sure" if you don't know.
+      placeholder: not sure
+    validations:
+      required: true
+  - type: input
+    id: guide
+    attributes:
+      label: Official guide page (optional)
+      description: If the official guide says something different, paste the link or the sentence.
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else (optional)
+      description: Phone and browser, a photo of the screen, or anything that helps.
