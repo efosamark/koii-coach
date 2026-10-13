@@ -22,7 +22,7 @@ The course is written for a K.O. II on **OS 2.5.1**, the newest release (3 July 
 | 03 | Learn | Short lessons on the main functions, to read any time. |
 | 04 | Controls | Tap a control on the map to see what it does. |
 | 05 | Rhythm lab | Try out drum patterns on a grid in the browser. |
-| 06 | Help & reference | Search the troubleshooting answers, read the cheat sheet and glossary, set your OS version, and back up your progress. |
+| 06 | Help & reference | Search the troubleshooting answers, and read the cheat sheet and glossary. |
 | 07 | Sample, chop & resample | Record with the built-in mic, build a drum kit from your voice, sample a phone over a cable or USB, then trim, reverse, chop and resample. |
 | 08 | Play & perform | Play live: record with feel, KEYS basslines in a scale, note repeat and the arpeggiator, punch-in FX, fader moves, live scene changes, sidechain and recording your performance. |
 | 09 | Full hip-hop beat | Rebuild the 01 beat in a fresh project, sample a short sung phrase from USB audio, a line source or the mic, and arrange 64 bars with a six-position song list. |
@@ -44,7 +44,7 @@ Other things to know:
 
 ## Progress and privacy
 
-Your progress is saved only in this browser on this device: your place in chapters 01 and 02, the lessons you marked, your Rhythm lab pattern and the ticked steps of chapters 00 and 07 to 11 (browser storage keys starting with `koii-coach`). Clearing your browser data erases it. It never changes anything on your EP-133. To move progress to another browser or keep a copy, use **Save progress file** in **06 Help & reference**. **Reset all progress** there asks before it clears anything.
+Your progress is saved only in this browser on this device: your place in chapters 01 and 02, the lessons you marked, your Rhythm lab pattern and the ticked steps of chapters 00 and 07 to 11 (browser storage keys starting with `koii-coach`). Clearing your browser data erases it. It never changes anything on your EP-133. To move progress to another browser or keep a copy, use **Save progress file** in **Settings**. **Reset all progress** there asks before it clears anything, and keeps your settings and OS choice.
 
 ## Offline and home screen
 
@@ -68,9 +68,10 @@ Every push to `main`, every pull request into `main` and every manual run start 
 
 1. `.github/scripts/build_site.py` copies only the app files into `_site/` and checks them. It fails if a file is missing or looks like placeholder text. It also fails if a page links to a file that isn't there, if `sw.js` precaches a missing file (one missing file stops offline install), if a page isn't precached, or if the release version in `sw.js`, `course.js` and `CHANGELOG.md` differs.
 2. `tests/test_smoke.py` (pytest and Playwright for Python) opens the `_site/` copy in Chromium on a local server, at desktop and 390 px phone width. It fails on any JavaScript error, console error or failed request. It checks that:
-   - the main app loads with the "Start here" card, the right chapter numbers in the menu, the step and note helpers, the control map, the lessons and the Rhythm lab with its practice sounds;
+   - Home shows the set-up question on a first visit and a Continue card once you have progress, and search finds steps in every chapter;
+   - the main app has the right chapter numbers in the menu, the step and note helpers, the control map, the lessons and the Rhythm lab with its practice sounds;
    - Help search finds troubleshooting topics, and the OS picker changes the "Needs OS" badges;
-   - your place in 02 Make it a song survives a reload, every hash route (`#first`, `#song`, `#manual`, `#controls`, `#lab`, `#help`) opens its view, and Reset asks before it clears anything;
+   - your place in 02 Make it a song survives a reload, every hash route (`#home`, `#first`, `#song`, `#manual`, `#controls`, `#lab`, `#help`, `#settings`, and links to one step or help topic) opens its view, and Reset asks before it clears anything;
    - the service worker installs, and the footer reports that every chapter is available offline;
    - at 390 px no view scrolls sideways, and Next brings the new step into view;
    - each chapter page (00 and 07 to 11) shows its chapter number, the footer report link and the right previous and next links (the test clicks them), keeps a ticked step after a reload, and doesn't scroll sideways.
@@ -122,6 +123,7 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 | `hiphop.html`, `tech-house.html`, `thodorakis-house.html` | Chapters 09 Full hip-hop beat, 10 Tech House and 11 House with your own vocal samples. |
 | `coach.css` | The one stylesheet for every page: colours, type, components, light and dark. |
 | `site.js`, `shell.js` | The list of chapters and tools, and the shared app bar and menu built from it. |
+| `search.js`, `wake.js` | Search across every chapter and tool (works offline), and keeping the screen on while you practise. |
 | `icons.svg`, `fonts/` | Icons and the self-hosted IBM Plex Mono font for keys and display values (SIL Open Font License, see `fonts/OFL.txt`). |
 | `chapter.js` | Checklist, progress and resume code for the chapter pages (00 and 07 to 11). |
 | `sw.js` | Offline support (service worker). |

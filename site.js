@@ -36,6 +36,7 @@ window.COACH_SITE={
     {title:'Learn',href:'./index.html#manual',view:'manual',icon:'book'},
     {title:'Controls',href:'./index.html#controls',view:'controls',icon:'knob'},
     {title:'Rhythm lab',href:'./index.html#lab',view:'lab',icon:'grid'},
-    {title:'Help & reference',short:'Help',href:'./index.html#help',view:'help',icon:'help'}
+    {title:'Help & reference',short:'Help',href:'./index.html#help',view:'help',icon:'help'},
+    {title:'Settings',href:'./index.html#settings',view:'settings',icon:'settings'}
   ]
 };

@@ -32,10 +32,18 @@
        <footer class="page site-foot">...</footer>   chapter pages: class="page reading site-foot"
      </body>
    Without JavaScript the static header is a home link and every page still reads top to bottom.
-   shell.js fills #appbar (menu button, wordmark, title), adds the menu sheet (<dialog id="shell-menu">) and,
-   from 1024px, the course rail (#shell-rail) on the left. The chapter title in the bar comes from site.js
+   shell.js fills #appbar (menu button, wordmark, title, actions), adds the menu sheet (<dialog id="shell-menu">)
+   and, from 1024px, the course rail (#shell-rail) on the left. The chapter title in the bar comes from site.js
    via <body data-chapter>; index.html views get theirs from the nav link marked aria-current="page".
-   Ids the shell owns: appbar, shell-menu, shell-menu-title, shell-rail, shell-offline. It never adds a
+   The bar's right-hand side is <div class="appbar-actions" id="appbar-actions">: the Search button (.search-btn)
+   is in it, and a page script may append or prepend its own .icon-btn there (shell.js runs first, so it exists).
+   Search is lazy: the first tap builds <dialog class="sheet search-sheet" id="site-search-dialog"> and loads
+   search.js, so a page pays nothing until someone searches. Its ids are site-search (the field), site-results and
+   site-search-status, never #search / #results, which are Help's. Results link to chapter steps as
+   <page>.html#s-<step id>, to 01/02 steps as index.html#first/<step id> and #song/<step id>, to lessons as
+   index.html#manual/<lesson id> and to help topics as index.html#help/<slug of the title>.
+   Ids the shell owns: appbar, appbar-actions, shell-menu, shell-menu-title, shell-rail, shell-offline,
+   site-search-dialog, site-search, site-results, site-search-status. It never adds a
    <header> with .eyebrow, a <footer>, an <h1> or a [data-step], so page selectors stay unique.
 
    Components (class names):
@@ -56,6 +64,10 @@
      Toast        .toast (role="status"; hide with [hidden] or .hidden)
      Sheet        <dialog class="sheet"> > .sheet-box > .sheet-head + .sheet-body: bottom sheet under 600px,
                   side panel from 600px
+     Search       .search-sheet (a .sheet: full height under 600px, a 640px panel from 600px) > .search-head
+                  (.search-field > input#site-search) + .search-chips > .search-chip + .search-body >
+                  .search-group > h2.search-group-title + ul.search-list > li > a.search-hit (.search-hit-title,
+                  .search-hit-crumb, .search-hit-snip; <mark> is a matched word), or li.search-word for a glossary term
      Text         .eyebrow (mono caps, ink-2) .meta (14px ink-2) .muted .sr (visually hidden) .lead
      Layout       .page (1180px container) .page.reading (chapter reading column) .page-head .row .grid
                   (auto-fill tiles; .grid > div = inset tile) .split (two columns when wide) .sticky .section
@@ -78,7 +90,7 @@
      scrolls away). A script that checks whether an element is hidden under the bar compares its top with
      that value, not with 0. From 1024px the menu button is hidden and the same links sit in the rail.
      Theme hooks for tests: <html data-theme="light|dark"> overrides the system setting.
-     Offline: sw.js ASSETS must list ./coach.css ./site.js ./shell.js ./icons.svg
+     Offline: sw.js ASSETS must list ./coach.css ./site.js ./shell.js ./search.js ./icons.svg
      ./fonts/IBMPlexMono-SemiBold.woff2; build_site.py must copy icons.svg and fonts/ (woff2 and OFL.txt).
    ====================================================================================================== */
 
@@ -712,3 +724,120 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .site-foot .back-link .icon{width:20px;height:20px;margin-left:-2px}
 
 @media print{.here-tag,.steps li.here::before{display:none}.steps li.here{margin:0}}
+
+/* ---------- Chapter extras: the keep-awake button (wake.js) and a step opened from a link (chapter.js) ---------- */
+/* The sun joins the app bar's actions. While the screen is held it gets a lime dot as well as aria-pressed="true",
+   so the state is never colour alone. */
+.wake-btn{position:relative;color:var(--ink-2)}
+.wake-btn[aria-pressed="true"]{background:var(--surface-2);color:var(--ink)}
+.wake-btn[aria-pressed="true"]::after{content:"";position:absolute;top:3px;right:3px;width:12px;height:12px;border:2px solid var(--surface-1);border-radius:999px;background:var(--here);box-shadow:0 0 0 1px var(--done-ink)}
+@media (forced-colors:active){.wake-btn[aria-pressed="true"]::after{forced-color-adjust:none;border-color:Canvas;background:Highlight;box-shadow:none}}
+/* A step opened by #s-<step id>: chapter.js adds .linked for two seconds. The panel sits behind the text like the
+   "You are here" panel and fades out. Reduced motion gets no mark at all, so there is nothing to wait for. */
+.steps li.linked{position:relative;z-index:0}
+.steps li.linked::after{content:"";position:absolute;z-index:-1;pointer-events:none;inset:calc(var(--sp-2) * -1) calc(var(--reach,var(--sp-2)) * -1) calc(var(--sp-2) * -1) calc(-2.25em - var(--reach,var(--sp-2)));border:2px solid var(--here);border-radius:var(--r-control);background:var(--surface-3);animation:linked-fade 2s var(--ease) forwards}
+@keyframes linked-fade{0%,40%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.steps li.linked::after{display:none}}
+@media print{.steps li.linked::after{display:none}}
+
+/* ---------- App views, phase 2: Home, the course list and Settings (index.html) ---------- */
+/* Home (#home, the default view): the welcome or Continue card, the course in guided order, device projects and the
+   tools; two columns where .split has them. Settings: the keep-screen-on choice. Everything else is a component above. */
+.home > div > .card:first-child{margin-top:0}
+.welcome .lead{margin-bottom:var(--sp-5)}
+.welcome h2{font-size:var(--t-check);line-height:var(--t-check-lh)}
+.stack{display:grid;gap:var(--sp-3);max-width:30rem;margin:0 0 var(--sp-4)}
+.stack .btn{width:100%}
+.continue .where{margin-bottom:var(--sp-2);font-weight:600}
+.continue .meter{margin:0 0 var(--sp-3)}
+.continue #resume{width:100%;max-width:30rem;margin:var(--sp-1) 0 var(--sp-3)}
+/* Course rows: the project and time sit on their own line under the title; "Done" is in the done colour, as in the menu. */
+.path .sub{display:block;margin-top:2px}
+.path li[data-state="done"] > .meta{color:var(--done-ink);font-weight:600}
+/* Device projects: the chip in a fixed column, so a long chapter list wraps beside it, never under it. */
+.projects{padding-left:0;list-style:none}
+.projects li{display:grid;grid-template-columns:7.5em minmax(0,1fr);align-items:baseline;gap:var(--sp-3);margin:var(--sp-2) 0}
+.projects li > :only-child{grid-column:1/-1}
+.projects .lcd{text-align:center}
+/* Tool tiles: two per row at any width, so the four tools read as one block. */
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-3);margin:0 0 var(--sp-4);padding:0;list-style:none}
+.tiles li{max-width:none;margin:0}
+.tile{display:flex;flex-direction:column;gap:var(--sp-1);height:100%;min-height:96px;padding:var(--sp-3);border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-2);color:var(--ink);text-decoration:none}
+.tile:hover{border-color:var(--line-strong)}
+.tile:hover .t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.tile .icon{color:var(--ink-2)}
+.tile .t{font-weight:600;line-height:1.3}
+.tile .d{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
+.home-foot{margin-top:var(--sp-4)}
+.offline-status:empty{display:none}
+/* Settings: one reading column of cards. Auto / Off are two 48px choices; the chosen one is outlined in ink, not only filled. */
+.settings{max-width:48rem}
+.settings .links + p{margin-top:var(--sp-4)}
+.choice{min-width:0;margin:0 0 var(--sp-3);padding:0;border:0}
+.choice legend{margin-bottom:var(--sp-2);padding:0;font-weight:600}
+.choice-opt{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:48px;padding:0 var(--sp-5) 0 var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);font-weight:600;cursor:pointer}
+.choice-opt input{width:20px;height:20px;margin:0}
+.choice-opt:has(input:checked){border-color:var(--ink);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--ink)}
+@media (forced-colors:active){.tile{border:1px solid CanvasText}.choice-opt:has(input:checked){outline:2px solid Highlight}}
+
+/* ---------- Search: the app bar's actions, and the overlay (shell.js builds the frame, search.js fills it) ---------- */
+/* Right-hand side of the app bar: the Search button, and any .icon-btn that another module adds (chapter pages add the sun). */
+.appbar-actions{display:flex;align-items:center;flex:none;gap:var(--sp-1);margin:0 -10px 0 auto}
+/* A 320px phone has no room for the "CHAPTER 11" line beside two buttons, and a word cut in half reads worse than none. */
+@media (max-width:359px){.bar-kicker{display:none}}
+/* The overlay is a .sheet: a full-height sheet on phones, a 640px panel from 600px. shell.js sets --vvh to the height
+   the soft keyboard leaves free, so the bottom of the results is never hidden behind it. */
+.sheet.search-sheet{height:100vh;height:var(--vvh,100%);max-height:none;margin:0;border-radius:0;box-shadow:none}
+.search-head{display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3);border-bottom:1px solid var(--line)}
+.search-field{position:relative;flex:1;min-width:0}
+.search-field .icon{position:absolute;left:var(--sp-3);top:50%;margin-top:-12px;color:var(--ink-2);pointer-events:none}
+.search-field input{width:100%;padding-left:calc(var(--sp-3) + 24px + var(--sp-2))}
+.search-field input::placeholder{color:var(--ink-2);opacity:1}
+/* Type filter and suggestions: 44px pills. The chosen filter is outlined in ink as well as filled. */
+.search-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);padding:var(--sp-2) var(--sp-3)}
+.search-chip{min-height:44px;padding:0 var(--sp-3);border:1.5px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--ink);font:600 15px/1.2 var(--font-ui)}
+.search-chip:hover{background:var(--surface-3)}
+.search-chip[aria-pressed="true"]{border-color:var(--ink);background:var(--surface-3);box-shadow:inset 0 0 0 1px var(--ink)}
+.search-body{padding-top:var(--sp-1)}
+.search-note,.search-empty{margin:var(--sp-3) var(--sp-2)}
+.search-empty .meta{margin:0 0 var(--sp-3)}
+.search-empty .eyebrow{margin-bottom:var(--sp-2)}
+.search-try{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
+/* Results: a group heading (mono caps, like an eyebrow) and 56px rows: title, breadcrumb, one clipped line of text. */
+.search-group-title{display:flex;align-items:baseline;gap:var(--sp-2);margin:var(--sp-4) var(--sp-2) var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.search-count{font-weight:600}
+.search-list{margin:0;padding:0;list-style:none}
+.search-list li{max-width:none;margin:0}
+.search-hit,.search-word{display:flex;flex-direction:column;gap:2px;padding:var(--sp-2) var(--sp-3);border-radius:var(--r-control)}
+.search-hit{min-height:56px;color:var(--ink);text-decoration:none}
+.search-hit:hover,.search-hit:focus-visible{background:var(--surface-3)}
+.search-hit:hover .search-hit-title{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.search-hit-title{font-weight:600;line-height:1.35}
+.search-hit-title .key{margin:0 var(--sp-1) 0 0}
+.search-hit-crumb{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
+.search-hit-snip{display:block;overflow:hidden;font-size:var(--t-cap);line-height:var(--t-cap-lh);text-overflow:ellipsis;white-space:nowrap}
+.search-word .search-hit-snip{white-space:normal}
+.search-group > .btn{margin:var(--sp-1) 0 0 var(--sp-1)}
+/* Matched words: a tint and a bar under them, so the mark does not depend on colour alone. */
+.search-sheet mark{padding:0 2px;border-radius:3px;background:var(--surface-3);box-shadow:inset 0 -2px 0 var(--ink-2);color:inherit;font-weight:600}
+.search-hit:hover mark,.search-hit:focus-visible mark{background:var(--surface-2)}
+@media (min-width:600px){
+  .sheet.search-sheet{width:min(640px,calc(100vw - 48px));height:max-content;max-height:min(720px,calc(100vh - 96px));max-height:min(720px,calc(100dvh - 96px));margin:max(24px,8vh) auto auto;border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--e2)}
+  .sheet.search-sheet[open]{animation-name:search-in}
+}
+/* Landscape phones: nearly the whole screen, since the soft keyboard leaves little of it. */
+@media (min-width:600px) and (max-height:480px){
+  .sheet.search-sheet{margin-top:var(--sp-2);max-height:calc(100vh - var(--sp-4));max-height:calc(var(--vvh,100vh) - var(--sp-4))}
+}
+@keyframes search-in{from{opacity:0;transform:translateY(-12px)}}
+@media (forced-colors:active){
+  .search-chip[aria-pressed="true"],.search-hit:hover,.search-hit:focus-visible{outline:2px solid Highlight}
+  .search-sheet mark{forced-color-adjust:none;background:Mark;color:MarkText;box-shadow:none}
+}
+
+/* ---------- Phase 2 QA: a focused chapter step ---------- */
+/* chapter.js focuses a step for a #s-<step id> link and for Continue. Its focus ring is drawn on the same panel as
+   "You are here" and the link mark (list number included), so the ring and the mark line up instead of crossing. */
+.steps li:focus-visible{position:relative;z-index:0;outline:none}
+.steps li:focus-visible::before{content:"";position:absolute;z-index:-1;pointer-events:none;inset:calc(var(--sp-2) * -1) calc(var(--reach,var(--sp-2)) * -1) calc(var(--sp-2) * -1) calc(-2.25em - var(--reach,var(--sp-2)));border-radius:var(--r-control);outline:3px solid var(--focus);outline-offset:2px}
+@media print{.steps li:focus-visible::before{display:none}}

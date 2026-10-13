@@ -2,7 +2,10 @@
 /* Shared checklist, progress and resume logic for the chapter pages: setup.html (00), sampling.html (07),
    perform.html (08), hiphop.html (09), tech-house.html (10) and thodorakis-house.html (11).
    Each page sets <body data-chapter="slug"> and gives every step <li> inside .steps a stable data-step id.
-   Progress is stored per chapter as {v:1,done:[stepId,...],last:stepId} under 'koii-coach-ch-<slug>'.
+   Progress is stored per chapter as {v:1,done:[stepId,...],last:stepId,n} under 'koii-coach-ch-<slug>', plus the
+   optional fields cur (the step Continue points at) and at (ISO time of the last tick). v stays 1 and fields are only
+   ever added. 'koii-coach-meta' gets lastChapter (shared with the app: its other fields are kept).
+   A link such as sampling.html#s-<step id> opens that step; wake.js (optional) keeps the screen on while ticking.
    How it all looks is up to coach.css and the shell (shell.js); this file only fills in the progress bar and its
    meter, the tick rows, the section tallies and the "You are here" mark on the step to continue at. */
 (()=>{
@@ -68,7 +71,7 @@ let saved=true,note='',state=read(KEY);
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));saved=true;}catch(e){saved=false;}return saved;};
 if(!(state&&state.v===1&&Array.isArray(state.done))){
   state={v:1,done:[],last:null};
-  const L=LEGACY[slug],legacy=[];
+  const L=LEGACY[slug];
   if(L){
     const list=L.ids.trim().split(/\s+/),old=read(L.key);
     if(Array.isArray(old)){
@@ -78,16 +81,33 @@ if(!(state&&state.v===1&&Array.isArray(state.done))){
       const gone=state.done.filter(id=>!ids.includes(id)).length;
       if(gone)note='This chapter was rewritten since you last ticked steps here. '+gone+' of your ticks were on steps that changed, so they are no longer shown. Tick again any step you have already done.';
     }
-    legacy.push(L.key);
-    L.old.forEach(k=>{const o=read(k);if(Array.isArray(o)&&o.length)note='This chapter was rewritten since you last ticked steps here, so ticks from that older version could not be carried over.';legacy.push(k);});
+    L.old.forEach(k=>{const o=read(k);if(Array.isArray(o)&&o.length)note='This chapter was rewritten since you last ticked steps here, so ticks from that older version could not be carried over.';});
   }
-  if(save())legacy.forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
+  // The old keys stay (plan 7.7: nothing deletes a legacy key before the P8 clean-up, so an older copy of the site still
+  // finds them). From now on this record wins over them everywhere; Reset all progress clears both.
+  save();
 }
 const done=new Set(state.done.filter(x=>typeof x==='string'));
 if(typeof state.last!=='string')state.last=null;
 const count=()=>steps.filter(li=>done.has(li.dataset.step)).length;
-const store=()=>{state.done=[...done];state.n=count();save();};
-if(state.n!==count())store();
+// The app's Home card reads these. cur is null when there is nothing to continue at; at is set by ticks only.
+const store=ticked=>{
+  state.done=[...done];state.n=count();
+  const t=target();state.cur=t>=0?ids[t]:null;
+  if(ticked)state.at=new Date().toISOString();
+  save();
+  if(ticked)remember();
+};
+// koii-coach-meta also holds notices and more for the app: change lastChapter only, and leave a newer format alone.
+function remember(){
+  if(!slug)return;
+  const m=read('koii-coach-meta'),meta=m&&typeof m==='object'&&!Array.isArray(m)?m:{v:1};
+  if(meta.v!==1||meta.lastChapter===slug)return;
+  meta.lastChapter=slug;
+  try{localStorage.setItem('koii-coach-meta',JSON.stringify(meta));}catch(e){}
+}
+if(state.n!==count()||!('cur' in state))store();   // also adds cur to a record saved before it existed
+remember();
 
 // The step after the one ticked most recently (or after the furthest ticked step) that is not ticked yet.
 function target(){
@@ -113,7 +133,8 @@ steps.forEach((li,i)=>{
   box.addEventListener('change',()=>{
     if(box.checked){done.add(id);state.last=id;}
     else{done.delete(id);if(state.last===id)state.last=[...done].pop()||null;}
-    store();update();
+    store(true);update();
+    if(window.CoachWake)CoachWake.poke();   // someone is working at the unit: keep the screen awake
   });
 });
 
@@ -171,8 +192,35 @@ if(window.ResizeObserver)new ResizeObserver(measure).observe(bar);
 // Reopen the section where the learner left off (without scrolling away from the top of the page).
 const t=target();
 if(t>=0){const d=steps[t].closest('details');if(d)d.open=true;}
+// A link to one step (for example sampling.html#s-open-empty-project) opens its section, scrolls the step in below the
+// sticky bars, focuses it and marks it for two seconds (coach.css draws the mark; reduced motion gets none).
+// An id that no longer exists only says so in the toast (it shows wherever the page is scrolled to): an old link never
+// moves the page. The toast is the page's own #toast if it has one, else one made here (wake.js does the same).
+function say(text){
+  let el=$('toast');
+  if(!el){el=document.createElement('div');el.id='toast';el.className='toast hidden';el.setAttribute('role','status');document.body.append(el);}
+  el.textContent=text;el.classList.remove('hidden');
+  clearTimeout(say.timer);say.timer=setTimeout(()=>el.classList.add('hidden'),5000);
+}
+let marked=null,markTimer=0;
+function openStep(){
+  const m=/^#s-(.+)$/.exec(location.hash);
+  if(!m)return false;
+  let id=m[1];try{id=decodeURIComponent(id);}catch(e){}
+  const j=ids.indexOf(id);
+  if(j<0){say('That step link is out of date. The step may have been rewritten since the link was made.');return true;}
+  go(j);
+  if(marked)marked.classList.remove('linked');
+  marked=steps[j];marked.classList.add('linked');
+  clearTimeout(markTimer);markTimer=setTimeout(()=>marked.classList.remove('linked'),2000);
+  return true;
+}
 // A link to a section (for example sampling.html#make-your-own-kit) opens it and scrolls to it.
-const openHash=()=>{let el=null;try{el=location.hash.length>1?document.getElementById(decodeURIComponent(location.hash.slice(1))):null;}catch(e){}const d=el&&el.closest('details');if(d){d.open=true;el.scrollIntoView({block:'start'});}};
+const openHash=()=>{
+  if(openStep())return;
+  let el=null;try{el=location.hash.length>1?document.getElementById(decodeURIComponent(location.hash.slice(1))):null;}catch(e){}
+  const d=el&&el.closest('details');if(d){d.open=true;el.scrollIntoView({block:'start'});}
+};
 openHash();addEventListener('hashchange',openHash);
 
 if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'))navigator.serviceWorker.register('./sw.js').catch(()=>{});

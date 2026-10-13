@@ -29,7 +29,7 @@ CHAPTERS = [
     ('thodorakis-house.html', 'vocal-house', '11', './tech-house.html', None),
 ]
 VIEWS = [('first', '#step-title'), ('song', '#song-title'), ('manual', '[data-lesson]'),
-         ('controls', '[data-control]'), ('lab', '#beat'), ('help', '#search')]
+         ('controls', '[data-control]'), ('lab', '#beat'), ('help', '#search'), ('settings', '#firmware')]
 
 # Counts every sound the page schedules, so "playing" and "stopped" can be told apart without listening.
 # Python passes init scripts as text, so the body is wrapped in a call.
@@ -55,10 +55,10 @@ def current_view(page):
 
 
 def open_view(page, url, v):
-    """Opens index.html#view as a fresh page load (as if typed into the address bar) and waits for that view."""
+    """Opens index.html#view (or #view/<id>) as a fresh page load (as if typed into the address bar) and waits for that view."""
     page.goto('about:blank')
     page.goto(urljoin(url, './index.html#' + v), wait_until='networkidle')
-    page.locator(f'nav [data-view="{v}"][aria-current="page"]').wait_for(state='attached')
+    page.locator(f'nav [data-view="{v.split("/")[0]}"][aria-current="page"]').wait_for(state='attached')
 
 
 def describe(error):
@@ -95,13 +95,18 @@ def run_target(browser, artifacts_dir, name, url, results):
         # --- Main app, desktop ---
         response = page.goto(url, wait_until='networkidle', timeout=45000)
         assert response and response.ok, f'Homepage returned HTTP {response.status if response else None}'
-        assert_match(page.locator('h1').first.text_content(), r'first beat', re.I)
-        assert page.locator('.card.start a[href="./setup.html"]').count() > 0, 'First visit shows the "Start here" card linking 00'
+        # "/" opens Home. First run is defined by what the learner has done, not by saved keys, so reloads keep the welcome.
+        for reload in range(3):
+            if reload:
+                page.reload(wait_until='networkidle')
+            assert_match(page.locator('#main h1').first.text_content(), r'K\.O\. II', message='Home opens with the welcome h1')
+            assert page.locator('.card.start a[href="./setup.html"]').count() > 0, 'First visit shows the welcome card linking 00'
         for file, _, num, _, _ in CHAPTERS:
             assert page.locator(f'nav a[href="./{file}"] .num').first.text_content().strip() == num, f'Main navigation numbers {file} as {num}'
-        result['checks'].append('Homepage, first-beat chapter, start card and chapter numbers in the navigation')
+        result['checks'].append('Home: first-run welcome card (kept over reloads) and chapter numbers in the navigation')
         page.screenshot(path=artifacts_dir / f'{name}-desktop.png', full_page=True)
 
+        page.locator('nav [data-view="first"]').click()
         page.locator('#next').click()
         assert page.locator('[data-dot="1"]').get_attribute('aria-current') == 'step'  # 01's dots: data-dot (chapter pages own data-step)
         page.locator('#note-next').click()
@@ -120,6 +125,15 @@ def run_target(browser, artifacts_dir, name, url, results):
         assert_match(page.locator('#placement').text_content(), r'1\.2\.3')
         result['checks'].append('"Start again from step 1" asks first and can be undone')
 
+        # With progress, "/" shows Continue (never the last view), and Continue opens 01 at the saved step.
+        page.goto(url, wait_until='networkidle')
+        assert page.locator('.card.start').count() == 0, 'Home drops the welcome card once 01 has progress'
+        assert_match(page.locator('.continue .eyebrow').text_content(), r'Chapter 01')
+        page.locator('#resume').click()
+        assert current_view(page) == 'first'
+        assert page.locator('[data-dot="1"]').get_attribute('aria-current') == 'step', 'Continue opens the saved step'
+        result['checks'].append('Home continues 01 at the saved step')
+
         page.locator('nav [data-view="controls"]').click()
         page.locator('[data-control="SAMPLE"]').first.click()
         assert_match(page.locator('#info').text_content(), r'capture|source|input', re.I)
@@ -128,7 +142,10 @@ def run_target(browser, artifacts_dir, name, url, results):
         page.locator('nav [data-view="manual"]').click()
         page.locator('[data-lesson="0"]').click()
         page.locator('#complete').click()
-        result['checks'].append('Learn lesson can be marked as tried')
+        page.go_back()  # a lesson is its own history entry (#manual/<lesson-id>), so Back returns to the list
+        page.locator('[data-lesson="1"]').wait_for()
+        assert page.evaluate('location.hash') == '#manual', 'Back from a lesson returns to the lesson list'
+        result['checks'].append('Learn lesson can be marked as tried; Back returns to the list')
 
         page.locator('nav [data-view="help"]').click()
         page.locator('#search').fill('silent')
@@ -138,16 +155,24 @@ def run_target(browser, artifacts_dir, name, url, results):
         assert page.locator('#results details').count() > 0, 'Help search "USB" lists a troubleshooting topic'
         result['checks'].append('Help search returns troubleshooting topics')
 
-        # Firmware picker: a step that needs OS 2.0 shows a warning badge for an older OS and an OK badge for OS 2.5.
+        # #help/<topic-id> (a slug of the topic title) opens Help with that topic expanded and focused.
+        open_view(page, url, 'help/a-pad-is-silent')
+        topic = page.locator('#results details[data-topic="a-pad-is-silent"]')
+        assert topic.get_attribute('open') is not None, '#help/a-pad-is-silent expands that topic'
+        assert page.evaluate("() => document.activeElement === document.querySelector('[data-topic=\"a-pad-is-silent\"] summary')")
+        result['checks'].append('#help/<topic-id> opens and focuses that topic')
+
+        # Firmware picker (in Settings): a step that needs OS 2.0 shows a warning badge for an older OS and an OK badge for OS 2.5.
         os_step = page.evaluate('() => song.findIndex(s => s[7] && s[7].os)')
         assert os_step >= 0, 'course.js has a song step with a minimum OS'
+        page.locator('nav [data-view="settings"]').click()
         page.locator('#firmware').select_option('older')
         assert_match(page.locator('#version-note').text_content(), r'update first', re.I)
         page.locator('nav [data-view="song"]').click()
         page.locator(f'[data-song-step="{os_step}"]').click()
         assert page.locator(f'[data-song-step="{os_step}"]').get_attribute('aria-current') == 'step'
         assert_match(page.locator('.badge.warn').first.text_content(), r'Needs OS')
-        page.locator('nav [data-view="help"]').click()
+        page.locator('nav [data-view="settings"]').click()
         page.locator('#firmware').select_option('2.5')
         page.locator('nav [data-view="song"]').click()
         assert page.locator('.badge.warn').count() == 0
@@ -167,7 +192,12 @@ def run_target(browser, artifacts_dir, name, url, results):
             assert page.locator(sel).count() > 0, f'#{v} renders {sel}'
         page.evaluate("() => { location.hash = '#lab'; }")
         page.wait_for_function("""() => document.querySelector('nav [data-view="lab"][aria-current="page"]')""")
-        result['checks'].append('Hash routes #first #song #manual #controls #lab #help')
+        page.goto('about:blank')
+        page.goto(urljoin(url, './index.html#no-such-view'), wait_until='networkidle')
+        page.wait_for_function("() => location.hash === '#home'")
+        assert page.locator('nav [data-view][aria-current="page"]').count() == 0 and page.locator('#resume').count() == 1, \
+            'An unknown hash opens Home'
+        result['checks'].append('Hash routes #first #song #manual #controls #lab #help #settings; an unknown hash opens Home')
 
         page.locator('nav [data-view="lab"]').click()
         assert page.locator('#beat button').count() == 64
@@ -202,8 +232,9 @@ def run_target(browser, artifacts_dir, name, url, results):
         page.wait_for_function("() => /Offline ready: the coach and all its chapters/.test(document.querySelector('#offline').textContent)", timeout=30000)
         result['checks'].append('Service worker registers and caches every chapter')
 
-        # Reset all progress asks first: Cancel keeps progress, OK clears it.
-        open_view(page, url, 'help')
+        # Reset all progress (in Settings) asks first: Cancel keeps progress, OK clears it but keeps the settings.
+        open_view(page, url, 'settings')
+        page.locator('input[name="wake"][value="off"]').check()  # a setting in koii-coach-prefs that Reset must keep
 
         def saved():
             return page.evaluate("() => JSON.parse(localStorage.getItem('koii-coach-v2') || 'null')")
@@ -225,12 +256,16 @@ def run_target(browser, artifacts_dir, name, url, results):
         after = saved()
         assert after['song'] == 0, 'OK resets progress'
         assert after['firmware'] == '2.5', 'Reset keeps the firmware choice'
-        result['checks'].append('Reset all progress asks for confirmation')
+        prefs = page.evaluate("() => JSON.parse(localStorage.getItem('koii-coach-prefs') || 'null')")
+        assert prefs and prefs.get('wake') == 'off' and prefs.get('setup') == 'ready', f'Reset keeps koii-coach-prefs (got {prefs})'
+        result['checks'].append('Reset all progress asks for confirmation and keeps the settings')
 
         # --- Main app, 390 px phone ---
         page = phone.new_page()
         page.set_default_timeout(15000)
         watch(page, url, errors, bad_assets)
+        page.goto(url, wait_until='networkidle')
+        no_overflow(page, 'Home (first run) at 390 px')
         for v, _ in VIEWS:
             open_view(page, url, v)
             no_overflow(page, f'index.html#{v} at 390 px')
@@ -254,7 +289,9 @@ def run_target(browser, artifacts_dir, name, url, results):
         assert title['top'] >= title['bar'] and title['bottom'] <= title['h'], \
             f"Next shows the new step title (top {round(title['top'])}px under a {round(title['bar'])}px bar in a {title['h']}px window)"
         assert title['focused'] == 'step-title'
-        result['checks'].append('Phone width: no horizontal scrolling in any view; Steps list jumps; Next scrolls the new step into view')
+        page.goto(url, wait_until='networkidle')
+        no_overflow(page, 'Home (Continue) at 390 px')
+        result['checks'].append('Phone width: no horizontal scrolling on Home or in any view; Steps list jumps; Next scrolls the new step into view')
 
         # --- Chapter pages, 390 px phone ---
         for file, slug, num, prev, nxt in CHAPTERS:
@@ -296,6 +333,41 @@ def run_target(browser, artifacts_dir, name, url, results):
                 else:
                     assert page.locator('header .eyebrow').count() > 0, f'{file} → {href} opens a chapter page'
         result['checks'].append('Chapter pages 00 and 07-11: load cleanly, report link, prev/next, ticks survive reload, no horizontal scrolling')
+
+        # A #s-<step id> link opens that step's section and focuses the step, below the sticky bars.
+        page.goto('about:blank')
+        page.goto(absolute('./perform.html#s-sc-open'), wait_until='networkidle')
+        page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'sc-open'")
+        box = page.evaluate("""() => {const r = document.activeElement.getBoundingClientRect(), s = document.querySelector('#progress').getBoundingClientRect();
+            return {top: r.top, bar: s.bottom, h: innerHeight};}""")
+        assert box['bar'] <= box['top'] < box['h'], f'perform.html#s-sc-open shows the step below the bars ({box})'
+        result['checks'].append('A #s-<step id> link opens and focuses that step')
+
+        # Site search (the app bar's overlay) finds a chapter step for "sidechain" and opens it.
+        page.goto(url, wait_until='networkidle')
+        page.locator('#appbar .search-btn').click()
+        page.locator('#site-search').fill('sidechain')
+        hit = page.locator('#site-results a.search-hit[href*=".html#s-"]').first
+        hit.wait_for()
+        href = hit.get_attribute('href')
+        hit.click()
+        page.wait_for_url(absolute(href))
+        page.wait_for_function('id => document.activeElement && document.activeElement.dataset.step === id', arg=href.split('#s-')[1])
+        result['checks'].append('Search finds a chapter step ("sidechain") and opens it')
+
+        # After ticks in a chapter, Home's Continue opens that chapter at the next step to do.
+        page.goto(absolute('./sampling.html'), wait_until='networkidle')
+        page.evaluate("() => document.querySelectorAll('.steps details').forEach(d => { d.open = true; })")
+        for i in (0, 1):
+            page.locator('.steps ol>li .check input').nth(i).check()
+        next_step = page.locator('.steps ol>li').nth(2).get_attribute('data-step')
+        page.goto(url, wait_until='networkidle')
+        assert_match(page.locator('.continue .eyebrow').text_content(), r'Chapter 07')
+        assert page.locator('#resume').get_attribute('href') == './sampling.html#s-' + next_step, 'Continue links the next step'
+        page.locator('#resume').click()
+        page.wait_for_url(absolute('./sampling.html#s-' + next_step))
+        page.wait_for_function('id => document.activeElement && document.activeElement.dataset.step === id', arg=next_step)
+        result['checks'].append('Home continues a chapter page at the step after the last tick')
 
         assert errors == [], 'Browser JavaScript errors'
         assert bad_assets == [], 'Failed app assets'

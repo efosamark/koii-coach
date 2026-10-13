@@ -4,6 +4,19 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2 (no lesson text changed). **Written for:** OS 2.5.1.
+
+Home, search and Settings (phase 2 of the overhaul). Your progress carries over.
+
+- **Home.** The coach now opens on a Home page. On a first visit it asks whether your K.O. II is new and sends you to 00 or 01. After that it shows one Continue button that opens the exact step you were on, the whole course with your progress, which device project each chapter uses, and the tools.
+- **Search everything.** The search button in the app bar searches every step of every chapter, the lessons, the help topics and the glossary, and works offline.
+- **Settings.** The OS choice, keeping the screen on, saving and loading your progress file and Reset all progress moved from Help to a new Settings page. Reset and loading a file now keep your settings.
+- **Keep the screen on.** While you practise, the coach keeps your phone's screen awake (where the browser allows it), and lets it sleep again after 15 minutes without a tap. Use the sun button in the app bar or Settings to turn it off.
+- **Links to one step.** Every step, lesson and help topic has its own link, so search results and "see help" mentions open exactly the right place. Phone Back returns from a lesson to the list.
+- Chapter pages no longer delete the old checklist keys after copying them.
+
 ## 2026.10.13.4
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2 (no lesson text changed). **Written for:** OS 2.5.1.
