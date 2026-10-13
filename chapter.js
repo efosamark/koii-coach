@@ -2,7 +2,9 @@
 /* Shared checklist, progress and resume logic for the chapter pages: setup.html (00), sampling.html (07),
    perform.html (08), hiphop.html (09), tech-house.html (10) and thodorakis-house.html (11).
    Each page sets <body data-chapter="slug"> and gives every step <li> inside .steps a stable data-step id.
-   Progress is stored per chapter as {v:1,done:[stepId,...],last:stepId} under 'koii-coach-ch-<slug>'. */
+   Progress is stored per chapter as {v:1,done:[stepId,...],last:stepId} under 'koii-coach-ch-<slug>'.
+   How it all looks is up to coach.css and the shell (shell.js); this file only fills in the progress bar and its
+   meter, the tick rows, the section tallies and the "You are here" mark on the step to continue at. */
 (()=>{
 // Step ids in the order the pages had when ticks were still saved by list position.
 // Used once to migrate those ticks. Frozen history: do not edit when steps change.
@@ -122,12 +124,22 @@ const sections=[...document.querySelectorAll('.steps details')].map(d=>{
   return [steps.filter(li=>d.contains(li)),t];
 });
 
+// The step to continue at carries a "You are here" tag, aria-current="step" and the .here class (coach.css draws the ring).
+function mark(li,here){
+  li.classList.toggle('here',here);
+  let tag=li.querySelector(':scope>.here-tag');
+  if(!here){li.removeAttribute('aria-current');if(tag)tag.remove();return;}
+  li.setAttribute('aria-current','step');
+  if(!tag){tag=document.createElement('span');tag.className='tag here-tag';tag.textContent='You are here';li.prepend(tag);}
+}
 function update(){
   const count=steps.filter(li=>done.has(li.dataset.step)).length,t=target(),btn=$('resume');
   $('progress-count').textContent=count===steps.length?'All '+steps.length+' steps done':count+' of '+steps.length+' done';
+  const fill=document.querySelector('#progress .meter-fill');
+  if(fill)fill.style.width=(steps.length?Math.round(100*count/steps.length):0)+'%';
   btn.hidden=t<0;
-  if(t>=0)btn.textContent='Continue at step '+(t+1)+' →';
-  steps.forEach((li,j)=>li.classList.toggle('here',j===t));
+  if(t>=0)btn.innerHTML='Continue at step '+(t+1)+'<svg class="icon" aria-hidden="true"><use href="icons.svg#i-next"></use></svg>';
+  steps.forEach((li,j)=>mark(li,j===t));
   sections.forEach(([s,el])=>{
     const c=s.filter(li=>done.has(li.dataset.step)).length;
     el.textContent=c?c+' of '+s.length+' done':s.length+' steps';
@@ -135,6 +147,7 @@ function update(){
   });
   const msg=[note,saved?'':'This browser is not saving your ticks (storage is blocked or full, or this is a private window). They will be lost when you close the page.'].filter(Boolean).join(' '),p=$('progress-note');
   p.textContent=msg;p.hidden=!msg;
+  p.className='notice '+(saved?'info':'caution');   // a note about rewritten steps is information; ticks that cannot be saved need care
 }
 
 $('resume').addEventListener('click',()=>{const t=target();if(t>=0)go(t);});
@@ -146,9 +159,15 @@ $('reset').addEventListener('click',()=>{
   done.clear();state.last=null;note='';store();
   document.querySelectorAll('.check input').forEach(b=>b.checked=false);
   update();
+  if(window.CoachShell)CoachShell.refresh();   // no change event fires here, so tell the shell's course list itself
 });
 ['progress','reset','print'].forEach(id=>$(id).hidden=false);
 update();
+// The progress bar sticks under the app bar. Tell the stylesheet how tall it is (it wraps on narrow screens and
+// with large text), so that focus and "Continue" stop below it instead of under it.
+const bar=$('progress'),measure=()=>document.documentElement.style.setProperty('--status-h',bar.offsetHeight+'px');
+measure();
+if(window.ResizeObserver)new ResizeObserver(measure).observe(bar);
 // Reopen the section where the learner left off (without scrolling away from the top of the page).
 const t=target();
 if(t>=0){const d=steps[t].closest('details');if(d)d.open=true;}

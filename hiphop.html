@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Chapter 09: Full hip-hop beat / K.O. II Coach</title>
   <meta name="description" content="Chapter 09 of K.O. II Coach, an unofficial EP-133 course: rebuild your first beat in a fresh project, sample a short sung phrase from your phone, a record or the built-in mic, and arrange a 64-bar old-school hip-hop beat with song mode.">
-  <meta name="theme-color" content="#18251e">
+  <meta name="theme-color" content="#FFFEF8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161E19" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg">
@@ -18,24 +19,27 @@
   <meta property="og:image" content="https://efosamark.github.io/koii-coach/icons/icon-512.png">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://efosamark.github.io/koii-coach/hiphop.html">
-  <link rel="stylesheet" href="chapter.css">
+  <link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="coach.css">
   <script src="chapter.js" defer></script>
 </head>
 <body data-chapter="hiphop">
   <a class="skip" href="#main">Skip to content</a>
-  <header>
-    <a href="./index.html">← Back to K.O. II Coach</a>
-    <p class="eyebrow">CHAPTER 09 / ABOUT 2–3 HOURS</p>
-  </header>
-  <main id="main" tabindex="-1">
-    <h1>From a sampled voice to a full hip-hop beat</h1>
+  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+  <script src="site.js"></script>
+  <script src="shell.js"></script>
+  <main id="main" class="page reading" tabindex="-1">
+    <header class="page-head">
+      <p class="eyebrow">CHAPTER 09 / ABOUT 2–3 HOURS</p>
+      <h1>From a sampled voice to a full hip-hop beat</h1>
+    </header>
     <p>Build a 64-bar old-school hip-hop beat in a fresh project: the drums and bass from 01 First beat, a few sung words you sample yourself, a stripped-down break and a repeated-word twist near the end. Six scenes and a six-position song list play it back for you. At 90 BPM in 4/4 it lasts about 2 minutes 51 seconds.</p>
-    <div class="notice">Do one numbered step at a time, and stop playback before editing notes. Written for OS 2.5.1; older OS: <a href="https://teenage.engineering/apps/update">update first</a>. Finish <a href="./index.html#first">01 First beat</a> and <a href="./index.html#song">02 Make it a song</a> before you start. <a href="./sampling.html">07 Sample, chop &amp; resample</a> and <a href="./perform.html">08 Play &amp; perform</a> explain sampling and live playing in more depth. The app cannot see your hardware: trust your display and your ears.</div>
+    <div class="notice info">Do one numbered step at a time, and stop playback before editing notes. Written for OS 2.5.1; older OS: <a href="https://teenage.engineering/apps/update">update first</a>. Finish <a href="./index.html#first">01 First beat</a> and <a href="./index.html#song">02 Make it a song</a> before you start. <a href="./sampling.html">07 Sample, chop &amp; resample</a> and <a href="./perform.html">08 Play &amp; perform</a> explain sampling and live playing in more depth. The app cannot see your hardware: trust your display and your ears.</div>
     <section class="card">
       <h2>What you need</h2>
       <p>Your K.O. II, headphones or speakers plugged into its output, paper and a pencil for scene numbers, and one source for a short sung phrase:</p>
       <p>• A phone or computer connected with a USB-C cable (OS 2.5 USB audio).<br>• A phone, laptop or turntable with a headphone or line-level output, connected to the K.O. II's 3.5 mm input with a stereo 3.5 mm cable.<br>• No cable at all: the built-in mic and your own voice.</p>
-      <p class="good">Turntable tip: the official guide says to use an RIAA amplifier or a turntable with a built-in amp. If your turntable has a PHONO/LINE switch, as the Audio-Technica LP60X family does, set it to LINE. See <a href="https://www.audio-technica.com/en-eu/support/how-to-set-up-an-at-lp60x-turntable">Audio-Technica's LP60X setup guide</a>.</p>
+      <p class="notice tip">Turntable tip: the official guide says to use an RIAA amplifier or a turntable with a built-in amp. If your turntable has a PHONO/LINE switch, as the Audio-Technica LP60X family does, set it to LINE. See <a href="https://www.audio-technica.com/en-eu/support/how-to-set-up-an-at-lp60x-turntable">Audio-Technica's LP60X setup guide</a>.</p>
     </section>
     <section class="card">
       <h2>Moves you will use</h2>
@@ -57,11 +61,12 @@
       </table>
       <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes#8.3-main">main mode</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">erase and undo</a></p>
     </section>
-    <div id="progress" class="progress" hidden>
+    <div id="progress" class="status-bar" hidden>
       <p id="progress-count" role="status"></p>
-      <button class="button" id="resume" type="button" hidden></button>
+      <span class="meter" aria-hidden="true"><span class="meter-fill"></span></span>
+      <button class="btn primary" id="resume" type="button" hidden></button>
     </div>
-    <p id="progress-note" class="notice" hidden></p>
+    <p id="progress-note" class="notice info" hidden></p>
     <section id="tutorial" class="steps" aria-label="Steps">
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. chapter.js numbers the steps and saves ticks by id. No nested lists inside a step. -->
       <details open>
@@ -207,19 +212,19 @@
       <h2>Button instructions and sources</h2>
       <p>Original teaching recipe. Hardware steps were checked against teenage engineering's official EP-133 guide, including its OS 2.5 release notes. This page cannot check your installed OS, your sounds or what your device actually did.</p>
       <p><a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Sound, sound edit, scenes and song mode</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record">Recording, step entry, copy and erase</a> · <a href="https://teenage.engineering/guides/ep-133/functions">Sampling and timing</a> · <a href="https://teenage.engineering/guides/ep-133/workflow">Scenes and song positions</a> · <a href="https://teenage.engineering/guides/ep-133/effects">Effects</a> · <a href="https://teenage.engineering/guides/ep-133/system">System settings</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">What's new (OS 2.0–2.5)</a></p>
-      <p class="notice">Safety: holding ERASE + SOUND until SND blinks deletes the selected sample from the device for good. Holding SHIFT + SOUND on the trim page crops the recording for good, and every pad that plays it (C1, C2 and D1 here) is affected. Neither is needed here. SHIFT + ERASE opens system settings only while the K.O. II is on; holding SHIFT + ERASE while switching it on formats the drive, and the factory sounds cannot be recovered. Back up with the official EP sample tool first.</p>
-      <div class="actions">
-        <button class="button" id="reset" type="button" hidden>Reset this chapter's checklist</button>
-        <button class="button" id="print" type="button" hidden>Print all steps</button>
+      <p class="notice danger">Safety: holding ERASE + SOUND until SND blinks deletes the selected sample from the device for good. Holding SHIFT + SOUND on the trim page crops the recording for good, and every pad that plays it (C1, C2 and D1 here) is affected. Neither is needed here. SHIFT + ERASE opens system settings only while the K.O. II is on; holding SHIFT + ERASE while switching it on formats the drive, and the factory sounds cannot be recovered. Back up with the official EP sample tool first.</p>
+      <div class="row">
+        <button class="btn" id="print" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-print"></use></svg>Print all steps</button>
+        <button class="btn danger" id="reset" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-undo"></use></svg>Reset this chapter's checklist</button>
       </div>
     </section>
   </main>
-  <footer>
+  <footer class="page reading site-foot">
     <nav class="chapters" aria-label="Chapters">
       <a class="prev" href="./perform.html" rel="prev"><span>Previous chapter</span>08 / Play &amp; perform</a>
       <a class="next" href="./tech-house.html" rel="next"><span>Next chapter</span>10 / Tech House</a>
     </nav>
-    <p><a href="./index.html">← Back to the main app</a></p>
+    <p><a class="back-link" href="./index.html"><svg class="icon" aria-hidden="true"><use href="icons.svg#i-back"></use></svg>Back to K.O. II Coach</a></p>
     <p><a href="https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml">Report a wrong instruction</a>: tell us the chapter, the step number and what your EP-133 did instead.</p>
     <p>Unofficial. Not affiliated with or endorsed by teenage engineering. EP-133 and K.O. II are trademarks of teenage engineering.</p>
   </footer>

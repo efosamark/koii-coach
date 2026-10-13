@@ -4,6 +4,19 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.13.4
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2 (no lesson text changed). **Written for:** OS 2.5.1.
+
+A new look for every page (phase 1 of the overhaul). The lessons and button sequences are unchanged, and your progress carries over.
+
+- **One design everywhere.** The main app and the chapter pages now share one stylesheet (`coach.css`), with one set of colours, six text sizes and the same buttons, cards and notices in light and dark mode. Orange now only marks a button to press on the K.O. II.
+- **A compact header and one menu.** The 12-tile header is gone. Every page has the same slim app bar with a menu that lists the course in order with your progress, and the tools. On a computer the menu is a sidebar.
+- **Keys and display values look like the device.** Buttons are keycaps and display values look like the screen, in a self-hosted mono font (IBM Plex Mono). Nothing is loaded from other websites.
+- **Clearer warnings.** Every notice is marked as a tip, information, careful (can be undone) or danger (cannot be undone).
+- **01 and 02 on a phone:** the row of tiny step dots is now "Step 8 of 22" with a list of steps to jump to. "Start again from step 1" asks first and can be undone. The target rhythm no longer looks like buttons.
+- **Chapter pages:** the progress bar shows a meter, and the step to continue from is marked "You are here".
+
 ## 2026.10.13.3
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2 (no lesson changed). **Written for:** OS 2.5.1.

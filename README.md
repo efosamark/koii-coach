@@ -120,7 +120,10 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 | `setup.html` | Chapter 00 Start here. |
 | `sampling.html`, `perform.html` | Chapters 07 Sample, chop & resample and 08 Play & perform. |
 | `hiphop.html`, `tech-house.html`, `thodorakis-house.html` | Chapters 09 Full hip-hop beat, 10 Tech House and 11 House with your own vocal samples. |
-| `chapter.css`, `chapter.js` | Shared styles and checklist code for the chapter pages (00 and 07 to 11). |
+| `coach.css` | The one stylesheet for every page: colours, type, components, light and dark. |
+| `site.js`, `shell.js` | The list of chapters and tools, and the shared app bar and menu built from it. |
+| `icons.svg`, `fonts/` | Icons and the self-hosted IBM Plex Mono font for keys and display values (SIL Open Font License, see `fonts/OFL.txt`). |
+| `chapter.js` | Checklist, progress and resume code for the chapter pages (00 and 07 to 11). |
 | `sw.js` | Offline support (service worker). |
 | `manifest.webmanifest`, `icon.svg`, `icons/` | Home-screen app name and icons. |
 | `tests/test_smoke.py`, `tests/conftest.py`, `tests/support.py`, `pytest.ini` | Browser smoke test (pytest and Playwright for Python). |

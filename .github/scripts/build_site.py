@@ -6,9 +6,9 @@ Usage: python3 .github/scripts/build_site.py _site
 Fails (exit 1) when:
 - a required file is missing, or a page/script is suspiciously small (placeholder text),
 - manifest.webmanifest is not valid JSON or names an icon that is not in the site,
-- a page links to a local file that is not in the site,
+- a page links to a local file that is not in the site, or a stylesheet's url() does (a missing font fails silently),
 - sw.js precaches a file that is not in the site (one 404 stops the offline install),
-- a page, script or stylesheet in the site is not precached by sw.js (it would not work offline),
+- a page, script, stylesheet, font or SVG in the site is not precached by sw.js (it would not work offline),
 - VERSION in sw.js, courseInfo.version in course.js and the newest CHANGELOG.md heading differ.
 Standard library only, so it runs anywhere Python 3.8+ does.
 """
@@ -16,9 +16,11 @@ import json, pathlib, re, shutil, sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 # App files only. README, CHANGELOG, tests/ and .github/ are never published.
-INCLUDE = ['*.html', '*.js', '*.css', 'manifest.webmanifest', 'icon.svg', 'icons/*.png', 'icons/*.svg']
+INCLUDE = ['*.html', '*.js', '*.css', 'manifest.webmanifest', 'icon.svg', 'icons.svg', 'icons/*.png', 'icons/*.svg',
+           'fonts/*.woff2', 'fonts/OFL.txt']
 REQUIRED = ['index.html', 'course.js', 'sw.js', 'manifest.webmanifest', 'icon.svg']
-MIN_BYTES = {'.html': 2000, '.js': 500, '.css': 200}
+MIN_BYTES = {'.html': 2000, '.js': 500, '.css': 200, '.woff2': 1000}
+PRECACHED = ('.html', '.js', '.css', '.woff2', '.svg')  # every one of these in the site must be in sw.js ASSETS
 SKIP_LINK = re.compile(r'^(?:[a-z][a-z0-9+.-]*:|//|#)', re.I)  # http:, mailto:, data:, //host, #anchor
 
 errors, warnings = [], []
@@ -65,7 +67,7 @@ def main():
         size = (out / name).stat().st_size
         minimum = MIN_BYTES.get(pathlib.PurePosixPath(name).suffix)
         if minimum and size < minimum:
-            errors.append(f'{name} is only {size} bytes; is it placeholder text?')
+            errors.append(f'{name} is only {size} bytes; is it a placeholder?')
 
     # Manifest
     try:
@@ -92,6 +94,14 @@ def main():
             if need not in head:
                 warnings.append(f'{name} has no {what} in <head>')
 
+    # Local files a stylesheet loads (fonts); a wrong path would only fall back to another font without any error
+    for name in [f for f in files if f.endswith('.css')]:
+        css = (out / name).read_text(encoding='utf-8')
+        for ref in re.findall(r'''url\(\s*["']?([^"')]+)''', css):
+            p = local_path(ref)
+            if p and p not in have:
+                errors.append(f'{name} loads {ref}, which is not in the site')
+
     # Service worker precache list
     sw = (out / 'sw.js').read_text(encoding='utf-8') if 'sw.js' in have else ''
     m = re.search(r'ASSETS\s*=\s*\[(.*?)\]', sw, re.S)
@@ -106,7 +116,7 @@ def main():
             if p not in have:
                 errors.append(f'sw.js precaches {a}, which is not in the site (offline install would fail)')
         for name in files:
-            if name.endswith(('.html', '.js', '.css')) and name != 'sw.js' and name not in precached:
+            if name.endswith(PRECACHED) and name != 'sw.js' and name not in precached:
                 errors.append(f'{name} is not in the sw.js ASSETS list, so it will not work offline')
 
     # One release version everywhere: the service worker cache name, the app footer and the changelog.

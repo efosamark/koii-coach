@@ -103,10 +103,22 @@ def run_target(browser, artifacts_dir, name, url, results):
         page.screenshot(path=artifacts_dir / f'{name}-desktop.png', full_page=True)
 
         page.locator('#next').click()
-        assert page.locator('[data-step="1"]').get_attribute('aria-current') == 'step'
+        assert page.locator('[data-dot="1"]').get_attribute('aria-current') == 'step'  # 01's dots: data-dot (chapter pages own data-step)
         page.locator('#note-next').click()
         assert_match(page.locator('#placement').text_content(), r'1\.2\.3')
         result['checks'].append('Recipe navigation and exact note-position helper')
+
+        # "Start again from step 1" asks first, and the move back can be undone from the toast.
+        page.once('dialog', lambda dialog: dialog.dismiss())
+        page.locator('#restart').click()
+        assert page.locator('[data-dot="1"]').get_attribute('aria-current') == 'step', 'Cancel keeps the current step'
+        page.once('dialog', lambda dialog: dialog.accept())
+        page.locator('#restart').click()
+        assert page.locator('[data-dot="0"]').get_attribute('aria-current') == 'step', 'OK goes back to step 1'
+        page.locator('#toast button', has_text='Undo').click()
+        assert page.locator('[data-dot="1"]').get_attribute('aria-current') == 'step', 'Undo returns to the step'
+        assert_match(page.locator('#placement').text_content(), r'1\.2\.3')
+        result['checks'].append('"Start again from step 1" asks first and can be undone')
 
         page.locator('nav [data-view="controls"]').click()
         page.locator('[data-control="SAMPLE"]').first.click()
@@ -226,17 +238,23 @@ def run_target(browser, artifacts_dir, name, url, results):
         assert page.locator('#next').is_visible()
         assert page.locator('#note-next').is_visible()
         page.screenshot(path=artifacts_dir / f'{name}-mobile.png', full_page=True)
-        # Next from the bottom of a long step brings the new step's title into view and focuses it.
+        # Under 600 px the step dots give way to a "Step N of M" meter and a "Steps" list whose rows jump.
+        assert page.locator('.step-card .dots').is_hidden() and page.locator('.step-meter').is_visible(), 'Phone shows the meter, not the dots'
+        page.locator('.step-list summary').click()
+        page.locator('[data-jump="2"]').click()
+        assert_match(page.locator('.step-pos').text_content(), r'^Step 3 of \d+\Z')
+        # Next from the bottom of a long step brings the new step's title into view, below the sticky app bar, and focuses it.
         page.evaluate('() => window.scrollTo(0, document.documentElement.scrollHeight)')
         page.locator('#next').click()
         title = page.evaluate("""() => {
-            const r = document.querySelector('#step-title').getBoundingClientRect();
-            return {top: r.top, bottom: r.bottom, h: window.innerHeight, focused: document.activeElement && document.activeElement.id};
+            const r = document.querySelector('#step-title').getBoundingClientRect(), bar = document.querySelector('#appbar');
+            return {top: r.top, bottom: r.bottom, h: window.innerHeight, bar: bar ? bar.getBoundingClientRect().bottom : 0,
+                    focused: document.activeElement && document.activeElement.id};
         }""")
-        assert title['top'] >= 0 and title['bottom'] <= title['h'], \
-            f"Next shows the new step title (top {round(title['top'])}px in a {title['h']}px window)"
+        assert title['top'] >= title['bar'] and title['bottom'] <= title['h'], \
+            f"Next shows the new step title (top {round(title['top'])}px under a {round(title['bar'])}px bar in a {title['h']}px window)"
         assert title['focused'] == 'step-title'
-        result['checks'].append('Phone width: no horizontal scrolling in any view; Next scrolls the new step into view')
+        result['checks'].append('Phone width: no horizontal scrolling in any view; Steps list jumps; Next scrolls the new step into view')
 
         # --- Chapter pages, 390 px phone ---
         for file, slug, num, prev, nxt in CHAPTERS:

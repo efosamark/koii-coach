@@ -8,8 +8,8 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#eef0e7",
-  "theme_color": "#18251e",
+  "background_color": "#EEF0E7",
+  "theme_color": "#FFFEF8",
   "categories": ["education", "music"],
   "icons": [
     {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"},

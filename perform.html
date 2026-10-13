@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Chapter 08: Play &amp; perform / K.O. II Coach</title>
   <meta name="description" content="Chapter 08 of K.O. II Coach, an unofficial EP-133 course: play the K.O. II live on OS 2.5.1. Record with feel, play KEYS basslines, roll hi-hats, arpeggiate, perform punch-in FX and fader moves, switch scenes live, pump the mix with sidechain and record your performance.">
-  <meta name="theme-color" content="#18251e">
+  <meta name="theme-color" content="#FFFEF8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161E19" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg">
@@ -18,19 +19,22 @@
   <meta property="og:image" content="https://efosamark.github.io/koii-coach/icons/icon-512.png">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://efosamark.github.io/koii-coach/perform.html">
-  <link rel="stylesheet" href="chapter.css">
+  <link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="coach.css">
   <script src="chapter.js" defer></script>
 </head>
 <body data-chapter="perform">
   <a class="skip" href="#main">Skip to content</a>
-  <header>
-    <a href="./index.html">← Back to K.O. II Coach</a>
-    <p class="eyebrow">CHAPTER 08 / ABOUT 2–3 HOURS</p>
-  </header>
-  <main id="main" tabindex="-1">
-    <h1>Play &amp; perform</h1>
+  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+  <script src="site.js"></script>
+  <script src="shell.js"></script>
+  <main id="main" class="page reading" tabindex="-1">
+    <header class="page-head">
+      <p class="eyebrow">CHAPTER 08 / ABOUT 2–3 HOURS</p>
+      <h1>Play &amp; perform</h1>
+    </header>
     <p>Until now you placed most notes one step at a time. In this chapter you play the K.O. II like an instrument. You record with feel, play a bassline in a scale and roll hi-hats. You also throw in effects, nudge notes by hand, switch scenes live, make the mix pump and record what you play. Each section is one short mini-project that starts from a practice copy of a scene you already made. Do the sections in any order: your finished scenes stay safe.</p>
-    <div class="notice"><b>Written for OS 2.5.1.</b> Every step here works on a K.O. II running OS 2.5.1. The official “what's new” page describes features up to OS 2.5 and has no separate 2.5.1 notes. This chapter was checked against it and the official guide on 13 October 2026. Older OS: <a href="https://teenage.engineering/apps/update">update first</a>. This app cannot see your hardware, so trust your display and your ears.</div>
+    <div class="notice info"><b>Written for OS 2.5.1.</b> Every step here works on a K.O. II running OS 2.5.1. The official “what's new” page describes features up to OS 2.5 and has no separate 2.5.1 notes. This chapter was checked against it and the official guide on 13 October 2026. Older OS: <a href="https://teenage.engineering/apps/update">update first</a>. This app cannot see your hardware, so trust your display and your ears.</div>
     <section class="card">
       <h2>What you need</h2>
       <p>You need your K.O. II, headphones or speakers, and paper and a pencil for scene numbers. You also need the project from chapters 01 and 02: the scenes DRUMS, BEAT, INTRO, MELODY and BREAK, and the 10-position song list. No project yet? Do <a href="./index.html#first">01 / First beat</a> and <a href="./index.html#song">02 / Make it a song</a> first. For section 09 you also need a USB-C cable to a phone or computer, or a 3.5 mm stereo cable to a recorder.</p>
@@ -41,18 +45,19 @@
         <div><b>Order</b><br>Any. Sections 06 and 07 use your chapter 02 scenes and song</div>
       </div>
     </section>
-    <div class="notice"><b>Safety.</b> Work only in practice copies: every section starts by making one, and the ERASE moves here only touch those copies. Never use ERASE + SOUND: it deletes a sample from the device. Open system settings with SHIFT + ERASE <b>only while the K.O. II is already switched on</b>. Holding SHIFT + ERASE while you switch it on formats the drive, and the official guide warns that factory sounds “can not be recovered”. If this K.O. II holds work you care about, back it up first with the official <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a> on a computer. SHIFT + B undoes the last change while the umbrella icon is lit.</div>
+    <div class="notice danger"><b>Safety.</b> Work only in practice copies: every section starts by making one, and the ERASE moves here only touch those copies. Never use ERASE + SOUND: it deletes a sample from the device. Open system settings with SHIFT + ERASE <b>only while the K.O. II is already switched on</b>. Holding SHIFT + ERASE while you switch it on formats the drive, and the official guide warns that factory sounds “can not be recovered”. If this K.O. II holds work you care about, back it up first with the official <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a> on a computer. SHIFT + B undoes the last change while the umbrella icon is lit.</div>
     <section class="card">
       <h2>How every section starts</h2>
       <p>This chapter uses project 6, your chapter 01–02 project; chapter 07 worked in project 7. To get back, press MAIN, stop playback, hold MAIN, hold pad 6 as well, then release both (use your own pad if you chose another project in chapter 01). On OS 2.0+ a quick MAIN + number can select a scene instead, so press PLAY and check that you hear your own beat. Then stop.</p>
       <p>Stop playback. Hold MAIN, use − / + until the display shows the number of the scene the section names (usually BEAT), and release. Press SHIFT + MAIN once: commit copies the scene and moves you into the copy. Hold MAIN, read the new number and write it down with the name the section gives it. The original scene stays as it was.</p>
-      <p class="good">To change a system setting: press SHIFT + ERASE, type the three-digit code on the pads, press ENTER, then press MAIN to return. The table at the end lists every code this chapter uses and its default.</p>
+      <p class="notice info">To change a system setting: press SHIFT + ERASE, type the three-digit code on the pads, press ENTER, then press MAIN to return. The table at the end lists every code this chapter uses and its default.</p>
     </section>
-    <div id="progress" class="progress" hidden>
+    <div id="progress" class="status-bar" hidden>
       <p id="progress-count" role="status"></p>
-      <button class="button" id="resume" type="button" hidden></button>
+      <span class="meter" aria-hidden="true"><span class="meter-fill"></span></span>
+      <button class="btn primary" id="resume" type="button" hidden></button>
     </div>
-    <p id="progress-note" class="notice" hidden></p>
+    <p id="progress-note" class="notice info" hidden></p>
     <section id="perform" class="steps" aria-label="Steps">
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. Do not nest lists inside a step. chapter.js numbers the steps and saves ticks by id. -->
       <details open>
@@ -71,7 +76,8 @@
           <li data-step="live-swing">Optional: give the hats some swing. Swing only shapes notes you record after setting it (the guide: “note interval and swing apply before recording and not after”), and only with the 1/8 and 1/16 intervals. Press TIMING, press − (quantize), check the display shows 16, turn Y a little and press MAIN; the SWING icon lights (official icon map: “lit when swing has been enabled”). Stopped, with group A selected, hold ERASE + A3 until TRK blinks to clear the hats in LIVE only. Tap and release RECORD, press PLAY, and after the count-in tap A3 on every “and” and every beat (eight even taps) for one bar, then press RECORD. You should hear the hats lean into a shuffle. Hold MAIN and select BEAT to compare: its hats stay straight. Too much or too little? Press SHIFT + B, change Y and record again.</li>
           <li data-step="live-restore">Set things back: press TIMING, press − (quantize), turn Y back to no swing (the SWING icon goes out), then MAIN; later chapters expect quantize and no swing. Press SHIFT + ERASE, type 4, 0, 1, press ENTER, then MAIN to return the metronome to its default. Keep velocity on (301) if you like it, or type 300 the same way to switch it off. With velocity on, notes you write with held RECORD + pad may also come out quieter if you press softly.</li>
         </ol>
-        <p class="good"><b>Checkpoint:</b> LIVE plays your own snare backbeat with a few soft ghost notes, and BEAT still plays the snare you placed. <b>If it doesn't:</b> no count-in means you pressed RECORD and PLAY together, which starts without one: tap RECORD, release it, then press PLAY. Every hit equally loud: the velocity code was not confirmed with ENTER. Hits land off the grid: you are still in free time, so press TIMING, then −. Nothing was kept: RECORD was not armed before you pressed PLAY.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> LIVE plays your own snare backbeat with a few soft ghost notes, and BEAT still plays the snare you placed.</p>
+        <p><b>If it doesn't:</b> no count-in means you pressed RECORD and PLAY together, which starts without one: tap RECORD, release it, then press PLAY. Every hit equally loud: the velocity code was not confirmed with ENTER. Hits land off the grid: you are still in free time, so press TIMING, then −. Nothing was kept: RECORD was not armed before you pressed PLAY.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">9.1 live record</a> · <a href="https://teenage.engineering/guides/ep-133/functions#10.4-timing">10.4 timing</a> · <a href="https://teenage.engineering/guides/ep-133/how-to#12.1-enable-velocity-sensitivity">12.1 velocity</a> · <a href="https://teenage.engineering/guides/ep-133/how-to#12.3-turn-on-metronome-while-playing">12.3 metronome</a> · <a href="https://teenage.engineering/guides/ep-133/system">system setting codes</a></p>
       </details>
       <details>
@@ -87,7 +93,8 @@
           <li data-step="keys-record">Hold SHIFT and press − until the display shows 1.1.1. Tap RECORD, press PLAY, and after the count-in play your two-bar line once. Then press RECORD. You should hear your bassline repeat every two bars over the drums. Press PLAY to stop. Messy? Press SHIFT + B while the umbrella is lit and record again.</li>
           <li data-step="keys-off">Press KEYS again to switch KEYS off. Tap A, then A1 and A2: you should hear kick and snare, not one sound at different pitches. The official guide shows how to switch KEYS on but not how to switch it off. Check the display: the KEYS MODE icon (official icon map: “all 12 pads in ‘chromatic’ mode”) should now be off. If it is still lit, or the pads still play one sound at many pitches, check the guide's KEYS section. Finally, hold MAIN and select BEAT: it still has its two original bass pulses.</li>
         </ol>
-        <p class="good"><b>Checkpoint:</b> BASSLINE plays the drums plus your own two-bar bassline, and every note fits the scale. <b>If it doesn't:</b> the bass repeats after one bar because B is still one bar long: repeat the two-bars step with B selected. Turning X or Y changed the volume or pitch instead: you let go of KEYS; keep it held while you turn. Key and scale selection with X and Y needs OS 2.5; older OS: update first.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> BASSLINE plays the drums plus your own two-bar bassline, and every note fits the scale.</p>
+        <p><b>If it doesn't:</b> the bass repeats after one bar because B is still one bar long: repeat the two-bars step with B selected. Turning X or Y changed the volume or pitch instead: you let go of KEYS; keep it held while you turn. Key and scale selection with X and Y needs OS 2.5; older OS: update first.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.3-keys">9.3 keys</a> · <a href="https://teenage.engineering/guides/ep-133/how-to#12.2-change-the-scale-in-keys-mode">12.2 change the scale in keys mode</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new: keys mode (OS 2.5)</a></p>
       </details>
       <details>
@@ -103,7 +110,8 @@
           <li data-step="arp-play">Tap C2 so it is selected, then press KEYS. Press PLAY. Press TIMING and turn X to 16; the TIMING interval sets the arpeggio's speed. Now hold TIMING and press and hold three pads, one after another. You should hear the notes play one at a time, in the order you pressed them. Let go to stop. Try 8 for a slower arpeggio, then stop playback.</li>
           <li data-step="repeat-clean">Clean up: press TIMING, set X to 16, press − (quantize), then press MAIN. Press KEYS again to switch it off, then tap C1: it should play your chapter 02 melody sound at its normal pitch.</li>
         </ol>
-        <p class="good"><b>Checkpoint:</b> ROLL plays hats you finger-drummed, with a roll into every loop. You can latch a repeat and stop it, and held KEYS notes arpeggiate. <b>If it doesn't:</b> the pad plays once instead of repeating, so hold TIMING first, then the pad. The arpeggio plays all notes together or only one: C2's play mode is still key, so set oneshot or legato. A latch that won't stop needs the same move again: in TIMING, hold SHIFT and tap the same pad. The arpeggio needs OS 2.5; latching and the 1, 2 and 4 intervals need OS 2.0. Older OS: update first.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> ROLL plays hats you finger-drummed, with a roll into every loop. You can latch a repeat and stop it, and held KEYS notes arpeggiate.</p>
+        <p><b>If it doesn't:</b> the pad plays once instead of repeating, so hold TIMING first, then the pad. The arpeggio plays all notes together or only one: C2's play mode is still key, so set oneshot or legato. A latch that won't stop needs the same move again: in TIMING, hold SHIFT and tap the same pad. The arpeggio needs OS 2.5; latching and the 1, 2 and 4 intervals need OS 2.0. Older OS: update first.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions#10.4.1-note-repeat">10.4.1 note repeat and arpeggio</a> · <a href="https://teenage.engineering/guides/ep-133/functions#10.4-timing">10.4 timing</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.2.1-sound-mode">8.2.1 sound (play mode)</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new: arpeggio (OS 2.5), larger intervals and latch (OS 2.0)</a></p>
       </details>
       <details>
@@ -118,7 +126,8 @@
           <li data-step="fx-erase-move">Stopped, hold ERASE + FADER and press the pitch pad. This OS 2.5 move erases the recorded moves of that one fader function only. Press PLAY: the drums no longer bend. Stop. To erase every fader move in this group and pattern at once: stopped, hold ERASE + FADER for 2 seconds, until FDR blinks and then DEL shows.</li>
           <li data-step="fx-reset-fader">Stopped, press SHIFT + FADER. RES shows, and every fader function of this group returns to its default position; pressing it again undoes the reset (SET shows). OS 2.5 does not allow this during playback. Then hold FADER and press the pad labelled for level, so the fader controls group volume again, as the rest of the course expects.</li>
         </ol>
-        <p class="good"><b>Checkpoint:</b> FX + 1 makes the beat stutter. Your recorded pitch move replayed by itself, and you erased it without touching any notes. <b>If it doesn't:</b> punch-in FX do nothing while stopped, so press PLAY first. The fader move was not kept: hold RECORD the whole time the fader moves, while the beat plays. The drums still sound detuned after erasing: press SHIFT + FADER while stopped. Per-function erase needs OS 2.5; older OS: update first.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> FX + 1 makes the beat stutter. Your recorded pitch move replayed by itself, and you erased it without touching any notes.</p>
+        <p><b>If it doesn't:</b> punch-in FX do nothing while stopped, so press PLAY first. The fader move was not kept: hold RECORD the whole time the fader moves, while the beat plays. The drums still sound detuned after erasing: press SHIFT + FADER while stopped. Per-function erase needs OS 2.5; older OS: update first.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/effects#11.7-punch-in-fx">11.7 punch-in FX</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.4-fader">9.4 fader</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">9.6 erase / undo</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new: sequencer and performance (OS 2.5)</a></p>
       </details>
       <details>
@@ -132,7 +141,8 @@
           <li data-step="pad-nudge-snare">Make one snare lazy: press TIMING, press + (free time), then MAIN. Stopped, go to 1.4.1. Hold SHIFT and A2, keep both held, press + six times, then release. Hold A2 before you press +, because SHIFT + + on its own jumps a whole bar. In free time each press nudges the note by one tick. Press PLAY: the snare on beat 4 drags slightly behind, while the beat 2 snare stays put. Stop. In quantize mode the same move jumps a whole step, which is a quick way to move a note to the next step.</li>
           <li data-step="pad-restore">Press TIMING, press − (quantize), then MAIN. Compare: hold MAIN and switch between EDIT and BEAT while playing. EDIT should sound thicker and slightly laid-back. Stop.</li>
         </ol>
-        <p class="good"><b>Checkpoint:</b> EDIT has a percussion layer that follows the kick rhythm with a slight flam, plus a late snare on beat 4. BEAT is unchanged. <b>If it doesn't:</b> if the paste did nothing or pasted a whole bar, keep the pad held while you press SHIFT + C or SHIFT + D. The snare jumped a whole step because you were in quantize: press SHIFT + B, switch to free time and nudge again. The layer snapped back onto the grid because you tapped A4 in timing correct: hold it and press + again. Per-pad copy and the one-tick shift need OS 2.5; older OS: update first.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> EDIT has a percussion layer that follows the kick rhythm with a slight flam, plus a late snare on beat 4. BEAT is unchanged.</p>
+        <p><b>If it doesn't:</b> if the paste did nothing or pasted a whole bar, keep the pad held while you press SHIFT + C or SHIFT + D. The snare jumped a whole step because you were in quantize: press SHIFT + B, switch to free time and nudge again. The layer snapped back onto the grid because you tapped A4 in timing correct: hold it and press + again. Per-pad copy and the one-tick shift need OS 2.5; older OS: update first.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.4-fader">9.4 per-pad pattern copy and paste</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.7-offset-notes">9.7 offset notes</a> · <a href="https://teenage.engineering/guides/ep-133/functions#10.4.2-timing-correct">10.4.2 timing correct</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new: per-pad copy and time shift (OS 2.5)</a></p>
       </details>
       <details>
@@ -148,7 +158,8 @@
           <li data-step="scene-lock">Optional, for a gig: switch the K.O. II off, then hold MAIN while you switch it on. LOK shows for about a second. In lock mode “any changes made on the device will reset when the device is restarted”, so you can perform without changing your project. Switch off and on again without holding anything before you build anything you want to keep, and check that LOK does not appear. Hold only MAIN: SHIFT + ERASE at power-on formats the drive.</li>
           <li data-step="scene-restore">Keep 412 if you like performing this way, or press SHIFT + ERASE, type 4, 1, 0, press ENTER, then MAIN to go back to instant scene changes.</li>
         </ol>
-        <p class="good"><b>Checkpoint:</b> every scene change landed on a pattern boundary, and TRASH showed CLR and then DEL. <b>If it doesn't:</b> changes still happen instantly when the code was not confirmed with ENTER; enter it again. Nothing changed: you released MAIN on the same number, so watch the display while you press − / +. DEL never appears: the scene is in the song list, which is fine; leave it.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> every scene change landed on a pattern boundary, and TRASH showed CLR and then DEL.</p>
+        <p><b>If it doesn't:</b> changes still happen instantly when the code was not confirmed with ENTER; enter it again. Nothing changed: you released MAIN on the same number, so watch the display while you press − / +. DEL never appears: the scene is in the song list, which is fine; leave it.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/system">system codes 410–412</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.3-main">8.3 main: select scene, change project</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">9.6 erase scene</a> · <a href="https://teenage.engineering/guides/ep-133/system#14.3-lock-mode">14.3 lock mode</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new: MAIN + numpad (OS 2.0), erase scene (OS 2.0.1)</a></p>
       </details>
       <details>
@@ -162,7 +173,8 @@
           <li data-step="song-loop">For rehearsing, make the song repeat: press SHIFT + ERASE, type 4, 2, 1, press ENTER, then MAIN. Open the song list again (hold MAIN, press ENTER) and press SHIFT + PLAY: after position 10 the song starts again. Practise punch-in FX at the section changes. Press PLAY to stop; the song goes back to the position you started from. Then press SHIFT + ERASE, type 4, 2, 0, press ENTER and MAIN, so the song stops at the end again.</li>
           <li data-step="song-move">Optional: move a position. In the song list, go to position 10, hold SHIFT and press C: the position is cut to the clipboard and the list has 9 positions. Go to position 1, hold SHIFT and press D to insert it. Press SHIFT + PLAY and listen for where the BREAK landed; the guide only says it is inserted “into the selected song position”. Prefer the old order? Go to the moved BREAK and cut it again with SHIFT + C. Then go to the last position, add one with SHIFT + A and set it to BREAK with SHIFT + − / +.</li>
         </ol>
-        <p class="good"><b>Checkpoint:</b> the song plays INTRO, BEAT, MELODY, a four-bar BREAK2, MELODY and a short BREAK, then stops. <b>If it doesn't:</b> a two-bar breakdown means position 7 still holds BREAK, or C in BREAK2 is still two bars long. The song never stops: song loop is still on, so set 420. The song list doesn't open: song mode needs OS 2.0; update first. No chapter 02 song yet? Build it in <a href="./index.html#song">02 / Make it a song</a> first.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> the song plays INTRO, BEAT, MELODY, a four-bar BREAK2, MELODY and a short BREAK, then stops.</p>
+        <p><b>If it doesn't:</b> a two-bar breakdown means position 7 still holds BREAK, or C in BREAK2 is still two bars long. The song never stops: song loop is still on, so set 420. The song list doesn't open: song mode needs OS 2.0; update first. No chapter 02 song yet? Build it in <a href="./index.html#song">02 / Make it a song</a> first.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes#8.3.1-song-mode">8.3.1 song mode</a> · <a href="https://teenage.engineering/guides/ep-133/workflow#6.2-song-mode">6.2 song mode (position length)</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">9.1 duplicate pattern length</a> · <a href="https://teenage.engineering/guides/ep-133/system">system codes 420–421</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new: song mode (OS 2.0, 2.0.1)</a></p>
       </details>
       <details>
@@ -176,7 +188,8 @@
           <li data-step="sc-shape">Turn X (the length of the dip) and Y (its shape) a little at a time. A short X gives a quick dip right under the kick; a long X gives a big, breathing pump. Aim for this: the kick sits clearly on top, and the melody swells back between kicks.</li>
           <li data-step="sc-done">Press MAIN to leave the settings, then stop. Play BEAT and INTRO too, and listen for the pump there. To soften it later, open sidechain again (SHIFT + FX, then +) and shorten X. The guide explains how to add sources and destinations but not how to remove them. Holding SHIFT and pressing B or C again may remove a destination, so listen to check.</li>
         </ol>
-        <p class="good"><b>Checkpoint:</b> the bass and melody dip on every kick and swell back between kicks. <b>If it doesn't:</b> for no pump at all, hold A and press pad 1 again to set the source, then hold SHIFT and press B, then C, for the destinations, and lengthen X. If the drums pump too, A was added as a destination. No sidechain page: it needs OS 2.0; update first.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> the bass and melody dip on every kick and swell back between kicks.</p>
+        <p><b>If it doesn't:</b> for no pump at all, hold A and press pad 1 again to set the source, then hold SHIFT and press B, then C, for the destinations, and lengthen X. If the drums pump too, A was added as a destination. No sidechain page: it needs OS 2.0; update first.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/effects#11.9.1-sidechain">11.9.1 sidechain</a> · <a href="https://teenage.engineering/guides/ep-133/effects#11.9-output">11.9 output</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new: sidechain (OS 2.0)</a></p>
       </details>
       <details>
@@ -188,7 +201,8 @@
           <li data-step="rec-take">Start recording in the app, then, in the song list, press SHIFT + PLAY on the K.O. II and perform: punch-in FX, a latched repeat, scene changes if you play scenes by hand. After the song stops, wait for the last sound to fade, then stop the app. Listen back on the phone or computer.</li>
           <li data-step="rec-line-out">No USB audio? Use the 3.5 mm output, a stereo headphone/line output. Connect a stereo 3.5 mm cable to the line input of an audio interface or recorder, and start with low levels. Either way your recording is audio only: back up the project itself with the official EP sample tool on a computer.</li>
         </ol>
-        <p class="good"><b>Checkpoint:</b> a file on your phone or computer plays your song, including your live effects. <b>If it doesn't:</b> if the app records silence, choose the K.O. II as its input, not the built-in microphone. USB audio needs OS 2.5. Some USB-C cables only charge, so try another cable. On a phone, the recording app must accept an external USB input.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> a file on your phone or computer plays your song, including your live effects.</p>
+        <p><b>If it doesn't:</b> if the app records silence, choose the K.O. II as its input, not the built-in microphone. USB audio needs OS 2.5. Some USB-C cables only charge, so try another cable. On a phone, the recording app must accept an external USB input.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new: USB audio (OS 2.5)</a> · <a href="https://teenage.engineering/guides/ep-133/hardware-overview">1.1 inputs and outputs</a> · <a href="https://teenage.engineering/guides/ep-133/power-on">power on (USB power)</a> · <a href="https://teenage.engineering/guides/ep-133/tech-specs">technical specifications</a></p>
       </details>
     </section>
@@ -211,19 +225,19 @@
       <h2>Button instructions and sources</h2>
       <p>Original teaching recipe. Every button sequence was checked against teenage engineering's official EP-133 guide on 13 October 2026. Where the guide is silent, the step says so; examples are exact display text, how to switch KEYS off and how to remove a sidechain destination. UI checks cannot validate your installed firmware or physical device actions.</p>
       <p><a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a> · <a href="https://teenage.engineering/guides/ep-133/functions">Timing, note repeat and timing correct</a> · <a href="https://teenage.engineering/guides/ep-133/effects">Effects, punch-in FX and sidechain</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Sound edit, scenes and song mode</a> · <a href="https://teenage.engineering/guides/ep-133/system">System settings and lock mode</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">How to: velocity, metronome, scales</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">What's new (OS 2.0–2.5)</a></p>
-      <p class="notice">Safety: ERASE + SOUND deletes a sample file, and holding SHIFT + ERASE while switching on formats the drive. This chapter needs neither. Work in practice copies and check your original scenes after edits.</p>
-      <div class="actions">
-        <button class="button" id="reset" type="button" hidden>Reset this chapter's checklist</button>
-        <button class="button" id="print" type="button" hidden>Print all steps</button>
+      <p class="notice danger">Safety: ERASE + SOUND deletes a sample file, and holding SHIFT + ERASE while switching on formats the drive. This chapter needs neither. Work in practice copies and check your original scenes after edits.</p>
+      <div class="row">
+        <button class="btn" id="print" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-print"></use></svg>Print all steps</button>
+        <button class="btn danger" id="reset" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-undo"></use></svg>Reset this chapter's checklist</button>
       </div>
     </section>
   </main>
-  <footer>
+  <footer class="page reading site-foot">
     <nav class="chapters" aria-label="Chapters">
       <a class="prev" href="./sampling.html" rel="prev"><span>Previous chapter</span>07 / Sample, chop &amp; resample</a>
       <a class="next" href="./hiphop.html" rel="next"><span>Next chapter</span>09 / Full hip-hop beat</a>
     </nav>
-    <p><a href="./index.html">← Back to the main app</a></p>
+    <p><a class="back-link" href="./index.html"><svg class="icon" aria-hidden="true"><use href="icons.svg#i-back"></use></svg>Back to K.O. II Coach</a></p>
     <p><a href="https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml">Report a wrong instruction</a>: tell us the chapter, the step number and what your EP-133 did instead.</p>
     <p>Unofficial. Not affiliated with or endorsed by teenage engineering. EP-133 and K.O. II are trademarks of teenage engineering.</p>
   </footer>

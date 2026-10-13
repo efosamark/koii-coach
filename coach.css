@@ -1,0 +1,714 @@
+/* coach.css: the one stylesheet for every page of K.O. II Coach (index.html and the chapter pages).
+   Tokens, base, components, page layouts, the shared shell (shell.js), legacy app classes, forced colours and print.
+   No build step: pages link it as it is. Spec: docs/overhaul-plan.md sections 4.5, 5.6 and 6.
+
+   ======================================================================================================
+   CONTRACT
+   ------------------------------------------------------------------------------------------------------
+   Page skeleton (every page):
+     <head>
+       <meta charset="utf-8"> <meta name="viewport" content="width=device-width,initial-scale=1">
+       <meta name="color-scheme" content="light dark">
+       <meta name="theme-color" content="#FFFEF8" media="(prefers-color-scheme: light)">
+       <meta name="theme-color" content="#161E19" media="(prefers-color-scheme: dark)">
+       title, description, Open Graph and canonical as today; manifest, icon.svg and apple-touch-icon as today
+       <link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+       <link rel="stylesheet" href="coach.css">
+       chapter pages only: <script src="chapter.js" defer></script>
+     </head>
+     <body>                                            chapter pages: <body data-chapter="<slug>"> (slug as in site.js)
+       <a class="skip" href="#main">Skip to content</a>
+       <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span>
+         <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+       <script src="site.js"></script>
+       <script src="shell.js"></script>             plain, synchronous, straight after the header (see shell.js)
+       <main id="main" class="page" tabindex="-1">    chapter pages: class="page reading"
+         <header class="page-head">                   the page's own eyebrow and h1 (one .eyebrow per page head)
+           <p class="eyebrow">CHAPTER 07 / ABOUT 2–3 HOURS</p>
+           <h1>Sample, chop &amp; resample</h1>
+         </header>
+         ...
+       </main>
+       <footer class="page site-foot">...</footer>   chapter pages: class="page reading site-foot"
+     </body>
+   Without JavaScript the static header is a home link and every page still reads top to bottom.
+   shell.js fills #appbar (menu button, wordmark, title), adds the menu sheet (<dialog id="shell-menu">) and,
+   from 1024px, the course rail (#shell-rail) on the left. The chapter title in the bar comes from site.js
+   via <body data-chapter>; index.html views get theirs from the nav link marked aria-current="page".
+   Ids the shell owns: appbar, shell-menu, shell-menu-title, shell-rail, shell-offline. It never adds a
+   <header> with .eyebrow, a <footer>, an <h1> or a [data-step], so page selectors stay unique.
+
+   Components (class names):
+     Buttons      .btn (secondary) .btn.primary .btn.ghost .btn.danger; .btn.lg = 56px; :disabled = dashed
+     Icon button  .icon-btn (44px) .icon-btn.lg (56px), always with aria-label; icons: <svg class="icon">
+     Keycap       <kbd class="key">MAIN</kbd> quiet; .key.hot orange (Do lines and lit controls only);
+                  modifiers .hold (adds "HOLD"), .knob (round), .pad; <kbd class="chord">A + B</kbd> keeps a chord on one line
+     LCD chip     <samp class="lcd">1.2.3</samp>; .lcd.readout = 28px block readout
+     Tags         .tag .tag.done .tag.caution .tag.danger .tag.info; OS badge .badge.ok / .badge.warn (kept)
+     Notices      .notice.tip .notice.info .notice.caution .notice.danger (danger = irreversible only);
+                  a leading <b> is the notice's heading. .checkpoint = "you should now have" box
+     Cards        .card; .card.start (welcome card)
+     Disclosure   any <details>/<summary> gets the chevron and a 48px summary; details.card / .disclosure = boxed
+     Progress     <span class="meter" aria-hidden="true"><span class="meter-fill" style="width:40%"></span></span>
+                  next to visible text ("23 of 57 done"); .status-bar = sticky chapter bar under the app bar;
+                  .dots = the 01/02 step dots (buttons with .done / .current)
+     Tick         label.check > input[type=checkbox] + span (chapter.js builds it): 48px row, round tick
+     Toast        .toast (role="status"; hide with [hidden] or .hidden)
+     Sheet        <dialog class="sheet"> > .sheet-box > .sheet-head + .sheet-body: bottom sheet under 600px,
+                  side panel from 600px
+     Text         .eyebrow (mono caps, ink-2) .meta (14px ink-2) .muted .sr (visually hidden) .lead
+     Layout       .page (1180px container) .page.reading (chapter reading column) .page-head .row .grid
+                  (auto-fill tiles; .grid > div = inset tile) .split (two columns when wide) .sticky .section
+     Chapter      .steps > details (section cards), .steps ol > li[data-step] rows, li.here, .tally (.all),
+                  .chapters .prev/.next, .site-foot
+   Old class -> new class:
+     chapter pages: header (dark band) -> the shell + header.page-head inside main; .progress -> .status-bar;
+       .button -> .btn (#resume .btn.primary, #print .btn, #reset .btn.danger); .actions -> .row;
+       .good -> .checkpoint; .notice -> .notice + .tip/.info/.caution/.danger; <code> holding a display
+       value -> <samp class="lcd"> (plain <code> still works); .card, .grid, .check, .tally, .here, .chapters,
+       .skip keep their names. chapter.css is no longer needed.
+     index.html: the inline <style> and the 12-link nav go (the shell renders the nav); .wrap -> .page;
+       .btn.orange -> .btn.primary (orange is for keycaps only); .btn.light -> .btn; .tiny -> .meta;
+       .hero -> .page-head (.hero still works); .progress (dots) -> .dots; .notice.ok -> .notice.tip or
+       .checkpoint. .card, .row, .split, .grid, .sticky, .badge, .key, .field, .device, .controls, .control,
+       .pads, .display, .beat, .scroll, .search, .lessoncard, .inside, .source, .links, .map, .gloss, .path,
+       .toast, .hidden, .sr, .skip keep working as they are (see "Legacy app classes" below).
+   Notes:
+     Sticky things go at top:var(--sticky-top) (the app bar's height; 0 on short viewports, where the bar
+     scrolls away). A script that checks whether an element is hidden under the bar compares its top with
+     that value, not with 0. From 1024px the menu button is hidden and the same links sit in the rail.
+     Theme hooks for tests: <html data-theme="light|dark"> overrides the system setting.
+     Offline: sw.js ASSETS must list ./coach.css ./site.js ./shell.js ./icons.svg
+     ./fonts/IBMPlexMono-SemiBold.woff2; build_site.py must copy icons.svg and fonts/ (woff2 and OFL.txt).
+   ====================================================================================================== */
+
+/* ---------- Font: IBM Plex Mono SemiBold, Latin subset (SIL OFL 1.1, fonts/OFL.txt) ---------- */
+/* Used for keycaps, LCD chips, eyebrows, step numbers and the wordmark. Weight 600 only. */
+@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/IBMPlexMono-SemiBold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* ---------- Tokens (plan 6.1-6.5) ---------- */
+:root{
+  color-scheme:light dark;
+  /* Colour, light. Every value is from the plan's token table; one meaning per colour. */
+  --bg:#EEF0E7; --surface-1:#FFFEF8; --surface-2:#F4F5EC; --surface-3:#E1E5D6; --surface-raised:#FFFEF8;
+  --line:#CBD3C2; --line-strong:#76846F; --ink:#18251E; --ink-2:#4F5C4D;
+  --primary:#18251E; --on-primary:#FFFFFF;
+  --key:#C2410C; --on-key:#FFFFFF; --key-edge:#8A2E08;
+  --lcd-bg:#1A2420; --lcd-ink:#E4F5CF; --lcd-line:#1A2420;
+  --done-ink:#3F6212; --done-fill:#D8EF9A; --on-done:#18251E; --here:#4D7C0F;
+  --danger:#B0172F; --danger-surface:#FDECEE;
+  --caution-ink:#7A4B00; --caution-surface:#FFF3D1; --caution-line:#A86A12;
+  --info-ink:#2F4A5C; --info-surface:#EAF0F2;
+  --focus:#1F6FD1;
+  --e1:0 1px 2px rgb(24 37 30/.06); --e2:0 8px 24px rgb(24 37 30/.08); --e3:0 -16px 48px rgb(0 0 0/.24);
+  /* Type. Six sizes, fluid between 390 and 1280px; rem so the reader's own text size still counts. */
+  --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;
+  --t-cap:.875rem; --t-cap-lh:1.25rem;                                                    /* 14/20: the floor */
+  --t-body:clamp(1.0625rem,1.0351rem + .1124vw,1.125rem); --t-body-lh:clamp(1.625rem,1.5702rem + .2247vw,1.75rem); /* 17/26 -> 18/28 */
+  --t-check:1.25rem; --t-check-lh:1.75rem;                                                /* 20/28 */
+  --t-do:clamp(1.5rem,1.3905rem + .4494vw,1.75rem); --t-do-lh:clamp(2rem,1.8905rem + .4494vw,2.25rem);           /* 24/32 -> 28/36 */
+  --t-h2:clamp(1.5rem,1.3905rem + .4494vw,1.75rem); --t-h2-lh:clamp(1.875rem,1.7655rem + .4494vw,2.125rem);      /* 24/30 -> 28/34 */
+  --t-h1:clamp(1.875rem,1.5464rem + 1.3483vw,2.625rem); --t-h1-lh:clamp(2.25rem,1.9214rem + 1.3483vw,3rem);      /* 30/36 -> 42/48 */
+  --measure:65ch;
+  /* Space, radii, layout */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px; --sp-7:48px; --sp-8:64px;
+  --r-chip:6px; --r-control:12px; --r-card:20px;
+  --gutter:16px; --container:1180px; --rail-w:288px;
+  --appbar-h:56px; --sticky-top:var(--appbar-h);   /* sticky things sit under the app bar */
+  /* Motion */
+  --ease:cubic-bezier(.2,.8,.2,1); --dur-press:120ms; --dur-swap:200ms; --dur-open:240ms; --dur-sheet:280ms;
+  /* Icons drawn in CSS (summary chevron, notice tones, tick). Same drawings as icons.svg; only the shape is used. */
+  --i-chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 6l6 6-6 6'/%3E%3C/svg%3E");
+  --i-tip:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 18h6M10 21h4'/%3E%3Cpath d='M12 3a6 6 0 0 0-3.8 10.6c.6.5.8 1.2.8 2V16h6v-.4c0-.8.2-1.5.8-2A6 6 0 0 0 12 3z'/%3E%3C/svg%3E");
+  --i-info:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 11v5.5M12 7.5h.01'/%3E%3C/svg%3E");
+  --i-warning:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.3 4.3L2.8 17.5A2 2 0 0 0 4.5 20.5h15a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0z'/%3E%3Cpath d='M12 9.5v4M12 17h.01'/%3E%3C/svg%3E");
+  --i-erase:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 20.5h11'/%3E%3Cpath d='M4.9 13.9l8.5-8.5a2 2 0 0 1 2.8 0l3.4 3.4a2 2 0 0 1 0 2.8L11 20.2a1 1 0 0 1-.7.3H8.2a1 1 0 0 1-.7-.3l-2.6-2.6a2 2 0 0 1 0-2.8z'/%3E%3Cpath d='M9 9.8l5.2 5.2'/%3E%3C/svg%3E");
+  --i-check:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E");
+  /* The tick inside a done checkbox is drawn in --on-done, which is near-black in both themes. */
+  --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2318251E' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
+}
+/* Colour, dark. Applied when the system is dark, unless a page or test sets data-theme="light"; and always
+   for data-theme="dark". Keep the two blocks identical. Elevated surfaces step up a level in dark.
+   Screen only: paper always starts from the light tokens (see Print), even when the system is dark. */
+@media screen and (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#060908; --surface-1:#161E19; --surface-2:#232E27; --surface-3:#34413A; --surface-raised:#232E27;
+  --line:#3E4F45; --line-strong:#80948A; --ink:#E8EEE0; --ink-2:#AAB6A4;
+  --primary:#E8EEE0; --on-primary:#060908;
+  --key:#FF8A5C; --on-key:#1A0E08; --key-edge:#C2561F;
+  --lcd-bg:#050806; --lcd-ink:#E4F5CF; --lcd-line:#80948A;
+  --done-ink:#B9D67A; --done-fill:#A8C46A; --on-done:#060908; --here:#A8C46A;
+  --danger:#FF7D8E; --danger-surface:#2E1418;
+  --caution-ink:#F2C46D; --caution-surface:#2A2214; --caution-line:#C9962E;
+  --info-ink:#A9C3D6; --info-surface:#1B262D;
+  --focus:#7FB2FF;
+  --e1:0 1px 2px rgb(0 0 0/.4); --e2:0 8px 24px rgb(0 0 0/.5); --e3:0 -16px 48px rgb(0 0 0/.5);
+}}
+@media screen{:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#060908; --surface-1:#161E19; --surface-2:#232E27; --surface-3:#34413A; --surface-raised:#232E27;
+  --line:#3E4F45; --line-strong:#80948A; --ink:#E8EEE0; --ink-2:#AAB6A4;
+  --primary:#E8EEE0; --on-primary:#060908;
+  --key:#FF8A5C; --on-key:#1A0E08; --key-edge:#C2561F;
+  --lcd-bg:#050806; --lcd-ink:#E4F5CF; --lcd-line:#80948A;
+  --done-ink:#B9D67A; --done-fill:#A8C46A; --on-done:#060908; --here:#A8C46A;
+  --danger:#FF7D8E; --danger-surface:#2E1418;
+  --caution-ink:#F2C46D; --caution-surface:#2A2214; --caution-line:#C9962E;
+  --info-ink:#A9C3D6; --info-surface:#1B262D;
+  --focus:#7FB2FF;
+  --e1:0 1px 2px rgb(0 0 0/.4); --e2:0 8px 24px rgb(0 0 0/.5); --e3:0 -16px 48px rgb(0 0 0/.5);
+}}
+:root[data-theme="light"]{color-scheme:light}
+@media (min-width:600px){:root{--gutter:24px}}
+@media (min-width:1024px){:root{--gutter:32px;--appbar-h:64px}}
+/* Short viewports (landscape phones, high zoom): a 40px bar that scrolls away, so fixed chrome stays small. */
+@media (max-height:480px){:root{--appbar-h:40px;--sticky-top:0px}}
+
+/* ---------- Base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--sticky-top) + 16px);scroll-padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:400 var(--t-body)/var(--t-body-lh) var(--font-ui);overflow-wrap:break-word}
+h1,h2,h3,h4{margin:0 0 var(--sp-3);color:var(--ink)}
+h1{font-size:var(--t-h1);line-height:var(--t-h1-lh);font-weight:800}
+h2{font-size:var(--t-h2);line-height:var(--t-h2-lh);font-weight:800}
+h3{font-size:var(--t-check);line-height:var(--t-check-lh);font-weight:600}
+h4{font-size:var(--t-body);line-height:var(--t-body-lh);font-weight:600}
+p{margin:0 0 var(--sp-4)}
+p,li,dd{max-width:var(--measure)}
+ul,ol{margin:0 0 var(--sp-4);padding-left:1.5em}
+li{margin:var(--sp-1) 0}
+b,strong{font-weight:600}
+small{font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+hr{border:0;border-top:1px solid var(--line);margin:var(--sp-5) 0}
+img,svg,video{max-width:100%}
+/* Links are ink, never orange: orange means "press this". */
+a{color:var(--ink);text-decoration-line:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+a:hover{text-decoration-thickness:2.5px}
+button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;touch-action:manipulation}
+code,kbd,samp,pre{font-family:var(--font-mono);font-weight:600}
+code{padding:.05em .35em;border-radius:var(--r-chip);background:var(--surface-3);font-size:max(.85em,14px);overflow-wrap:anywhere}
+/* Focus ring: keyboard only, 3px with a gap showing the surface behind. */
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+:focus:not(:focus-visible){outline:none}
+main:focus{outline:none}
+table{width:100%;margin:var(--sp-4) 0;border-collapse:collapse;font-size:var(--t-body);line-height:var(--t-body-lh)}
+th,td{padding:var(--sp-2) var(--sp-3) var(--sp-2) 0;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{font-size:var(--t-cap);line-height:var(--t-cap-lh);font-weight:600;color:var(--ink-2)}
+/* Phones: 14px, and long words may hyphenate rather than push the table wider than the screen. */
+@media (max-width:599px){table{font-size:var(--t-cap);line-height:var(--t-cap-lh)}th,td{hyphens:auto}}
+dl{margin:0 0 var(--sp-4)}
+dt{font-weight:600;margin-top:var(--sp-3)}
+dd{margin:0 0 var(--sp-1)}
+/* Form controls: 48px, line-strong outline, the page font (never the browser's Arial). */
+input[type=search],input[type=text],input[type=email],input[type=number],input[type=url],select,textarea{min-height:48px;padding:var(--sp-2) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);max-width:100%}
+input[type=checkbox],input[type=radio]{accent-color:var(--ink)}
+/* Range: 8px track, 28px thumb, ink. */
+input[type=range]{-webkit-appearance:none;appearance:none;width:10rem;max-width:100%;height:28px;margin:0 var(--sp-2);background:transparent;vertical-align:middle}
+input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:999px;background:var(--surface-3);border:1px solid var(--line-strong)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:28px;height:28px;margin-top:-11px;border:3px solid var(--surface-1);border-radius:999px;background:var(--ink);box-shadow:0 0 0 1px var(--line-strong)}
+input[type=range]::-moz-range-track{height:8px;border-radius:999px;background:var(--surface-3);border:1px solid var(--line-strong)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(--surface-1);border-radius:999px;background:var(--ink)}
+.sr{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+.skip{position:absolute;left:var(--sp-2);top:-200px;z-index:60;padding:var(--sp-3) var(--sp-4);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font-weight:600;box-shadow:var(--e2)}
+.skip:focus{top:var(--sp-2)}
+.hidden{display:none!important}
+.icon{width:24px;height:24px;flex:none;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon.sm{width:20px;height:20px}
+
+/* ---------- Text helpers ---------- */
+.eyebrow{display:block;margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.meta,.tiny{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
+.muted{color:var(--ink-2)}
+.lead{font-size:var(--t-check);line-height:var(--t-check-lh)}
+
+/* ---------- Buttons ---------- */
+/* One primary per view. Disabled is a dashed outline with ink-2 text, never an opacity fade.
+   .orange and .light are the old app names for primary and secondary. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:48px;padding:var(--sp-2) var(--sp-5);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 var(--t-body)/1.3 var(--font-ui);text-align:center;text-decoration:none;cursor:pointer;transition:transform var(--dur-press) var(--ease),background-color var(--dur-press) var(--ease)}
+.btn:hover:not(:disabled){background:var(--surface-2)}
+.btn:active:not(:disabled){transform:translateY(1px)}
+.btn.primary,.btn.orange{background:var(--primary);border-color:transparent;color:var(--on-primary)}
+.btn.primary:hover:not(:disabled),.btn.orange:hover:not(:disabled){background:var(--ink-2)}
+.btn.ghost{background:transparent;border-color:transparent;padding-inline:var(--sp-3);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.btn.ghost:hover:not(:disabled){background:var(--surface-2)}
+.btn.danger{background:transparent;border-color:var(--danger);color:var(--danger)}
+.btn.danger:hover:not(:disabled){background:var(--danger-surface)}
+.btn.lg{min-height:56px}
+.btn:disabled,.btn[aria-disabled="true"]{background:transparent;border-color:var(--line-strong);border-style:dashed;color:var(--ink-2);cursor:not-allowed}
+.btn .icon{width:20px;height:20px}
+.icon-btn{display:inline-grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:1.5px solid transparent;border-radius:var(--r-control);background:transparent;color:var(--ink)}
+.icon-btn:hover{background:var(--surface-2)}
+.icon-btn:active{transform:translateY(1px)}
+.icon-btn.lg{width:56px;height:56px}
+
+/* ---------- Keycaps and LCD chips: the two hardware primitives ---------- */
+/* Quiet by default. .hot (orange) only in Do lines and for a lit control on the device map. */
+.key{display:inline-block;min-width:1.9em;margin:0 .1em;padding:.05em .45em;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);box-shadow:0 2px 0 var(--line-strong);font:600 max(.8em,14px)/1.5 var(--font-mono);letter-spacing:.02em;text-align:center;white-space:nowrap;vertical-align:.1em}
+.key.hot{background:var(--key);border-color:var(--key-edge);color:var(--on-key);box-shadow:0 2px 0 var(--key-edge)}
+.key.hold::before{content:"HOLD";margin-right:.45em;padding-right:.45em;border-right:1px solid currentColor;color:var(--ink-2)}
+.key.hot.hold::before{color:inherit}
+.key.knob{border-radius:999px;min-width:2.1em}
+.key.pad{min-width:2.4em}
+.chord{font:inherit;white-space:nowrap}
+.lcd{display:inline-block;padding:.05em .4em;border:1px solid var(--lcd-line);border-radius:var(--r-chip);background:var(--lcd-bg);color:var(--lcd-ink);font:600 max(.85em,14px)/1.5 var(--font-mono);letter-spacing:.04em;white-space:nowrap}
+.lcd.readout{display:block;width:max-content;max-width:100%;margin:var(--sp-2) 0;padding:var(--sp-2) var(--sp-4);border-radius:var(--r-control);font-size:28px;line-height:36px;white-space:normal}
+
+/* ---------- Tags and badges ---------- */
+.tag{display:inline-flex;align-items:center;gap:var(--sp-1);min-height:24px;padding:0 var(--sp-2);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1.4 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;vertical-align:.1em}
+.tag.done{background:var(--done-fill);border-color:var(--done-ink);color:var(--on-done)}
+.tag.caution{background:var(--caution-surface);border-color:var(--caution-line);color:var(--caution-ink)}
+.tag.danger{background:var(--danger-surface);border-color:var(--danger);color:var(--danger)}
+.tag.info{background:var(--info-surface);border-color:var(--info-ink);color:var(--info-ink)}
+/* "Needs OS x+" on a step (index.html): .ok when the chosen OS has it, .warn when it does not. */
+.badge{margin:var(--sp-2) 0 var(--sp-3)}
+.badge.ok{display:inline-block;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.badge.warn{padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-left-width:4px;border-radius:var(--r-control);background:var(--caution-surface);color:var(--ink)}
+.badge.warn b{color:var(--caution-ink)}
+
+/* ---------- Notices ---------- */
+/* Four tones, each with a stripe, an icon and (from the page) a label. Danger only for irreversible actions. */
+.notice{position:relative;max-width:none;margin:var(--sp-4) 0;padding:var(--sp-3) var(--sp-4);border:1px solid var(--line);border-left:4px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2);color:var(--ink)}
+.notice:empty{display:none}
+.notice > :last-child{margin-bottom:0}
+.notice.tip,.notice.info,.notice.caution,.notice.danger,.checkpoint{padding-left:calc(var(--sp-4) + 28px)}
+.notice.tip::before,.notice.info::before,.notice.caution::before,.notice.danger::before,.checkpoint::before{content:"";position:absolute;left:var(--sp-3);top:calc(var(--sp-3) + 3px);width:22px;height:22px;background:currentColor;-webkit-mask:var(--i-info) center/contain no-repeat;mask:var(--i-info) center/contain no-repeat}
+.notice.tip{color:var(--ink)}
+.notice.tip::before{background:var(--ink-2);-webkit-mask-image:var(--i-tip);mask-image:var(--i-tip)}
+.notice.info{border-color:var(--info-surface);border-left-color:var(--info-ink);background:var(--info-surface)}
+.notice.info::before{background:var(--info-ink)}
+.notice.caution{border-color:var(--caution-surface);border-left-color:var(--caution-line);background:var(--caution-surface)}
+.notice.caution::before{background:var(--caution-ink);-webkit-mask-image:var(--i-warning);mask-image:var(--i-warning)}
+.notice.caution > b:first-child,.notice.caution > strong:first-child{color:var(--caution-ink)}
+.notice.danger{border-color:var(--danger);border-left-width:6px;background:var(--danger-surface)}
+.notice.danger::before{background:var(--danger);-webkit-mask-image:var(--i-erase);mask-image:var(--i-erase)}
+.notice.danger > b:first-child,.notice.danger > strong:first-child{color:var(--danger)}
+/* Checkpoint: what you should now hear or see at the end of a section. */
+.checkpoint{position:relative;max-width:none;margin:var(--sp-4) 0;padding-top:var(--sp-3);padding-bottom:var(--sp-3);padding-right:var(--sp-4);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-2)}
+.checkpoint::before{background:var(--done-ink);-webkit-mask-image:var(--i-check);mask-image:var(--i-check)}
+.notice a,.checkpoint a{font-weight:600}
+
+/* ---------- Cards and disclosures ---------- */
+.card{margin:var(--sp-4) 0;padding:var(--sp-5);border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
+.card > :last-child{margin-bottom:0}
+.card.start{border:2px solid var(--primary)}
+@media (max-width:599px){.card{padding:var(--sp-4) var(--sp-4) var(--sp-5)}}
+/* The chevron replaces the browser's marker on every <summary> and turns when the section opens. */
+summary{display:flex;align-items:center;gap:var(--sp-3);min-height:48px;cursor:pointer;font-weight:600;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"";flex:none;width:20px;height:20px;background:currentColor;-webkit-mask:var(--i-chevron) center/contain no-repeat;mask:var(--i-chevron) center/contain no-repeat;transition:transform var(--dur-open) var(--ease)}
+details[open] > summary::before{transform:rotate(90deg)}
+details.card,.disclosure{padding:0}
+details.card > summary,.disclosure > summary{padding:var(--sp-2) var(--sp-5)}
+details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
+@media (max-width:599px){details.card > summary,.disclosure > summary{padding:var(--sp-2) var(--sp-4)}details.card > .inside,.disclosure > .inside{padding:0 var(--sp-4) var(--sp-4)}}
+
+/* ---------- Progress ---------- */
+/* A real element (not ::before) so forced colours keep it. Pair it with visible text such as "23 of 57 done". */
+.meter{display:block;min-width:4rem;height:8px;overflow:hidden;border-radius:999px;background:var(--surface-3)}
+.meter-fill{display:block;width:0;height:100%;border-radius:inherit;background:var(--here);transition:width var(--dur-swap) var(--ease)}
+/* Chapter status bar: count, meter and Continue, sticky under the app bar. */
+.status-bar{position:sticky;top:var(--sticky-top);z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-4);margin:var(--sp-4) 0;padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4);border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-1);box-shadow:var(--e2)}
+.status-bar > p{margin:0;font-weight:600}
+.status-bar .meter{flex:1 1 6rem}
+.status-bar .btn{min-height:44px;padding-inline:var(--sp-4)}
+/* Step dots of 01/02 (index.html): buttons, done and current told apart by height as well as colour. */
+.dots{display:flex;gap:3px;margin:var(--sp-3) 0}
+.dots button{flex:1;min-width:6px;height:28px;padding:11px 0;border:0;border-radius:2px;background:var(--line-strong);background-clip:content-box}
+.dots button.done{padding:8px 0;background-color:var(--done-ink)}
+.dots button.current{padding:3px 0;background-color:var(--ink)}
+@media (max-width:599px){.dots{flex-wrap:wrap;row-gap:4px}.dots button{flex:0 0 calc((100% - 33px)/12);min-width:24px}}
+/* Tick: label.check > input + span. The whole 48px row is the target; the circle fills when done. */
+.check{display:flex;align-items:center;gap:var(--sp-3);min-height:48px;margin-top:var(--sp-2);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh);cursor:pointer;max-width:max-content}
+.check input{-webkit-appearance:none;appearance:none;flex:none;width:32px;height:32px;margin:0;border:2px solid var(--line-strong);border-radius:999px;background:var(--surface-1) center/22px no-repeat;cursor:pointer;transition:background-color var(--dur-press) var(--ease)}
+.check input:checked{border-color:var(--done-ink);background-color:var(--done-fill);background-image:var(--i-tick)}
+.check input:checked + span{color:var(--ink);font-weight:600}
+.check:hover input:not(:checked){border-color:var(--ink)}
+/* Section tally in a chapter <summary> ("3 of 8 done"); .all when the section is complete. */
+.tally{flex:none;margin-left:auto;padding:0 var(--sp-2);border:1.5px solid var(--line);border-radius:var(--r-chip);background:var(--surface-2);color:var(--ink-2);font:600 var(--t-cap)/1.6 var(--font-mono);white-space:nowrap}
+.tally.all{border-color:var(--done-ink);background:var(--done-fill);color:var(--on-done)}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;left:50%;bottom:calc(var(--sp-4) + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:var(--sp-3);width:max-content;max-width:min(calc(100vw - 2 * var(--sp-4)),32rem);min-height:48px;padding:var(--sp-3) var(--sp-4);transform:translateX(-50%);border:1px solid transparent;border-radius:var(--r-control);background:var(--primary);color:var(--on-primary);box-shadow:var(--e3);font-weight:600}
+.toast .btn{min-height:40px;border-color:var(--on-primary);background:transparent;color:var(--on-primary)}
+
+/* ---------- Page layout ---------- */
+.page{width:100%;max-width:calc(var(--container) + 2 * var(--gutter));margin-inline:auto;padding:var(--sp-5) var(--gutter) var(--sp-7)}
+.page.reading{max-width:calc(46rem + 2 * var(--gutter))}
+.page-head{margin:var(--sp-2) 0 var(--sp-5)}
+.page-head h1{margin:0 0 var(--sp-3)}
+.page-head > p:not(.eyebrow){max-width:var(--measure)}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-3)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,16rem),1fr));gap:var(--sp-4);margin:0 0 var(--sp-4)}
+.grid > *,.split > *{margin:0}
+.grid > div{padding:var(--sp-3) var(--sp-4);border-radius:var(--r-control);background:var(--surface-2)}
+.split{display:grid;gap:var(--sp-5);align-items:start}
+/* Two columns only when the content column is wide: below the rail breakpoint, or beside the rail from 1200px. */
+@media (min-width:800px) and (max-width:1023px),(min-width:1200px){.split{grid-template-columns:1.25fr 1fr}.sticky{position:sticky;top:calc(var(--sticky-top) + var(--sp-4))}}
+.section{margin-top:var(--sp-5)}
+.site-foot{border-top:1px solid var(--line);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.site-foot.page{padding-top:var(--sp-5)}
+.site-foot p{margin:0 0 var(--sp-2)}
+.site-foot a{color:var(--ink)}
+
+/* ---------- Chapter pages ---------- */
+.steps > details{margin:var(--sp-4) 0;padding:var(--sp-1) var(--sp-5) var(--sp-4);border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
+.steps > details > summary{padding:var(--sp-2) 0;font-size:var(--t-check);line-height:var(--t-check-lh)}
+.steps > details[open] > summary{margin-bottom:var(--sp-2)}
+@media (max-width:599px){.steps > details{padding:var(--sp-1) var(--sp-4) var(--sp-3)}}
+.steps ol{margin:var(--sp-3) 0;padding-left:2.25em}
+.steps ol > li{max-width:none;margin:0;padding:var(--sp-3) 0;border-bottom:1px solid var(--line)}
+.steps ol > li:last-child{border-bottom:0}
+.steps ol > li::marker{font-family:var(--font-mono);font-weight:600;color:var(--ink-2)}
+.steps li,.steps details{scroll-margin-top:72px}
+/* "You are here": the step after the last one ticked. */
+.steps li.here{border-bottom:0;padding-bottom:calc(var(--sp-3) + 1px);border-radius:var(--r-control);background:var(--surface-2);box-shadow:0 0 0 6px var(--surface-2);outline:2px solid var(--here);outline-offset:6px}
+.steps li:focus{outline:none}
+.steps li:focus-visible{outline:3px solid var(--focus);outline-offset:6px}
+/* Previous / next chapter links in the footer. */
+.chapters{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3);margin:0 0 var(--sp-5)}
+.chapters a{display:block;min-height:48px;padding:var(--sp-3) var(--sp-4);border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);box-shadow:var(--e1);font-size:var(--t-body);line-height:var(--t-body-lh);font-weight:600;text-decoration:none}
+.chapters a:hover{border-color:var(--line-strong)}
+.chapters a span{display:block;font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.chapters .next{grid-column:2;text-align:right}
+@media (max-width:599px){.chapters{grid-template-columns:1fr}.chapters .next{grid-column:auto;text-align:left}}
+
+/* ---------- Shell: app bar ---------- */
+.appbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:var(--sp-3);height:var(--appbar-h);padding:0 var(--gutter);border-bottom:1px solid var(--line);background:var(--surface-1);transition:box-shadow var(--dur-swap) var(--ease)}
+.appbar.scrolled{box-shadow:var(--e2)}
+.appbar .menu-btn{margin-left:-10px}
+.wordmark{display:inline-flex;flex-direction:column;flex:none;color:var(--ink);font:600 14px/16px var(--font-mono);letter-spacing:.06em;text-decoration:none;white-space:nowrap}
+.wordmark-sep{display:none}
+.wordmark:hover{text-decoration:underline;text-decoration-thickness:1.5px}
+.bar-title{display:flex;flex-direction:column;justify-content:center;min-width:0;margin:0;max-width:none;padding-left:var(--sp-3);border-left:1px solid var(--line)}
+.bar-title:not(.has-name){display:none}
+.bar-kicker{font:600 var(--t-cap)/18px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.bar-kicker:empty{display:none}
+.bar-name{overflow:hidden;font-size:15px;line-height:20px;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+@media (min-width:600px){.wordmark{flex-direction:row;gap:.5em;font-size:16px;line-height:20px}.wordmark-sep{display:inline}}
+@media (max-height:480px){.appbar{position:static}.bar-kicker{display:none}}
+
+/* ---------- Shell: course and tools lists (in the menu sheet, or the rail on desktop) ---------- */
+.shell-nav{padding-bottom:var(--sp-4)}
+.shell-nav nav + nav{margin-top:var(--sp-3)}
+.nav-label{margin:var(--sp-4) var(--sp-3) var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.shell-nav ol,.shell-nav ul{margin:0;padding:0;list-style:none}
+.shell-nav li{max-width:none;margin:0}
+.shell-nav nav a{display:grid;grid-template-columns:12px 2em minmax(0,1fr) auto;align-items:center;gap:0 var(--sp-3);min-height:48px;padding:var(--sp-2) var(--sp-3);border-radius:var(--r-control);color:var(--ink);font-weight:600;line-height:1.3;text-decoration:none}
+.shell-nav .tools-nav a{grid-template-columns:24px minmax(0,1fr)}
+.shell-nav nav a:hover{background:var(--surface-2)}
+.shell-nav nav a:hover .name{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.shell-nav nav a[aria-current="page"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--here)}
+.shell-nav .num{font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2)}
+.shell-nav .count{display:inline-flex;align-items:center;gap:var(--sp-1);font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2);white-space:nowrap}
+.shell-nav .count .icon{width:16px;height:16px;stroke-width:2.5}
+.shell-nav [data-state="done"] .count{color:var(--done-ink)}
+.shell-nav .tools-nav .icon{color:var(--ink-2)}
+/* LED: ring = not started, half = in progress, filled = done. The count beside it says the same in text. */
+.led{width:12px;height:12px;border:2px solid var(--line-strong);border-radius:999px}
+[data-state="doing"] .led{border-color:var(--here);background:linear-gradient(90deg,var(--here) 50%,transparent 50%)}
+[data-state="done"] .led{border-color:var(--done-ink);background:var(--done-fill)}
+.shell-meta{margin:var(--sp-4) var(--sp-3) 0;padding-top:var(--sp-4);border-top:1px solid var(--line);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.shell-meta p{margin:0 0 var(--sp-2)}
+.shell-meta a{color:var(--ink)}
+.offline-line{display:flex;align-items:center;gap:var(--sp-2)}
+.offline-line:empty{display:none}
+.offline-line .icon{width:20px;height:20px}
+.offline-line.ready{color:var(--done-ink)}
+
+/* ---------- Shell: menu sheet (phone and tablet) ---------- */
+html:has(.sheet[open]){overflow:hidden}
+.sheet{width:100%;max-width:100%;max-height:88vh;max-height:88dvh;margin:auto 0 0;padding:0;border:0;border-radius:var(--r-card) var(--r-card) 0 0;background:var(--surface-raised);color:var(--ink);box-shadow:var(--e3);overflow:hidden}
+.sheet[open]{display:flex;flex-direction:column;animation:sheet-up var(--dur-sheet) var(--ease)}
+.sheet::backdrop{background:rgb(6 9 8/.5)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sheet::backdrop{background:rgb(6 9 8/.7)}}
+:root[data-theme="dark"] .sheet::backdrop{background:rgb(6 9 8/.7)}
+.sheet[open]::backdrop{animation:fade var(--dur-sheet) var(--ease)}
+.sheet-box{display:flex;flex-direction:column;min-height:0;flex:1}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-5);border-bottom:1px solid var(--line)}
+.sheet-title{margin:0;font-size:var(--t-check);line-height:var(--t-check-lh);font-weight:600}
+.sheet-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 var(--sp-3) calc(var(--sp-5) + env(safe-area-inset-bottom,0px))}
+/* In dark the sheet is raised to surface-2, so its hover and current rows step up once more to stay visible. */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sheet .shell-nav nav a:is(:hover,[aria-current="page"]){background:var(--surface-3)}}
+:root[data-theme="dark"] .sheet .shell-nav nav a:is(:hover,[aria-current="page"]){background:var(--surface-3)}
+@media (min-width:600px){
+  .sheet{width:min(440px,calc(100vw - 48px));height:100vh;height:100dvh;max-height:none;margin:0 auto 0 0;border-radius:0 var(--r-card) var(--r-card) 0;box-shadow:16px 0 48px rgb(0 0 0/.24)}
+  .sheet[open]{animation-name:sheet-in}
+}
+@keyframes sheet-up{from{transform:translateY(100%)}}
+@keyframes sheet-in{from{transform:translateX(-100%)}}
+@keyframes fade{from{opacity:0}}
+
+/* ---------- Shell: desktop rail (1024px and up) ---------- */
+/* The rail is fixed beside the content; the page makes room with padding, so no wrapper element is needed. */
+.rail{display:none}
+@media (min-width:1024px){
+  html.shell-on body{padding-left:var(--rail-w)}
+  html.shell-on .appbar{margin-left:calc(-1 * var(--rail-w));padding-left:0;gap:0}
+  html.shell-on .appbar .menu-btn{display:none}
+  html.shell-on .appbar .wordmark{width:var(--rail-w);padding-left:calc(var(--sp-3) + var(--sp-3))}
+  html.shell-on .bar-title{padding-left:var(--gutter);border-left:0}
+  .rail{display:block;position:fixed;top:var(--appbar-h);bottom:0;left:0;z-index:20;width:var(--rail-w);overflow-y:auto;overscroll-behavior:contain;padding:var(--sp-1) var(--sp-3) var(--sp-6);border-right:1px solid var(--line);background:var(--surface-1)}
+  /* Rail rows are navigation chrome, set like the app bar title (15/20), so most names fit on one line. */
+  .rail .shell-nav nav a{grid-template-columns:12px 1.6em minmax(0,1fr) auto;gap:0 var(--sp-2);min-height:44px;padding:var(--sp-2) var(--sp-3) var(--sp-2) var(--sp-2);font-size:15px;line-height:20px}
+  .rail .shell-nav .tools-nav a{grid-template-columns:24px minmax(0,1fr);gap:0 var(--sp-3)}
+  .rail .nav-label{margin:var(--sp-4) var(--sp-2) var(--sp-1)}
+  .rail .shell-meta{margin-inline:var(--sp-2)}
+  html.shell-on .toast{left:calc(50% + var(--rail-w) / 2)}
+}
+
+/* ---------- Legacy app classes (index.html) ---------- */
+/* The single-page app still generates these names in its script. They are restyled here on the tokens,
+   so the app needs no class changes beyond the renames listed in the contract. */
+.wrap{width:100%;max-width:calc(var(--container) + 2 * var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.hero{margin:0 0 var(--sp-5)}
+.hero > p{max-width:var(--measure)}
+.hero .row > span{color:var(--ink-2)}
+.hero.compact h1{font-size:var(--t-h2);line-height:var(--t-h2-lh)}
+.card.start h2{margin-top:var(--sp-1)}
+h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
+.field{padding:var(--sp-4) 0;border-top:1px solid var(--line)}
+.field > b{display:block;margin-bottom:var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.field p{margin:0}
+.field.action{margin:var(--sp-4) 0;padding:var(--sp-4);border:0;border-radius:var(--r-control);background:var(--surface-2)}
+.field.action > p:not(.chips){font-size:var(--t-check);line-height:var(--t-check-lh)}
+.field p.chips{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);margin-top:var(--sp-3)}
+.device{padding:var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-card);background:var(--surface-3)}
+.display{margin-bottom:var(--sp-3);padding:var(--sp-3) var(--sp-4);border:1px solid var(--lcd-line);border-radius:var(--r-control);background:var(--lcd-bg);color:var(--lcd-ink);font:600 15px/1.4 var(--font-mono);letter-spacing:.04em}
+.display small{display:block;font-size:var(--t-cap)}
+.device .info{margin:0 0 var(--sp-3);padding:var(--sp-3) var(--sp-4);box-shadow:none}
+.device .info h3{margin:var(--sp-1) 0}
+.hint{margin:0 0 var(--sp-2)}
+.controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-2)}
+.pads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-2);margin-top:var(--sp-3)}
+.control{min-height:48px;padding:var(--sp-1);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);box-shadow:0 3px 0 var(--line-strong);font:600 var(--t-cap)/1.2 var(--font-mono);overflow-wrap:anywhere}
+.control:active{transform:translateY(1px)}
+.control.hot{border-color:var(--key-edge);background:var(--key);color:var(--on-key);box-shadow:0 3px 0 var(--key-edge)}
+.control.chosen{outline:3px solid var(--ink);outline-offset:2px}
+.control:focus-visible{outline-color:var(--focus)}
+.control.sym{font-size:20px;line-height:1}
+.pads .control{font-size:var(--t-body)}
+.scroll{overflow-x:auto;padding:var(--sp-2) var(--sp-1)}
+.beat{display:grid;grid-template-columns:64px repeat(16,32px);gap:5px;align-items:center;width:max-content}
+.beat.half{grid-template-columns:52px repeat(8,minmax(0,1fr));gap:4px;width:100%}
+.beat:not(.half) .label{position:sticky;left:0;z-index:1;background:var(--surface-1)}
+.beat button{height:34px;padding:0;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1 var(--font-mono)}
+.beat button:disabled{cursor:default}
+.beat button.on{border-color:var(--ink);background:var(--ink);color:var(--surface-1)}
+.beat button.beatstart{border-left:3px solid var(--ink-2)}
+.beat button.beatstart.on{border-left-color:var(--ink)}
+.beat button.now{box-shadow:inset 0 0 0 3px var(--here)}
+.beat button.on.now{box-shadow:inset 0 0 0 3px var(--done-fill)}
+.beat button.selected{outline:3px dashed var(--focus);outline-offset:2px}
+.beat button.selected:not(.on){background:var(--info-surface)}
+.beat .label{font-size:var(--t-cap);font-weight:600;line-height:1.15}
+.beat .beathead{grid-column:span 4;padding-left:5px;border-left:3px solid var(--ink-2);font-size:var(--t-cap);font-weight:600;line-height:1.25}
+.beat .beathead small{display:block;font:600 var(--t-cap)/1.25 var(--font-mono);color:var(--ink-2)}
+.beat .spacer{grid-column:1/-1;height:8px}
+.search{width:100%;margin:var(--sp-2) 0 var(--sp-2)}
+.lbl{font-weight:600}
+.inside{padding:0 var(--sp-5) var(--sp-4)}
+.source{display:block;margin:var(--sp-3) 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.links{display:flex;flex-wrap:wrap;gap:var(--sp-1) var(--sp-4)}
+.links .source{margin:0}
+.lessoncard{display:flex;flex-direction:column;gap:var(--sp-2);width:100%;text-align:left;color:var(--ink);cursor:pointer}
+.lessoncard:hover{border-color:var(--line-strong)}
+.lessoncard .t{font-size:var(--t-check);line-height:var(--t-check-lh);font-weight:600}
+.lessoncard .d{color:var(--ink-2)}
+.notice.ok{border-left-color:var(--here)}
+dl.gloss dt{margin-top:var(--sp-3)}
+#goals,.path{padding-left:0;list-style:none}
+.goal.ok{color:var(--done-ink);font-weight:600}
+.mt{margin-top:var(--sp-3)}
+.line{margin:0 0 var(--sp-2)}
+.row.toolbar{margin:var(--sp-3) 0 var(--sp-1)}
+@media (max-width:599px){
+  .map thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .map,.map tbody,.map tr,.map th,.map td{display:block}
+  .map tr{padding:var(--sp-2) 0;border-bottom:1px solid var(--line)}
+  .map th,.map td{padding:2px 0;border:0}
+  .map th{font-size:var(--t-body)}
+  .map td::before{content:attr(data-label) ": ";font-weight:600;color:var(--ink-2)}
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  :root{--dur-press:0ms;--dur-swap:0ms;--dur-open:0ms;--dur-sheet:0ms}
+  *,*::before,*::after{animation-duration:0s!important;animation-iteration-count:1!important;transition-duration:0s!important;scroll-behavior:auto!important}
+  .btn:active,.icon-btn:active,.control:active{transform:none!important}
+}
+
+/* ---------- Forced colours (Windows contrast themes) ---------- */
+/* Colour is replaced by system colours, so state must survive as outlines, borders and text. */
+@media (forced-colors:active){
+  .key.hot,.control.hot{outline:3px solid Highlight;outline-offset:1px}
+  .beat button.on{forced-color-adjust:none;background:Highlight;border-color:Highlight;color:HighlightText}
+  .beat button.now{outline:3px solid CanvasText;outline-offset:-4px}
+  .meter{border:1px solid CanvasText}
+  .meter-fill{forced-color-adjust:none;background:Highlight}
+  /* Done and to-do dots differ by height; the current one is Highlight. The selectors match the colour rules above. */
+  .dots button,.dots button.done{forced-color-adjust:none;background-color:CanvasText}
+  .dots button.current{background-color:Highlight}
+  .led{forced-color-adjust:none;border-color:CanvasText;background:Canvas}
+  [data-state="doing"] .led{border-color:Highlight;background:linear-gradient(90deg,Highlight 50%,Canvas 50%)}
+  [data-state="done"] .led{border-color:CanvasText;background:CanvasText}
+  .shell-nav nav a[aria-current="page"]{outline:3px solid Highlight;outline-offset:-3px}
+  .steps li.here{outline:3px solid Highlight;outline-offset:4px}
+  .check input{-webkit-appearance:auto;appearance:auto;width:28px;height:28px}
+  summary::before,.notice.tip::before,.notice.info::before,.notice.caution::before,.notice.danger::before,.checkpoint::before{forced-color-adjust:none;background:CanvasText}
+  .notice.danger{border:2px solid CanvasText;border-left-width:6px}
+  .lcd,.display,.tag,.badge.ok,code{border:1px solid CanvasText}
+  .sheet{border:2px solid CanvasText}
+  input[type=range]{-webkit-appearance:auto;appearance:auto}
+}
+
+/* ---------- Print ---------- */
+/* The whole chapter on paper: no shell, no buttons, ink on white, every section open (chapter.js opens them). */
+@media print{
+  :root{color-scheme:light;--bg:#fff;--surface-1:#fff;--surface-2:#fff;--surface-3:#fff;--ink:#000;--ink-2:#333;--line:#bbb;--line-strong:#666;--lcd-bg:#fff;--lcd-ink:#000;--lcd-line:#000;--key:#fff;--on-key:#000;--key-edge:#000;--e1:none;--e2:none;--e3:none}
+  html.shell-on body{padding-left:0}
+  body{background:#fff;color:#000}
+  .appbar,.rail,.sheet,.skip,.toast,.status-bar,#progress-note,.check,.tally,.chapters,.no-print,.menu-btn,.row button,.dots,.device{display:none!important}
+  .page{max-width:none;padding:0}
+  .card,.steps > details{box-shadow:none;break-inside:avoid}
+  details{break-inside:avoid}
+  .key.hot{border-width:2px}
+}
+
+/* ---------- App views (index.html) ---------- */
+/* Layout only the single-page app uses (chapters 01-02 and the tools); everything else it draws is a component above.
+   Its script generates this markup. Hooks the smoke test relies on: #step-title #song-title #next #note-next
+   #placement #beat #audio-play [data-dot] [data-song-step] [data-lesson] [data-control] #search #results #reset. */
+.page-head .row{margin-top:var(--sp-4)}
+.page-head.compact h1{font-size:var(--t-h2);line-height:var(--t-h2-lh)}
+.tag .icon,.lessoncard .more .icon{width:16px;height:16px}
+.source .icon{width:16px;height:16px;margin-left:var(--sp-1);vertical-align:-3px}
+
+/* Step card of 01/02. Emphasis follows the reading order: Do (20px on an inset), then what you should hear or see
+   (the check, with a "here" stripe), then Why (muted) and If stuck. */
+.step-card > h2{margin:var(--sp-3) 0 var(--sp-2)}
+.step-top{display:flex;align-items:center;gap:var(--sp-3);min-height:24px}
+.step-top .eyebrow{flex:none;margin:0}
+.step-meter{flex:1 1 auto}
+.field > b{display:flex;align-items:center;gap:var(--sp-2)}
+.field > b .icon{width:18px;height:18px}
+.field.expect{margin:var(--sp-2) 0 var(--sp-3);padding:var(--sp-1) 0 var(--sp-1) var(--sp-4);border-top:0;border-left:4px solid var(--here)}
+.field.expect > b{color:var(--done-ink)}
+.field.why p{color:var(--ink-2)}
+.step-actions{margin:var(--sp-5) 0 var(--sp-4)}
+.step-actions > :not(.prev){flex:1 1 auto}
+/* Phones: Previous shrinks to a 56px arrow (its name stays for screen readers) so Next can fill the row. */
+@media (max-width:599px){
+  .step-actions{flex-wrap:nowrap}
+  .step-actions .prev{flex:none;width:56px;padding:0}
+  .step-actions .prev-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .step-actions > :not(.prev){min-width:0;padding-inline:var(--sp-4)}
+}
+
+/* Step position: the dots from 600px; on phones a plain meter plus the "Steps" list, whose 48px rows jump to a step. */
+@media (max-width:599px){.step-card .dots{display:none}}
+@media (min-width:600px){.step-meter,.step-list{display:none}}
+.step-list{margin:var(--sp-3) 0 0;border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-2)}
+.step-list > summary{padding:0 var(--sp-4)}
+.step-list ol{margin:0;padding:0 var(--sp-2) var(--sp-2);list-style:none}
+.step-list li{max-width:none;margin:0}
+.step-list button{display:flex;align-items:center;gap:var(--sp-3);width:100%;min-height:48px;padding:var(--sp-2) var(--sp-3);border:0;border-radius:var(--r-control);background:transparent;color:var(--ink);text-align:left;line-height:1.3}
+.step-list button:hover{background:var(--surface-3)}
+.step-list .n{flex:none;min-width:2.5ch;font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2);text-align:right}
+.step-list .t{flex:1 1 auto;min-width:0}
+.step-list [aria-current="step"]{background:var(--surface-1);box-shadow:inset 3px 0 0 var(--here);font-weight:600}
+.you-here{flex:none;font:600 var(--t-cap)/1.2 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--done-ink)}
+/* The label gets its own line under the title, so on a narrow phone the title keeps the row's full width. */
+.step-list [aria-current="step"]{flex-wrap:wrap;row-gap:var(--sp-1)}
+.step-list [aria-current="step"] .you-here{flex-basis:100%;padding-left:calc(2.5ch + var(--sp-3))}
+
+/* Target rhythm in 01: read-only, so flat cells with no outline or keycap edge. The Rhythm lab keeps its buttons. */
+.beat .cell{display:grid;place-items:center;height:30px;border-radius:4px;background:var(--surface-3);color:var(--ink-2);font:600 var(--t-cap)/1 var(--font-mono)}
+.beat .cell.on{background:var(--ink);color:var(--surface-1)}
+.beat .cell.beatstart{border-left:3px solid var(--line-strong)}
+.beat .cell.now{box-shadow:inset 0 0 0 3px var(--here)}
+.beat .cell.selected{outline:3px dashed var(--focus);outline-offset:2px}
+.beat .cell.selected:not(.on){background:var(--info-surface)}
+/* Playhead on a hit: a ring in the card colour, which shows in both themes (lime on dark mode's light ink does not). */
+.beat button.on.now,.beat .cell.on.now{box-shadow:inset 0 0 0 3px var(--surface-1)}
+
+/* Note helper: the facts as quiet keycaps and an LCD chip, then the move itself as a Do line with lit keys. */
+.note-facts{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-4)}
+.note-do{font-size:var(--t-check);line-height:var(--t-check-lh)}
+
+/* Your path (01/02 views) and the lab's challenges: LED rows like the course menu. */
+.path li{display:grid;grid-template-columns:12px minmax(0,1fr) auto;align-items:center;gap:var(--sp-1) var(--sp-3);min-height:48px;max-width:none;margin:0;padding:var(--sp-2) 0;border-bottom:1px solid var(--line)}
+.path li:last-child{border-bottom:0}
+.path a{font-weight:600}
+.path .num{margin-right:var(--sp-1);font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2)}
+.path li > .meta{text-align:right}
+/* Phones: the status goes under the name, and the LED lines up with the name's first line. */
+@media (max-width:599px){.path li{grid-template-columns:12px minmax(0,1fr);align-items:start}.path .led{margin-top:7px}.path li > .meta{grid-column:2;text-align:left}}
+#goals li{display:flex;align-items:center;gap:var(--sp-3);min-height:40px;margin:0}
+.modes{padding-left:0;list-style:none}
+.modes li{margin:var(--sp-2) 0}
+
+/* Learn: lesson cards fill their grid row; the "Tried" tag sits beside the number. */
+.lessoncard{height:100%}
+.lesson-top{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2);min-height:24px}
+.lesson-top .eyebrow{margin:0}
+.lessoncard .more{display:inline-flex;align-items:center;gap:var(--sp-1);margin-top:auto;font-weight:600}
+.lessoncard:hover .t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+
+/* Help */
+#results details.card{margin:var(--sp-2) 0}
+#firmware-card .row{margin-bottom:var(--sp-2)}
+#import-file:focus-visible + label{outline:3px solid var(--focus);outline-offset:2px}
+
+@media (forced-colors:active){
+  .beat .cell{border:1px solid CanvasText}
+  .beat .cell.on{forced-color-adjust:none;background:Highlight;color:HighlightText}
+  .beat .cell.now{outline:3px solid CanvasText;outline-offset:-4px}
+  .step-list [aria-current="step"]{outline:3px solid Highlight;outline-offset:-3px}
+}
+@media print{.step-list,.step-meter,.toolbar,.hint{display:none!important}}
+
+/* ---------- Chapter pages, continued: progress bar, "You are here", footer ---------- */
+/* Refines the base "Chapter pages" styles above for the six checklist pages (00, 07 to 11). It comes last so it wins,
+   and it only touches classes those pages use (.status-bar, .steps, .here-tag, .back-link, .reading), apart from one html
+   rule that gives every other page the same scroll-padding as the base rule. The app views are not affected. */
+
+/* Sticky progress bar. On a phone it stays one row (count and Continue) and the meter becomes a 4px strip along its
+   bottom edge; from 600px the meter sits between the count and the button. */
+.status-bar{overflow:hidden;gap:var(--sp-2) var(--sp-3)}
+.status-bar > p{font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.status-bar .meter{position:absolute;left:0;right:0;bottom:0;min-width:0;height:4px;border-radius:0}
+.status-bar .btn{margin-left:auto}
+@media (max-width:419px){.status-bar .btn{padding-inline:var(--sp-3)}.status-bar .btn .icon{display:none}}
+@media (min-width:600px){
+  .status-bar{overflow:visible;gap:var(--sp-2) var(--sp-4)}
+  .status-bar > p{font-size:var(--t-body);line-height:var(--t-body-lh)}
+  .status-bar .meter{position:static;min-width:4rem;height:8px;border-radius:999px}
+}
+/* The app bar and, once chapter.js has shown it, this bar stick to the top. chapter.js puts the bar's height into
+   --status-h (it wraps on narrow screens and with large text); on pages without the bar the property is unset and counts
+   as 0, so their scroll-padding stays as in the base rules. Focus and scrolling to a step then stop below both bars,
+   so a focused tick or the "You are here" step is never hidden under them. */
+html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-4))}
+.steps li,.steps details{scroll-margin-top:var(--sp-2)}
+
+/* "You are here": a panel behind the whole row, number included, with a lime tag above the text. chapter.js adds
+   .here, aria-current="step" and the .here-tag span. The panel is a pseudo-element so that it can reach back over the
+   list number, which sits outside the row's own box. */
+.steps li.here{--reach:var(--sp-2);position:relative;z-index:0;margin:var(--sp-2) 0;background:none;box-shadow:none;outline:none}
+.steps li.here::before{content:"";position:absolute;z-index:-1;pointer-events:none;inset:calc(var(--sp-2) * -1) calc(var(--reach) * -1) calc(var(--sp-2) * -1) calc(-2.25em - var(--reach));border:2px solid var(--here);border-radius:var(--r-control);background:var(--surface-2)}
+@media (min-width:600px){.steps li.here{--reach:var(--sp-3)}}
+.steps li.here:focus-visible{outline:none}
+.steps li.here:focus-visible::before{outline:3px solid var(--focus);outline-offset:2px}
+.here-tag{display:flex;width:max-content;margin:0 0 var(--sp-2);border-color:var(--done-ink);background:var(--done-fill);color:var(--on-done)}
+@media (forced-colors:active){.steps li.here::before{border-color:Highlight}}
+
+/* Tables: a row header (the scenes table of chapter 11 uses .map, so it stacks into labelled rows on a phone) */
+.reading tbody th{font-weight:600}
+
+/* Footer: the way back to the course for readers without the menu */
+.site-foot .back-link{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:44px;font-weight:600}
+.site-foot .back-link .icon{width:20px;height:20px;margin-left:-2px}
+
+@media print{.here-tag,.steps li.here::before{display:none}.steps li.here{margin:0}}

@@ -8,11 +8,11 @@ def origin(url):
 
 
 def watch(page, base, errors, bad_assets):
-    """Collect uncaught exceptions, console errors, chapter.js markup warnings and failed same-origin requests."""
+    """Collect uncaught exceptions, console errors, chapter.js and shell.js warnings and failed same-origin requests."""
     site = origin(base)
 
     def on_console(message):
-        if message.type == 'error' or (message.type == 'warning' and message.text.startswith('chapter.js')):
+        if message.type == 'error' or (message.type == 'warning' and message.text.startswith(('chapter.js', 'shell.js'))):
             errors.append(f'{page.url}: console.{message.type}: {message.text}')
 
     def on_response(response):
