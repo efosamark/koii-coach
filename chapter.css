@@ -1,0 +1,62 @@
+/* Shared styles for the chapter pages: 00 setup.html, 07 sampling.html, 08 perform.html, 09 hiphop.html, 10 tech-house.html, 11 thodorakis-house.html. */
+:root{--bg:#eef0e7;--paper:#fffef8;--ink:#18251e;--muted:#4f5c4d;--orange:#c2410c;--lime:#d8ef9a;--line:#d1d9c8;--head:#18251e;--link:#a5381f;--btn:#18251e;--warm:#fff0df;--soft:#edf3e0;--code:#e6ecdf;--focus:#2476d5;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#111813;--paper:#18221c;--ink:#e8eee0;--muted:#aab6a4;--line:#33443a;--orange:#ff8a5c;--link:#ff8a5c;--btn:#c2410c;--warm:#2a2219;--soft:#1f2c23;--code:#24332a;--focus:#7fb2ff}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,sans-serif}
+a{color:var(--link)}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,li:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+main:focus,li:focus:not(:focus-visible){outline:none}
+.skip{position:absolute;left:8px;top:-100px;z-index:10;background:var(--paper);color:var(--ink);padding:10px 14px;border-radius:8px}
+.skip:focus{top:8px}
+
+/* Header */
+header{background:var(--head);color:#fff;padding:20px}
+header a{color:var(--lime)}
+.eyebrow{margin:10px 0 0;font-weight:800;font-size:13px;letter-spacing:2px;color:var(--orange)}
+header .eyebrow{color:#ff8a5c}
+@media (prefers-color-scheme:dark){header{border-bottom:1px solid var(--line)}}
+
+/* Page body */
+main{max-width:900px;margin:auto;padding:20px 16px 48px}
+h1{font-size:clamp(32px,6vw,50px);line-height:1.08;margin:12px 0}
+h2{font-size:22px;line-height:1.25}
+.card,details{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:18px;margin:15px 0}
+summary{cursor:pointer;font-weight:800;font-size:19px;padding:6px 0;min-height:44px}
+.notice{background:var(--warm);border-left:4px solid var(--orange);border-radius:9px;padding:13px;margin:16px 0}
+.good{background:var(--soft);border-left:4px solid #7aa45a;border-radius:9px;padding:13px;margin:16px 0}
+ol{padding-left:28px}
+li{padding:13px 0;border-bottom:1px solid var(--line)}
+li:last-child{border-bottom:0}
+.steps li,.steps details{scroll-margin-top:96px}
+.steps li.here{background:var(--soft);box-shadow:0 0 0 8px var(--soft);border-radius:4px}
+code{background:var(--code);border-radius:5px;padding:2px 6px;font:13px ui-monospace,monospace;overflow-wrap:anywhere}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:8px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.grid div{background:var(--soft);padding:12px;border-radius:10px}
+.button{padding:10px 16px;min-height:44px;border:0;border-radius:9px;background:var(--btn);color:#fff;font-weight:650}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+
+/* Progress, resume and step checkboxes (added by chapter.js) */
+.progress{position:sticky;top:0;z-index:2;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;background:var(--lime);color:#18251e;border-radius:10px;padding:8px 8px 8px 13px;margin:16px 0}
+.progress p{margin:0;font-weight:800}
+.progress .button{background:#18251e;color:#fff;padding:8px 14px}
+.check{display:flex;align-items:center;gap:10px;min-height:44px;margin-top:6px;color:var(--muted);font-size:15px;cursor:pointer}
+.check input{width:24px;height:24px;margin:0;flex:none;accent-color:var(--ink);cursor:pointer}
+.check input:checked+span{color:var(--ink);font-weight:700}
+.tally{display:inline-block;margin-left:8px;padding:0 9px;border-radius:999px;background:var(--soft);color:var(--muted);font-size:13px;font-weight:700;line-height:1.7;vertical-align:middle}
+.tally.all{background:var(--lime);color:#18251e}
+
+/* Footer */
+footer{max-width:900px;margin:auto;padding:24px 16px 40px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer p{margin:10px 0}
+.chapters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.chapters a{display:block;min-height:44px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);font-weight:750;text-decoration:none}
+.chapters a span{display:block;color:var(--muted);font-size:13px;font-weight:600}
+.chapters .next{text-align:right}.chapters .next:only-child{grid-column:2}
+
+@media (max-width:520px){main{padding:14px 11px 38px}.card,details{padding:14px}.grid{grid-template-columns:1fr}table{font-size:13px}.chapters{grid-template-columns:1fr}.chapters .next{text-align:left}.chapters .next:only-child{grid-column:auto}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{:root{--bg:#fff;--paper:#fff;--ink:#000;--muted:#333;--line:#bbb;--link:#000;--warm:#fff;--soft:#fff;--code:#eee}header,.skip,.progress,#progress-note,.check,.actions,.tally,.chapters{display:none!important}details{break-inside:avoid}body{background:#fff;color:#000}}
