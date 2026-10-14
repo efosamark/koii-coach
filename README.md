@@ -25,7 +25,7 @@ The course is written for a K.O. II on **OS 2.5.1**, the newest release (3 July 
 | 10 | Tech House | A 128 BPM track with four-on-the-floor drums, a bassline that ducks under the kick, your own vocal hook, two drops, a breakdown and a build: 112 bars in song mode. |
 | 11 | House with your own vocal samples | A 4-minute, 128 BPM house track built around five short vocal samples you record or upload yourself: 32 song positions, 128 bars. |
 
-**Suggested order:** 00, 01, 02, 07, 08, 09, 10, 11. Each chapter opens in the step player: one step at a time, large enough to read with the phone propped beside the K.O. II, with Done · Next under your thumb. "All steps" shows the whole chapter as a list, for reading ahead or printing. Each chapter ends with a link to the next one in this order.
+**Suggested order:** 00, 01, 02, 07, 08, 09, 10, 11. Each chapter opens in the step player: one step at a time, large enough to read with the phone propped beside the K.O. II, with Done · Next under your thumb and Tools beside it (the step's keys on the control map, its fixes and its words). "All steps" shows the whole chapter as a list, for reading ahead or printing. Each chapter ends with a link to the next one in this order. With a keyboard: → or Enter for Done · Next, ← Back, T Tools, / search, M menu, ? the list (Settings can switch the letter keys off).
 
 **Tools** you can open any time, from the menu or Home: **Learn** (short lessons on the main functions), **Control map** (tap a control to see what it does), **Rhythm lab** (try drum patterns on a grid in the browser), **Troubleshooting** (symptom-first answers, with their own search), **Glossary**, **Cheat sheet** (the moves of 01 and 02, the song map and the system settings), **Safety and erasing** (every action that erases or overwrites something, and its undo) and **Settings** (your OS version, keeping the screen on, your progress file). The search button in the app bar searches every step, lesson, help topic and word.
 
@@ -71,8 +71,9 @@ Every push to `main`, every pull request into `main` and every manual run start 
    - every old address of the retired single-page app (`index.html#first`, `#song/<step>`, `#manual/<lesson>`, `#help/<topic>`, `#controls`, `#lab`, `#settings`) opens its new page, and any other hash opens Home;
    - every tool page loads; the control map explains a control and works with arrow keys; a lesson can be marked as tried and Back closes it; Troubleshooting search filters the topics; the OS choice in Settings changes the "Needs OS" badges; the Rhythm lab grid and its practice sounds work;
    - the service worker installs and Home reports that every page is available offline; Reset asks first, keeps your settings and can be undone;
-   - each chapter page (00, 01, 02 and 07 to 11) opens on its start screen, shows its chapter number, the footer report link and the right previous and next links (the test clicks them), keeps a ticked step after a reload, steps forward and back in the player, and doesn't scroll sideways at 390 px; search finds chapter steps and help topics and opens them.
+   - each chapter page (00, 01, 02 and 07 to 11) opens on its start screen, shows its chapter number, the footer report link and the right previous and next links (the test clicks them), keeps a ticked step after a reload, steps forward and back in the player, and doesn't scroll sideways at 390 px; search finds chapter steps (shown as a preview first) and help topics (opened in place).
 3. `tests/test_progress.py` checks that saved progress carries over: a place in 01 saved by older versions (schema 2 and 4, finished or not) becomes ticks and the step to continue at, moves are written back to the old key, and a progress file loads with your settings kept.
+4. `tests/test_player.py` checks that in every chapter a step's "Before you press" comes before the press and its undo and check after it, and, in the browser: skipping a run of optional steps (and undoing it), a part's checkpoint ("Not quite" and Redo, which never change a tick), the chapter-complete screen ticking the recap, the Tools sheet (keys in press order, every tab, T, a help link in a step), the menu's "This chapter" jump and the keyboard shortcuts with their off switch.
 
 **Not tested automatically:** real EP-133 hardware, how the sounds sound, Safari on iPhone, offline use on a real phone, saving the progress file (loading one is tested), and the live site (the workflow leaves `LIVE_URL` empty; set it to test a deployed copy as well).
 
@@ -125,10 +126,10 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 | `progress.js` | Saved progress shared by every page: carrying 01 and 02 over from older versions, the progress file and Reset. |
 | `search.js`, `wake.js` | Search across every chapter and tool (works offline), and keeping the screen on while you practise. |
 | `icons.svg`, `fonts/` | Icons and the self-hosted IBM Plex Mono font for keys and display values (SIL Open Font License, see `fonts/OFL.txt`). |
-| `chapter.js`, `player.js` | Ticks, progress and resume for every chapter page, and the step player on top of them. |
+| `chapter.js`, `player.js`, `toolsheet.js` | Ticks, progress and resume for every chapter page, the step player on top of them, and the Tools sheet (the step's keys, fixes and words; the map, troubleshooting, glossary and cheat sheet). |
 | `sw.js` | Offline support (service worker). |
 | `manifest.webmanifest`, `icon.svg`, `icons/` | Home-screen app name and icons. |
-| `tests/test_smoke.py`, `tests/test_progress.py`, `tests/conftest.py`, `tests/support.py`, `pytest.ini` | Browser tests (pytest and Playwright for Python). |
+| `tests/test_smoke.py`, `tests/test_progress.py`, `tests/test_player.py`, `tests/conftest.py`, `tests/support.py`, `pytest.ini` | Browser tests (pytest and Playwright for Python). |
 | `requirements-dev.txt` | Test tools and their pinned versions. Never published. |
 | `.github/` | Test-and-deploy workflow, site build and live-check scripts, issue form, Dependabot settings. |
 | `CHANGELOG.md` | What changed in each release, and which guide version it was checked against. |

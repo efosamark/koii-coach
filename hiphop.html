@@ -24,6 +24,7 @@
   <script src="wake.js" defer></script>
   <script src="chapter.js" defer></script>
   <script src="player.js" defer></script>
+  <script src="toolsheet.js" defer></script>
 </head>
 <body data-chapter="hiphop">
   <a class="skip" href="#main">Skip to content</a>
@@ -36,6 +37,7 @@
       <h1>From a sampled voice to a full hip-hop beat</h1>
     </header>
     <p>Build a 64-bar old-school hip-hop beat in a fresh project: the drums and bass from 01 First beat, a few sung words you sample yourself, a stripped-down break and a repeated-word twist near the end. Six scenes and a six-position song list play it back for you. At 90 BPM in 4/4 it lasts about 2 minutes 51 seconds.</p>
+    <p class="makes"><b>You will make:</b> a 64-bar old-school hip-hop beat with a sung phrase you sampled, six scenes and a six-position song list, in project 8.</p>
     <div class="notice info">Do one numbered step at a time, and stop playback before editing notes. Written for OS 2.5.1; older OS: <a href="https://teenage.engineering/apps/update">update first</a>. Finish <a href="./first-beat.html">01 First beat</a> and <a href="./song.html">02 Make it a song</a> before you start. <a href="./sampling.html">07 Sample, chop &amp; resample</a> and <a href="./perform.html">08 Play &amp; perform</a> explain sampling and live playing in more depth. The app cannot see your hardware: trust your display and your ears.</div>
     <section class="card">
       <h2>What you need</h2>
@@ -43,7 +45,7 @@
       <p>• A phone or computer connected with a USB-C cable (OS 2.5 USB audio).<br>• A phone, laptop or turntable with a headphone or line-level output, connected to the K.O. II's 3.5 mm input with a stereo 3.5 mm cable.<br>• No cable at all: the built-in mic and your own voice.</p>
       <p class="notice tip">Turntable tip: the official guide says to use an RIAA amplifier or a turntable with a built-in amp. If your turntable has a PHONO/LINE switch, as the Audio-Technica LP60X family does, set it to LINE. See <a href="https://www.audio-technica.com/en-eu/support/how-to-set-up-an-at-lp60x-turntable">Audio-Technica's LP60X setup guide</a>.</p>
     </section>
-    <section class="card">
+    <section class="card reference">
       <h2>Moves you will use</h2>
       <table>
         <thead>
@@ -72,7 +74,7 @@
     <section id="tutorial" class="steps" aria-label="Steps">
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. chapter.js numbers the steps and saves ticks by id. No nested lists inside a step. -->
       <details open>
-        <summary>01 / Start a fresh project and rebuild your beat</summary>
+        <summary><h2 class="part-title">01 / Start a fresh project and rebuild your beat</h2></summary>
         <ol start="1">
           <li data-step="choose-fresh-project">
             <p class="step-do">Press <kbd class="key">MAIN</kbd>; if anything plays, press <kbd class="key">PLAY</kbd> to stop it. Hold <kbd class="key">MAIN</kbd>, hold <kbd class="key pad">pad 8</kbd> as well, then release both. The official guide says “hold main and one of the pads (1-9) to select an empty project”. This course keeps project 6 for 01, 02 and 08, 7 for 07 and 9 for 10 (your scratch project from <a href="./setup.html">00 Start here</a> until then), so 8 is free. Press <kbd class="key">PLAY</kbd>: nothing should sound. Stop, tap <kbd class="key">A</kbd>, then tap pads 1, 2 and 3: silent too. Your 02 song stays untouched in project 6, with its pads and song list. <b>If a pad makes a sound,</b> you may still be in another project: on OS 2.0 and later a quick <kbd class="key">MAIN</kbd> + number tap can select a scene instead, so hold <kbd class="key pad">pad 8</kbd> a moment longer and check again. Project 8 already holds work you want to keep? See help <a href="./help.html#my-project-is-not-empty">“My project is not empty”</a> in <a href="./help.html">Troubleshooting</a>; the sounds you load next replace whatever a reused project’s pads hold. Music on this unit you care about? Back it up first with the official <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a>.</p>
@@ -93,13 +95,15 @@
             <p class="step-do">Now play the snare live. Practise first: press <kbd class="key">PLAY</kbd> and, without touching <kbd class="key">RECORD</kbd>, tap <kbd class="key pad">pad 2</kbd> on beats two and four (count 1, TWO, 3, FOUR). Press <kbd class="key">PLAY</kbd> to stop. For real: tap and release <kbd class="key">RECORD</kbd>, then press <kbd class="key">PLAY</kbd>. After the four-beat count-in, tap <kbd class="key pad">pad 2</kbd> on two and four, then press <kbd class="key">RECORD</kbd>: recording stops and the beat keeps playing. Listen, then press <kbd class="key">PLAY</kbd> to stop. Quantize snaps your taps to the 16-step grid.</p>
           </li>
           <li data-step="check-rebuilt-beat" data-risk="erase">
-            <p class="step-do"><b>Checkpoint.</b> Stopped, step to <samp class="lcd">1.2.1</samp> and <samp class="lcd">1.4.1</samp>: <kbd class="key pad">pad 2</kbd> lights at both and nowhere else. Press <kbd class="key">PLAY</kbd>. You should hear the 01 First beat drums: kick on 1, the “and” of 2, 3 and the “and” of 4; snare on 2 and 4; hats on every eighth note. Stop. <b>If it doesn't:</b> press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> (undo) while the umbrella is lit and record the snare again. Or remove a stray note with a brief <kbd class="key">ERASE</kbd> + its pad at its position, then write <kbd class="key pad">pad 2</kbd> at <samp class="lcd">1.2.1</samp> and <samp class="lcd">1.4.1</samp> with <kbd class="key">RECORD</kbd> held, as in 01 First beat.</p>
+            <p class="step-do"><b>Checkpoint.</b> Stopped, step to <samp class="lcd">1.2.1</samp> and <samp class="lcd">1.4.1</samp>: <kbd class="key pad">pad 2</kbd> lights at both and nowhere else. Press <kbd class="key">PLAY</kbd>.</p>
+            <p class="step-check">You should hear the 01 First beat drums: kick on 1, the “and” of 2, 3 and the “and” of 4; snare on 2 and 4; hats on every eighth note. Stop.</p>
+            <p class="step-note"><b>If it doesn't:</b> press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> (undo) while the umbrella is lit and record the snare again. Or remove a stray note with a brief <kbd class="key">ERASE</kbd> + its pad at its position, then write <kbd class="key pad">pad 2</kbd> at <samp class="lcd">1.2.1</samp> and <samp class="lcd">1.4.1</samp> with <kbd class="key">RECORD</kbd> held, as in 01 First beat.</p>
           </li>
         </ol>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started#7.1-make-a-beat-from-scratch">get started</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.1-sound">sound mode</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">live record</a></p>
       </details>
       <details>
-        <summary>02 / Add the bass and get ready for the vocal</summary>
+        <summary><h2 class="part-title">02 / Add the bass and get ready for the vocal</h2></summary>
         <ol start="8">
           <li data-step="load-bass-sound">
             <p class="step-do">Tap <kbd class="key">B</kbd>. Press <kbd class="key">SOUND</kbd>, tap <kbd class="key pad">pad 1</kbd>, hold <kbd class="key">SOUND</kbd>, type <kbd class="key">4</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and release: <kbd class="key pad">B1</kbd> loads sample 400 (factory bass sounds are stored at 400–499). Tap <kbd class="key pad">pad 1</kbd>: one low bass note. Turn <kbd class="key knob">X</kbd> down if it booms over the kick.</p>
@@ -123,7 +127,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">pattern length</a> · <a href="https://teenage.engineering/guides/ep-133/functions#10.4.2-timing-correct">timing correct</a> · <a href="https://teenage.engineering/guides/ep-133/workflow#6.1-commit">commit</a></p>
       </details>
       <details>
-        <summary>03 / Choose your source and the vocal phrase</summary>
+        <summary><h2 class="part-title">03 / Choose your source and the vocal phrase</h2></summary>
         <ol start="14">
           <li data-step="choose-source">
             <p class="step-do">Turn your source's volume and your headphones down first, then set up ONE source. USB: connect a phone or computer with a USB-C cable and pick the K.O. II as that device's sound output (OS 2.5 USB audio). Line: run a stereo 3.5 mm cable from a phone, laptop or turntable output into the K.O. II's 3.5 mm input, not its output, MIDI or SYNC socket. Mic: connect nothing and use the built-in mic. Keep your headphones or speakers on the K.O. II output.</p>
@@ -144,7 +148,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/hardware-overview">inputs and outputs</a> · <a href="https://teenage.engineering/guides/ep-133/functions#10.1-sample">sample</a> · <a href="https://teenage.engineering/guides/ep-133/how-to#12.11-record-a-sample-using-usb-audio">record a sample using USB audio</a> · <a href="https://teenage.engineering/guides/ep-133/system">system settings</a></p>
       </details>
       <details>
-        <summary>04 / Record the phrase once and trim it</summary>
+        <summary><h2 class="part-title">04 / Record the phrase once and trim it</h2></summary>
         <ol start="19">
           <li data-step="sample-main-phrase">
             <p class="step-do">Still in SAMPLE with <kbd class="key">C</kbd> selected, start the song a few seconds before the PHRASE. Just BEFORE the first word, hold <kbd class="key pad">pad 1</kbd> (<kbd class="key pad">C1</kbd>) and keep holding through the words; release just AFTER the last word. <kbd class="key pad">C1</kbd> stops blinking and stays lit: it holds your sample. Press <kbd class="key">MAIN</kbd>, tap <kbd class="key">C</kbd> and tap <kbd class="key pad">pad 1</kbd>: you hear your phrase. A little extra audio at either end is fine; you trim it next. Need both hands for the source? Hands-free sampling (OS 2.0 and later): hold <kbd class="key">SHIFT</kbd> and press <kbd class="key pad">pad 1</kbd> just before the words, then press <kbd class="key">SAMPLE</kbd> right after them. Not happy? Press <kbd class="key">SAMPLE</kbd> and record <kbd class="key pad">pad 1</kbd> again by holding it.</p>
@@ -156,7 +160,8 @@
             <p class="step-do">Tap <kbd class="key pad">pad 1</kbd> to select <kbd class="key pad">C1</kbd>. Briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> to open sound edit, then press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows the trim page (<samp class="lcd">TRI</samp>). Turn <kbd class="key knob">X</kbd> (start) a little at a time, tapping <kbd class="key pad">pad 1</kbd> between changes, until playback starts just before the first word. Do not cut into the word. Hold <kbd class="key">SHIFT</kbd> while turning for finer steps; on OS 2.5, holding the pad here shows the playback position in seconds. Trim changes how this pad plays in this project; the recording itself is untouched.</p>
           </li>
           <li data-step="trim-phrase-end">
-            <p class="step-do">Stay on the trim page. Turn <kbd class="key knob">Y</kbd> (length) down, tapping <kbd class="key pad">pad 1</kbd>, until playback stops just after the LAST word. Keep every word clear. At 90 BPM one bar lasts about 2.7 seconds, so keep the phrase shorter than that. Never hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> on this page: holding it crops the recording on disk for good, and <kbd class="key pad">C2</kbd> (and later <kbd class="key pad">D1</kbd>) play the same recording.</p>
+            <p class="preflight">Never hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> on this page: holding it crops the recording on disk for good, and <kbd class="key pad">C2</kbd> (and later <kbd class="key pad">D1</kbd>) play the same recording.</p>
+            <p class="step-do">Stay on the trim page. Turn <kbd class="key knob">Y</kbd> (length) down, tapping <kbd class="key pad">pad 1</kbd>, until playback stops just after the LAST word. Keep every word clear. At 90 BPM one bar lasts about 2.7 seconds, so keep the phrase shorter than that.</p>
           </li>
           <li data-step="trim-answer-word">
             <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key pad">pad 2</kbd> (<kbd class="key pad">C2</kbd>), briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> and go to the trim page again. Turn <kbd class="key knob">X</kbd> until playback starts at your ANSWER word, then turn <kbd class="key knob">Y</kbd> until it stops right after it: about half a second or less. Tap <kbd class="key pad">pad 1</kbd>, then <kbd class="key pad">pad 2</kbd>: phrase, then only the answer word.</p>
@@ -171,7 +176,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions#10.1-sample">sample</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.5-copy-paste">copy sounds</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.2.2-trim">trim</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.2.1-sound-mode">play mode</a></p>
       </details>
       <details>
-        <summary>05 / Put the phrase and answer into HOOK</summary>
+        <summary><h2 class="part-title">05 / Put the phrase and answer into HOOK</h2></summary>
         <ol start="26">
           <li data-step="place-phrase">
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and check the number is HOOK. Stopped, in MAIN, tap <kbd class="key">C</kbd>. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>. Hold <kbd class="key">RECORD</kbd>, tap <kbd class="key pad">pad 1</kbd>, release. This writes the full phrase at the start of bar 1. Tapping a pad without <kbd class="key">RECORD</kbd> only auditions it.</p>
@@ -186,19 +191,24 @@
             <p class="step-do">Step through C with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>: only two notes light, <kbd class="key pad">pad 1</kbd> at <samp class="lcd">1.1.1</samp> and <kbd class="key pad">pad 2</kbd> at <samp class="lcd">2.3.1</samp>. Count it: full phrase in bar 1, space, short answer in bar 2. If the phrase still runs into the answer, choose a shorter phrase rather than cutting a word in half.</p>
           </li>
           <li data-step="play-drums-with-vocal" data-risk="erase">
-            <p class="step-do"><b>Checkpoint.</b> Press <kbd class="key">PLAY</kbd> for two full passes, then stop. You should hear the drums and bass under the phrase in bar 1 and the answer in bar 2. <b>If it doesn't:</b> no vocal? Check that you are in HOOK and that C was selected while you wrote. An extra note? Go to it and remove it with a brief <kbd class="key">ERASE</kbd> + its pad. The sampled backing music keeps its own rhythm and will not follow 90 BPM; if it fights the drums, choose a phrase with less music behind it.</p>
+            <p class="step-do"><b>Checkpoint.</b> Press <kbd class="key">PLAY</kbd> for two full passes, then stop.</p>
+            <p class="step-check">You should hear the drums and bass under the phrase in bar 1 and the answer in bar 2.</p>
+            <p class="step-note"><b>If it doesn't:</b> no vocal? Check that you are in HOOK and that C was selected while you wrote. An extra note? Go to it and remove it with a brief <kbd class="key">ERASE</kbd> + its pad. The sampled backing music keeps its own rhythm and will not follow 90 BPM; if it fights the drums, choose a phrase with less music behind it.</p>
           </li>
         </ol>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.2-step-sequence">step sequence</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.5-copy-paste">navigating bars</a></p>
       </details>
       <details>
-        <summary>06 / Make the bass fit the voice</summary>
+        <summary><h2 class="part-title">06 / Make the bass fit the voice</h2></summary>
         <ol start="31">
           <li data-step="tune-bass-to-voice">
             <p class="step-do">Press <kbd class="key">PLAY</kbd> and listen to the bass with the words. If it clashes, stop, press <kbd class="key">SOUND</kbd>, tap <kbd class="key">B</kbd>, tap <kbd class="key pad">pad 1</kbd> and turn <kbd class="key knob">Y</kbd> (pitch) a little, then play again. Change the bass, not the singer: leave <kbd class="key pad">C1</kbd> and <kbd class="key pad">C2</kbd> at their original pitch. Pad settings belong to the whole project, so VERSE changes too.</p>
           </li>
           <li data-step="swap-or-drop-hook-bass" data-risk="erase">
-            <p class="step-do">Nothing fits? In SOUND with <kbd class="key pad">B1</kbd> selected, browse other bass sounds in 400–499 with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>. Still clashing? Drop the bass from HOOK only: stopped, hold <kbd class="key">MAIN</kbd> and check the number is HOOK, tap <kbd class="key">B</kbd>, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks, then release. Every <kbd class="key pad">B1</kbd> note in HOOK is gone; VERSE keeps its bass. Drums plus a good vocal can work without bass.</p>
+            <p class="step-do">Nothing fits? In SOUND with <kbd class="key pad">B1</kbd> selected, browse other bass sounds in 400–499 with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>. Still clashing? Drop the bass from HOOK only: stopped, hold <kbd class="key">MAIN</kbd> and check the number is HOOK, tap <kbd class="key">B</kbd>, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks, then release.</p>
+            <p class="step-undo">Cleared the wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p>
+            <p class="step-check">Every <kbd class="key pad">B1</kbd> note in HOOK is gone; VERSE keeps its bass.</p>
+            <p class="step-note">Drums plus a good vocal can work without bass.</p>
           </li>
           <li data-step="balance-parts">
             <p class="step-do">Balance in SOUND, one pad at a time: tap <kbd class="key">A</kbd>, tap <kbd class="key pad">pad 3</kbd> and lower <kbd class="key knob">X</kbd> if the hats cover the words; tap <kbd class="key">C</kbd> and set pads 1 and 2 so the words are easy to follow; tap <kbd class="key">B</kbd>, tap <kbd class="key pad">pad 1</kbd> and keep it below the kick. Make one change, listen, stop. In MAIN, <kbd class="key knob">X</kbd> sets the input level, not pad volume.</p>
@@ -210,10 +220,11 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes#8.1-sound">sound mode</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">erase and undo</a></p>
       </details>
       <details>
-        <summary>07 / Make the intro and the break</summary>
+        <summary><h2 class="part-title">07 / Make the intro and the break</h2></summary>
         <ol start="35">
           <li data-step="make-intro-scene-v2" data-risk="erase">
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select VERSE with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>, release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>, then hold <kbd class="key">MAIN</kbd> and write the new number as INTRO. Stopped, tap <kbd class="key">B</kbd>, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks, then release: all of INTRO's bass notes are gone in one move.</p>
+            <p class="step-undo">Cleared the wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p>
           </li>
           <li data-step="check-intro-main-hook">
             <p class="step-do">Press <kbd class="key">PLAY</kbd>: INTRO is drums only. Stop. Hold <kbd class="key">MAIN</kbd> and select VERSE: its bass is still there. Select HOOK: its vocal is still there. Copies are independent. If an earlier scene changed, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once while the umbrella is lit.</p>
@@ -222,10 +233,14 @@
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select INTRO again and release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once and write the new number as BREAK: your copy for the stripped-down section.</p>
           </li>
           <li data-step="break-clear-snare" data-risk="erase">
+            <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be BREAK.</p>
             <p class="step-do">In BREAK, stopped, tap <kbd class="key">A</kbd>. Hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 2</kbd></kbd> until <samp class="lcd">TRK</samp> blinks, then release: every snare in BREAK is gone.</p>
+            <p class="step-undo">Cleared the wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p>
           </li>
           <li data-step="break-rebuild-hats" data-risk="erase">
-            <p class="step-do">Still in group <kbd class="key">A</kbd>, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 3</kbd></kbd> until <samp class="lcd">TRK</samp> blinks to clear the hats. Then go to <samp class="lcd">1.1.1</samp> and write <kbd class="key pad">pad 3</kbd> with <kbd class="key">RECORD</kbd> held, and again at <samp class="lcd">1.3.1</samp>: two hats per bar, on beats 1 and 3.</p>
+            <p class="step-do">Still in group <kbd class="key">A</kbd>, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 3</kbd></kbd> until <samp class="lcd">TRK</samp> blinks to clear the hats.</p>
+            <p class="step-undo">Cleared the wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p>
+            <p class="step-do">Then go to <samp class="lcd">1.1.1</samp> and write <kbd class="key pad">pad 3</kbd> with <kbd class="key">RECORD</kbd> held, and again at <samp class="lcd">1.3.1</samp>: two hats per bar, on beats 1 and 3.</p>
           </li>
           <li data-step="play-break">
             <p class="step-do"><b>Checkpoint.</b> Play BREAK. You should hear your kick rhythm with two hats per bar, and no snare, bass or vocal. It should feel empty: that makes the return feel bigger. Stop. <b>If it doesn't:</b> hold <kbd class="key">MAIN</kbd> and check the number is BREAK. If INTRO lost its snare or hats, you cleared them there: select INTRO and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit, or write them again (snare at <samp class="lcd">1.2.1</samp> and <samp class="lcd">1.4.1</samp>, hats on every .1 and .3).</p>
@@ -234,7 +249,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">erase a pad's notes (TRK)</a> · <a href="https://teenage.engineering/guides/ep-133/workflow#6.1-commit">commit</a></p>
       </details>
       <details>
-        <summary>08 / Add the twist and the ending</summary>
+        <summary><h2 class="part-title">08 / Add the twist and the ending</h2></summary>
         <ol start="41">
           <li data-step="make-return-scene">
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and select HOOK. Play it once to check, then stop. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> and write the new number as RETURN. Only RETURN gets the twist.</p>
@@ -252,16 +267,19 @@
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and check the number is RETURN. Stopped, tap <kbd class="key">D</kbd>. Go to <samp class="lcd">1.1.1</samp>, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">+</kbd></kbd> to jump to bar 2, then <kbd class="key">+</kbd> until the display shows <samp class="lcd">2.4.1</samp>. Hold <kbd class="key">RECORD</kbd>, tap <kbd class="key pad">pad 1</kbd>, release. Press <kbd class="key">+</kbd> twice to reach <samp class="lcd">2.4.3</samp> and write <kbd class="key pad">pad 1</kbd> again. Play two passes: the word repeats twice near the end of bar 2.</p>
           </li>
           <li data-step="make-end-scene-v2" data-risk="erase">
-            <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select INTRO, release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> and write the new number as END. Stopped, tap <kbd class="key">A</kbd>, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks (all kicks gone), then go to <samp class="lcd">1.1.1</samp> and write <kbd class="key pad">pad 1</kbd> with <kbd class="key">RECORD</kbd> held. END keeps the snare and hats, with one kick per bar.</p>
+            <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select INTRO, release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> and write the new number as END. Stopped, tap <kbd class="key">A</kbd>, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks (all kicks gone), then go to <samp class="lcd">1.1.1</samp> and write <kbd class="key pad">pad 1</kbd> with <kbd class="key">RECORD</kbd> held.</p>
+            <p class="step-undo">Cleared the wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p>
+            <p class="step-check">END keeps the snare and hats, with one kick per bar.</p>
           </li>
           <li data-step="check-twist-and-end" data-risk="erase">
-            <p class="step-do"><b>Checkpoint.</b> Play RETURN: HOOK plus the short word twice near the end of bar 2. Play HOOK: no extra word. Play END: one kick per bar with snare and hats, no bass, no vocal. Stop. <b>If it doesn't:</b> the word also plays in HOOK? In HOOK, tap <kbd class="key">D</kbd> and hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks. The two hits cut each other off? Shorten <kbd class="key pad">D1</kbd> a little more on the trim page, or remove the note at <samp class="lcd">2.4.3</samp> with a brief <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd>.</p>
+            <p class="step-do"><b>Checkpoint.</b> Play RETURN: HOOK plus the short word twice near the end of bar 2. Play HOOK: no extra word. Play END: one kick per bar with snare and hats, no bass, no vocal. Stop.</p>
+            <p class="step-note"><b>If it doesn't:</b> the word also plays in HOOK? In HOOK, tap <kbd class="key">D</kbd> and hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks. The two hits cut each other off? Shorten <kbd class="key pad">D1</kbd> a little more on the trim page, or remove the note at <samp class="lcd">2.4.3</samp> with a brief <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd>.</p>
           </li>
         </ol>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.5-copy-paste">copy sounds</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.2.4-time">time page and reverse</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new in OS 2.5</a></p>
       </details>
       <details>
-        <summary>09 / Set the section lengths and build the song</summary>
+        <summary><h2 class="part-title">09 / Set the section lengths and build the song</h2></summary>
         <ol start="48">
           <li data-step="read-song-map">
             <p class="step-do">Read the song map below and keep your six scene numbers beside you. A song position plays its scene once, for as long as the scene's longest pattern. A and B are one bar and repeat, so C decides how long each scene lasts. Doubling C makes a section longer and, in HOOK and RETURN, repeats the vocal too.</p>
@@ -288,7 +306,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">duplicate pattern length</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.3.1-song-mode">song mode</a> · <a href="https://teenage.engineering/guides/ep-133/workflow">song positions</a></p>
       </details>
       <details>
-        <summary>10 / Finish, perform and keep your work</summary>
+        <summary><h2 class="part-title">10 / Finish, perform and keep your work</h2></summary>
         <ol start="55">
           <li data-step="final-listen-balance">
             <p class="step-do">In the song list (hold <kbd class="key">MAIN</kbd>, press <kbd class="key">ENTER</kbd>), press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> to play the song from the beginning at a comfortable volume. Listen for kick and snare first, then the bass, then whether the words are easy to understand. Stop and change only one pad volume in SOUND if needed. Pad settings affect every scene, so listen through again.</p>
@@ -297,7 +315,9 @@
             <p class="step-do">Optional space: in the song list press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> to start the song, then tap <kbd class="key">C</kbd>, press <kbd class="key">FX</kbd> and choose reverb with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>, then raise the fader a little: that is C's reverb send. Keep B's send low. Press <kbd class="key">MAIN</kbd> when done. Do not hold <kbd class="key">RECORD</kbd> while moving the fader: that records fader automation. Recorded some by accident? Stopped, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">FADER</kbd></kbd> until <samp class="lcd">FDR</samp> blinks to clear the group's fader moves (on OS 2.5, <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">FADER</kbd></kbd> + a pad clears only that pad's fader function).</p>
           </li>
           <li data-step="check-break-return" data-risk="erase">
-            <p class="step-do">Listen to BREAK going into RETURN: open the song list (hold <kbd class="key">MAIN</kbd>, press <kbd class="key">ENTER</kbd>), select position 4 with <kbd class="key">−</kbd> / <kbd class="key">+</kbd> and press <kbd class="key">PLAY</kbd>; the song plays on from there. The bare break should make the phrase, answer and repeated word feel bigger. If the repeated word distracts, stop, press <kbd class="key">MAIN</kbd>, hold <kbd class="key">MAIN</kbd> to select RETURN, tap <kbd class="key">D</kbd> and hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks. Change one thing at a time.</p>
+            <p class="step-do">Listen to BREAK going into RETURN: open the song list (hold <kbd class="key">MAIN</kbd>, press <kbd class="key">ENTER</kbd>), select position 4 with <kbd class="key">−</kbd> / <kbd class="key">+</kbd> and press <kbd class="key">PLAY</kbd>; the song plays on from there.</p>
+            <p class="step-check">The bare break should make the phrase, answer and repeated word feel bigger.</p>
+            <p class="step-note">If the repeated word distracts, stop, press <kbd class="key">MAIN</kbd>, hold <kbd class="key">MAIN</kbd> to select RETURN, tap <kbd class="key">D</kbd> and hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">pad 1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks. Change one thing at a time.</p>
           </li>
           <li data-step="optional-live-performance" data-optional data-setting="411">
             <p class="step-do">Optional, live: perform the song by hand. With the K.O. II already on, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> (system settings), type <kbd class="key">4</kbd>, <kbd class="key">1</kbd>, <kbd class="key">1</kbd>, press <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd>: a scene you pick now starts at the end of the current bar (<samp class="lcd">412</samp> would wait for the end of the pattern instead). Press <kbd class="key">MAIN</kbd> to leave the song list, hold <kbd class="key">MAIN</kbd> to select INTRO, and press <kbd class="key">PLAY</kbd>. In the last bar of each section, hold <kbd class="key">MAIN</kbd> and press <kbd class="key">+</kbd> or <kbd class="key">−</kbd> to pick the next scene, following the song map's bar counts. Hold <kbd class="key">FX</kbd> and press pads for punch-in effects; 08 Play &amp; perform has more. Afterwards set <samp class="lcd">410</samp> the same way to switch scenes instantly again.</p>
@@ -339,7 +359,7 @@
       <p class="notice danger">Safety: holding ERASE + SOUND until SND blinks deletes the selected sample from the device for good. Holding SHIFT + SOUND on the trim page crops the recording for good, and every pad that plays it (C1, C2 and D1 here) is affected. Neither is needed here. SHIFT + ERASE opens system settings only while the K.O. II is on; holding SHIFT + ERASE while switching it on formats the drive, and the factory sounds cannot be recovered. Back up with the official EP sample tool first.</p>
       <div class="row">
         <button class="btn" id="print" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-print"></use></svg>Print all steps</button>
-        <button class="btn danger" id="reset" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-undo"></use></svg>Reset this chapter's checklist</button>
+        <button class="btn danger" id="reset" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-undo"></use></svg>Restart this chapter</button>
       </div>
     </section>
   </main>

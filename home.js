@@ -5,8 +5,12 @@
      "It's set up" stores koii-coach-prefs.setup = 'ready'.
    - everyone else gets "Welcome back" and one Continue card (#resume) that opens the exact step: Chapter 00 while
      set-up is not 'ready'; else the unfinished chapter that moved last (its record's "at"); else meta.lastChapter;
-     else the first one with progress; else the next one not started. All eight done: a course-complete card.
-   - each course row shows its state (LED, x/N, a name that says it) and links to where that chapter continues.
+     else the first one with progress; else the next one not started (CoachProgress.continueTarget). The card names
+     the part and the step it opens at, read from the chapter's own page (precached; without it the card still works).
+     All eight done: a course-complete card that lists what each chapter made (site.js "made").
+   - each course row shows its state (LED, x/N, a name that says it) and links to where that chapter continues; the
+     Continue chapter is marked "You are here". 00, when the learner said their unit is set up, reads "Skipped · do it
+     any time", or "Optional · set-up checks" when Home moved an existing learner past it (meta.setupReason).
    Old addresses (index.html#first and the other views of the retired single-page app) are sent to their pages by the
    script at the top of <head>; any other hash is dropped, so "/" always means Home. */
 (()=>{
@@ -22,29 +26,46 @@ const mins=m=>Array.isArray(m)&&m.length===2?(m[0]>=120&&m[0]%60===0&&m[1]%60===
 const about=p=>[PROJECT[p.c.slug],mins(p.c.minutes)].filter(Boolean).join(' · ');
 const hours=all=>{const t=all.reduce((a,p)=>Array.isArray(p.c.minutes)?[a[0]+p.c.minutes[0],a[1]+p.c.minutes[1]]:a,[0,0]);return`about ${Math.round(t[0]/60)}–${Math.round(t[1]/60)} hours`;};
 
-function target(all){
-  const open=all.filter(p=>!p.done),setup=open.find(p=>p.c.slug==='setup'),last=P.meta().lastChapter;
-  if(!open.length)return null;
-  if(setup&&P.prefs().setup!=='ready')return setup;
-  return open.filter(p=>p.at).sort((a,b)=>b.at-a.at)[0]||(last&&open.find(p=>p.c.slug===last))||open.find(p=>p.x>0)||open.find(p=>p!==setup)||open[0];
-}
 function continueCard(all){
-  const p=target(all);
-  if(!p)return`<section class="card continue" aria-labelledby="continue-title"><p class="eyebrow">Course complete</p><h2 id="continue-title">All ${all.length} chapters done</h2><p>Revisit any chapter below. The cheat sheet keeps the moves you learned in one place.</p><a class="btn primary lg" id="resume" href="./cheat-sheet.html">Open the cheat sheet${icon('next')}</a></section>`;
+  const p=P.continueTarget(all);
+  if(!p)return`<section class="card continue complete" aria-labelledby="continue-title"><p class="eyebrow">Course complete</p><h2 id="continue-title">All ${all.length} chapters done</h2>`+
+    `<p>What you made:</p><ul class="made-list">${all.map(q=>`<li><span class="num">${esc(q.c.num)}</span> <a href="${esc(q.c.href)}">${esc(q.c.title)}</a>${q.c.made?`<span class="sub meta">${esc(q.c.made.charAt(0).toUpperCase()+q.c.made.slice(1))}.</span>`:''}</li>`).join('')}</ul>`+
+    `<p>The cheat sheet keeps the moves you learned in one place.</p><a class="btn primary lg" id="resume" href="./cheat-sheet.html">Open the cheat sheet${icon('next')}</a></section>`;
   const{c,x,n}=p,started=x>0||p.at>0;
   return`<section class="card continue" aria-labelledby="continue-title"><p class="eyebrow">${started?'Continue':'Next'} · Chapter ${esc(c.num)}</p><h2 id="continue-title">${esc(c.title)}</h2>`+
-    `<p class="where">${started?`${x} of ${n} done`:`${n} steps`}</p><span class="meter" aria-hidden="true"><span class="meter-fill" style="width:${Math.round(100*x/Math.max(1,n))}%"></span></span>`+
-    `<p class="meta">${esc(about(p))}</p><a class="btn primary lg" id="resume" href="${esc(p.href)}">${started?'Continue':'Start Chapter '+esc(c.num)}${icon('next')}</a>`+
-    (P.migratedSetup?'<p class="meta">Home is new: it found your progress, so Continue picks up where you left off. Chapter 00 stays in the course list as optional set-up checks.</p>':'')+'</section>';
+    `<p class="where" id="continue-part" hidden></p><p class="where-step meta" id="continue-step" hidden></p>`+
+    `<p class="continue-count"><span class="meter" aria-hidden="true"><span class="meter-fill" style="width:${Math.round(100*x/Math.max(1,n))}%"></span></span><span>${started?`${x} of ${n} done`:`${n} steps`}</span></p>`+
+    `<ul class="chips" aria-label="About this chapter">${about(p).split(' · ').filter(Boolean).map(s=>`<li>${esc(s)}</li>`).join('')}</ul>`+
+    `<a class="btn primary lg" id="resume" href="${esc(p.href)}">${started?'Continue':'Start Chapter '+esc(c.num)}${icon('next')}</a>`+
+    (P.migratedSetup&&x?`<p class="meta">We carried your progress over: ${x} of ${n} in Chapter ${esc(c.num)}. Chapter 00 stays in the course list as optional set-up checks.</p>`:'')+'</section>';
+}
+// The part and the step Continue opens at, from the chapter's page. Without it (offline before the first full visit)
+// the card keeps its count and the button.
+async function where(p){
+  if(!p||!p.cur)return;
+  try{
+    const res=await fetch(p.c.href);if(!res.ok)return;
+    const dom=new DOMParser().parseFromString(await res.text(),'text/html');
+    const li=dom.querySelector(`.steps li[data-step="${CSS.escape(p.cur)}"]`),d=li&&li.closest('details'),s=d&&d.querySelector('summary');
+    if(!li||!s)return;
+    const m=/^(\d+)\s*\/\s*(.*)$/.exec(s.textContent.replace(/\s+/g,' ').trim()),list=[...d.querySelectorAll('ol > li[data-step]')],t=li.querySelector('.step-title');
+    const part=$('#continue-part'),step=$('#continue-step');
+    if(m){part.textContent=`Part ${+m[1]} · ${m[2]}`;part.hidden=false;}
+    step.textContent=`Step ${list.indexOf(li)+1} of ${list.length}`+(t?' · '+t.textContent.replace(/\s+/g,' ').trim():'');step.hidden=false;
+    const os=/\bOS (\d+\.\d+(?:\.\d+)?)( or newer| or later)?/.exec([...dom.querySelectorAll('main > p')].slice(0,6).map(e=>e.textContent).join(' '));
+    if(os)$('.continue .chips').insertAdjacentHTML('beforeend',`<li>OS ${esc(os[1])}${os[2]?'+':''}</li>`);
+  }catch(e){}
 }
 function rows(all){
-  const ready=P.prefs().setup==='ready',list=$$('#course-list > li');
+  const ready=P.prefs().setup==='ready',moved=P.meta().setupReason==='existing-progress',list=$$('#course-list > li'),here=P.continueTarget(all);
   all.forEach((p,i)=>{
     const li=list[i];if(!li)return;
-    const{c,x,n,done}=p,st=done?'done':x>0?'doing':'todo',opt=st==='todo'&&c.slug==='setup'&&ready;
-    const count=done?'Done':x>0?`${x}/${n}`:opt?'Optional':'Not started',said=done?'done':x>0?`in progress, ${x} of ${n} steps`:opt?'optional set-up checks':'not started';
-    li.dataset.state=st;
-    li.innerHTML=`<span class="led" aria-hidden="true"></span><span><span class="num">${esc(c.num)}</span> <a href="${esc(p.href)}">${esc(c.title)}<span class="sr">, ${said}</span></a><span class="sub meta">${esc(about(p))}</span></span><span class="meta" aria-hidden="true">${count}</span>`;
+    const{c,x,n,done}=p,st=done?'done':x>0?'doing':'todo',opt=st==='todo'&&c.slug==='setup'&&ready,now=p===here&&!P.firstRun();
+    const label=moved?'Optional · set-up checks':'Skipped · do it any time';
+    const count=done?'Done':x>0?`${x}/${n}`:opt?label:'Not started',said=done?'done':x>0?`in progress, ${x} of ${n} steps`:opt?label.toLowerCase().replace(' · ',', '):'not started';
+    li.dataset.state=st;li.classList.toggle('here',now);
+    li.innerHTML=`<span class="led" aria-hidden="true"></span><span><span class="num">${esc(c.num)}</span> <a href="${esc(p.href)}">${esc(c.title)}<span class="sr">, ${said}${now?', where you continue':''}</span></a>`+
+      `${now?'<span class="tag here-tag" aria-hidden="true">You are here</span>':''}<span class="sub meta">${esc(about(p))}</span></span><span class="meta" aria-hidden="true">${count}</span>`;
   });
   const done=all.filter(p=>p.done).length;
   $('#course-meta').textContent=`Guided order · ${hours(all)} · ${done} of ${all.length} done`;
@@ -56,6 +77,7 @@ function render(){
     h.className='page-head compact';h.innerHTML='<h1>Welcome back</h1>';
     $('#main').prepend(h);
     card.outerHTML=continueCard(all);
+    where(P.continueTarget(all));
   }else if(card){
     const r=$('#setup-ready');
     if(r)r.addEventListener('click',()=>P.patch('koii-coach-prefs',{setup:'ready'}));

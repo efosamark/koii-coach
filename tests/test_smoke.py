@@ -119,7 +119,7 @@ def run_target(browser, artifacts_dir, name, url, results):
         page.goto(absolute('./first-beat.html'), wait_until='networkidle')
         assert page.evaluate('() => document.documentElement.dataset.player') == 'start', '01 opens on its start screen'
         page.locator('#player-next').click()
-        page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'beat-empty-project'")
+        page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'beat-empty-project'")
         assert_match(page.title(), r'^Start in an empty project · Step 1 of 6', message='The tab title names the step')
         page.locator('#player-next').click()
         assert store(page, 'koii-coach-ch-first-beat')['done'] == ['beat-empty-project'], 'Done · Next ticks the 01 step'
@@ -152,7 +152,7 @@ def run_target(browser, artifacts_dir, name, url, results):
         cur = store(page, 'koii-coach-ch-first-beat')['cur']
         assert page.locator('#resume').get_attribute('href') == './first-beat.html#s-' + cur, 'Continue links the step to continue at'
         page.locator('#resume').click()
-        page.wait_for_function('id => document.activeElement && document.activeElement.dataset.step === id', arg=cur)
+        page.wait_for_function("id => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === id", arg=cur)
         result['checks'].append('Home continues 01 at the saved step')
 
         # Old addresses of the single-page app open their new pages; any other hash is Home.
@@ -223,7 +223,7 @@ def run_target(browser, artifacts_dir, name, url, results):
         # 02: the step on screen survives a reload (the address holds it).
         page.locator('#player-next').click()
         page.reload(wait_until='networkidle')
-        page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'song-list-first-half'")
+        page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'song-list-first-half'")
         result['checks'].append('A 02 step survives a reload')
 
         page.goto(absolute('./lab.html'), wait_until='networkidle')
@@ -340,7 +340,7 @@ def run_target(browser, artifacts_dir, name, url, results):
             page.goto(absolute(f'./{file}#s-{first_id}'), wait_until='networkidle')
             first_li, second_li = page.locator(f'.steps li[data-step="{first_id}"]'), page.locator(f'.steps li[data-step="{second_id}"]')
             assert first_li.is_visible() and second_li.is_hidden(), f'{file}#s-{first_id} shows that step alone'
-            assert page.evaluate('() => document.activeElement && document.activeElement.dataset.step') == first_id, f'{file}: the step is focused'
+            assert page.evaluate("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step") == first_id, f'{file}: the step (or its title) is focused'
             bar = page.locator('#player-actions').bounding_box()
             assert page.locator('#player-actions').is_visible() and bar and bar['y'] + bar['height'] <= 844 + 1, f'{file}: action bar on screen ({bar})'
             no_overflow(page, f'{file} player at 390 px')
@@ -369,31 +369,32 @@ def run_target(browser, artifacts_dir, name, url, results):
         # the step's section in the list instead.
         page.goto('about:blank')
         page.goto(absolute('./perform.html#s-sc-open'), wait_until='networkidle')
-        page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'sc-open'")
-        box = page.evaluate("""() => {const r = document.activeElement.getBoundingClientRect(), s = document.querySelector('#player-bar').getBoundingClientRect();
+        page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'sc-open'")
+        box = page.evaluate("""() => {const r = document.activeElement.closest('li[data-step]').getBoundingClientRect(), s = document.querySelector('#appbar').getBoundingClientRect();
             return {top: r.top, bar: s.bottom, h: innerHeight};}""")
-        assert box['bar'] <= box['top'] < box['h'], f'perform.html#s-sc-open shows the step below the bars ({box})'
+        assert box['bar'] <= box['top'] < box['h'], f'perform.html#s-sc-open shows the step below the app bar ({box})'
         page.goto(absolute('./perform.html#all'), wait_until='networkidle')
         page.evaluate("() => { location.hash = '#s-sc-open'; }")  # a step link followed from the list opens the player
-        page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'sc-open' && document.documentElement.dataset.player === 'step'")
-        # The Steps sheet's switch saves All steps for this chapter (read-modify-write: other settings stay).
+        page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'sc-open' && document.documentElement.dataset.player === 'step'")
+        # The chapter actions' (⋮) switch saves All steps for this chapter (read-modify-write: other settings stay).
         page.evaluate("() => localStorage.setItem('koii-coach-prefs', JSON.stringify(Object.assign(JSON.parse(localStorage.getItem('koii-coach-prefs') || '{}'), {v: 1, wake: 'auto'})))")
-        page.locator('#player-steps-btn').click()
-        page.locator('#player-steps [data-mode="all"]').click()
+        page.locator('#chapter-actions-btn').click()
+        page.locator('#chapter-actions [data-mode="all"]').click()
         page.wait_for_function("() => location.hash === '#all' && !document.documentElement.dataset.player")
         prefs = page.evaluate("() => JSON.parse(localStorage.getItem('koii-coach-prefs') || 'null')")
         assert prefs and prefs.get('modes', {}).get('perform') == 'all' and prefs.get('wake') == 'auto', f'All steps is saved per chapter, other settings kept ({prefs})'
         page.goto('about:blank')
         page.goto(absolute('./perform.html#s-sc-open'), wait_until='networkidle')
-        page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'sc-open'")
-        box = page.evaluate("""() => {const r = document.activeElement.getBoundingClientRect(), s = document.querySelector('#progress').getBoundingClientRect();
+        page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'sc-open'")
+        box = page.evaluate("""() => {const r = document.activeElement.closest('li[data-step]').getBoundingClientRect(), s = document.querySelector('#progress').getBoundingClientRect();
             return {top: r.top, bar: s.bottom, h: innerHeight, player: document.documentElement.dataset.player || ''};}""")
         assert box['player'] == '' and box['bar'] <= box['top'] < box['h'], f'In All steps, #s-sc-open shows the step in the list below the bars ({box})'
         page.locator('main .player-modes [data-mode="player"]').click()
         assert page.evaluate("() => document.documentElement.dataset.player") in ('start', 'step'), 'The Player switch leaves the list'
         result['checks'].append('A #s-<step id> link opens and focuses that step (player, and the list in All steps); the mode is saved per chapter')
 
-        # Site search (the app bar's overlay) finds a chapter step for "sidechain" and opens it.
+        # Site search (the app bar's overlay) finds a chapter step for "sidechain". The result opens a read-only preview
+        # (searching never moves the learner); "Go to this step" then opens it.
         page.goto(url, wait_until='networkidle')
         page.locator('#appbar .search-btn').click()
         page.locator('#site-search').fill('sidechain')
@@ -401,15 +402,25 @@ def run_target(browser, artifacts_dir, name, url, results):
         hit.wait_for()
         href = hit.get_attribute('href')
         hit.click()
+        page.locator('#site-results .search-preview').wait_for()
+        assert page.url == url, 'A step result opens a preview, not the step'
+        page.locator('#site-results .search-preview [data-back]').click()
+        page.locator('#site-results a.search-hit[href*=".html#s-"]').first.wait_for()
+        page.locator('#site-results a.search-hit[href*=".html#s-"]').first.click()
+        page.locator(f'#site-results .search-preview a[href="{href}"]').click()
         page.wait_for_url(absolute(href))
-        page.wait_for_function('id => document.activeElement && document.activeElement.dataset.step === id', arg=href.split('#s-')[1])
-        # The same search finds 01's steps by their titles, and help topics on help.html.
-        page.locator('#appbar .search-btn').click()
+        page.wait_for_function("id => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === id", arg=href.split('#s-')[1])
+        # The same search finds 01's steps by their titles, and help topics on help.html. In a chapter's step view on a
+        # phone the app bar leaves search to the Tools sheet; "/" opens it from anywhere.
+        page.keyboard.press('/')
         page.locator('#site-search').fill('snare')
         page.locator('#site-results a.search-hit[href^="./first-beat.html#s-"]').first.wait_for()
         page.locator('#site-search').fill('silent pad')
-        page.locator('#site-results a.search-hit[href="./help.html#a-pad-is-silent"]').wait_for()
-        result['checks'].append('Search finds chapter steps ("sidechain", "snare" in 01) and help topics, and opens a step')
+        topic = page.locator('#site-results details.search-topic[data-href="./help.html#a-pad-is-silent"]')
+        topic.locator('summary').click()
+        assert topic.evaluate('d => d.open') and topic.locator('a[href="./help.html#a-pad-is-silent"]').is_visible(), 'A help topic opens in place'
+        page.keyboard.press('Escape')
+        result['checks'].append('Search finds chapter steps ("sidechain", "snare" in 01) and help topics (opened in place); a step opens as a preview, then the step')
 
         # After ticks in a chapter, Home's Continue opens that chapter at the next step to do.
         page.goto(absolute('./sampling.html#all'), wait_until='networkidle')
@@ -422,7 +433,7 @@ def run_target(browser, artifacts_dir, name, url, results):
         assert page.locator('#resume').get_attribute('href') == './sampling.html#s-' + next_step, 'Continue links the next step'
         page.locator('#resume').click()
         page.wait_for_url(absolute('./sampling.html#s-' + next_step))
-        page.wait_for_function('id => document.activeElement && document.activeElement.dataset.step === id', arg=next_step)
+        page.wait_for_function("id => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === id", arg=next_step)
         result['checks'].append('Home continues a chapter page at the step after the last tick')
 
         assert errors == [], 'Browser JavaScript errors'

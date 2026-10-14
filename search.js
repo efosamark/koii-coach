@@ -16,9 +16,12 @@
    A source that fails to load is skipped, and tried again the next time the overlay opens.
 
    Where a result goes:
-     chapter step         <page>.html#s-<step id>      (the player opens that step)
+     chapter step         a read-only preview of the step, here in the overlay, with "Go to this step"
+                          (<page>.html#s-<step id>, where the player opens it) as the second action: searching never
+                          moves the learner. A middle click or Ctrl-click still opens the step itself.
      chapter part         <page>.html#s-<its first step id>
-     help topic           ./help.html#<topic id>       (opened and focused there)
+     help topic           opens in place (a <details>, so the answer reads without leaving the search), with a
+                          link to ./help.html#<topic id>
      Learn lesson         ./learn.html#<lesson id>
      glossary word        ./glossary.html#term-<word>  (the definition is shown in the result as well)
      control              ./controls.html#control-<name>
@@ -111,15 +114,18 @@ async function loadChapter(c){
     dom.querySelectorAll('.steps > details').forEach(d=>{
       const head=text(d.querySelector('summary')),m=/^(\d+)\s*\/\s*(.*)$/.exec(head),no=m?m[1]:'',name=m?m[2]:head;
       const lis=[...d.querySelectorAll('ol>li')],ids=lis.map(li=>li.dataset.step).filter(Boolean);
-      const intro=[...d.children].filter(e=>e.tagName!=='SUMMARY'&&e.tagName!=='OL'&&!/^\s*Official guide/.test(e.textContent)).map(e=>e.textContent).join(' ');
-      out.push(doc({type:'step',title:name,body:clean(intro),crumb:[book,no?'Part '+no:'Part'],href:c.href+(ids[0]?'#s-'+ids[0]:'')}));
+      const notes=[...d.children].filter(e=>e.tagName!=='SUMMARY'&&e.tagName!=='OL'&&!/^\s*Official guide/.test(e.textContent));
+      const intro=notes.map(e=>e.textContent).join(' ');
+      const html=notes.map(e=>{const x=e.cloneNode(true);x.removeAttribute('id');x.querySelectorAll('[id]').forEach(y=>y.removeAttribute('id'));return x.outerHTML;}).join('')+`<p class="meta">${lis.length} step${lis.length===1?'':'s'}.</p>`;
+      out.push(doc({type:'step',part:true,title:name,body:clean(intro),html,crumb:[book,no?'Part '+no:'Part'],href:c.href+(ids[0]?'#s-'+ids[0]:'')}));
       lis.forEach(li=>{
         n++;
         const id=li.dataset.step;if(!id)return;
         const t=li.querySelector('.step-title');
         if(t)t.remove();
+        const shown=li.cloneNode(true);shown.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));   // the preview
         li.querySelectorAll('.step-source').forEach(x=>x.remove());
-        out.push(doc({type:'step',title:t?text(t):label(id),body:text(li),crumb:[book,[no,name].filter(Boolean).join(' '),'Step '+n],href:c.href+'#s-'+id}));
+        out.push(doc({type:'step',title:t?text(t):label(id),body:text(li),html:shown.innerHTML,risk:li.dataset.risk||'',crumb:[book,[no,name].filter(Boolean).join(' '),'Step '+n],href:c.href+'#s-'+id}));
       });
     });
     return out;
@@ -129,8 +135,9 @@ async function loadChapter(c){
 const TOOLS=[
   ['./help.html',dom=>[...dom.querySelectorAll('details[data-topic]')].map(d=>{
     const g=d.closest('section'),h=g&&g.querySelector('h2');
-    const s=d.querySelector('summary'),title=text(s);s.remove();d.querySelectorAll('.step-source').forEach(x=>x.remove());
-    return doc({type:'help',title,body:text(d),crumb:['Troubleshooting',text(h)].filter(Boolean),href:'./help.html#'+d.id});
+    const s=d.querySelector('summary'),title=text(s),inside=d.querySelector('.inside'),html=inside?inside.innerHTML:'';
+    s.remove();d.querySelectorAll('.step-source').forEach(x=>x.remove());
+    return doc({type:'help',title,body:text(d),html,topic:true,crumb:['Troubleshooting',text(h)].filter(Boolean),href:'./help.html#'+d.id});
   })],
   ['./learn.html',dom=>{const all=[...dom.querySelectorAll('details[data-lesson]')];return all.map((d,i)=>{
     const t=d.querySelector('summary h2'),n=t&&t.querySelector('.lesson-n');if(n)n.remove();
@@ -261,6 +268,11 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
     const {d,alt}=r,m=matcher(alt);
     const title=(d.cap?`<kbd class="key">${esc(d.cap)}</kbd> `:'')+marked(d.title,m);
     if(d.type==='word')return`<li><a class="search-hit search-word" href="${esc(d.href)}"><span class="search-hit-title">${title}</span><span class="search-hit-snip">${marked(d.body,m)}</span></a></li>`;
+    // A troubleshooting topic opens where it is; a step opens a preview (data-stay keeps the overlay open).
+    if(d.topic)return`<li><details class="search-topic" data-href="${esc(d.href)}"><summary class="search-hit"><span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span></summary>`+
+      `<div class="inside">${d.html}<p class="meta"><a href="${esc(d.href)}">Open in Troubleshooting</a></p></div></details></li>`;
+    if(d.type==='step')return`<li><a class="search-hit" href="${esc(d.href)}" data-stay data-preview="${all.indexOf(d)}">`+
+      `<span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span>${d.body?`<span class="search-hit-snip">${snippet(d.body,m)}</span>`:''}</a></li>`;
     return`<li><a class="search-hit" href="${esc(d.href)}"><span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span>${d.body?`<span class="search-hit-snip">${snippet(d.body,m)}</span>`:''}</a></li>`;
   }
   function render(){
@@ -293,8 +305,29 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
       if(missing)html+='<p class="search-note">Some pages could not be searched. Open the course once while online to save them.</p>';
       say=total?`${total} result${total===1?'':'s'}`:'No results';
     }
+    previewing=null;
     list.innerHTML=html;
     status.textContent=say;
+  }
+  // A step's preview: its text as in the chapter, read-only, with the way there as the second action.
+  let previewing=null;
+  function preview(d,from){
+    previewing={d,top:body.scrollTop,from:from&&from.getAttribute('data-preview')};
+    const tag={erase:'<span class="tag caution">Clears notes</span>',delete:'<span class="tag danger">Deletes · no undo</span>',overwrite:'<span class="tag danger">Overwrites · no undo</span>'}[d.risk]||'';
+    list.innerHTML=`<div class="search-preview"><button class="btn ghost" type="button" data-back><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-back"></use></svg>Back to results</button>`+
+      `<p class="search-hit-crumb">${esc(d.crumb.join(' · '))}</p><h2 class="preview-title" id="site-preview-title" tabindex="-1">${esc(d.title)}</h2>${tag?`<p>${tag}</p>`:''}`+
+      `<div class="preview-body">${d.html}</div><p class="row"><a class="btn" href="${esc(d.href)}">${d.part?'Go to this part':'Go to this step'}<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-next"></use></svg></a></p>`+
+      `<p class="meta">A preview: nothing is ticked, and your place in the chapter stays where it is.</p></div>`;
+    status.textContent='Preview: '+d.title;
+    body.scrollTop=0;
+    list.querySelector('.preview-title').focus();
+  }
+  function unpreview(){
+    if(!previewing)return;
+    const p=previewing;previewing=null;
+    render();
+    body.scrollTop=p.top;
+    const a=list.querySelector(`[data-preview="${p.from}"]`);if(a)a.focus();else input.focus();
   }
   function setType(t){
     type=t;shown=PAGE;
@@ -306,6 +339,9 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
   input.addEventListener('input',()=>{clearTimeout(timer);timer=setTimeout(run,60);});
   chips.forEach(c=>c.addEventListener('click',()=>setType(c.dataset.type)));
   list.addEventListener('click',e=>{
+    const p=e.target.closest('a[data-preview]');
+    if(p&&!(e.button||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)){e.preventDefault();const d=all[+p.dataset.preview];if(d)preview(d,p);return;}
+    if(e.target.closest('[data-back]')){unpreview();return;}
     const b=e.target.closest('button');
     if(!b)return;
     if(b.dataset.try){input.value=b.dataset.try;run();input.focus();}
@@ -317,15 +353,16 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
     if(e.isComposing)return;
     const t=e.target;
     if(e.key==='ArrowDown'||e.key==='ArrowUp'){
-      const order=[input,...list.querySelectorAll('a.search-hit,button')],i=order.indexOf(t);
+      const order=[input,...list.querySelectorAll('.search-hit,button')],i=order.indexOf(t);
       const j=e.key==='ArrowDown'?(i<0?1:i+1):(i<0?0:i-1);
       if(order[j]&&j!==i){e.preventDefault();order[j].focus();}
     }else if(e.key==='Enter'&&t===input){
       e.preventDefault();
       if(!ready){openFirst=true;return;}   // still building the index: open the best match as soon as there is one
       run();
-      const a=list.querySelector('a.search-hit');
-      if(a)a.click();
+      openBest();
+    }else if(e.key==='Escape'&&previewing){
+      e.preventDefault();unpreview();
     }else if(e.key==='Escape'&&t===input){
       e.preventDefault();dlg.querySelector('[data-close]').click();
     }else if((e.key||'').length===1&&e.key!==' '&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&t!==input){
@@ -333,12 +370,18 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
     }
   });
 
+  // Enter in the field: the best match opens (a step as its preview, a topic in place).
+  function openBest(){
+    const a=list.querySelector('.search-hit');
+    if(!a)return;
+    if(a.tagName==='SUMMARY'){a.parentElement.open=true;a.focus();}
+    else a.click();
+  }
   function settle(){
     run();
     if(!openFirst)return;
     openFirst=false;
-    const a=list.querySelector('a.search-hit');
-    if(a)a.click();
+    openBest();
   }
   view={run:settle,render};
   render();

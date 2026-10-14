@@ -10,7 +10,9 @@
      site search with the same words.
    - controls.html: the buttons ([data-control]) are two radio groups with arrow keys; the chosen one's explanation,
      copied from "Every control" below the map, shows in #info under the buttons (a fixed-height panel, so nothing moves).
-     controls.html#control-<name> chooses that control. */
+     controls.html#control-<name> chooses that control.
+   - cheat-sheet.html: "Only chapters I've done" (#only-done) hides the sections of chapters not finished yet
+     (section[data-chapter]); the general sections stay. */
 (()=>{
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],main=document.getElementById('main');
 const icon=n=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-${n}"></use></svg>`;
@@ -28,7 +30,11 @@ let pushed=null,last=null;
 function openItem(d){
   if(!d.open){d.dataset.byLink='1';d.open=true;}
   d.scrollIntoView({block:'start'});
-  const s=d.querySelector('summary');if(s)s.focus({preventScroll:true});
+  const s=d.querySelector('summary');if(!s)return;
+  s.focus({preventScroll:true});
+  // The browser's own jump to the #fragment can land just after load and drop focus to the page; put it back once.
+  const keep=()=>{if(!document.activeElement||document.activeElement===document.body)s.focus({preventScroll:true});};
+  setTimeout(keep,60);setTimeout(keep,300);
 }
 function route(){
   const h=location.hash;if(h===last)return;last=h;
@@ -94,7 +100,7 @@ if(input&&results&&$('details[data-topic]')){
       const hit=q.every((w,i)=>t.w.some(x=>i===lastI?x.startsWith(w):x===w||x.startsWith(w)&&x.length-w.length<=2));
       t.d.hidden=!hit;if(hit)n++;
     });
-    groups.forEach(g=>{g.hidden=!g.querySelector('details[data-topic]:not([hidden])');});
+    groups.forEach(g=>{g.hidden=!g.querySelector('details[data-topic]:not([hidden])');const h=g.querySelector('h2[id]'),a=h&&$(`.on-page a[href="#${h.id}"]`);if(a)a.parentElement.hidden=g.hidden;});
     const text=input.value.trim();
     count.textContent=!q.length?`${total} troubleshooting topics.`:n?`${n} of ${total} topics match “${text}”.`:`No troubleshooting topic matches “${text}”. Try: silent, repeat, erase, scene, USB.`;
     if(more)more.hidden=!q.length;
@@ -107,6 +113,14 @@ if(input&&results&&$('details[data-topic]')){
   const all=$('#search-all');
   if(all)all.addEventListener('click',()=>{if(window.CoachShell)CoachShell.openSearch(input.value.trim());});
   if(q)filter();
+}
+
+// ---------- Cheat sheet: only the chapters you have done ----------
+const only=$('#only-done');
+if(only&&P){
+  only.closest('.cs-filter').hidden=false;
+  const apply=()=>{const done=P.chapters().filter(p=>p.done).map(p=>p.c.slug);$$('main section[data-chapter]').forEach(s=>{s.hidden=only.checked&&!done.includes(s.dataset.chapter);});};
+  only.addEventListener('change',apply);
 }
 
 // ---------- Control map ----------

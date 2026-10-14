@@ -28,9 +28,12 @@
      setCurrent(id)        moves cur there (saved; the "You are here" mark follows)
      resumeId()            where to open a chapter that has progress: current(), else the first step not ticked yet
      hasProgress()         true once a step on this page is ticked
+     isSkipped(id), setSkipped(ids, on), skipped()   optional steps the learner chose to skip (record.skip). A skipped
+                           step does not count towards total() and is not where Continue lands; ticking it unskips it
+     lastAt()              the time of the last tick (ISO), or null
      onChange(fn)          fn({type:'tick'|'current'|'reset', id}) after every change made here
      go(id)                list mode: opens the step's section, scrolls to it and focuses it
-     say(text)             a message in the page's toast
+     say(text, undo)       a message in the page's toast; with undo (a function) it carries an Undo button for 10 s
      saved()               false while the browser refuses to save
      route(fn)             fn(location.hash) runs for the first route and on every hashchange; it returns true when it
                            handled the hash, false to let the list handle it (#s-<id> and section anchors, as below)
@@ -120,12 +123,17 @@ if(!(state&&state.v===1&&Array.isArray(state.done))){
   save();
 }
 const done=new Set(state.done.filter(x=>typeof x==='string'));
+// Optional steps the learner skipped (plan 5.3). Only kept in the record once there are any.
+const skip=new Set((Array.isArray(state.skip)?state.skip:[]).filter(x=>typeof x==='string'&&ids.includes(x)));
 if(typeof state.last!=='string')state.last=null;
 const count=()=>steps.filter(li=>done.has(li.dataset.step)).length;
+const isOff=id=>skip.has(id)&&!done.has(id);   // skipped and not ticked: left out of the count
+const total=()=>steps.filter(li=>!isOff(li.dataset.step)).length;
 // The app's Home card reads these. cur is null when there is nothing to continue at; at is set by ticks only.
 // keep: leave a cur that is still a step of this page as it is (the player may have put it there).
 const store=(ticked,keep)=>{
   state.done=[...done];state.n=count();
+  if(skip.size||Array.isArray(state.skip))state.skip=[...skip];
   if(!(keep&&typeof state.cur==='string'&&ids.includes(state.cur))){const t=target();state.cur=t>=0?ids[t]:null;}
   if(ticked)state.at=new Date().toISOString();
   save();
@@ -157,7 +165,7 @@ function target(){
   let i=ids.indexOf(state.last);
   if(i<0)for(let j=ids.length-1;j>=0;j--)if(done.has(ids[j])){i=j;break;}
   if(i<0)return -1;
-  for(let j=i+1;j<ids.length;j++)if(ids[j]&&!done.has(ids[j]))return j;
+  for(let j=i+1;j<ids.length;j++)if(ids[j]&&!done.has(ids[j])&&!skip.has(ids[j]))return j;
   return -1;
 }
 // The step to continue at: cur while it is a step of this page, else the step after the last tick (-1: none).
@@ -176,17 +184,19 @@ function emit(type,id){listeners.forEach(fn=>{try{fn({type,id});}catch(e){consol
 const boxes={};
 function tick(id,on){
   if(!id||!ids.includes(id)||on===done.has(id))return false;
-  if(on){done.add(id);state.last=id;}
+  if(on){done.add(id);state.last=id;skip.delete(id);}
   else{done.delete(id);if(state.last===id)state.last=[...done].pop()||null;}
   if(boxes[id])boxes[id].checked=on;
   store(true);update();emit('tick',id);
   return true;
 }
-// Checkboxes: the visible label text is the accessible name.
+// Checkboxes: "Mark step 4 done" is the accessible name; a step with a title (h3.step-title) is its description.
 steps.forEach((li,i)=>{
   const id=li.dataset.step;if(!id)return;
   const label=document.createElement('label'),box=document.createElement('input'),text=document.createElement('span');
-  label.className='check';box.type='checkbox';box.checked=done.has(id);text.textContent='I tried step '+(i+1);
+  label.className='check';box.type='checkbox';box.checked=done.has(id);text.textContent='Mark step '+(i+1)+' done';
+  const title=li.querySelector(':scope > .step-title');
+  if(title){if(!title.id)title.id='t-'+id;box.setAttribute('aria-describedby',title.id);}
   label.append(box,text);li.append(label);boxes[id]=box;
   box.addEventListener('change',()=>{
     tick(id,box.checked);
@@ -210,18 +220,19 @@ function mark(li,here){
   if(!tag){tag=document.createElement('span');tag.className='tag here-tag';tag.textContent='You are here';li.prepend(tag);}
 }
 function update(){
-  const count=steps.filter(li=>done.has(li.dataset.step)).length,t=here(),btn=$('resume');
-  $('progress-count').textContent=count===steps.length?'All '+steps.length+' steps done':count+' of '+steps.length+' done';
+  const count=steps.filter(li=>done.has(li.dataset.step)).length,all=total(),t=here(),btn=$('resume');
+  $('progress-count').textContent=count===all?'All '+all+' steps done':count+' of '+all+' done';
   const fill=document.querySelector('#progress .meter-fill');
-  if(fill)fill.style.width=(steps.length?Math.round(100*count/steps.length):0)+'%';
+  if(fill)fill.style.width=(all?Math.round(100*count/all):0)+'%';
   btn.hidden=t<0;
   if(t>=0)btn.innerHTML='Continue at step '+(t+1)+'<svg class="icon" aria-hidden="true"><use href="icons.svg#i-next"></use></svg>';
   steps.forEach((li,j)=>mark(li,j===t));
   sections.forEach(([s,el])=>{
-    const c=s.filter(li=>done.has(li.dataset.step)).length;
-    el.textContent=c?c+' of '+s.length+' done':s.length+' steps';
-    el.classList.toggle('all',c>0&&c===s.length);
+    const c=s.filter(li=>done.has(li.dataset.step)).length,n=s.filter(li=>!isOff(li.dataset.step)).length;
+    el.textContent=c?c+' of '+n+' done':n+' steps';
+    el.classList.toggle('all',c>0&&c===n);
   });
+  steps.forEach(li=>li.classList.toggle('is-skipped',isOff(li.dataset.step)));
   const msg=[note,saved?'':'This browser is not saving your ticks (storage is blocked or full, or this is a private window). They will be lost when you close the page.'].filter(Boolean).join(' '),p=$('progress-note');
   p.textContent=msg;p.hidden=!msg;
   p.className='notice '+(saved?'info':'caution');   // a note about rewritten steps is information; ticks that cannot be saved need care
@@ -244,13 +255,23 @@ $('resume').addEventListener('click',()=>{const t=here();if(t>=0)go(t);});
 const openAll=()=>document.querySelectorAll('details').forEach(d=>d.open=true);
 addEventListener('beforeprint',openAll);
 $('print').addEventListener('click',()=>{openAll();print();});
-$('reset').addEventListener('click',()=>{
-  if(!confirm('Clear every tick in this chapter? Other chapters and the main app keep their progress.'))return;
-  done.clear();state.last=null;note='';store();
-  document.querySelectorAll('.check input').forEach(b=>b.checked=false);
+// Restart this chapter: asks first, clears its ticks and skips, and can be undone for 10 seconds (plan 5.6).
+function apply(){
+  document.querySelectorAll('.check input').forEach(b=>{b.checked=done.has(b.closest('li').dataset.step);});
   update();
   if(window.CoachShell)CoachShell.refresh();   // no change event fires here, so tell the shell's course list itself
+}
+$('reset').addEventListener('click',()=>{
+  if(!confirm('Restart this chapter?\n\nThis clears every tick in it. Other chapters keep their progress, and nothing on your K.O. II changes. You can undo this for 10 seconds.'))return;
+  const before={done:[...done],skip:[...skip],last:state.last,cur:state.cur,at:state.at};
+  done.clear();skip.clear();state.last=null;note='';store();
+  apply();
   emit('reset',null);
+  say('Chapter restarted.',()=>{
+    before.done.forEach(x=>done.add(x));before.skip.forEach(x=>skip.add(x));
+    Object.assign(state,{last:before.last,cur:before.cur,at:before.at});store(false,true);
+    apply();emit('current',state.cur);
+  });
 });
 ['progress','reset','print'].forEach(id=>$(id).hidden=false);
 update();
@@ -266,11 +287,17 @@ if(t>=0){const d=steps[t].closest('details');if(d)d.open=true;}
 // sticky bars, focuses it and marks it for two seconds (coach.css draws the mark; reduced motion gets none).
 // An id that no longer exists only says so in the toast (it shows wherever the page is scrolled to): an old link never
 // moves the page. The toast is the page's own #toast if it has one, else one made here (wake.js does the same).
-function say(text){
+function say(text,undo){
   let el=$('toast');
   if(!el){el=document.createElement('div');el.id='toast';el.className='toast hidden';el.setAttribute('role','status');document.body.append(el);}
   el.textContent=text;el.classList.remove('hidden');
-  clearTimeout(say.timer);say.timer=setTimeout(()=>el.classList.add('hidden'),5000);
+  clearTimeout(say.timer);
+  if(typeof undo==='function'){
+    const b=document.createElement('button');b.type='button';b.className='btn';b.textContent='Undo';
+    b.addEventListener('click',()=>{clearTimeout(say.timer);el.classList.add('hidden');undo();});
+    el.append(b);
+  }
+  say.timer=setTimeout(()=>el.classList.add('hidden'),typeof undo==='function'?10000:5000);
 }
 let marked=null,markTimer=0;
 function openStep(){
@@ -309,7 +336,7 @@ window.CoachChapter={
   ids:()=>ids.slice(),
   isDone:id=>done.has(id),
   count,
-  total:()=>steps.length,
+  total,
   setDone(id,on){
     const changed=tick(id,Boolean(on));
     if(changed&&window.CoachShell)CoachShell.refresh();   // no change event fires, so tell the shell's course list
@@ -322,10 +349,21 @@ window.CoachChapter={
   },
   resumeId(){
     const i=here();if(i>=0)return ids[i];
-    if(!count())return null;
-    return ids.find(id=>id&&!done.has(id))||null;
+    if(!count()&&!skip.size)return null;
+    return ids.find(id=>id&&!done.has(id)&&!skip.has(id))||null;
   },
-  hasProgress:()=>count()>0,
+  hasProgress:()=>count()>0||skip.size>0,
+  isSkipped:id=>isOff(id),
+  skipped:()=>[...skip].filter(isOff),
+  setSkipped(list,on){
+    let changed=false;
+    (Array.isArray(list)?list:[list]).forEach(id=>{if(!ids.includes(id)||done.has(id))return;if(on&&!skip.has(id)){skip.add(id);changed=true;}else if(!on&&skip.delete(id))changed=true;});
+    if(!changed)return false;
+    store(false,true);update();emit('skip',null);
+    if(window.CoachShell)CoachShell.refresh();
+    return true;
+  },
+  lastAt:()=>typeof state.at==='string'?state.at:null,
   onChange(fn){if(typeof fn==='function')listeners.push(fn);},
   go(id){const j=ids.indexOf(id);if(j>=0)go(j);},
   say,

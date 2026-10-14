@@ -1,8 +1,12 @@
 'use strict';
 /* Settings (settings.html): the K.O. II's OS version (#firmware, saved as koii-coach-v2.firmware; chapter pages show
    "Needs OS x+" badges from it), keeping the screen on (koii-coach-prefs.wake: wake.js reads it on every poke(), so
-   switching to Off pokes once to let go of a hold), the progress file and Reset all progress. Loading a file and Reset
-   touch progress only: koii-coach-prefs and the OS choice stay. Reset can be undone for 10 seconds. */
+   switching to Off pokes once to let go of a hold), keyboard shortcuts (koii-coach-prefs.keys: false switches the
+   shell's letter shortcuts off), whether the unit is set up (koii-coach-prefs.setup 'ready' | 'new': Home's Continue
+   opens Chapter 00 until it is 'ready'), the progress file, Reset all progress and Reset settings. Loading a file and
+   Reset all progress touch progress only: koii-coach-prefs and the OS choice stay. Reset settings clears
+   koii-coach-prefs (progress.js sets setup again on the next page load for a learner with progress, as it does for
+   every existing learner). Both resets can be undone for 10 seconds. */
 (()=>{
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const P=window.CoachProgress,site=window.COACH_SITE||{};
@@ -47,6 +51,24 @@ $$('input[name="wake"]').forEach(r=>{
   r.addEventListener('change',()=>{if(!r.checked)return;P.patch('koii-coach-prefs',{wake:r.value});if(r.value==='off'&&window.CoachWake)CoachWake.poke();});
 });
 if(!('wakeLock' in navigator))$('#wake-note').append(' This browser can’t keep the screen on, so give your device a longer screen timeout instead.');
+
+// ---------- Keyboard shortcuts and Chapter 00 ----------
+function choices(){
+  const pr=P.prefs();
+  $$('input[name="keys"]').forEach(r=>{r.checked=r.value===(pr.keys===false?'off':'on');});
+  $$('input[name="setup"]').forEach(r=>{r.checked=r.value===(pr.setup==='ready'?'ready':'new');});
+  $$('input[name="wake"]').forEach(r=>{r.checked=r.value===(pr.wake==='off'?'off':'auto');});
+}
+choices();
+$$('input[name="keys"]').forEach(r=>r.addEventListener('change',()=>{if(r.checked)P.patch('koii-coach-prefs',{keys:r.value==='on'});}));
+$$('input[name="setup"]').forEach(r=>r.addEventListener('change',()=>{if(r.checked){P.patch('koii-coach-prefs',{setup:r.value});refresh();}}));
+$('#reset-settings').addEventListener('click',()=>{
+  let before=null;
+  try{before=localStorage.getItem('koii-coach-prefs');localStorage.removeItem('koii-coach-prefs');}catch(e){alertText('This browser is not saving settings (storage is blocked or full, or this is a private window).');return;}
+  choices();refresh();
+  if(window.CoachWake)CoachWake.poke();
+  toast('Settings reset.',()=>{try{if(before===null)localStorage.removeItem('koii-coach-prefs');else localStorage.setItem('koii-coach-prefs',before);}catch(e){}choices();refresh();toast('Settings restored.');});
+});
 
 // ---------- Progress ----------
 function summary(){

@@ -1,59 +1,77 @@
 'use strict';
-/* The step player for every chapter page (00, 01, 02 and 07-11): a start screen, one step at a time with a fixed action bar, a
-   checkpoint card after each part and a chapter-complete screen. Load it straight after chapter.js:
+/* The step player for every chapter page (00, 01, 02 and 07-11): a start screen, one step at a time with a fixed action
+   bar, a checkpoint card after each part and a chapter-complete screen. Load it straight after chapter.js:
      <script src="player.js" defer></script>
    It reads the page's own markup and never re-renders it: other steps, parts and page sections are only hidden
-   (the hidden attribute), so ids, ticks, anchors and the list stay exactly as they are. Ticks, cur and the progress
-   bar come from chapter.js (window.CoachChapter), so the list, the bar and the player always agree. Without
-   JavaScript nothing here runs and the page reads top to bottom as before. Spec: docs/overhaul-plan.md 5.2-5.13.
+   (the hidden attribute), so ids, ticks, anchors and the list stay exactly as they are. Ticks, cur, skips and the
+   progress bar come from chapter.js (window.CoachChapter), so the list, the menu and the player always agree. Without
+   JavaScript nothing here runs and the page reads top to bottom as before. Spec: docs/overhaul-plan.md 4.5, 5.2-5.13.
 
    Markup it reads (section.steps > details, one per part):
-     summary "NN / Part title"; p with <b>Goal:</b> and other notes; p.checkpoint; the p starting <b>If it doesn't:</b>
-     ol > li[data-step]: the step. Inside it, when the chapter has been marked up:
-       h3.step-title the step's name (01 and 02; other steps are named by their first line)
-       p.preflight   the check that keeps a risky press safe (shown first, in a caution box)
+     summary "NN / Part title" (an h2.part-title inside); p with <b>Goal:</b> and other notes; p.checkpoint; the p
+     starting <b>If it doesn't:</b>; ol > li[data-step]: the step. Inside a step, when the chapter has been marked up:
+       h3.step-title the step's name (other steps are named by their first line)
+       p.preflight   the check that keeps a risky press safe ("Before you press", shown first in a caution box)
        p.step-do     the instruction (large); a step without one is a stage-1 step: its whole text is shown large
+       p.step-undo   how to undo it, straight after the press; p.step-noundo says there is none
        p.step-check  what you should hear or see (its own block, with an ear or an eye)
-       p.step-undo   how to undo the step (after the instruction); p.step-source names the official guide page
-     li[data-risk="erase"]              recoverable clear: amber "Clears notes" tag, no gate (each risk tag links to
-                                        its entry on safety.html)
+       p.step-note   more about the step, at body size; p.step-source names the official guide page
+     li[data-risk="erase"]              recoverable clear: amber "Clears notes" tag, no gate
      li[data-risk="delete"|"overwrite"] no undo: red tag, and the rest of the step stays folded until
                                         "Yes, I have checked" is pressed (per visit, never saved)
+                                        (each risk tag links to its entry on safety.html)
      li[data-setting="401"]             neutral "System setting 401" tag
-     li[data-optional]                  "Optional" tag
+     li[data-optional]                  "Optional" tag; a run of optional steps in one part can be skipped at once
+     li[data-kind="recap"]              the chapter's recap: ticked by itself on the chapter-complete screen once
+                                        every other step is done; its ul.step-moves show there as "New moves"
      a step whose text starts with a bold "Checkpoint." gets the checkpoint styling
      kbd.key inside the current step render hot (orange) in the player, except inside p.step-check
+   Around the steps: p.makes ("You will make: …": the start screen, and "You made" when the chapter is complete),
+   .reference cards (folded into "Reference for this chapter" on the start screen) and .reentry (perform's "How every
+   section starts": a "Get back in" card above the step when the last tick is more than 30 minutes old).
 
    Views and routes (the hash is the address of what is on screen; moving between steps uses replaceState):
      #start     the start screen          #s-<id>   the player at that step (list mode when the learner chose it)
      #all       All steps (list mode)     #done     chapter complete
      no hash    the start screen while the chapter has no ticks, #done once every step is ticked, else the player
-                at the step to continue at (CoachChapter.resumeId()); list mode when the learner chose it
-     a part or wrapper anchor (sampling.html#make-your-own-kit, #sampling) opens list mode at that part
+                at the step to continue at (CoachChapter.resumeId()), with a "Welcome back" toast; list mode when the
+                learner chose it. The wrapper id (sampling.html#sampling) means the same as no hash.
+     a part anchor (sampling.html#make-your-own-kit) opens list mode at that part
    The choice between Player and All steps is saved per chapter in koii-coach-prefs.modes[<slug>] ('player' | 'all'),
    read-modify-write, so the other preferences stay. Only the switch saves it; a #all link does not.
+   Opening a step from the menu, a link or search marks nothing and leaves cur where it is; a "Back to step N" pill
+   then leads back to the step to continue at. A part's checkpoint answer (Yes / Not quite) is kept for the learner
+   in koii-coach-meta.checkpoints[<slug>][<part id>] = 'yes' | 'not-yet'; it never changes a tick.
 
-   Elements it adds (all marked .pl-own): #player-bar (where you are and the chapter meter), #player-actions (Back,
-   Steps, Done · Next), #player-steps (the Steps sheet, a <dialog>), #player-check, #player-done, #player-report (the
-   "This step doesn't match my K.O. II" link, moved into the step on screen and pre-filled for it), the start screen's
-   chips, safety summary and parts list, .player-modes (the Player / All steps switch), and inside each step
-   a .step-head (step number and tags) and, for a delete or overwrite step, a .gate. coach.css, "Step player",
-   draws them. <html data-player="start|step|check|done"> is set while the player shows one of its views.
+   What it adds (all marked .pl-own): the app bar's two-line title and 4px meter (CoachShell.setTitle, setMeter); the
+   menu's "This chapter" part and the desktop rail's chapter contents (CoachShell.registerChapter: progress, Player |
+   All steps, every part and step, About, Print, Restart); a ⋮ button (#chapter-actions-btn) with the chapter actions
+   (#chapter-actions: the switch, About this chapter, Print all steps, Report this step, Restart this chapter);
+   #player-actions (Back, Tools, Done · Next); #player-check; #player-done; #player-report (the "This step doesn't
+   match my K.O. II" link, moved into the step on screen and pre-filled for it); the start screen's chips, safety and
+   reference summaries and parts list; .player-modes; .back-pill; .getback; and inside each step a .step-head (the
+   part-relative "1 of 4" and the tags), a .skip-box on the first of a run of optional steps and, for a delete or
+   overwrite step, a .gate. coach.css, "Step player", draws them. <html data-player="start|step|check|done"> is set
+   while the player shows one of its views.
    After every change of view it fires a "coach:view" event on document, detail {view: 'start'|'step'|'check'|'done'|
-   'list', step: the id on screen or null}; a page's own script (first-beat.js) uses it for its helpers. */
+   'list', step: the id on screen or null}; first-beat.js and the Tools sheet (toolsheet.js) use it.
+   window.CoachPlayer = {view(), current()}: what is on screen. */
 (()=>{
 const C=window.CoachChapter,main=document.getElementById('main'),wrap=document.querySelector('.steps');
 if(!C||!main||!wrap)return;
 const root=document.documentElement,slug=C.slug||'',steps=C.steps().filter(li=>li.dataset.step);
 if(!steps.length)return;
+const Shell=window.CoachShell||null;
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const icon=n=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-${n}"></use></svg>`;
-const listIcon='<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01" stroke-width="2.5"/></svg>';
 const downIcon='<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>';
 const clean=s=>String(s||'').replace(/\s+/g,' ').trim();
 const managed=new Set();   // elements this file hid (the hidden attribute); only these are ever shown again
 const plural=(n,one,many)=>n+' '+(n===1?one:many);
 const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;};
+const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Text without what this file added (the "Step 2 of 5:" for screen readers, tags).
+const own=e=>{let t='';e.childNodes.forEach(n=>{if(n.nodeType===1&&n.matches('.pl-own,.here-tag'))return;t+=n.textContent;});return clean(t);};
 
 // ---------- The chapter: parts and steps ----------
 const partEls=[];
@@ -75,19 +93,22 @@ const parts=partEls.map((d,i)=>{
   const checkpoint=kids.find(e=>e.classList.contains('checkpoint'))||null;
   const ifnot=kids.find(e=>e.tagName==='P'&&/^If it doesn['’]t\b/i.test(firstBold(e)))||null;
   const notes=kids.filter(e=>e.tagName!=='OL'&&e!==checkpoint&&e!==ifnot);
-  return{el:d,i,n:m?parseInt(m[1],10):i+1,title:m?m[2]:head,steps:steps.filter(li=>d.contains(li)),checkpoint,ifnot,notes};
+  return{el:d,i,n:m?parseInt(m[1],10):i+1,title:m?m[2]:head,id:d.id||'part-'+(i+1),steps:steps.filter(li=>d.contains(li)),checkpoint,ifnot,notes};
 });
 const byId=new Map(steps.map(li=>[li.dataset.step,li]));
 const partOf=li=>parts.find(p=>p.steps.includes(li));
 const num=li=>C.steps().indexOf(li)+1;   // the list's own numbering (chapter.js numbers every step on the page)
-// One line of a step for the Steps sheet and the "not ticked yet" list: its title, else its first words.
+const inPart=li=>{const P=partOf(li);return[P.steps.indexOf(li)+1,P.steps.length];};
+// One line of a step for the menu and the "not ticked yet" list: its title, else its first words.
 function gist(li){
   const title=li.querySelector(':scope > .step-title');
-  if(title)return clean(title.textContent);
+  if(title)return own(title);
   const src=li.querySelector(':scope > .step-do')||li;let t='';
-  src.childNodes.forEach(n=>{if(n.nodeType===1&&n.matches('.check,.here-tag,.step-head,.gate,.preflight'))return;t+=n.textContent;});
+  src.childNodes.forEach(n=>{if(n.nodeType===1&&n.matches('.check,.here-tag,.step-head,.gate,.preflight,.skip-box,.badge,.pl-own'))return;t+=n.textContent;});
   return clean(t);
 }
+const isDone=li=>C.isDone(li.dataset.step),isSkipped=li=>Boolean(C.isSkipped&&C.isSkipped(li.dataset.step));
+const settled=li=>isDone(li)||isSkipped(li);
 
 // The page around the steps
 const progress=document.getElementById('progress'),note=document.getElementById('progress-note');
@@ -102,40 +123,55 @@ const chName=info?info.title:clean(h1&&h1.textContent);
 const baseTitle=document.title;
 const nextLink=document.querySelector('.chapters .next');
 const nextName=nextLink?clean([...nextLink.childNodes].filter(n=>!(n.nodeType===1&&n.tagName==='SPAN')).map(n=>n.textContent).join('')):'';
+const makes=main.querySelector(':scope > .makes');
+const references=[...main.querySelectorAll(':scope > .reference')];
+const reentry=main.querySelector('.reentry');
+const fw=window.CoachProgress?CoachProgress.v2().firmware:'2.5',fwNum={'2.5':2.5,'2':2,older:1}[fw]||0;
 
-// koii-coach-prefs.modes[<slug>]: 'player' (the default) or 'all'. Read-modify-write: the other settings stay.
-const PREFS='koii-coach-prefs';
-function prefs(){try{const v=JSON.parse(localStorage.getItem(PREFS)||'null');return v&&typeof v==='object'&&!Array.isArray(v)?v:null;}catch(e){return null;}}
-function mode(){const p=prefs(),m=p&&p.modes&&typeof p.modes==='object'?p.modes[slug]:null;return m==='all'?'all':'player';}
+// koii-coach-prefs.modes[<slug>]: 'player' (the default) or 'all'. koii-coach-meta.checkpoints[<slug>][<part id>].
+// Both read-modify-write, so the other fields stay; a meta of a newer format is left alone.
+const PREFS='koii-coach-prefs',META='koii-coach-meta';
+const readObj=k=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v&&typeof v==='object'&&!Array.isArray(v)?v:null;}catch(e){return null;}};
+const sub=(o,k)=>o[k]&&typeof o[k]==='object'&&!Array.isArray(o[k])?o[k]:{};
+function mode(){const p=readObj(PREFS),m=p?sub(p,'modes')[slug]:null;return m==='all'?'all':'player';}
 function setMode(m){
-  const p=prefs()||{v:1};if(!p.v)p.v=1;
-  const modes=p.modes&&typeof p.modes==='object'&&!Array.isArray(p.modes)?p.modes:{};
-  modes[slug]=m;p.modes=modes;
+  const p=readObj(PREFS)||{v:1};if(!p.v)p.v=1;
+  const modes=sub(p,'modes');modes[slug]=m;p.modes=modes;
   try{localStorage.setItem(PREFS,JSON.stringify(p));}catch(e){}
 }
+function answer(P,a){
+  const m=readObj(META)||{v:1};if(m.v!==1)return;
+  const all=sub(m,'checkpoints'),mine=sub(all,slug);
+  mine[P.id]=a;all[slug]=mine;m.checkpoints=all;
+  try{localStorage.setItem(META,JSON.stringify(m));}catch(e){}
+}
 
-// ---------- Inside each step: the head (number and tags), the check's sense, the gate ----------
+// ---------- Inside each step: the head (number and tags), the check's sense, the gate, the skip box ----------
 const RISK={erase:['caution','Clears notes','recoverable'],delete:['danger','Deletes · no undo','delete-sample'],overwrite:['danger','Overwrites · no undo','crop-sample']};
-const gates=new Map();
+const gates=new Map(),heads=new Map();
 steps.forEach(li=>{
   const risk=RISK[li.dataset.risk]||null,setting=clean(li.dataset.setting);
   const isCheck=/^Checkpoint\b/.test(firstBold(li.querySelector(':scope > .step-do')||li));
   if(isCheck)li.classList.add('is-checkpoint');
   const tags=[risk?`<a class="tag ${risk[0]}" href="./safety.html#${risk[2]}">${risk[1]}</a>`:'',setting?`<span class="tag info">System setting ${esc(setting)}</span>`:'',
-    'optional' in li.dataset?'<span class="tag">Optional</span>':'',isCheck?'<span class="tag done">Checkpoint</span>':''].join('');
-  const head=el('div','step-head pl-own'+(tags?'':' bare'),`<span class="step-num"><span class="sr">Step </span>${num(li)}</span>${tags}`);
-  li.prepend(head);
+    'optional' in li.dataset?'<span class="tag">Optional</span>':'',isCheck?'<span class="tag done">Checkpoint</span>':'','<span class="tag skipped-tag" hidden>Skipped</span>'].join('');
+  const [k,n]=inPart(li);
+  // The step's place in its part ("2 of 5"); the list keeps its own chapter-wide numbers.
+  const head=el('div','step-head pl-own',`<span class="step-num"><span class="sr">Step </span>${k} of ${n}</span>${tags}`);
+  li.prepend(head);heads.set(li,head);
+  // A titled step's focus lands on its title, which then says where it is.
+  const title=li.querySelector(':scope > .step-title');
+  if(title)title.prepend(el('span','sr pl-own',`Step ${k} of ${n}: `));
   const chk=li.querySelector(':scope > .step-check');
   if(chk)chk.dataset.sense=/\b(hear|hears|heard|listen|sounds?|plays?|playing|silent|silence|quiet|loud|louder|thud|tick|click)\b/i.test(chk.textContent)?'hear':'see';
   if(!risk||risk[0]!=='danger')return;
   // Delete and overwrite: the rest of the step waits for "Yes, I have checked". A stage-1 step's loose text is put in
   // one <div class="step-body"> first, so it can be folded away (its text is unchanged).
-  const keep=n=>n.nodeType===1&&n.matches('.step-head,.preflight,.check,.here-tag');
+  const keep=n=>n.nodeType===1&&n.matches('.step-head,.step-title,.preflight,.check,.here-tag');
   if([...li.childNodes].some(n=>n.nodeType===3&&n.textContent.trim())){
     const body=el('div','step-body');
     [...li.childNodes].filter(n=>!keep(n)).forEach(n=>body.append(n));
-    const pre=li.querySelector(':scope > .preflight');
-    (pre||head).after(body);
+    (li.querySelector(':scope > .preflight')||title||head).after(body);
   }
   const pre=li.querySelector(':scope > .preflight');
   const g=el('div','gate pl-own',
@@ -144,32 +180,56 @@ steps.forEach(li=>{
     '<p class="gate-hint">The rest of this step shows once you confirm.</p>'+
     `<span class="tag done gate-ok" hidden>${icon('check')}Checked</span>`);
   g.hidden=true;
-  (pre||head).after(g);
+  (pre||title||head).after(g);
   gates.set(li,{box:g,btn:g.querySelector('.gate-btn'),hint:g.querySelector('.gate-hint'),ok:g.querySelector('.gate-ok')});
-  gates.get(li).btn.addEventListener('click',()=>{confirmed=li;render();li.focus({preventScroll:true});});
+  gates.get(li).btn.addEventListener('click',()=>{confirmed=li;render();focusStep(li);});
+});
+// A run of optional steps in one part: its first step offers to skip the whole run (plan 5.3). Skipped steps stop
+// counting towards the chapter; ticking one later brings it back.
+const groups=new Map();   // first step of a run -> the run
+parts.forEach(P=>{
+  let run=[];
+  const flush=()=>{if(run.length)groups.set(run[0],run);run=[];};
+  P.steps.forEach(li=>{if('optional' in li.dataset)run.push(li);else flush();});
+  flush();
+});
+groups.forEach((run,li)=>{
+  const n=run.length,box=el('div','skip-box pl-own',
+    `<p>${n===1?'This step is optional.':`This step and the next ${n===2?'one are':(n-1)+' are'} optional.`} Skipped steps don’t count towards the chapter, and you can still do them later.</p>`+
+    `<button class="btn" type="button" data-skip>${n===1?'Skip this step':'Skip these '+n+' steps'}</button>`);
+  box.hidden=true;
+  (li.querySelector(':scope > .step-title')||heads.get(li)).after(box);
+  box.querySelector('[data-skip]').addEventListener('click',()=>skipRun(run));
 });
 
 // ---------- Elements the player adds ----------
-// Bar under the app bar: where you are and the chapter meter.
-const bar=el('div','player-bar pl-own','<p class="pb-part"></p><p class="pb-pos"></p><p class="pb-count"></p><span class="meter" aria-hidden="true"><span class="meter-fill"></span></span>');
-bar.id='player-bar';bar.hidden=true;
-if(progress&&progress.parentElement===main)progress.after(bar);else wrap.before(bar);
 // "About this part": the goal and the notes of the part on screen (copies; the originals stay where they are).
 const about=el('details','disclosure part-about pl-own','<summary>About this part</summary><div class="inside"></div>');
 about.hidden=true;
-// Start screen: chips, safety summary, parts list.
-const chips=el('ul','player-chips pl-own'),safety=el('details','player-safety pl-own'),partsBox=el('section','player-parts pl-own');
+// A copy for the player's own cards: no ids (they stay unique), and not hidden just because the original is put away.
+function copy(node){
+  const c=node.cloneNode(true);
+  c.removeAttribute('id');c.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
+  if(managed.has(node))c.hidden=false;
+  return c;
+}
+// Start screen: chips, safety summary, reference summary, parts list.
+const chips=el('ul','player-chips pl-own'),safety=el('details','player-safety pl-own'),refBox=el('details','disclosure player-reference pl-own'),partsBox=el('section','player-parts pl-own');
 chips.setAttribute('aria-label','About this chapter');
 partsBox.setAttribute('aria-labelledby','player-parts-title');
-[chips,safety,partsBox].forEach(e=>{e.hidden=true;});
+[chips,safety,refBox,partsBox].forEach(e=>{e.hidden=true;});
 (()=>{
   const time=eyebrow?clean(eyebrow.textContent.split('/').slice(1).join('/')).toLowerCase():'';
   // Text nodes joined with spaces, so "<b>Your project</b><br>Project 6" reads "Your project Project 6".
   const words=e=>{const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),out=[];while(w.nextNode())out.push(w.currentNode.nodeValue);return out.join(' ');};
-  const text=preSteps().filter(e=>e!==pageHead).map(words).join(' ');
+  const text=preSteps().filter(e=>e!==pageHead&&!e.classList.contains('reference')).map(words).join(' ');
   const proj=/\bproject (\d+)\b/i.exec(text),os=/\bOS (\d+\.\d+(?:\.\d+)?)( or newer| or later)?/.exec(text);
-  chips.innerHTML=[time?time.charAt(0).toUpperCase()+time.slice(1):'',proj?'Project '+proj[1]:'',os?'OS '+os[1]+(os[2]?'+':''):'',
-    plural(steps.length,'step','steps')+' in '+plural(parts.length,'part','parts')].filter(Boolean).map(t=>`<li>${esc(t)}</li>`).join('');
+  // The OS chip turns to caution, with the way to update, when the OS chosen in Settings is older than the chapter's.
+  const need=os?parseFloat(os[1]):0,old=Boolean(need&&fwNum&&fwNum<need);
+  const osText=os?'OS '+esc(os[1])+(os[2]?'+':''):'';
+  chips.innerHTML=[time?esc(time.charAt(0).toUpperCase()+time.slice(1)):'',proj?'Project '+proj[1]:'',
+    os&&!old?osText:'',esc(plural(steps.length,'step','steps')+' in '+plural(parts.length,'part','parts'))].filter(Boolean).map(t=>`<li>${t}</li>`).join('')+
+    (old?`<li class="warn">${icon('warning')}<span>Needs ${osText} · <a href="./setup.html#s-update-open-utility">Update first</a></span></li>`:'');
   const intro=pageHead&&pageHead.nextElementSibling&&pageHead.nextElementSibling.tagName==='P'?pageHead.nextElementSibling:pageHead;
   if(intro)intro.after(chips);else main.prepend(chips);
   const dangers=preSteps().filter(e=>e.matches('.notice.danger')),hard=steps.filter(li=>/^(delete|overwrite)$/.test(li.dataset.risk||'')).length;
@@ -180,57 +240,81 @@ partsBox.setAttribute('aria-labelledby','player-parts-title');
   }
   partsBox.innerHTML='<h2 id="player-parts-title">Parts</h2><ol class="pp-list"></ol>';
   (progress&&progress.parentElement===main?progress:wrap).before(partsBox);
+  if(references.length){
+    refBox.innerHTML=`<summary>${icon('list')}<span>Reference for this chapter</span></summary><div class="inside"></div>`;
+    references.forEach(r=>{const c=copy(r);c.classList.remove('card','reference','reentry');c.classList.add('ref-part');refBox.lastElementChild.append(c);});
+    partsBox.before(refBox);
+  }
 })();
-// A copy for the player's own cards: no ids (they stay unique), and not hidden just because the original is put away.
-function copy(node){
-  const c=node.cloneNode(true);
-  c.removeAttribute('id');c.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
-  if(managed.has(node))c.hidden=false;
-  return c;
-}
-// Player / All steps switch, at the top of the list (list mode) and in the Steps sheet.
+// Player / All steps switch: at the top of the list (list mode), in the menu and in the chapter actions.
 const modesHTML='<button type="button" data-mode="player" aria-pressed="false">Player</button><button type="button" data-mode="all" aria-pressed="false">All steps</button>';
+const pressModes=box=>box.querySelectorAll('.player-modes [data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===(view==='list'?'all':'player'))));
 const listModes=el('div','player-modes pl-own',modesHTML);
 listModes.setAttribute('role','group');listModes.setAttribute('aria-label','Show the steps');listModes.hidden=true;
 wrap.before(listModes);
+// Above the step card: the way back to the step to continue at, and "Get back in" after a break.
+const pill=el('button','back-pill pl-own');pill.type='button';pill.hidden=true;
+const getback=el('section','getback pl-own');getback.hidden=true;getback.setAttribute('aria-labelledby','getback-title');
+if(reentry){
+  const c=copy(reentry);c.querySelectorAll('h2').forEach(h=>h.remove());
+  getback.innerHTML='<h2 id="getback-title">Get back in</h2><p class="meta">It has been a while since your last tick. Before you go on:</p><div class="getback-body"></div><p><button class="btn" type="button" data-getback>Got it</button></p>';
+  getback.querySelector('.getback-body').append(...c.childNodes);
+  getback.querySelector('[data-getback]').addEventListener('click',()=>{getback.hidden=true;if(cur)focusStep(cur);});
+}
+wrap.before(pill,getback);
+pill.addEventListener('click',()=>{const li=byId.get(C.current());if(li)showStep(li);});
 // Checkpoint card and chapter-complete card.
 const checkCard=el('section','player-card player-check pl-own'),doneCard=el('section','player-card player-done pl-own');
 checkCard.id='player-check';doneCard.id='player-done';
 [checkCard,doneCard].forEach(c=>{c.hidden=true;c.tabIndex=-1;});
 checkCard.setAttribute('aria-labelledby','player-check-title');doneCard.setAttribute('aria-labelledby','player-done-title');
 wrap.after(checkCard,doneCard);
-// Action bar, after <main> in reading order.
+// Action bar, after <main> in reading order: Back, Tools, the one primary.
 const actions=el('div','player-actions pl-own',
   `<button class="pa-more" type="button" hidden>${downIcon}More below</button>`+
   `<div class="pa-row"><button class="pa-btn" id="player-back" type="button" aria-keyshortcuts="ArrowLeft">${icon('back')}<span>Back</span></button>`+
-  `<button class="pa-btn" id="player-steps-btn" type="button" aria-haspopup="dialog" aria-controls="player-steps" aria-expanded="false">${listIcon}<span>Steps</span></button>`+
+  `<button class="pa-btn" id="player-tools-btn" type="button" aria-haspopup="dialog" aria-keyshortcuts="T">${icon('grid')}<span>Tools</span></button>`+
   `<button class="btn primary pa-main" id="player-next" type="button"><span class="pa-label">Done · Next</span>${icon('next')}</button>`+
   `<a class="btn primary pa-main" id="player-go" href="./index.html" hidden><span class="pa-label"></span>${icon('next')}</a></div>`+
-  '<p class="pa-hint" aria-hidden="true"><kbd class="key">→</kbd> or <kbd class="key">Enter</kbd> Done · Next · <kbd class="key">←</kbd> Back</p>');
+  '<p class="pa-hint" aria-hidden="true"><kbd class="key">→</kbd> or <kbd class="key">Enter</kbd> Done · Next · <kbd class="key">←</kbd> Back · <kbd class="key">T</kbd> Tools</p>');
 actions.id='player-actions';actions.hidden=true;
 actions.setAttribute('role','group');actions.setAttribute('aria-label','Step controls');
 main.after(actions);
-const backBtn=actions.querySelector('#player-back'),stepsBtn=actions.querySelector('#player-steps-btn'),nextBtn=actions.querySelector('#player-next'),goLink=actions.querySelector('#player-go'),more=actions.querySelector('.pa-more');
-// Steps sheet: a native <dialog> like the shell's menu.
-const sheet=el('dialog','sheet player-sheet pl-own',
-  `<div class="sheet-box"><div class="sheet-head"><h2 class="sheet-title" id="player-steps-title">This chapter</h2>`+
-  `<button class="icon-btn" type="button" data-close aria-label="Close steps">${icon('close')}</button></div><div class="sheet-body"></div></div>`);
-sheet.id='player-steps';sheet.setAttribute('aria-labelledby','player-steps-title');
-document.body.append(sheet);
-const sheetBody=sheet.querySelector('.sheet-body');
+const backBtn=actions.querySelector('#player-back'),toolsBtn=actions.querySelector('#player-tools-btn'),nextBtn=actions.querySelector('#player-next'),goLink=actions.querySelector('#player-go'),more=actions.querySelector('.pa-more');
+toolsBtn.addEventListener('click',()=>{if(window.CoachTools)CoachTools.open(toolsBtn);});
 // "This step doesn't match my K.O. II": one link, moved to the end of the step on screen and filled in for it
 // (the fields of .github/ISSUE_TEMPLATE/wrong-instruction.yml).
 const reportEl=el('p','step-report pl-own',`<a id="player-report" href="#" target="_blank" rel="noopener noreferrer">This step doesn’t match my K.O. II<span class="sr"> (opens in a new tab)</span></a>`);
 reportEl.hidden=true;
-function report(li){
-  const P=partOf(li),site=window.COACH_SITE||{},fw=window.CoachProgress?CoachProgress.v2().firmware:'',
-    title=li.querySelector(':scope > .step-title'),src=li.querySelector(':scope > .step-source a, :scope > .step-do a[href*="/guides/"]');
-  const said=['.preflight','.step-do','.step-undo','.step-check'].map(q=>li.querySelector(':scope > '+q)).filter(Boolean).map(e=>clean(e.textContent)).join(' ')||clean(gist(li));
+function reportUrl(li){
+  const P=partOf(li),title=li.querySelector(':scope > .step-title'),src=li.querySelector(':scope > .step-source a, :scope > .step-do a[href*="/guides/"]');
+  const said=['.preflight','.step-do','.step-undo','.step-check'].map(q=>[...li.querySelectorAll(':scope > '+q)]).flat().map(e=>clean(e.textContent)).join(' ')||gist(li);
   const q={title:'[Wrong instruction] '+chNum+' '+chName+', step '+num(li),page:chNum+' '+chName,
-    step:'Step '+num(li)+' / '+(title?clean(title.textContent):'Part '+P.n+' · '+P.title)+' ['+li.dataset.step+']','app-says':said.slice(0,1500),
+    step:'Step '+num(li)+' / '+(title?gist(li):'Part '+P.n+' · '+P.title)+' ['+li.dataset.step+']','app-says':said.slice(0,1500),
     firmware:{'2.5':'2.5.x','2':'2.0.x',older:'older than 2.0',unknown:'not sure'}[fw]||'',guide:src?src.href:''};
-  reportEl.querySelector('a').href=(site.report||'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml')+Object.entries(q).filter(([,v])=>v).map(([k,v])=>'&'+k+'='+encodeURIComponent(v)).join('');
-  li.append(reportEl);
+  return ((site&&site.report)||'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml')+Object.entries(q).filter(([,v])=>v).map(([k,v])=>'&'+k+'='+encodeURIComponent(v)).join('');
+}
+// The chapter actions: ⋮ in the app bar opens a sheet with the switch, About, Print, Report this step, Restart.
+const moreBtn=el('button','icon-btn chapter-actions-btn pl-own',icon('more'));
+moreBtn.type='button';moreBtn.id='chapter-actions-btn';
+moreBtn.setAttribute('aria-label','Chapter actions');moreBtn.setAttribute('aria-haspopup','dialog');moreBtn.setAttribute('aria-controls','chapter-actions');moreBtn.setAttribute('aria-expanded','false');
+const barActions=document.getElementById('appbar-actions');
+const actSheet=el('dialog','sheet actions-sheet pl-own',
+  `<div class="sheet-box"><div class="sheet-head"><h2 class="sheet-title" id="chapter-actions-title">${esc(chNum?chNum+' · ':'')}${esc(chName)}</h2>`+
+  `<button class="icon-btn" type="button" data-close aria-label="Close">${icon('close')}</button></div><div class="sheet-body"></div></div>`);
+actSheet.id='chapter-actions';actSheet.setAttribute('aria-labelledby','chapter-actions-title');
+let actModal=null;
+if(Shell&&barActions){
+  barActions.append(moreBtn);document.body.append(actSheet);
+  actModal=Shell.modal(actSheet,moreBtn,()=>{
+    actSheet.querySelector('.sheet-body').innerHTML=`<div class="player-modes" role="group" aria-label="Show the steps">${modesHTML}</div>`+
+      `<ul class="ps-links"><li><a href="#start">${icon('info')}About this chapter</a></li>`+
+      `<li><button type="button" data-act="print">${icon('print')}Print all steps</button></li>`+
+      (view==='step'&&cur?`<li><a href="${esc(reportUrl(cur))}" target="_blank" rel="noopener noreferrer">${icon('external')}Report this step<span class="sr"> (opens in a new tab)</span></a></li>`:'')+
+      `</ul><p><button class="btn danger" type="button" data-act="restart">${icon('undo')}Restart this chapter</button></p>`;
+    pressModes(actSheet);
+  });
+  moreBtn.addEventListener('click',()=>actModal.open());
 }
 
 // ---------- State and rendering ----------
@@ -240,7 +324,8 @@ function setHidden(want){
   want.forEach(e=>{if(!managed.has(e)&&!e.hidden){e.hidden=true;managed.add(e);}});
 }
 const isGated=()=>view==='step'&&cur&&gates.has(cur)&&confirmed!==cur;
-const tally=list=>{const c=list.filter(li=>C.isDone(li.dataset.step)).length;return{c,n:list.length,text:c?c+' of '+list.length+' done':plural(list.length,'step','steps')};};
+const tally=list=>{const live=list.filter(li=>!isSkipped(li)),c=live.filter(isDone).length;return{c,n:live.length,text:c?c+' of '+live.length+' done':plural(live.length,'step','steps')};};
+const wideStart=matchMedia('(min-width:1360px)');
 function render(){
   const v=printing?'list':view;
   if(v==='list'||!v)delete root.dataset.player;else root.dataset.player=v;
@@ -248,6 +333,7 @@ function render(){
   if(v==='start'){
     want.add(wrap);if(progress)want.add(progress);
     if(safety.childElementCount)preSteps().filter(e=>e.matches('.notice.danger')).forEach(e=>want.add(e));   // the summary holds copies
+    if(references.length)references.forEach(e=>want.add(e));   // so does "Reference for this chapter"
   }else if(v==='step'&&cur){
     const P=partOf(cur);
     k.forEach(e=>{if(e!==wrap&&e!==note)want.add(e);});
@@ -257,7 +343,7 @@ function render(){
     [...P.el.children].forEach(e=>{if(e.tagName!=='OL'&&e!==about)want.add(e);});
     [...P.el.querySelectorAll(':scope > ol')].forEach(ol=>{if(!ol.contains(cur))want.add(ol);});
     P.steps.forEach(li=>{if(li!==cur)want.add(li);});
-    if(isGated())[...cur.children].forEach(e=>{if(!e.matches('.step-head,.preflight,.gate,.check,.here-tag'))want.add(e);});
+    if(isGated())[...cur.children].forEach(e=>{if(!e.matches('.step-head,.step-title,.preflight,.gate,.check,.here-tag'))want.add(e);});
   }else if(v==='check'||v==='done'){
     k.forEach(e=>{if(e!==note)want.add(e);});
     if(v==='check'&&foot)want.add(foot);
@@ -269,37 +355,42 @@ function render(){
     g.box.hidden=!on;g.btn.hidden=ok;g.hint.hidden=ok;g.ok.hidden=!ok;
     const n=g.box.querySelector('.gate-note');if(n)n.hidden=ok;
   });
-  bar.hidden=!(v==='step'||v==='check');
   chips.hidden=partsBox.hidden=v!=='start';
   safety.hidden=v!=='start'||!safety.childElementCount;
+  refBox.hidden=v!=='start'||!references.length;
   about.hidden=!(v==='step'&&about.querySelector('.inside').childElementCount);
   checkCard.hidden=v!=='check';doneCard.hidden=v!=='done';
   listModes.hidden=v!=='list';
-  listModes.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode==='all')));
+  pressModes(main);
   actions.hidden=v==='list'||!v;
+  if(v!=='step')getback.hidden=true;
   reportEl.hidden=!(v==='step'&&cur);
-  if(v==='step'&&cur&&reportEl.parentElement!==cur)report(cur);
+  if(v==='step'&&cur){reportEl.querySelector('a').href=reportUrl(cur);if(reportEl.parentElement!==cur)cur.append(reportEl);}
+  // Desktop start screen: the parts list is a second column beside everything above it (coach.css).
+  if(v==='start')main.style.setProperty('--start-rows',String(kids().concat([chips,safety,refBox]).filter(e=>!e.hidden&&e!==partsBox).length||1));
   paint();
   document.dispatchEvent(new CustomEvent('coach:view',{detail:{view:v||'list',step:v==='step'&&cur?cur.dataset.step:null}}));
 }
-// Texts that follow the ticks: the bar, the main button.
+// What follows the ticks: the app bar's title and meter, the main button, the pill, the tags, the skip boxes, the menu.
 function paint(){
   const total=C.total(),count=C.count();
-  bar.querySelector('.pb-count').textContent=count===total?'All '+total+' steps done':count+' of '+total+' done';
-  bar.querySelector('.meter-fill').style.width=(total?Math.round(100*count/total):0)+'%';
   const P=view==='check'?part:cur&&partOf(cur);
-  if(P){
-    bar.querySelector('.pb-part').textContent='Part '+P.n+' · '+P.title;
-    bar.querySelector('.pb-pos').textContent=view==='check'?'Checkpoint':'Step '+(P.steps.indexOf(cur)+1)+' of '+P.steps.length;
+  if(Shell){
+    Shell.setMeter(total?count/total:0);
+    if((view==='step'||view==='check')&&P){
+      const [k,n]=cur?inPart(cur):[0,0];
+      Shell.setTitle((chNum?chNum+' · ':'')+chName,'','Part '+P.n+' · '+P.title+' · '+(view==='check'?'Checkpoint':'Step '+k+' of '+n));
+    }else Shell.setTitle(chName,chNum?'Chapter '+chNum:'');
   }
-  backBtn.hidden=stepsBtn.hidden=view==='start';
+  backBtn.hidden=view==='start';
+  toolsBtn.hidden=view==='start'||!window.CoachTools;
   actions.querySelector('.pa-hint').hidden=!(view==='step'||view==='check');
   let label='',go='';
   nextBtn.removeAttribute('aria-disabled');
   if(view==='start'){const r=C.hasProgress()&&C.resumeId();label=r?'Continue at step '+num(byId.get(r)):'Start Part 1';}
   else if(view==='step'&&cur){
     if(isGated()){label='Confirm first';nextBtn.setAttribute('aria-disabled','true');}
-    else label=C.isDone(cur.dataset.step)?'Next':'Done · Next';
+    else label=isDone(cur)?'Next':'Done · Next';
   }else if(view==='check'&&part){
     const np=parts[part.i+1];
     label=(part.checkpoint?'Yes · ':'')+(np?'Part '+np.n+': '+np.title:'Finish the chapter');
@@ -308,6 +399,13 @@ function paint(){
   nextBtn.querySelector('.pa-label').textContent=label;
   if(view==='step'||view==='check')nextBtn.setAttribute('aria-keyshortcuts','ArrowRight Enter');else nextBtn.removeAttribute('aria-keyshortcuts');
   if(go){goLink.querySelector('.pa-label').textContent=go;goLink.href=nextLink?nextLink.getAttribute('href'):'./index.html';}
+  // "Back to step N": a step opened from the menu, a link or search while the step to continue at is another one.
+  const home=view==='step'&&cur&&C.hasProgress()&&byId.get(C.current());
+  pill.hidden=!(home&&home!==cur);
+  if(!pill.hidden)pill.innerHTML=`${icon('back')}<span>Back to step ${num(home)}<span class="sr">, where you continue</span></span>`;
+  heads.forEach((h,li)=>{const t=h.querySelector('.skipped-tag');t.hidden=!isSkipped(li);h.classList.toggle('bare',!h.querySelector('.tag:not([hidden])'));});
+  groups.forEach((run,li)=>{const b=li.querySelector(':scope > .skip-box');if(b)b.hidden=!(view==='step'&&li===cur)||run.every(settled);});
+  if(Shell)Shell.refreshChapter();
   cue();
 }
 // "More below": the step card runs on under the action bar.
@@ -319,18 +417,25 @@ function cue(){
 let cueFrame=0;
 const cueSoon=()=>{if(!cueFrame)cueFrame=requestAnimationFrame(()=>{cueFrame=0;cue();});};
 addEventListener('scroll',cueSoon,{passive:true});addEventListener('resize',cueSoon);
-more.addEventListener('click',()=>scrollBy({top:Math.round(innerHeight*.6),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+more.addEventListener('click',()=>scrollBy({top:Math.round(innerHeight*.6),behavior:reduced()?'auto':'smooth'}));
+if(wideStart.addEventListener)wideStart.addEventListener('change',()=>{if(view==='start')render();});
 
 function setUrl(hash){
   try{history.replaceState(history.state,'',location.pathname+location.search+(hash||''));}catch(e){}
 }
 function manual(on){try{history.scrollRestoration=on?'manual':'auto';}catch(e){}}
+// Focus goes to the step's title when it has one (it reads "Step 2 of 5: …"), else to the step itself.
+function focusStep(li){
+  const t=li.querySelector(':scope > .step-title')||li;
+  t.tabIndex=-1;t.focus({preventScroll:true});
+}
 
 // ---------- Views ----------
 function showStep(li,opt){
   opt=opt||{};
   if(li!==cur)confirmed=null;
   const P=partOf(li),moved=view==='step'&&cur&&cur!==li;
+  if(moved)getback.hidden=true;
   view='step';cur=li;part=P;P.el.open=true;manual(true);
   // About this part: copies of the goal and notes, opened on the part's first step
   if(about.dataset.part!==String(P.i)){
@@ -344,61 +449,90 @@ function showStep(li,opt){
   if(about.parentElement!==P.el)P.el.append(about);
   render();
   setUrl('#s-'+li.dataset.step);
-  const named=li.querySelector(':scope > .step-title');
-  document.title=(named?clean(named.textContent)+' · ':'')+'Step '+(P.steps.indexOf(li)+1)+' of '+P.steps.length+' / Part '+P.n+' · '+P.title+' / '+baseTitle;
-  if(moved){li.classList.remove('pl-in');void li.offsetWidth;li.classList.add('pl-in');}
+  const [k,n]=inPart(li);
+  document.title=(li.querySelector(':scope > .step-title')?gist(li)+' · ':'')+'Step '+k+' of '+n+' / Part '+P.n+' · '+P.title+' / '+baseTitle;
+  if(moved&&!reduced()){li.classList.remove('pl-in');void li.offsetWidth;li.classList.add('pl-in');}
   scrollTo(0,0);
-  li.tabIndex=-1;
-  if(opt.focus!==false)li.focus({preventScroll:true});
+  if(opt.focus!==false)focusStep(li);
   cue();
 }
 function showStart(){
   view='start';cur=null;manual(false);
   partsBox.querySelector('.pp-list').innerHTML=parts.map(p=>{
-    const t=tally(p.steps);
-    return `<li><a href="#s-${esc(p.steps[0].dataset.step)}"><span class="pp-n">${p.n}</span><span class="pp-t">${esc(p.title)}</span><span class="tally${t.c&&t.c===t.n?' all':''}">${esc(t.text)}</span></a></li>`;
+    const t=tally(p.steps),first=p.steps.find(li=>!settled(li))||p.steps[0];
+    return `<li><a href="#s-${esc(first.dataset.step)}"><span class="pp-n">${p.n}</span><span class="pp-t">${esc(p.title)}</span><span class="tally${t.c&&t.c===t.n?' all':''}">${esc(t.text)}</span></a></li>`;
   }).join('');
   if(safety.childElementCount)safety.open=!C.hasProgress();
   render();
   document.title=baseTitle;
 }
+// A row of LEDs, lit for what is done (the chapter's parts on a checkpoint, all 16 when the chapter is complete).
+const leds=(list,lit)=>`<span class="led-row" aria-hidden="true">${list.map((x,i)=>`<span class="led${lit(x)?' on':''}" style="--i:${i}"></span>`).join('')}</span>`;
 function showCheck(P,opt){
   view='check';part=P;cur=P.steps[P.steps.length-1];fixOpen=false;manual(true);
-  const np=parts[P.i+1];
+  const np=parts[P.i+1],full=p=>p.steps.every(settled),doneParts=parts.filter(full).length;
   checkCard.innerHTML=`<h2 class="pl-eyebrow" id="player-check-title">Part ${P.n} done${P.checkpoint?' · Checkpoint':''}</h2>`+
+    `<p class="pc-leds">${leds(parts,full)}<span class="meta">${doneParts} of ${plural(parts.length,'part','parts')} done</span></p>`+
     (P.checkpoint?'<div class="pc-q"></div>':`<p class="pc-q">You have reached the end of Part ${P.n}: ${esc(P.title)}.</p>`)+
     (np?`<p class="meta">Next: Part ${np.n} · ${esc(np.title)}</p>`:'<p class="meta">This was the last part of the chapter.</p>')+
-    (P.ifnot?'<div class="row"><button class="btn lg pc-not" type="button" aria-expanded="false">Not quite</button></div><div class="pc-fix" hidden></div>':'');
+    (P.checkpoint?'<div class="row"><button class="btn lg pc-not" type="button" aria-expanded="false">Not quite</button></div>':'')+
+    `<div class="pc-fix" hidden><div class="pc-fix-text"></div><p><button class="btn" type="button" data-redo>${icon('back')}Redo Part ${P.n} from its first step</button></p></div>`;
   if(P.checkpoint){const q=copy(P.checkpoint);q.className='';checkCard.querySelector('.pc-q').append(...q.childNodes);}
-  if(P.ifnot){
-    checkCard.querySelector('.pc-fix').append(copy(P.ifnot));
-    const nb=checkCard.querySelector('.pc-not');
-    nb.addEventListener('click',()=>{fixOpen=!fixOpen;nb.setAttribute('aria-expanded',String(fixOpen));checkCard.querySelector('.pc-fix').hidden=!fixOpen;});
-  }
+  const fix=checkCard.querySelector('.pc-fix');
+  if(P.ifnot)fix.querySelector('.pc-fix-text').append(copy(P.ifnot));
+  const nb=checkCard.querySelector('.pc-not');
+  if(nb)nb.addEventListener('click',()=>{fixOpen=!fixOpen;nb.setAttribute('aria-expanded',String(fixOpen));fix.hidden=!fixOpen;if(fixOpen)answer(P,'not-yet');});
+  fix.querySelector('[data-redo]').addEventListener('click',()=>{C.setCurrent(P.steps[0].dataset.step);showStep(P.steps[0]);});
   render();
   setUrl('#s-'+cur.dataset.step);
   document.title='Part '+P.n+' done / '+baseTitle;
   scrollTo(0,0);
   if(!opt||opt.focus!==false)checkCard.focus({preventScroll:true});
 }
+// "You made: …" from the page's "You will make" line.
+function made(){
+  const c=copy(makes),b=c.querySelector('b');
+  if(b)b.textContent=/have/i.test(b.textContent)?'You now have:':'You made:';
+  return c.innerHTML;
+}
 function showDone(opt){
+  // Arriving here ticks the recap, but only once every other step that counts is done (plan 5.9).
+  const recaps=steps.filter(li=>li.dataset.kind==='recap');
+  if(recaps.some(li=>!isDone(li))&&steps.every(li=>recaps.includes(li)||settled(li)))recaps.forEach(li=>C.setDone(li.dataset.step,true));
   view='done';cur=null;manual(true);
-  const open=steps.filter(li=>!C.isDone(li.dataset.step));
-  doneCard.innerHTML=`<p class="pl-eyebrow">Chapter ${esc(chNum)} · ${esc(chName)}</p><h2 class="pd-title" id="player-done-title" tabindex="-1">Chapter ${esc(chNum)} done</h2>`+
-    (open.length?`<p>${esc(plural(open.length,'step','steps'))} not ticked yet:</p><ul class="pd-open">`+
+  const open=steps.filter(li=>!settled(li)),complete=!open.length,skipped=steps.filter(isSkipped).length;
+  const moves=recaps.map(li=>li.querySelector(':scope > .step-moves')).filter(Boolean);
+  // Every chapter done: the course-complete list (plan 5.9), what each one made.
+  const course=complete&&window.CoachProgress?CoachProgress.chapters():[],all=course.length&&course.every(p=>p.done||p.c.slug===slug);
+  const head=complete?'Chapter '+esc(chNum)+' done':'Chapter '+esc(chNum)+' · '+esc(plural(open.length,'step','steps'))+' not ticked yet';
+  doneCard.innerHTML=`<p class="pl-eyebrow">Chapter ${esc(chNum)} · ${esc(chName)}</p><h2 class="pd-title" id="player-done-title" tabindex="-1">${head}</h2>`+
+    (complete?`<p class="pd-leds">${leds(Array.from({length:16}),()=>true)}</p>`+(makes?`<p class="pd-made">${made()}</p>`:'')+
+      `<p>All ${C.total()} steps are ticked${skipped?` (${plural(skipped,'optional step','optional steps')} skipped)`:''}.</p>`+
+      (moves.length?'<h3 class="pd-moves-title">New moves</h3>'+moves.map(m=>{const c=copy(m);c.classList.add('pd-moves');return c.outerHTML;}).join(''):'')
+    :`<p>Tick them, or skip the optional ones, and this chapter is done:</p><ul class="pd-open">`+
       open.slice(0,8).map(li=>`<li><a href="#s-${esc(li.dataset.step)}"><span class="pd-n">${num(li)}</span><span class="pd-t">${esc(gist(li))}</span></a></li>`).join('')+'</ul>'+
-      (open.length>8?`<p><a href="#all">${esc(plural(open.length-8,'more step','more steps'))}: see All steps</a></p>`:'')
-      :`<p>All ${steps.length} steps are ticked.</p>`)+
-    (slug!=='setup'?`<div class="notice tip"><b>Back up now.</b> Save a copy of your work with the official EP sample tool, as in <a href="./setup.html#s-backup-open-tool">00 / Start here, part 04</a>.</div>`:'')+
-    (nextLink?'<p><a class="btn" href="./index.html">Back to the course</a></p>':'');
+      (open.length>8?`<p><a href="#all">${esc(plural(open.length-8,'more step','more steps'))}: see All steps</a></p>`:''))+
+    (all?`<section class="pd-course"><h3>Course complete</h3><p>All ${course.length} chapters are done. What you made:</p><ul class="made-list">`+
+      course.map(p=>`<li><span class="num">${esc(p.c.num)}</span> <a href="${esc(p.c.href)}">${esc(p.c.title)}</a>${p.c.made?`<span class="sub meta">${esc(p.c.made.charAt(0).toUpperCase()+p.c.made.slice(1))}.</span>`:''}</li>`).join('')+
+      `</ul><p><a href="./cheat-sheet.html">The cheat sheet</a> keeps every move and reference table in one place.</p></section>`:'')+
+    (slug!=='setup'&&complete?`<div class="notice tip"><b>Back up now.</b> Save a copy of your work with the official EP sample tool, as in <a href="./setup.html#s-backup-open-tool">00 / Start here, part 04</a>.</div>`:'')+
+    `<div class="row pd-actions">${complete?`<a class="btn" href="#all" data-review>${icon('list')}Review steps</a>`:''}${nextLink?'<a class="btn" href="./index.html">Back to the course</a>':''}`+
+    (complete?`<button class="btn ghost" type="button" data-act="restart">${icon('undo')}Restart this chapter</button>`:'')+'</div>';
   render();
   setUrl('#done');
-  document.title='Chapter '+chNum+' done / '+baseTitle;
+  document.title=(complete?'Chapter '+chNum+' done':plural(open.length,'step','steps')+' not ticked yet')+' / '+baseTitle;
   scrollTo(0,0);
   if(!opt||opt.focus!==false){const h=doneCard.querySelector('h2');if(h)h.focus({preventScroll:true});}
 }
+let listed=false;
 function showList(){
   view='list';cur=null;manual(false);
+  // The first time: finished parts fold away, the part with the step to continue at opens.
+  if(!listed){
+    listed=true;
+    const here=byId.get(C.resumeId());
+    parts.forEach(p=>{if(here&&p.steps.includes(here))p.el.open=true;else if(p.steps.every(settled))p.el.open=false;});
+  }
   render();
   document.title=baseTitle;
 }
@@ -406,13 +540,16 @@ function showList(){
 // ---------- Moving ----------
 function next(){
   if(view==='start'){const r=C.hasProgress()&&C.resumeId();showStep(r?byId.get(r):steps[0]);return;}
-  if(view==='check'){const np=parts[part.i+1];if(np)showStep(np.steps[0]);else showDone();return;}
+  if(view==='check'){if(part.checkpoint)answer(part,'yes');const np=parts[part.i+1];if(np)showStep(np.steps[0]);else showDone();return;}
   if(view!=='step'||!cur)return;
   if(isGated()){const g=gates.get(cur);g.box.scrollIntoView({block:'center'});g.btn.focus({preventScroll:true});return;}
-  const id=cur.dataset.step;
-  if(!C.isDone(id))C.setDone(id,true);
+  if(!isDone(cur))C.setDone(cur.dataset.step,true);
   if(window.CoachWake)CoachWake.poke();
-  const P=partOf(cur),k=P.steps.indexOf(cur);
+  advance(cur);
+}
+// After a step: the next one in its part, else the part's checkpoint.
+function advance(li){
+  const P=partOf(li),k=P.steps.indexOf(li);
   if(k<P.steps.length-1){const n=P.steps[k+1];C.setCurrent(n.dataset.step);showStep(n);return;}
   const np=parts[P.i+1];
   if(np)C.setCurrent(np.steps[0].dataset.step);
@@ -426,103 +563,103 @@ function back(){
   }else if(view==='check'&&part){const l=part.steps[part.steps.length-1];C.setCurrent(l.dataset.step);showStep(l);}
   else if(view==='done')showCheck(parts[parts.length-1]);
 }
+// Skip a run of optional steps: they stop counting, the player moves past them, and the toast can undo it.
+function skipRun(run){
+  const ids=run.map(li=>li.dataset.step);
+  C.setSkipped(ids,true);
+  advance(run[run.length-1]);
+  C.say(run.length===1?'Step skipped. It no longer counts towards this chapter.':run.length+' steps skipped. They no longer count towards this chapter.',()=>{
+    C.setSkipped(ids,false);C.setCurrent(ids[0]);showStep(run[0]);
+  });
+}
 nextBtn.addEventListener('click',next);
 backBtn.addEventListener('click',back);
 // The card is focused on every step change; its ring shows only for people using the keyboard (.pl-kbd on <html>).
 document.addEventListener('keydown',e=>{if(!e.ctrlKey&&!e.metaKey)root.classList.add('pl-kbd');},true);
 document.addEventListener('pointerdown',()=>root.classList.remove('pl-kbd'),true);
-// Keyboard: → and Enter = the main button, ← = Back, but only when focus is on the page itself or on the step card,
-// never in a link, button, summary, field or dialog (Enter there keeps its own meaning).
+// Keyboard: → and Enter = the main button, ← = Back, but only when focus is on the page itself, the step card or its
+// title, never in a link, button, summary, field or dialog (Enter there keeps its own meaning).
 document.addEventListener('keydown',e=>{
   if(e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey||e.isComposing)return;
   if(!(view==='step'||view==='check')||document.querySelector('dialog[open]'))return;
-  const t=e.target;
-  if(!(t===document.body||t===root||t===main||(view==='step'&&t===cur)||(view==='check'&&t===checkCard)))return;
+  const t=e.target,title=cur&&cur.querySelector(':scope > .step-title');
+  if(!(t===document.body||t===root||t===main||(view==='step'&&(t===cur||t===title))||(view==='check'&&t===checkCard)))return;
   if(e.key==='ArrowRight'||e.key==='Enter'){e.preventDefault();next();}
   else if(e.key==='ArrowLeft'){e.preventDefault();back();}
 });
+if(Shell){
+  Shell.addShortcut('→','Done · Next in a chapter (Enter too)',null);
+  Shell.addShortcut('←','Back in a chapter',null);
+}
 
-// ---------- Steps sheet ----------
-let pushed=false,popping=false,after=null,down=null;
-function fillSheet(){
-  const total=C.total(),count=C.count(),here=view==='check'?null:cur,P=view==='check'?part:cur?partOf(cur):parts[0];
-  sheetBody.innerHTML=`<div class="ps-progress"><p class="ps-count">${count===total?'All '+total+' steps done':count+' of '+total+' done'}</p><span class="meter" aria-hidden="true"><span class="meter-fill" style="width:${total?Math.round(100*count/total):0}%"></span></span></div>`+
-    `<div class="player-modes" role="group" aria-label="Show the steps">${modesHTML}</div>`+
+// ---------- "This chapter": the menu's tab (phones and tablets) and the rail (desktop) ----------
+function renderPanel(box,where){
+  const total=C.total(),count=C.count(),here=view==='step'?cur:null,resume=C.hasProgress()?byId.get(C.current()):null;
+  const P=view==='check'?part:cur?partOf(cur):resume?partOf(resume):parts[0];
+  box.innerHTML=(where==='rail'?`<p class="nav-label">This chapter</p>`:'')+
+    `<div class="ps-progress"><p class="ps-count">${count===total?'All '+total+' steps done':count+' of '+total+' done'}</p><span class="meter" aria-hidden="true"><span class="meter-fill" style="width:${total?Math.round(100*count/total):0}%"></span></span></div>`+
+    (where==='sheet'?`<div class="player-modes" role="group" aria-label="Show the steps">${modesHTML}</div>`:'')+
     parts.map(p=>{const t=tally(p.steps);return `<details class="ps-part"${p===P?' open':''}><summary><span class="ps-pn">${p.n}</span><span class="ps-pt">${esc(p.title)}</span><span class="tally${t.c&&t.c===t.n?' all':''}">${esc(t.c+'/'+t.n)}</span></summary><ol class="ps-steps">`+
-      p.steps.map(li=>{const d=C.isDone(li.dataset.step),now=li===here;
-        return `<li><a class="ps-step${d?' done':''}" href="#s-${esc(li.dataset.step)}"${now?' aria-current="step"':''}><span class="ps-mark" aria-hidden="true"></span><span class="ps-n">${num(li)}</span><span class="ps-t">${esc(gist(li))}</span>`+
-          `<span class="sr">${d?', done':''}</span>${now?'<span class="you-here">You are here</span>':''}</a></li>`;}).join('')+'</ol></details>';}).join('')+
-    `<ul class="ps-links"><li><a href="#start">${icon('info')}About this chapter</a></li><li><button type="button" data-act="print">${icon('print')}Print all steps</button></li></ul>`+
-    `<p><button class="btn danger" type="button" data-act="reset">${icon('undo')}Reset this chapter's checklist</button></p>`;
-  sheetBody.querySelectorAll('.player-modes [data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode==='player')));
+      p.steps.map(li=>{const d=isDone(li),s=!d&&isSkipped(li),now=li===here,res=li===resume;
+        return `<li><button type="button" class="ps-step${d?' done':s?' skipped':''}${res?' resume':''}" data-jump="${esc(li.dataset.step)}"${now?' aria-current="step"':''}><span class="ps-mark" aria-hidden="true"></span><span class="ps-n">${num(li)}</span><span class="ps-t">${esc(gist(li))}</span>`+
+          `<span class="sr">${d?', done':s?', skipped':''}${now?', on screen':''}${res?', where you continue':''}</span>${res?'<span class="you-here" aria-hidden="true">You are here</span>':''}</button></li>`;}).join('')+'</ol></details>';}).join('')+
+    `<ul class="ps-links"><li><a href="#start">${icon('info')}About this chapter</a></li>`+
+    (where==='rail'?`<li><button type="button" data-mode="${view==='list'?'player':'all'}">${icon('list')}${view==='list'?'One step at a time':'All steps'}</button></li>`:'')+
+    `<li><button type="button" data-act="print">${icon('print')}Print all steps</button></li></ul>`+
+    (where==='sheet'?`<p><button class="btn danger" type="button" data-act="restart">${icon('undo')}Restart this chapter</button></p>`:'');
+  pressModes(box);
 }
-function openSheet(){
-  if(sheet.open)return;
-  fillSheet();
-  if(typeof sheet.showModal==='function')sheet.showModal();else sheet.setAttribute('open','');
-  stepsBtn.setAttribute('aria-expanded','true');
-  try{history.pushState({coachDialog:sheet.id},'');pushed=true;}catch(e){pushed=false;}
-  const c=sheetBody.querySelector('[aria-current="step"]')||sheetBody.querySelector('.ps-part[open] .ps-step');
-  if(c){c.scrollIntoView({block:'center'});c.focus({preventScroll:true});}
-}
-// Close, then run fn once the history entry the sheet added is gone (so a replaceState lands on the right entry).
-function closeSheet(fn){
-  after=fn||null;
-  if(!sheet.open){run();return;}
-  if(typeof sheet.close==='function')sheet.close();else{sheet.removeAttribute('open');sheet.dispatchEvent(new Event('close'));}
-}
-function run(){const f=after;after=null;if(f)f();}
-sheet.addEventListener('close',()=>{
-  stepsBtn.setAttribute('aria-expanded','false');
-  if(!after&&stepsBtn.offsetParent)stepsBtn.focus();
-  if(pushed){
-    pushed=false;popping=true;history.back();
-    setTimeout(()=>{if(popping){popping=false;run();}},500);   // in case the Back never arrives
-  }else run();
-});
-addEventListener('popstate',()=>{
-  if(popping){popping=false;run();return;}
-  if(pushed){pushed=false;closeSheet();}   // the phone's Back closed the sheet
-});
-sheet.addEventListener('pointerdown',e=>{down=e.target;},true);
-sheet.addEventListener('click',e=>{
-  const from=down;down=null;
-  if(e.target===sheet){if(!from||from===sheet)closeSheet();return;}
-  if(e.target.closest('[data-close]')){closeSheet();return;}
-  const m=e.target.closest('[data-mode]');
-  if(m){
-    const all=m.dataset.mode==='all';
-    if(all){setMode('all');const keep=cur;closeSheet(()=>{showList();setUrl('#all');if(keep)C.go(keep.dataset.step);});}
-    else{setMode('player');closeSheet();}
+// Clicks in the menu, the rail, the chapter actions and the complete card: jump, switch mode, print, restart. close(fn)
+// closes the sheet the click came from (if any), then runs fn.
+function act(e,close){
+  const jump=e.target.closest('[data-jump]');
+  if(jump){
+    const li=byId.get(jump.dataset.jump);
+    if(li)close(()=>{if(view==='list'){setUrl('#s-'+li.dataset.step);C.go(li.dataset.step);}else showStep(li);});   // a jump: nothing is ticked and cur stays
     return;
   }
-  const act=e.target.closest('[data-act]');
-  if(act){const b=document.getElementById(act.dataset.act);closeSheet(()=>{if(b)b.click();});return;}
-  const a=e.target.closest('a[href^="#"]');
-  if(a&&!(e.button||e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)){
-    e.preventDefault();
-    const h=a.getAttribute('href');
-    closeSheet(()=>{
-      if(h==='#start'){location.hash='#start';return;}   // its own history entry: Back returns to the step
-      const li=byId.get(h.replace(/^#s-/,''));if(li)showStep(li);   // a jump: nothing is ticked and cur stays
-    });
+  const m=e.target.closest('[data-mode]');
+  if(m){
+    if(m.dataset.mode==='all'){setMode('all');const keep=view==='step'?cur:null;close(()=>{showList();setUrl('#all');if(keep)C.go(keep.dataset.step);else scrollTo(0,0);});}
+    else{setMode('player');close(()=>openDefault());}
+    return;
   }
-});
-stepsBtn.addEventListener('click',openSheet);
+  const a=e.target.closest('[data-act]');
+  if(a){
+    const b=document.getElementById(a.dataset.act==='restart'?'reset':'print');
+    close(()=>{if(b)b.click();});
+  }
+}
+const now=fn=>fn();
+if(Shell){
+  const panes=Shell.registerChapter({render:renderPanel});
+  panes.sheet.addEventListener('click',e=>act(e,fn=>Shell.close(fn)));
+  panes.rail.addEventListener('click',e=>act(e,now));
+}
+actSheet.addEventListener('click',e=>{if(actModal)act(e,fn=>actModal.close(fn));});
 listModes.addEventListener('click',e=>{
   const m=e.target.closest('[data-mode]');if(!m)return;
-  if(m.dataset.mode==='all'){setMode('all');return;}
+  if(m.dataset.mode==='all'){setMode('all');pressModes(main);return;}
   setMode('player');
   openDefault();
+});
+doneCard.addEventListener('click',e=>{
+  if(e.target.closest('[data-review]')){e.preventDefault();showList();setUrl('#all');scrollTo(0,0);return;}
+  act(e,now);
 });
 
 // ---------- Routes ----------
 let first=true;
-function openDefault(){
+function openDefault(welcome){
   if(!C.hasProgress()){showStart();setUrl('');return;}
-  if(C.count()===C.total()){showDone();return;}
+  if(C.count()>=C.total()){showDone();return;}
   const li=byId.get(C.resumeId())||steps[0];
   showStep(li);
+  if(!welcome)return;
+  C.say('Welcome back. '+C.count()+' of '+C.total()+' done; you continue at step '+num(li)+'.');
+  // "Get back in" (perform's "How every section starts") when the last tick was more than 30 minutes ago.
+  const at=Date.parse(C.lastAt()||'');
+  if(reentry&&Number.isFinite(at)&&Date.now()-at>30*60*1000)getback.hidden=false;
 }
 function routeTo(hash){
   const was=first;first=false;
@@ -544,19 +681,23 @@ function routeTo(hash){
   }
   if(h){
     let target=null;try{target=document.getElementById(decodeURIComponent(h.slice(1)));}catch(e){}
-    if(target&&target!==main&&(target===wrap||wrap.contains(target))){showList();return false;}   // a part or the wrapper
+    if(target===wrap){   // the chapter's old address (sampling.html#sampling): the same as no hash
+      if(mode()==='all'){showList();return true;}
+      openDefault(was);return true;
+    }
+    if(target&&target!==main&&wrap.contains(target)){showList();return false;}   // a part
     if(target&&target!==main&&main.contains(target)&&target.closest('[hidden]')){showList();target.scrollIntoView({block:'start'});return true;}
     if(!was)return true;   // anything else (the skip link, an id that is on screen) keeps the view
   }
   if(mode()==='all'){showList();return false;}
-  openDefault();
+  openDefault(was);
   return true;
 }
 
 // Print: always the whole chapter as a list (chapter.js opens every part), never the bars.
 addEventListener('beforeprint',()=>{if(view&&view!=='list'){printing=true;render();}});
 addEventListener('afterprint',()=>{if(printing){printing=false;render();}});
-// A tick in the card or the list, a reset, a move of cur.
+// A tick in the card or the list, a skip, a reset, a move of cur.
 C.onChange(e=>{
   if(e.type==='reset'&&view&&view!=='list'){showStart();setUrl('#start');return;}
   if(view)paint();
@@ -564,4 +705,5 @@ C.onChange(e=>{
 
 C.route(routeTo);
 if(C.routed&&C.routed())routeTo(location.hash);
+window.CoachPlayer={view:()=>view,current:()=>view==='step'?cur:null};
 })();

@@ -4,6 +4,45 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.3
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: the steps below were reordered, and the few sentences that are new are listed. **Please try the steps marked ⚠ on your unit** and [report](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml) anything that differs.
+
+The parts of the overhaul plan that phases 1 to 4 left out, filled in.
+
+### Steps that can lose work: check first, undo after
+
+- In 00 and 07 to 11, every step that clears, deletes or overwrites now reads in the same order as 01 and 02: **Before you press** (the check that keeps it safe), the press, then **how to undo it** (or "No undo"), then what you should hear or see, then any notes. The sentences were moved, not rewritten.
+- New sentences, where a step had no undo or no check before the press:
+  - ⚠ "Cleared the wrong pad? Press SHIFT + B while the umbrella is lit." after the ERASE + pad clears of 14 steps: 08 steps 12 and 20 (the KEYS and ROLL practice copies); 09 steps 32 (drop the bass from HOOK), 35 (INTRO), 38 and 39 (BREAK) and 46 (END); 10 steps 38, 39, 40 and 42 (OUTRO, INTRO, BUILD and BREAK); 11 steps 53, 55 and 58 (the clears in GROOVE, INTRO and BREAK). Please check that undo brings a cleared pad back in these places.
+  - ⚠ "Hold MAIN first: the number must be LIVE / BREAK / GROOVE / INTRO." (as 02 already says for BREAK) before 6 clears: 08 steps 4 and 10 (LIVE), 09 step 38 (BREAK), 11 steps 53, 55 and 58.
+  - "No undo: this course does not rely on undo for a cleared or deleted scene." in 08 step 46 (clear a throwaway scene).
+- Every "Check: …" sentence in 00 and 07 is its own check line (with an ear or an eye), as in 01 and 02. 07 "Place the reversed snare" is tagged "Clears notes".
+- Each chapter's start screen says what you will make. The reference cards (07's pad plan, 08's "How every section starts", 09's moves, 10's destination, 11's sound roles) fold into "Reference for this chapter".
+
+### The player
+
+- **The app bar says where you are:** the chapter over "Part 2 · Build a drum kit · Step 4 of 10", with the chapter's progress as a thin bar under it. The separate bar above the step is gone. Steps count within their part ("4 of 10").
+- **Tools** sits beside Done · Next: the step's keys lit on the control map and numbered in the order you press them, the troubleshooting topics the step links to (already open), the glossary words it uses and the moves you know; then the whole control map, Troubleshooting, the Glossary and the Cheat sheet, and a search field. A "see help" link in a step opens its topic there, and the first one or two beginner words in a step (BPM, quantize, scene…) have a dotted underline that opens the word.
+- **The menu has a "This chapter" tab** with every part and step (ticked, skipped, where you continue), Player | All steps, Print and Restart; on a wide screen the chapter sits in the left column above the course. **⋮** in the app bar has the same actions plus "Report this step".
+- **Optional steps can be skipped:** the first of a run of optional steps offers "Skip these 3 steps". Skipped steps stop counting towards the chapter (and Home), you can undo it from the toast, and ticking one later brings it back.
+- **Checkpoints:** a row of lights shows the parts done. "Not quite" shows the fix and a "Redo this part" button; your answer is kept for you only and never changes a tick.
+- **Chapter done** shows what you made, the new moves and Review steps; it ticks the recap once every other step is done. Steps left open are listed in the heading's place ("Chapter 08 · 3 steps not ticked yet"). Finishing the last open chapter lists all eight and what each one made.
+- Coming back to a chapter says "Welcome back" and where you continue; in 08, after more than 30 minutes, "Get back in" repeats how every section starts. A step opened from the menu, a link or search shows "Back to step N" to return to your place. A chapter that needs a newer OS than the one in Settings says "Update first" on its start screen. "Reset this chapter's checklist" is now **Restart this chapter**, with Undo for 10 seconds.
+- Focus lands on the step's title, which says "Step 4 of 10" to screen readers.
+
+### Search, Home, Settings and the tools
+
+- **Search** shows a step as a preview first, with "Go to this step", so searching never moves you; a troubleshooting answer opens in place.
+- **Home:** the Continue card names the part and step it opens, with the project and OS; the chapter you continue is marked "You are here"; 00 reads "Skipped · do it any time" (or "Optional · set-up checks" when your progress carried over); when every chapter is done, Home lists what you made in each.
+- **Settings:** "My unit is set up", keyboard shortcuts On / Off, Reset settings, and Retry and Install for the offline copy where they apply (also on Home).
+- **Cheat sheet:** now holds every chapter's reference cards, with "Only chapters I've done". **Troubleshooting** has a row of its five groups. **Rhythm lab:** hits show their instrument (● kick, ■ snare, ▲ hat, ◆ bass).
+
+### Repository
+
+- New `toolsheet.js` (the Tools sheet) and `tests/test_player.py`. The glossary marks its beginner words (`data-beginner`), `site.js` records what each chapter makes (`made`), and the cheat sheet's chapter sections carry `data-chapter`.
+- Saved data only gains fields: a chapter record's `skip` (optional steps you skipped), `koii-coach-prefs.keys`, and `koii-coach-meta.checkpoints`.
+
 ## 2026.10.14.2
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed. The changes to the text of 01 and 02 are listed below.

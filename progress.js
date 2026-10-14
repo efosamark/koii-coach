@@ -26,7 +26,9 @@
      v2()                    koii-coach-v2 read and brought up to schema 4 (a fresh one when there is none)
      writeV2(fields)         merges fields into it and saves; false when the browser refuses
      prefs(), meta(), patch(key, fields)
-     chapters()              [{c, n, x, done, at, cur, href}] for every chapter in site.js, in guided order
+     chapters()              [{c, n, x, done, at, cur, href}] for every chapter in site.js, in guided order; n leaves
+                             out the optional steps the learner skipped (record.skip) and has not ticked
+     continueTarget(all)     the chapter Continue opens (plan 5.1), or null when every chapter is done
      v2Progress(), firstRun()
      migratedSetup           true when this page load moved an existing learner past the set-up question
      mirror(slug, record)    called by chapter.js before it saves a 01/02 record
@@ -137,12 +139,24 @@ const when=t=>{const d=Date.parse(t);return Number.isFinite(d)?d:0;};
 function chapters(){
   const site=window.COACH_SITE;
   return (site&&Array.isArray(site.chapters)?site.chapters:[]).map(c=>{
-    const n=c.steps||0,r=obj(CH+c.slug);let x=0,cur='',t=0;
-    if(r&&Array.isArray(r.done)){x=int(r.n)?r.n:r.done.length;if(typeof r.cur==='string'&&/^[a-z0-9-]+$/i.test(r.cur))cur=r.cur;t=when(r.at);}
+    let n=c.steps||0,x=0,cur='',t=0;const r=obj(CH+c.slug);
+    if(r&&Array.isArray(r.done)){
+      x=int(r.n)?r.n:r.done.length;if(typeof r.cur==='string'&&/^[a-z0-9-]+$/i.test(r.cur))cur=r.cur;t=when(r.at);
+      if(Array.isArray(r.skip))n-=new Set(r.skip.filter(id=>typeof id==='string'&&!r.done.includes(id))).size;
+    }
     else if(c.legacy){const o=read(c.legacy);if(Array.isArray(o))x=o.length;}
     x=Math.max(0,Math.min(n,x));
     return{c,n,x,done:n>0&&x>=n,at:t,cur,href:c.href+(cur?'#s-'+cur:'')};
   });
+}
+// Continue: 00 while set-up is not 'ready'; else the unfinished chapter that moved last ("at"); else meta.lastChapter;
+// else the first chapter with progress; else the next one not started. null when every chapter is done.
+function continueTarget(all){
+  all=all||chapters();
+  const open=all.filter(p=>!p.done),setup=open.find(p=>p.c.slug==='setup'),last=meta().lastChapter;
+  if(!open.length)return null;
+  if(setup&&prefs().setup!=='ready')return setup;
+  return open.filter(p=>p.at).sort((a,b)=>b.at-a.at)[0]||(last&&open.find(p=>p.c.slug===last))||open.find(p=>p.x>0)||open.find(p=>p!==setup)||open[0];
 }
 // First run is defined by what the learner has done, never by which keys exist (plan 5.1).
 const firstRun=()=>!prefs().setup&&!v2Progress()&&!v2().done.length&&!chapters().some(p=>p.x>0);
@@ -187,6 +201,6 @@ function restore(snap){
 function run(){derive('first-beat');derive('song');return migrateSetup();}
 const migratedSetup=run();
 
-window.CoachProgress={v2,writeV2,prefs,meta,patch,chapters,v2Progress,firstRun,migratedSetup,mirror,order:slug=>(ORDER[slug]||[]).slice(),
+window.CoachProgress={v2,writeV2,prefs,meta,patch,chapters,continueTarget,v2Progress,firstRun,migratedSetup,mirror,order:slug=>(ORDER[slug]||[]).slice(),
   exportFile,readFile,applyFile,resetAll,restore,keys};
 })();

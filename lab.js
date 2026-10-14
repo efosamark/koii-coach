@@ -1,6 +1,7 @@
 'use strict';
-/* The Rhythm lab (lab.html): a one-bar, four-row grid of 64 buttons (#beat: kick, snare, hat, bass) that plays with the
-   practice sounds of audio.js, the positions to copy to the K.O. II, and three small challenges. The grid is saved as
+/* The Rhythm lab (lab.html): a one-bar, four-row grid of 64 buttons (#beat: kick ●, snare ■, hat ▲, bass ◆; a hit
+   shows its glyph, coach.css) that plays with the practice sounds of audio.js, the positions to copy to the K.O. II,
+   and three small challenges. The grid is saved as
    koii-coach-v2.lab ([row][columns that are on]), where the old app kept it. On a phone (under 760px) each row shows
    half a bar at a time, beats 1-2 above beats 3-4. */
 (()=>{
@@ -9,7 +10,7 @@ const el=$('#beat');
 if(!el||!window.CoachAudio)return;
 const icon=n=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-${n}"></use></svg>`;
 const P=window.CoachProgress;
-const HITS=[[0,6,8,14],[4,12],[0,2,4,6,8,10,12,14],[0,8]],NAMES=['Kick A1','Snare A2','Hat A3','Bass B1'];
+const HITS=[[0,6,8,14],[4,12],[0,2,4,6,8,10,12,14],[0,8]],NAMES=['Kick A1','Snare A2','Hat A3','Bass B1'],GLYPHS=['●','■','▲','◆'];
 const pos=c=>`1.${Math.floor(c/4)+1}.${c%4+1}`,lcd=t=>`<samp class="lcd">${t}</samp>`;
 const recipe=()=>HITS.map(row=>Array.from({length:16},(_,i)=>row.includes(i)));
 const saved=P&&P.v2().lab;
@@ -22,7 +23,7 @@ function render(){
   for(let b=0;b<16;b+=per){
     if(b)h+='<span class="spacer" aria-hidden="true"></span>';
     h+='<span aria-hidden="true"></span>'+Array.from({length:per/4},(_,k)=>{const beat=b/4+k+1;return`<span class="beathead" aria-hidden="true">Beat ${beat}<small>1.${beat}.1–1.${beat}.4</small></span>`;}).join('')+
-      grid.map((row,r)=>`<span class="label">${NAMES[r]}</span>${row.slice(b,b+per).map((on,j)=>{const c=b+j;return`<button type="button" class="${on?'on':''}${r===3?' bass':''}${c%4===0?' beatstart':''}" data-r="${r}" data-c="${c}" aria-label="${NAMES[r]}, step ${c+1}, position ${pos(c)}" aria-pressed="${on}">${c+1}</button>`;}).join('')}`).join('');
+      grid.map((row,r)=>`<span class="label"><span class="glyph" aria-hidden="true">${GLYPHS[r]}</span>${NAMES[r]}</span>${row.slice(b,b+per).map((on,j)=>{const c=b+j;return`<button type="button" class="${on?'on':''}${r===3?' bass':''}${c%4===0?' beatstart':''}" data-r="${r}" data-c="${c}" aria-label="${NAMES[r]}, step ${c+1}, position ${pos(c)}" aria-pressed="${on}">${c+1}</button>`;}).join('')}`).join('');
   }
   el.classList.toggle('half',half);
   el.innerHTML=h;

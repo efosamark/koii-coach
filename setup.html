@@ -24,6 +24,7 @@
   <script src="wake.js" defer></script>
   <script src="chapter.js" defer></script>
   <script src="player.js" defer></script>
+  <script src="toolsheet.js" defer></script>
 </head>
 <body data-chapter="setup">
   <a class="skip" href="#main">Skip to content</a>
@@ -36,6 +37,7 @@
       <h1>Start here: set up your new K.O. II</h1>
     </header>
     <p>Before your first beat, get the K.O. II ready. You will switch it on and hear it, learn to read the screen and the button language, update to the latest OS (2.5.1), back it up to a computer, choose an empty project for the course and tour the factory sounds. Each section ends with a checkpoint, so you always know whether it worked.</p>
+    <p class="makes"><b>You will have:</b> a K.O. II on OS 2.5.1, backed up on your computer, with an empty project chosen for the course and the factory sounds explored.</p>
     <section class="card">
       <h2>What you need</h2>
       <p><b>Your K.O. II</b> (EP-133). The official pages we checked don’t list what is in the box, so look in yours before you start.</p>
@@ -54,7 +56,7 @@
     <section id="setup" class="steps" aria-label="Steps">
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. chapter.js numbers the steps and saves ticks by id. No nested lists inside a step. -->
       <details open>
-        <summary>01 / Power on and hear it</summary>
+        <summary><h2 class="part-title">01 / Power on and hear it</h2></summary>
         <p><b>Goal:</b> switch the K.O. II on, hear its sounds and know where the sound comes out.</p>
         <ol start="1">
           <li data-step="power-batteries">
@@ -81,7 +83,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/power-on">Power on</a> · <a href="https://teenage.engineering/guides/ep-133/hardware-overview">Hardware overview (inputs and outputs)</a></p>
       </details>
       <details>
-        <summary>02 / Read the screen and the button language</summary>
+        <summary><h2 class="part-title">02 / Read the screen and the button language</h2></summary>
         <p><b>Goal:</b> understand what “hold X + press Y” means, find your way home to MAIN, and read the icons this course checks most.</p>
         <ol start="6">
           <li data-step="button-language">
@@ -95,7 +97,9 @@
             <p class="step-do">Press <kbd class="key">+</kbd> three times and watch the last number change: you are stepping through the beat. Now your first combination: hold <kbd class="key">SHIFT</kbd>, press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>, then release <kbd class="key">SHIFT</kbd>. <kbd class="key">SHIFT</kbd> is the gateway to other functions; together with <kbd class="key">−</kbd> and <kbd class="key">+</kbd> it moves a whole bar at a time.</p>
           </li>
           <li data-step="screen-sound-mode">
-            <p class="step-do">Press <kbd class="key">SOUND</kbd>. Check: the SOUND icon lights and the display shows a number, the sample on the selected pad. Press <kbd class="key">MAIN</kbd> to go home. Don’t turn <kbd class="key knob">X</kbd> or <kbd class="key knob">Y</kbd> here yet: in SOUND they change the selected pad’s volume and pitch.</p>
+            <p class="step-do">Press <kbd class="key">SOUND</kbd>.</p>
+            <p class="step-check">Check: the SOUND icon lights and the display shows a number, the sample on the selected pad.</p>
+            <p class="step-do">Press <kbd class="key">MAIN</kbd> to go home. Don’t turn <kbd class="key knob">X</kbd> or <kbd class="key knob">Y</kbd> here yet: in SOUND they change the selected pad’s volume and pitch.</p>
           </li>
           <li data-step="screen-icons">
             <p class="step-do">Press <kbd class="key">PLAY</kbd>: the PLAY icon lights while the K.O. II plays. If the project has no notes, it simply plays silence. Press <kbd class="key">PLAY</kbd> again to stop. Then read the icon table below. The two you will check most often are the umbrella (undo is possible) and the floppy (saving).</p>
@@ -129,7 +133,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/screen">Screen (icon map)</a> · <a href="https://teenage.engineering/guides/ep-133/guide-conventions">Guide conventions</a> · <a href="https://teenage.engineering/guides/ep-133/buttons-and-combos">Buttons and combos</a></p>
       </details>
       <details>
-        <summary>03 / Update to the latest OS (2.5.1)</summary>
+        <summary><h2 class="part-title">03 / Update to the latest OS (2.5.1)</h2></summary>
         <p><b>Goal:</b> run the newest OS, so every instruction in this course matches your K.O. II. The course is checked against OS 2.5.1, released on 3 July 2026 according to the official downloads page. The official guide doesn’t describe a way to read the OS version on the K.O. II’s own display, so let the official update utility check it for you.</p>
         <p>Already made music on this unit that you care about, or bought it second-hand? Do section 04 (backup) first, then come back here.</p>
         <ol start="11">
@@ -152,7 +156,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/power-on">Power on (keep it up to date)</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">What’s new</a> · <a href="https://teenage.engineering/downloads/ep-133">OS downloads and release notes</a></p>
       </details>
       <details>
-        <summary>04 / Back up with the EP sample tool</summary>
+        <summary><h2 class="part-title">04 / Back up with the EP sample tool</h2></summary>
         <p><b>Goal:</b> keep a copy of your projects and sounds on your computer before you change anything. Commit (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>), which chapter 01 teaches, only copies a scene inside the K.O. II. It is not a backup.</p>
         <ol start="15">
           <li data-step="backup-open-tool">
@@ -171,7 +175,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">Functions (sample tool section)</a> · <a href="https://teenage.engineering/downloads/ep-133">OS downloads (OS 1.2.0 notes: backup/restore)</a></p>
       </details>
       <details>
-        <summary>05 / Choose your empty project</summary>
+        <summary><h2 class="part-title">05 / Choose your empty project</h2></summary>
         <p><b>Goal:</b> pick an empty project for the course. A project is one composition: think of it as a song. The K.O. II holds 9 projects. Each has 4 groups (A–D) of 12 pads, up to 99 patterns per group and up to 99 scenes. Fresh out of the box, projects 1–5 come with sounds and projects 6–9 are completely empty.</p>
         <ol start="18">
           <li data-step="project-factory-sounds">
@@ -191,7 +195,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started (step 1)</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Modes (main: change project)</a> · <a href="https://teenage.engineering/guides/ep-133/workflow">Workflow (projects, groups, scenes)</a></p>
       </details>
       <details>
-        <summary>06 / Tour the factory sound library</summary>
+        <summary><h2 class="part-title">06 / Tour the factory sound library</h2></summary>
         <p><b>Goal:</b> hear every kind of factory sound and learn where each lives by number. You do this in scratch project 9, so project 6 stays empty.</p>
         <table>
           <thead>
@@ -212,7 +216,9 @@
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 9</kbd> as well, then release both. Tap a few pads: silent, so you are in project 9. Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">A</kbd>, then tap <kbd class="key pad">pad 1</kbd>.</p>
           </li>
           <li data-step="library-browse-kicks">
-            <p class="step-do">Press <kbd class="key">+</kbd> and tap <kbd class="key pad">pad 1</kbd>. Repeat a few times. Check: the display shows the sample number and pad 1 plays a different sound each time; numbers 1–99 are kicks. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd> to jump ten numbers at a time, then step with <kbd class="key">−</kbd> and <kbd class="key">+</kbd> alone.</p>
+            <p class="step-do">Press <kbd class="key">+</kbd> and tap <kbd class="key pad">pad 1</kbd>. Repeat a few times.</p>
+            <p class="step-check">Check: the display shows the sample number and pad 1 plays a different sound each time; numbers 1–99 are kicks.</p>
+            <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd> to jump ten numbers at a time, then step with <kbd class="key">−</kbd> and <kbd class="key">+</kbd> alone.</p>
           </li>
           <li data-step="library-jump-categories">
             <p class="step-do">Jump straight to a category: hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> on the pads, release <kbd class="key">SOUND</kbd> and tap <kbd class="key pad">pad 1</kbd>. You hear a snare. Do the same with <kbd class="key">2</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (hi-hats), <kbd class="key">3</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (percussion), <kbd class="key">4</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (bass) and <kbd class="key">5</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (melodic sounds), and use <kbd class="key">−</kbd> and <kbd class="key">+</kbd> to hear a few neighbours each time.</p>
@@ -228,7 +234,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes (sound: default samples)</a></p>
       </details>
       <details>
-        <summary>07 / System settings worth knowing</summary>
+        <summary><h2 class="part-title">07 / System settings worth knowing</h2></summary>
         <p><b>Goal:</b> open system settings, change one setting with the menu, change it back with a number code, and leave safely.</p>
         <p class="notice caution"><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> while the K.O. II is on opens system settings: safe. Held while you switch on, the same two buttons format the drive (section 08).</p>
         <ol start="25">
@@ -272,7 +278,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/system">System (settings codes)</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">How to (velocity and metronome)</a></p>
       </details>
       <details>
-        <summary>08 / If something is wrong: empty library, error codes and the format</summary>
+        <summary><h2 class="part-title">08 / If something is wrong: empty library, error codes and the format</h2></summary>
         <p><b>Goal:</b> know what to do if sounds are missing or the display shows an error, and why a new K.O. II never needs a format.</p>
         <ol start="30">
           <li data-step="trouble-empty-library">
@@ -291,7 +297,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/system">System (error codes)</a> · <a href="https://teenage.engineering/guides/ep-133/erase-drive">Erase drive</a></p>
       </details>
       <details>
-        <summary>09 / Checklist: ready for chapter 01</summary>
+        <summary><h2 class="part-title">09 / Checklist: ready for chapter 01</h2></summary>
         <p><b>Goal:</b> tick each item only when it is true for your K.O. II.</p>
         <ol start="33">
           <li data-step="ready-updated">
@@ -319,7 +325,7 @@
       <p class="notice danger">Safety: SHIFT + ERASE held while switching on formats the drive, and the guide says factory sounds can’t be recovered. Holding ERASE + SOUND deletes a sample file. Neither is needed in this chapter. Back up with the EP sample tool before any update, restore or troubleshooting.</p>
       <div class="row">
         <button class="btn" id="print" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-print"></use></svg>Print all steps</button>
-        <button class="btn danger" id="reset" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-undo"></use></svg>Reset this chapter's checklist</button>
+        <button class="btn danger" id="reset" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-undo"></use></svg>Restart this chapter</button>
       </div>
     </section>
   </main>

@@ -73,9 +73,10 @@ def test_place_in_01_carries_over_and_moves_are_written_back(run):
 
     # The chapter opens at that step and says once how the ticks were made.
     run.go('./first-beat.html')
-    page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'beat-hats-quieter'")
+    page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'beat-hats-quieter'")
     assert 'carried over' in page.locator('#progress-note').text_content()
-    assert page.locator('#player-bar .pb-count').text_content().startswith('5 of 23')
+    assert page.evaluate("() => document.querySelector('.appbar-meter .meter-fill').style.width") == '22%', 'The app bar meter shows 5 of 23'
+    assert 'Step 6 of 6' in page.locator('#appbar .bar-sub').text_content(), 'The app bar says where you are in the part'
     page.locator('#player-next').click()
     old = run.get('koii-coach-v2')
     assert set(old) == V2_FIELDS, f'koii-coach-v2 keeps its twelve fields ({sorted(old)})'

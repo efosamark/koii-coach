@@ -21,6 +21,7 @@
   <link rel="canonical" href="https://efosamark.github.io/koii-coach/cheat-sheet.html">
   <link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="coach.css">
+  <script src="tools.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -32,19 +33,94 @@
     <header class="page-head">
       <p class="eyebrow">Tools</p>
       <h1>Cheat sheet</h1>
-      <p class="lead">The moves you learn in the first chapters, on one page to keep beside the K.O. II. It prints on its own.</p>
+      <p class="lead">The moves and reference tables of every chapter, on one page to keep beside the K.O. II. It prints on its own.</p>
+      <p class="cs-filter" hidden><label class="tools-filter"><input type="checkbox" id="only-done"> Only chapters I’ve done</label></p>
     </header>
-    <section class="card" id="first-beat" aria-labelledby="cs-01">
+    <section class="card" id="first-beat" data-chapter="first-beat" aria-labelledby="cs-01">
       <h2 id="cs-01">01 First beat: moves</h2>
       <ul class="moves"><li>Navigate: stopped MAIN, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> <span class="nobr">(<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd></span> / <kbd class="key">+</kbd> jumps a bar).</li><li>Write: hold <kbd class="key">RECORD</kbd> + pad.</li><li>Erase one note: brief <kbd class="key">ERASE</kbd> + pad.</li><li>Undo: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</li><li>Commit: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>.</li><li>Select a scene: hold <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd>.</li></ul>
       <p class="meta">From <a href="./first-beat.html#s-beat-recap">01 / First beat, the last step</a>.</p>
     </section>
-    <section class="card" id="song" aria-labelledby="cs-02">
+    <section class="card" id="song" data-chapter="song" aria-labelledby="cs-02">
       <h2 id="cs-02">02 Make it a song: moves</h2>
       <ul class="moves"><li><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> commits and moves you into a copy.</li><li>Hold <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd> selects a scene.</li><li>Brief <kbd class="key">ERASE</kbd> + pad removes one note; holding <kbd class="key">ERASE</kbd> + pad until <samp class="lcd">TRK</samp> blinks clears a track.</li><li><kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">ENTER</kbd></kbd> opens the song list; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a position; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd> picks its scene; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> plays from the start.</li></ul>
       <h3>The song map</h3>
       <table class="map"><thead><tr><th scope="col">Section</th><th scope="col">Scene</th><th scope="col">Song positions</th><th scope="col">Bars</th><th scope="col">What you hear</th></tr></thead><tbody><tr><th scope="row">Intro</th><td data-label="Scene">INTRO</td><td data-label="Song positions">1–2</td><td data-label="Bars">2</td><td data-label="What you hear">Drums only: kick, snare and hats</td></tr><tr><th scope="row">Main groove</th><td data-label="Scene">BEAT</td><td data-label="Song positions">3–4</td><td data-label="Bars">2</td><td data-label="What you hear">Your 01 First beat: drums and bass</td></tr><tr><th scope="row">Melody</th><td data-label="Scene">MELODY</td><td data-label="Song positions">5–6</td><td data-label="Bars">4</td><td data-label="What you hear">Drums, bass and the two-bar C melody</td></tr><tr><th scope="row">Breakdown</th><td data-label="Scene">BREAK</td><td data-label="Song positions">7</td><td data-label="Bars">2</td><td data-label="What you hear">Melody, snare and hats; kick and bass removed</td></tr><tr><th scope="row">Melody return</th><td data-label="Scene">MELODY</td><td data-label="Song positions">8–9</td><td data-label="Bars">4</td><td data-label="What you hear">Kick and bass come back under the melody</td></tr><tr><th scope="row">Ending</th><td data-label="Scene">BREAK</td><td data-label="Song positions">10</td><td data-label="Bars">2</td><td data-label="What you hear">The melody without kick and bass, then the song stops</td></tr></tbody></table>
       <p class="meta">From <a href="./song.html#s-song-recap">02 / Make it a song</a>. At 90 BPM in 4/4 the 16 bars last about 43 seconds.</p>
+    </section>
+    <section class="card" id="sampling" data-chapter="sampling" aria-labelledby="cs-07">
+      <h2 id="cs-07">07 Sample, chop &amp; resample: your pad plan</h2>
+      <p>You work in empty project 7. Each group gets one job, so you always know where a sound lives:</p>
+      <div class="grid">
+        <div><b>Group A · your drum kit</b><br>A1 kick, A2 snare, A3 hat (section 02), A4 reversed snare (05)</div>
+        <div><b>Group B · resampled bounces</b><br>B1 your beat on one pad, B2 the same with a filter sweep (07)</div>
+        <div><b>Group C · chopped slices</b><br>Your spoken count, cut into four slices (06)</div>
+        <div><b>Group D · raw recordings</b><br>D1 first sample (01), D2 count and D3 phone (03), D4 and D5 the quality test (04)</div>
+      </div>
+      <p>The official get-started guide suggests keeping group D for loops and samples. Every recording goes into the K.O. II's shared sound library (up to 999 samples or 128 MB); a pad only points to a sample.</p>
+    
+      <p class="meta">From <a href="./sampling.html">07 / Sample, chop &amp; resample</a>, “Reference for this chapter”.</p>
+    </section>
+    <section class="card" id="perform" data-chapter="perform" aria-labelledby="cs-08">
+      <h2 id="cs-08">08 Play &amp; perform: how every section starts</h2>
+      <p>This chapter uses project 6, your chapter 01–02 project; chapter 07 worked in project 7. To get back, press MAIN, stop playback, hold MAIN, hold pad 6 as well, then release both (use your own pad if you chose another project in chapter 01). On OS 2.0+ a quick MAIN + number can select a scene instead, so press PLAY and check that you hear your own beat. Then stop.</p>
+      <p>Stop playback. Hold MAIN, use − / + until the display shows the number of the scene the section names (usually BEAT), and release. Press SHIFT + MAIN once: commit copies the scene and moves you into the copy. Hold MAIN, read the new number and write it down with the name the section gives it. The original scene stays as it was.</p>
+      <p class="notice info">To change a system setting: press SHIFT + ERASE, type the three-digit code on the pads, press ENTER, then press MAIN to return. The table at the end lists every code this chapter uses and its default.</p>
+    
+      <p class="meta">From <a href="./perform.html">08 / Play &amp; perform</a>, “Reference for this chapter”.</p>
+    </section>
+    <section class="card" id="hiphop" data-chapter="hiphop" aria-labelledby="cs-09">
+      <h2 id="cs-09">09 Full hip-hop beat: moves you will use</h2>
+      <table>
+        <thead>
+          <tr><th>To…</th><th>Do this</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Read or change the scene</td><td>Hold MAIN: the display shows the scene number. Still holding, − / + selects another scene.</td></tr>
+          <tr><td>Copy the scene and move into the copy</td><td>SHIFT + MAIN (commit)</td></tr>
+          <tr><td>Go to the first step</td><td>Stopped, in MAIN: hold SHIFT and press − until the display shows 1.1.1</td></tr>
+          <tr><td>Move one step or one bar</td><td>− / + moves one step. SHIFT + − / + jumps a bar, but only while RECORD is not armed and no pad is held.</td></tr>
+          <tr><td>Write a note</td><td>Hold RECORD, tap the pad, release</td></tr>
+          <tr><td>Remove one note</td><td>At its position: a brief ERASE + pad</td></tr>
+          <tr><td>Clear every note of one pad</td><td>Stopped, in the right scene and group: hold ERASE + pad until TRK blinks</td></tr>
+          <tr><td>Undo</td><td>SHIFT + B while the umbrella icon is lit</td></tr>
+          <tr><td>Edit a sound</td><td>SOUND, tap the pad, briefly press SHIFT + SOUND, then − / + changes page</td></tr>
+        </tbody>
+      </table>
+      <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes#8.3-main">main mode</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">erase and undo</a></p>
+    
+      <p class="meta">From <a href="./hiphop.html">09 / Full hip-hop beat</a>, “Reference for this chapter”.</p>
+    </section>
+    <section class="card" id="tech-house" data-chapter="tech-house" aria-labelledby="cs-10">
+      <h2 id="cs-10">10 Tech House: your destination</h2>
+      <div class="grid">
+        <div><b>Tempo</b><br>128 BPM, 4/4, <samp class="lcd">16</samp> grid</div>
+        <div><b>Main loop</b><br>4 bars / 64 steps</div>
+        <div><b>Roles</b><br>A drums · B bass · C vocal hook and synth stab · D optional riser</div>
+        <div><b>Song</b><br>28 song positions / 112 bars / about 3:30</div>
+      </div>
+      <p class="notice tip">The secret is not maximum sounds all the time. Kick and bass repeat to make people dance. Changes happen at the ends of bars, between sections, and around the vocal.</p>
+    
+      <p class="meta">From <a href="./tech-house.html">10 / Tech House</a>, “Reference for this chapter”.</p>
+    </section>
+    <section class="card" id="thodorakis-house" data-chapter="vocal-house" aria-labelledby="cs-11">
+      <h2 id="cs-11">11 House with your own vocal samples: sound roles</h2>
+      <p>The same roles as in <a href="./learn.html">Learn</a>: A drums, B bass, D your own samples. Group C stays empty.</p>
+      <div class="grid">
+        <div><b>A1</b><br>Kick (factory 1–99)</div>
+        <div><b>A2</b><br>Clap or snare (100–199)</div>
+        <div><b>A3</b><br>Closed hat (200–299)</div>
+        <div><b>A4</b><br>Open hat (200–299) or percussion (300–399)</div>
+        <div><b>B1</b><br>Bass (400–499)</div>
+        <div><b>D1 · V1</b><br>Main hook: two to four words, under about 1.9 s (one bar at 128 BPM)</div>
+        <div><b>D2 · V2</b><br>Short answer: one word, about half a second</div>
+        <div><b>D3 · V3</b><br>Tiny chop: one syllable or a breath, about 0.2 s</div>
+        <div><b>D4 · V4</b><br>Texture: a long hum, “ooh” or breath, 2–4 s</div>
+        <div><b>D5 · V5</b><br>Second phrase: a variation of the hook, under about 1.9 s</div>
+      </div>
+      <p class="notice tip">A dance track needs a clear low end and a clear voice. Let B1 carry the bass and keep the vocals above it. The voice is the feature, not the kick, clap or hat.</p>
+    
+      <p class="meta">From <a href="./thodorakis-house.html">11 / House with your own vocal samples</a>, “Reference for this chapter”.</p>
     </section>
     <section class="card" id="settings-codes" aria-labelledby="cs-00">
       <h2 id="cs-00">System settings the course uses</h2>
@@ -72,7 +148,6 @@
       <h2 id="cs-safe">Erasing and undo</h2>
       <p>Undo is <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella icon is lit. <a href="./safety.html">Safety and erasing</a> lists every action that erases or overwrites, and which ones have no undo.</p>
     </section>
-    <p class="meta">Every chapter from 07 on has its own reference tables (pad plans, scenes, song lists) on its page, under All steps.</p>
   </main>
   <footer class="page reading site-foot">
     <p>Unofficial. Not affiliated with or endorsed by teenage engineering. EP-133 and K.O. II are trademarks of teenage engineering.</p>

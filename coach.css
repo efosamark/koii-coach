@@ -379,9 +379,20 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .wordmark:hover{text-decoration:underline;text-decoration-thickness:1.5px}
 .bar-title{display:flex;flex-direction:column;justify-content:center;min-width:0;margin:0;max-width:none;padding-left:var(--sp-3);border-left:1px solid var(--line)}
 .bar-title:not(.has-name){display:none}
-.bar-kicker{font:600 var(--t-cap)/18px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.bar-kicker{overflow:hidden;font:600 var(--t-cap)/18px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);text-overflow:ellipsis;white-space:nowrap}
+/* A chapter page on a phone: the menu holds the way home, so the title gets the wordmark's room. */
+@media (max-width:599px){html.on-chapter .appbar .wordmark{display:none}html.on-chapter .bar-title{padding-left:0;border-left:0}}
 .bar-kicker:empty{display:none}
 .bar-name{overflow:hidden;font-size:15px;line-height:20px;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+/* In a chapter's player: the name over where you are ("Part 2 · Build a drum kit · Step 4 of 8"). */
+.bar-sub{overflow:hidden;font:600 var(--t-cap)/18px var(--font-mono);color:var(--ink-2);text-overflow:ellipsis;white-space:nowrap}
+.bar-title:not(.has-sub) .bar-sub,.bar-title.has-sub .bar-kicker{display:none}
+.bar-title.has-sub .bar-name{font-size:14px;line-height:18px}
+/* The chapter's progress, 4px along the bottom of the bar. */
+.appbar-meter{position:absolute;left:0;right:0;bottom:-1px;height:4px;overflow:hidden;background:var(--surface-3)}
+.appbar-meter[hidden]{display:none}
+.appbar-meter .meter-fill{border-radius:0}
+@media (forced-colors:active){.appbar-meter{border-top:1px solid CanvasText}.appbar-meter .meter-fill{forced-color-adjust:none;background:CanvasText}}
 @media (min-width:600px){.wordmark{flex-direction:row;gap:.5em;font-size:16px;line-height:20px}.wordmark-sep{display:inline}}
 @media (max-height:480px){.appbar{position:static}.bar-kicker{display:none}}
 
@@ -412,6 +423,27 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .offline-line:empty{display:none}
 .offline-line .icon{width:20px;height:20px}
 .offline-line.ready{color:var(--done-ink)}
+
+/* Continue row (where Home's Continue goes), the This chapter / Course tabs, the shortcuts list */
+.menu-continue{display:flex;align-items:center;gap:var(--sp-3);min-height:56px;margin:var(--sp-3) 0 var(--sp-1);padding:var(--sp-2) var(--sp-3);border:1.5px solid var(--here);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);text-decoration:none}
+.menu-continue:hover{background:var(--surface-2)}
+.menu-continue > span{display:grid;min-width:0}
+.mc-kicker{font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.mc-name{overflow:hidden;font-weight:600;line-height:1.3;text-overflow:ellipsis;white-space:nowrap}
+.menu-continue-row{max-width:none;margin:0}
+.menu-tabs{position:sticky;top:0;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:var(--sp-3) 0 0;padding:3px;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2)}
+.menu-tabs[hidden]{display:none}
+.menu-tabs button{min-height:44px;border:0;border-radius:9px;background:transparent;color:var(--ink);font-weight:600}
+.menu-tabs button:hover{background:var(--surface-3)}
+.menu-tabs button[aria-pressed="true"]{background:var(--surface-1);box-shadow:inset 0 0 0 1.5px var(--ink)}
+@media (forced-colors:active){.menu-tabs button[aria-pressed="true"],.menu-continue{outline:3px solid Highlight;outline-offset:-3px}}
+.keys-hint{margin-top:var(--sp-3)!important}
+.keys-list{display:grid;gap:0;margin:var(--sp-3) var(--sp-2)}
+.keys-list > div{display:grid;grid-template-columns:7rem minmax(0,1fr);align-items:center;gap:var(--sp-3);min-height:44px;border-bottom:1px solid var(--line)}
+.keys-list dt{font-weight:600}
+.keys-list dd{max-width:none;margin:0}
+.keys-sheet .sheet-body > .meta{margin:var(--sp-3) var(--sp-2)}
+@media (pointer:coarse) and (max-width:1023px){.keys-hint{display:none}}
 
 /* ---------- Shell: menu sheet (phone and tablet) ---------- */
 html:has(.sheet[open]){overflow:hidden}
@@ -479,6 +511,15 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .beat button{height:34px;padding:0;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1 var(--font-mono)}
 .beat button:disabled{cursor:default}
 .beat button.on{border-color:var(--ink);background:var(--ink);color:var(--surface-1)}
+/* A hit shows its instrument's glyph instead of the step number (Kick ●, Snare ■, Hat ▲, Bass ◆), so a hit never
+   depends on colour alone; the row labels carry the same glyphs as the key. */
+.beat button.on{font-size:0}
+.beat button.on::before{font-size:15px;line-height:1}
+.beat button.on[data-r="0"]::before{content:"●"}
+.beat button.on[data-r="1"]::before{content:"■"}
+.beat button.on[data-r="2"]::before{content:"▲"}
+.beat button.on[data-r="3"]::before{content:"◆"}
+.beat .label .glyph{display:inline-block;width:1.1em;color:var(--ink-2)}
 .beat button.beatstart{border-left:3px solid var(--ink-2)}
 .beat button.beatstart.on{border-left-color:var(--ink)}
 .beat button.now{box-shadow:inset 0 0 0 3px var(--here)}
@@ -645,6 +686,21 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .continue .where{margin-bottom:var(--sp-2);font-weight:600}
 .continue .meter{margin:0 0 var(--sp-3)}
 .continue #resume{width:100%;max-width:30rem;margin:var(--sp-1) 0 var(--sp-3)}
+/* Continue: the part (ink) and the step (ink-2) it opens at, the meter with its count, then chips. */
+.continue .where-step{margin:0 0 var(--sp-3)}
+.continue-count{display:flex;align-items:center;gap:var(--sp-3);margin:0 0 var(--sp-3);font-weight:600}
+.continue-count .meter{flex:1 1 auto;max-width:20rem;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:0 0 var(--sp-3);padding:0;list-style:none}
+.chips li{max-width:none;margin:0;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono)}
+/* Course complete: every chapter and what it made. */
+.made-list{margin:0 0 var(--sp-4);padding:0;list-style:none}
+.made-list li{margin:0 0 var(--sp-2)}
+.made-list .sub{display:block}
+/* The chapter Continue opens: a lime rule and "You are here". */
+.path li.here{box-shadow:inset 4px 0 0 var(--here);padding-left:var(--sp-2)}
+.path .here-tag{display:inline-flex;margin:0 0 0 var(--sp-2);vertical-align:.1em}
+.home-foot p{margin:0 0 var(--sp-2)}
+.home-foot .install-slot:empty,.home-foot .offline-retry:empty{display:none}
 /* Course rows: the project and time sit on their own line under the title; "Done" is in the done colour, as in the menu. */
 .path .sub{display:block;margin-top:2px}
 .path li[data-state="done"] > .meta{color:var(--done-ink);font-weight:600}
@@ -660,7 +716,7 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .tile:hover{border-color:var(--line-strong)}
 .tile:hover .t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .tile .icon{color:var(--ink-2)}
-.tile .t{font-weight:600;line-height:1.3}
+.tile .t{font-weight:600;line-height:1.3;-webkit-hyphens:auto;hyphens:auto}
 .tile .d{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
 .home-foot{margin-top:var(--sp-4)}
 .offline-status:empty{display:none}
@@ -677,6 +733,18 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 /* ---------- Search: the app bar's actions, and the overlay (shell.js builds the frame, search.js fills it) ---------- */
 /* Right-hand side of the app bar: the Search button, and any .icon-btn that another module adds (chapter pages add the sun). */
 .appbar-actions{display:flex;align-items:center;flex:none;gap:var(--sp-1);margin:0 -10px 0 auto}
+/* Search is an icon under 1024px and a field-like button from 1024px (with "/" to say how to open it from the keys).
+   Settings joins the bar from 1024px; below that it is in the menu. In a chapter's step and checkpoint views on a
+   phone or tablet, search lives in the Tools sheet, so the bar keeps room for the title. */
+.search-btn .search-btn-label,.search-btn > .key,.settings-btn{display:none}
+@media (max-width:1023px){html.on-chapter:is([data-player="step"],[data-player="check"]) .search-btn{display:none}}
+@media (min-width:1024px){
+  .appbar .search-btn{display:inline-flex;align-items:center;gap:var(--sp-2);width:min(20rem,28vw);padding:0 var(--sp-2) 0 var(--sp-3);border-color:var(--line-strong);background:var(--surface-2);color:var(--ink-2);font-weight:400;justify-content:flex-start}
+  .appbar .search-btn:hover{border-color:var(--ink-2);background:var(--surface-2)}
+  .search-btn .search-btn-label{display:inline;flex:1;overflow:hidden;text-align:left;text-overflow:ellipsis;white-space:nowrap}
+  .search-btn > .key{display:inline-grid;min-width:24px;font-size:12px}
+  .settings-btn{display:inline-grid}
+}
 /* A 320px phone has no room for the "CHAPTER 11" line beside two buttons, and a word cut in half reads worse than none. */
 @media (max-width:359px){.bar-kicker{display:none}}
 /* The overlay is a .sheet: a full-height sheet on phones, a 640px panel from 600px. shell.js sets --vvh to the height
@@ -708,6 +776,25 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .search-hit:hover .search-hit-title{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .search-hit-title{font-weight:600;line-height:1.35}
 .search-hit-title .key{margin:0 var(--sp-1) 0 0}
+/* A troubleshooting result opens where it is; its summary is the row. */
+.search-topic > summary.search-hit{display:flex;list-style:none;cursor:pointer}
+.search-topic > summary.search-hit::-webkit-details-marker{display:none}
+.search-topic[open] > summary.search-hit{background:var(--surface-3)}
+.search-topic > .inside{padding:var(--sp-2) var(--sp-3) var(--sp-3)}
+.search-topic > .inside > :last-child{margin-bottom:0}
+/* A step's preview: its text as in the chapter (Before you press, Do, Undo, Check), then "Go to this step". */
+.search-preview{padding:var(--sp-2) var(--sp-2) var(--sp-4)}
+.search-preview > [data-back]{margin:0 0 var(--sp-3) calc(var(--sp-2) * -1)}
+.search-preview .preview-title{margin:var(--sp-1) 0 var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
+.search-preview .preview-title:focus{outline:none}
+html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.preview-body > .preflight{padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-left-width:4px;border-radius:var(--r-control);background:var(--caution-surface)}
+.preview-body > .preflight::before{content:"Before you press";display:block;margin-bottom:var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--caution-ink)}
+.preview-body > .step-do{font-size:var(--t-check);line-height:var(--t-check-lh)}
+.preview-body > :is(.step-check,.step-undo){padding:var(--sp-2) var(--sp-3);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-2)}
+.preview-body > .step-undo{border-left-color:var(--line-strong)}
+.preview-body > .step-noundo{padding:var(--sp-2) var(--sp-3);border-left:4px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
+.preview-body > .step-source,.preview-body > .step-note{color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .search-hit-crumb{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
 .search-hit-snip{display:block;overflow:hidden;font-size:var(--t-cap);line-height:var(--t-cap-lh);text-overflow:ellipsis;white-space:nowrap}
 .search-word .search-hit-snip{white-space:normal}
@@ -738,11 +825,14 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 /* ---------- Step player (player.js) ---------- */
 /* The chapter pages' player. player.js sets <html data-player="start|step|check|done"> while it shows one of its views
    and hides the rest of the page with the hidden attribute; without data-player (All steps, print, no JavaScript) the
-   page is the list above. Hooks: #player-bar, #player-actions (#player-back, #player-steps-btn, #player-next,
-   #player-go, .pa-more), #player-steps (the Steps sheet), #player-check, #player-done, .player-modes, .player-chips,
-   .player-safety, .player-parts, .part-about; inside a step: .step-head (.step-num and tags), .preflight, .gate,
-   .step-do, .step-check[data-sense="hear|see"], li.is-current, li.is-checkpoint, li[data-risk]. Orange stays for
-   keycaps: in the player the keys of the step on screen are hot, except inside its check. */
+   page is the list above. Where you are sits in the app bar (.bar-sub, .appbar-meter, the shell); the chapter's
+   steps are in the menu's "This chapter" tab and the desktop rail (.chapter-pane, .rail-chapter). Hooks:
+   #player-actions (#player-back, #player-tools-btn, #player-next, #player-go, .pa-more), #chapter-actions (the ⋮
+   sheet), #player-check, #player-done, .player-modes, .player-chips, .player-safety, .player-reference,
+   .player-parts, .part-about, .back-pill, .getback, .led-row; inside a step: .step-head (.step-num and tags),
+   .skip-box, .preflight, .gate, .step-do, .step-check[data-sense="hear|see"], li.is-current, li.is-checkpoint,
+   li.is-skipped, li[data-risk]. Orange stays for keycaps: in the player the keys of the step on screen are hot,
+   except inside its check. */
 :root{
   --bar-h:72px;   /* the action bar, without the safe area; a 48px row on short viewports */
   --i-ear:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 9.5a5.5 5.5 0 0 1 11 0c0 3.5-3 4.5-3.5 7a3.5 3.5 0 0 1-6.5 1.5'/%3E%3Cpath d='M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.5-1.5 2-2.5 3'/%3E%3C/svg%3E");
@@ -765,18 +855,19 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .gate-hint{margin:0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .gate-ok{min-height:32px}
 .gate-ok .icon{width:16px;height:16px;stroke-width:2.5}
-/* Where you are, under the app bar: part, step in part, the chapter meter. Two lines on a phone, one from 600px. */
-.player-bar{position:sticky;top:var(--sticky-top);z-index:5;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 var(--sp-3);margin:0 0 var(--sp-3);padding:var(--sp-2) var(--sp-3) calc(var(--sp-2) + 4px);overflow:hidden;border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-1);box-shadow:var(--e2)}
-.player-bar p{max-width:none;margin:0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
-.pb-part{grid-column:1/-1;overflow:hidden;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
-.pb-pos,.pb-count{font-family:var(--font-mono);font-weight:600;color:var(--ink-2);white-space:nowrap}
-.pb-count{text-align:right}
-.player-bar .meter{position:absolute;left:0;right:0;bottom:0;min-width:0;height:4px;border-radius:0}
-@media (min-width:600px){
-  .player-bar{grid-template-columns:minmax(0,max-content) max-content 1fr;padding-inline:var(--sp-4)}
-  .pb-part{grid-column:auto}
-  .pb-pos::before{content:"·";margin:0 var(--sp-2);color:var(--ink-2)}
-}
+/* Above the step: "Back to step N" when the step on screen is not the one to continue at, and "Get back in" after a
+   break (perform). A skippable run of optional steps offers its skip under the first step's title. */
+.back-pill{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:44px;margin:0 0 var(--sp-3);padding:0 var(--sp-4) 0 var(--sp-3);border:1.5px solid var(--here);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1 var(--font-ui)}
+.back-pill:hover{background:var(--surface-2)}
+.back-pill .icon{width:18px;height:18px}
+.getback{margin:0 0 var(--sp-4);padding:var(--sp-4) var(--sp-5);border:1px solid var(--line);border-left:4px solid var(--here);border-radius:var(--r-card);background:var(--surface-1)}
+.getback h2{margin:0 0 var(--sp-1);font-size:var(--t-check);line-height:var(--t-check-lh)}
+.getback > :last-child{margin-bottom:0}
+.skip-box{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-3);padding:var(--sp-2) var(--sp-3);border:1px dashed var(--line-strong);border-radius:var(--r-control);font-size:var(--t-body);line-height:var(--t-body-lh)}
+.skip-box p{flex:1 1 16rem;margin:0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.skipped-tag{border-style:dashed}
+/* In the list, a skipped step is dimmed; ticking it brings it back. */
+.steps li.is-skipped > :not(.check,.step-head){opacity:.6}
 /* The views: room for the fixed action bar, and nothing hidden under it or the bars. */
 html[data-player]{scroll-padding-top:calc(var(--sticky-top) + 72px);scroll-padding-bottom:calc(var(--bar-h) + env(safe-area-inset-bottom,0px) + var(--sp-4))}
 html[data-player] body{padding-bottom:calc(var(--bar-h) + env(safe-area-inset-bottom,0px))}
@@ -829,9 +920,35 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .pd-open a:hover{background:var(--surface-2)}
 .pd-n,.pp-n,.ps-n,.ps-pn{font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2);text-align:right}
 .pd-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+/* LED rows: the parts of the chapter on a checkpoint (lit when done), all sixteen on the complete screen. */
+.led-row{display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:middle}
+.led-row .led{width:14px;height:14px}
+.led-row .led.on{border-color:var(--done-ink);background:var(--done-fill)}
+.player-done .led-row .led.on{animation:led-on var(--dur-swap) var(--ease) both;animation-delay:calc(var(--i) * 40ms)}
+@keyframes led-on{from{background:transparent}}
+@media (prefers-reduced-motion:reduce){.player-done .led-row .led.on{animation:none}}
+.pc-leds,.pd-leds{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-4)}
+.pd-leds .led-row{gap:5px}
+.pd-leds .led-row .led{width:12px;height:12px}
+.pc-leds .meta{margin:0}
+.pd-made{max-width:var(--measure);font-size:var(--t-check);line-height:var(--t-check-lh)}
+.pd-moves-title{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.pd-actions{flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-4)}
+.pd-actions .btn .icon{width:20px;height:20px}
 /* Start screen: chips, the safety summary (copies of the page's danger notices), the parts */
 .player-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:0 0 var(--sp-5);padding:0;list-style:none}
 .player-chips li{max-width:none;margin:0;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono)}
+/* The chapter needs a newer OS than the one chosen in Settings: a caution chip with the way to update. */
+.player-chips li.warn{display:inline-flex;align-items:center;gap:var(--sp-2);border-color:var(--caution-line);background:var(--caution-surface);color:var(--caution-ink)}
+.player-chips li.warn .icon{width:18px;height:18px}
+.player-chips li.warn a{color:inherit}
+/* "You will make" leads the start screen. */
+html[data-player="start"] main > .makes{font-size:var(--t-check);line-height:var(--t-check-lh)}
+/* Reference for this chapter: the page's reference cards, folded (they stay in place in All steps). */
+.player-reference{margin:var(--sp-4) 0;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1)}
+.player-reference > summary .icon{color:var(--ink-2)}
+.player-reference .ref-part > h2{margin-top:var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
+.player-reference .inside > :last-child{margin-bottom:0}
 .player-safety{margin:var(--sp-4) 0;border:1px solid var(--danger);border-left-width:6px;border-radius:var(--r-control);background:var(--danger-surface)}
 .player-safety > summary{padding:var(--sp-2) var(--sp-4);color:var(--danger)}
 .player-safety > summary .icon{width:22px;height:22px}
@@ -845,6 +962,12 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .pp-list a:hover{background:var(--surface-2)}
 .pp-list a:hover .pp-t,.ps-step:hover .ps-t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .pp-list .tally,.ps-part .tally{margin-left:0}
+/* A wide screen: the parts list stands beside everything above it (player.js counts those rows into --start-rows). */
+@media (min-width:1360px){
+  html[data-player="start"] main.reading{display:grid;grid-template-columns:minmax(0,46rem) minmax(0,20rem);column-gap:var(--sp-6);align-content:start;max-width:calc(66rem + var(--sp-6) + 2 * var(--gutter))}
+  html[data-player="start"] main.reading > *{grid-column:1;min-width:0}
+  html[data-player="start"] main.reading > .player-parts{grid-column:2;grid-row:1/span var(--start-rows,6);align-self:start;position:sticky;top:calc(var(--sticky-top) + var(--sp-4));margin-top:var(--sp-2)}
+}
 /* Player | All steps: two 44px choices, the chosen one outlined in ink as well as filled */
 .player-modes{display:inline-flex;gap:2px;margin:var(--sp-2) 0 var(--sp-3);padding:3px;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2)}
 .player-modes button{min-height:44px;padding:0 var(--sp-4);border:0;border-radius:9px;background:transparent;color:var(--ink);font-weight:600}
@@ -864,7 +987,6 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .pa-more{position:absolute;right:var(--gutter);bottom:calc(100% + var(--sp-2));display:inline-flex;align-items:center;gap:var(--sp-1);min-height:44px;padding:0 var(--sp-4) 0 var(--sp-3);border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);box-shadow:var(--e2);font:600 var(--t-cap)/1 var(--font-ui)}
 .pa-more .icon{width:18px;height:18px}
 @media (max-height:480px){
-  .player-bar{position:static}
   .player-actions{padding:0 var(--gutter) env(safe-area-inset-bottom,0px)}
   .pa-btn{flex-direction:row;gap:var(--sp-2);width:auto;min-height:48px;padding:0 var(--sp-3)}
   .pa-main{min-height:48px}
@@ -877,21 +999,25 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
   .pa-hint .key{font-size:12px}
   html[data-player] .toast{bottom:calc(var(--bar-h) + var(--sp-6))}
 }
-/* Steps sheet: progress, the switch, every part with its steps as 48px rows (done, current), then the extras */
-.player-sheet .sheet-body{padding-top:var(--sp-3)}
+/* "This chapter" (the menu's tab, the desktop rail) and the ⋮ sheet: progress, the switch, every part with its steps
+   as 48px rows (done, skipped, on screen, where you continue), then the extras */
+.chapter-pane,.actions-sheet .sheet-body{padding-top:var(--sp-3)}
 .ps-progress{display:grid;gap:var(--sp-2);margin:0 var(--sp-2) var(--sp-2)}
 .ps-count{margin:0;font-weight:600}
-.player-sheet .player-modes{margin-inline:var(--sp-2)}
+.chapter-pane .player-modes,.actions-sheet .player-modes{margin-inline:var(--sp-2)}
 .ps-part{border-top:1px solid var(--line)}
 .ps-part > summary{gap:var(--sp-2);padding:var(--sp-2)}
 .ps-pn{flex:none;min-width:2ch}
 .ps-pt{flex:1 1 auto;min-width:0;line-height:1.3}
 .ps-steps{margin:0 0 var(--sp-2);padding:0;list-style:none}
 .ps-steps li{max-width:none;margin:0}
-.ps-step{display:grid;grid-template-columns:18px 2.5ch minmax(0,1fr);align-items:center;gap:var(--sp-1) var(--sp-3);min-height:48px;padding:var(--sp-1) var(--sp-3);border-radius:var(--r-control);color:var(--ink);line-height:1.3;text-decoration:none}
+.ps-step{display:grid;grid-template-columns:18px 2.5ch minmax(0,1fr);align-items:center;gap:var(--sp-1) var(--sp-3);width:100%;min-height:48px;padding:var(--sp-1) var(--sp-3);border:0;border-radius:var(--r-control);background:transparent;color:var(--ink);font:inherit;line-height:1.3;text-align:left;text-decoration:none;cursor:pointer}
 .ps-step:hover{background:var(--surface-3)}
 .ps-mark{width:18px;height:18px;border:2px solid var(--line-strong);border-radius:999px}
 .ps-step.done .ps-mark{border-color:var(--done-ink);background:var(--done-fill) var(--i-tick) center/14px no-repeat}
+.ps-step.skipped .ps-mark{border-style:dashed;background:linear-gradient(135deg,transparent 44%,var(--line-strong) 44% 56%,transparent 56%)}
+.ps-step.skipped .ps-t{color:var(--ink-2)}
+.ps-step.resume:not([aria-current]){box-shadow:inset 3px 0 0 var(--here)}
 .ps-step[aria-current="step"]{background:var(--surface-3);box-shadow:inset 3px 0 0 var(--here);font-weight:600}
 .ps-step[aria-current="step"]:not(.done) .ps-mark{border-color:var(--ink);background:var(--ink);box-shadow:inset 0 0 0 3px var(--surface-3)}
 .ps-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -901,7 +1027,21 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .ps-links a,.ps-links button{display:flex;align-items:center;gap:var(--sp-3);width:100%;min-height:48px;padding:var(--sp-2) var(--sp-3);border:0;border-radius:var(--r-control);background:transparent;color:var(--ink);font-weight:600;text-align:left;text-decoration:none}
 .ps-links a:hover,.ps-links button:hover{background:var(--surface-3)}
 .ps-links .icon{color:var(--ink-2)}
-.player-sheet .btn.danger{margin:0 var(--sp-2)}
+.chapter-pane .btn.danger,.actions-sheet .btn.danger{margin:0 var(--sp-2)}
+/* The rail: the chapter above the course, in the rail's tighter rows. */
+.rail-chapter{padding-bottom:var(--sp-3);border-bottom:1px solid var(--line)}
+.rail-chapter .ps-progress{margin:0 var(--sp-2) var(--sp-2)}
+.rail-chapter .ps-part > summary{padding:var(--sp-2) var(--sp-1);font-size:15px;line-height:20px}
+.rail-chapter .ps-step{min-height:40px;padding:var(--sp-1) var(--sp-2);font-size:15px;line-height:20px}
+.rail-chapter .ps-step .you-here{display:none}
+.rail-chapter .ps-links{margin:var(--sp-2) 0 0;padding-top:var(--sp-2)}
+.rail-chapter .ps-links a,.rail-chapter .ps-links button{min-height:40px;padding:var(--sp-1) var(--sp-2);font-size:15px}
+/* The ⋮ sheet comes in from the right from 600px (the menu comes from the left). */
+@media (min-width:600px){
+  .sheet.actions-sheet{margin:0 0 0 auto;border-radius:var(--r-card) 0 0 var(--r-card);box-shadow:-16px 0 48px rgb(0 0 0/.24)}
+  .sheet.actions-sheet[open]{animation-name:sheet-in-right}
+}
+@keyframes sheet-in-right{from{transform:translateX(100%)}}
 @media (forced-colors:active){
   html[data-player="step"] li.is-current .key{outline:2px solid Highlight;outline-offset:1px}
   html[data-player="step"] li.is-current .step-check .key{outline:0}
@@ -910,9 +1050,10 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
   .ps-step[aria-current="step"],.player-modes button[aria-pressed="true"]{outline:3px solid Highlight;outline-offset:-3px}
   .ps-mark{forced-color-adjust:none;border-color:CanvasText;background:Canvas}
   .ps-step.done .ps-mark{background:CanvasText}
-  .player-actions,.player-bar{border:2px solid CanvasText}
+  .player-actions{border:2px solid CanvasText}
+  .led-row .led.on{forced-color-adjust:none;background:CanvasText}
 }
-@media print{.player-actions,.player-bar,.player-modes,.player-sheet,.part-about,.player-chips,.player-safety,.player-parts,.player-card,.gate,.step-num{display:none!important}}
+@media print{.player-actions,.player-modes,.actions-sheet,.part-about,.player-chips,.player-safety,.player-reference,.player-parts,.player-card,.gate,.step-num,.skip-box,.back-pill,.getback,.appbar-meter{display:none!important}}
 
 /* ---------- Every chapter in the player: the parts of a 01/02 step, and the rhythm helpers of 01 ---------- */
 /* A part's title is an <h2> inside its <summary> (01, 02); it reads as the summary text. */
@@ -931,8 +1072,14 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .step-more > p{max-width:none;margin:0;padding:0 var(--sp-4) var(--sp-3);font-size:var(--t-body);line-height:var(--t-body-lh)}
 .steps li > .step-source,.steps li > .step-report,.step-source{margin:var(--sp-2) 0 0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .steps li > .badge{margin:0 0 var(--sp-3)}
+/* A note at body size; "No undo" in the danger colours, where an undo would stand. */
+.steps li > .step-note{margin:var(--sp-3) 0 var(--sp-2);color:var(--ink-2)}
+.steps li > .step-noundo,.risk .step-noundo{margin:var(--sp-3) 0;padding:var(--sp-2) var(--sp-3);border-left:4px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
+/* Focus lands on a titled step's title in the player; its ring shows only for keyboard users (.pl-kbd). */
+.steps li > .step-title:focus{outline:none}
+html.pl-kbd .steps li > .step-title:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:4px}
 /* In the player the step's parts keep their own sizes: only the Do line (and the preflight) is large. */
-html[data-player="step"] li.is-current > :is(.step-extras,.step-source,.step-report,.step-moves,.pattern,.runner,.step-undo,.badge){font-size:var(--t-body);line-height:var(--t-body-lh)}
+html[data-player="step"] li.is-current > :is(.step-extras,.step-source,.step-report,.step-moves,.pattern,.runner,.step-undo,.step-noundo,.step-note,.badge,.skip-box){font-size:var(--t-body);line-height:var(--t-body-lh)}
 html[data-player="step"] li.is-current > :is(.step-source,.step-report){font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 html[data-player="step"] li.is-current .step-more .key,html[data-player="step"] li.is-current .step-source .key{background:var(--surface-1);border-color:var(--line-strong);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
 /* A risk tag is a link to safety.html: a tag, not underlined. */
@@ -976,6 +1123,61 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
   .steps li > .step-undo::before{forced-color-adjust:none;background:CanvasText}
 }
 
+/* ---------- Tools sheet (toolsheet.js): For this step, Map, Fixes, Words, Cheat sheet ---------- */
+/* A tall sheet (88dvh) on phones; from 600px a panel from the right, like the chapter actions. The tabs scroll
+   sideways on a narrow screen; the chosen one is outlined in ink as well as filled. */
+.sheet.tools-sheet{height:88vh;height:88dvh}
+.tools-head{gap:var(--sp-2);padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3)}
+.tools-head .search-field{flex:1;min-width:0}
+.tools-head .search-field input{min-height:48px}
+.tools-tabs{display:flex;gap:var(--sp-1);padding:var(--sp-2) var(--sp-3);overflow-x:auto;border-bottom:1px solid var(--line);scrollbar-width:thin}
+.tools-tabs button{flex:none;min-height:44px;padding:0 var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font-weight:600;white-space:nowrap}
+.tools-tabs button:hover{background:var(--surface-3)}
+.tools-tabs button[aria-selected="true"]{border-color:var(--ink);background:var(--surface-3);box-shadow:inset 0 0 0 1px var(--ink)}
+.tools-body{padding-top:var(--sp-3)}
+.tools-panel{padding:0 var(--sp-2)}
+.tools-panel:focus{outline:none}
+html.pl-kbd .tools-panel:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.tools-panel h3.sub,.tools-panel h4.sub{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.tools-eyebrow{margin:0 0 var(--sp-2);font-weight:600}
+.tools-panel .device{padding:var(--sp-3)}
+.tools-panel .device .display{display:none}
+.tools-panel .control{position:relative;min-height:36px;padding:2px 6px;box-shadow:0 2px 0 var(--line-strong)}
+.tools-panel .control.hot{box-shadow:0 2px 0 var(--key-edge)}
+.tools-panel .controls,.tools-panel .pads{gap:6px}
+.tools-panel .pads{margin-top:var(--sp-2)}
+.tools-panel .control .order{position:absolute;top:-8px;right:-6px;display:grid;place-items:center;min-width:22px;height:22px;padding:0 4px;border:2px solid var(--surface-1);border-radius:999px;background:var(--ink);color:var(--surface-1);font:600 12px/1 var(--font-mono)}
+.tools-panel .control[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
+.press-order{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-4);margin:var(--sp-3) 0;padding:0;max-width:none;list-style:none}
+.press-order li{display:inline-flex;align-items:center;gap:var(--sp-1);margin:0}
+.po-n{font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2)}
+.map-info{min-height:7rem;margin:var(--sp-3) 0;box-shadow:none}
+.map-info h3{margin:0 0 var(--sp-2);font-size:var(--t-check);line-height:var(--t-check-lh)}
+.tools-topic{margin:var(--sp-2) 0}
+.tools-topic > summary .topic-title{margin:0;font:inherit}
+.tools-gloss .term{padding:var(--sp-2) 0;border-bottom:1px solid var(--line)}
+.tools-gloss dt{font-weight:600}
+.tools-gloss dd{margin:var(--sp-1) 0 0}
+.tools-cheat{margin:0 0 var(--sp-4)}
+.tools-cheat h3.sub:first-child{margin-top:var(--sp-2)}
+.tools-filter{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:44px;margin:0 0 var(--sp-2);font-weight:600;cursor:pointer}
+.tools-filter input{width:20px;height:20px;margin:0}
+.tools-hit{box-shadow:0 0 0 3px var(--here);border-radius:var(--r-control)}
+.tools-more{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:var(--sp-5) var(--sp-2) 0;padding:var(--sp-3) 0 0;border-top:1px solid var(--line);list-style:none}
+.tools-more li{margin:0}
+.tools-more a{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:44px;padding:0 var(--sp-3);border-radius:var(--r-control);color:var(--ink);font-weight:600}
+.tools-more a:hover{background:var(--surface-3)}
+.tools-more .icon{width:20px;height:20px;color:var(--ink-2)}
+@media (min-width:600px){
+  .sheet.tools-sheet{width:min(480px,calc(100vw - 48px));height:100vh;height:100dvh;margin:0 0 0 auto;border-radius:var(--r-card) 0 0 var(--r-card);box-shadow:-16px 0 48px rgb(0 0 0/.24)}
+  .sheet.tools-sheet[open]{animation-name:sheet-in-right}
+}
+/* A beginner word in a step: a dotted underline (a link to the glossary; with JavaScript it opens the Words tab). */
+a.term-link{color:inherit;text-decoration:underline dotted;text-decoration-thickness:2px;text-underline-offset:4px;text-decoration-color:var(--ink-2);cursor:help}
+a.term-link:hover{text-decoration-color:var(--ink)}
+@media print{a.term-link{text-decoration:none}}
+@media (forced-colors:active){.tools-tabs button[aria-selected="true"]{outline:3px solid Highlight;outline-offset:-3px}.tools-panel .control .order{forced-color-adjust:none;background:CanvasText;color:Canvas}}
+
 /* ---------- Tool pages (learn, controls, lab, help, glossary, cheat-sheet, safety, settings, 404) ---------- */
 /* Learn: each lesson is a card that opens; its title is an <h2> in the summary, "Tried" beside it. */
 .lessons{display:grid;gap:var(--sp-3);margin:0 0 var(--sp-4)}
@@ -989,7 +1191,16 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .map-title{margin:var(--sp-3) 0 0}
 /* Help: the search field, then topics in groups. A topic opened from a link is scrolled to below the bar. */
 .help-search{margin:0 0 var(--sp-2)}
-.help-group h2.sub{margin-top:var(--sp-5)}
+.help-group h2.sub{margin-top:var(--sp-5);scroll-margin-top:calc(var(--sticky-top) + 72px)}
+/* The groups of a tool page as a row of links; it sticks under the app bar from 1024px. */
+.on-page{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-1) var(--sp-2);margin:0 0 var(--sp-3)}
+.on-page .nav-label{margin:0 var(--sp-1) 0 0}
+.on-page ul{display:flex;flex-wrap:wrap;gap:var(--sp-1);margin:0;padding:0;list-style:none}
+.on-page li{margin:0}
+.on-page a{display:inline-flex;align-items:center;min-height:40px;padding:0 var(--sp-3);border:1px solid var(--line);border-radius:var(--r-chip);background:var(--surface-1);font-size:var(--t-cap);font-weight:600;text-decoration:none}
+.on-page a:hover{background:var(--surface-3)}
+@media (min-width:1024px){.on-page{position:sticky;top:var(--sticky-top);z-index:4;padding:var(--sp-1) 0;background:var(--bg)}}
+@media print{.on-page,.cs-filter{display:none!important}}
 details.topic{margin:var(--sp-2) 0}
 details[id],.term[id],.risk[id],.card[id]{scroll-margin-top:calc(var(--sticky-top) + var(--sp-4))}
 .link-list{padding-left:1.25em}
