@@ -1,9 +1,9 @@
 """Accessibility (docs/overhaul-plan.md 8.1, test_a11y.py).
 
 - axe-core (tests/vendor, MPL-2.0, test-only and sha256-pinned) on every kind of page and sheet, at phone and desktop
-  width, in light and dark: no serious or critical WCAG 2.2 A/AA violation. The desktop pass is 1280×1200, tall enough
-  that a chapter's docked action bar sits under the content instead of over it: at 900 a control that happens to end
-  half under the bar counts as a small target (target-size) until you scroll, wherever the step's length puts it.
+  width, in light and dark: no serious or critical WCAG 2.2 A/AA violation. While axe measures, the app bar and the
+  action bar sit in the page flow: a control that happens to end half under them counts as a small target (target-size)
+  until you scroll, wherever the content's length puts it. The focus test below covers what they may hide.
 - Keyboard: from a step's title, Tab reaches Done · Next through the step's own controls, the part's note and the
   action bar only (test_behaviour.py checks the exact count);
   a whole part of Chapter 0 can be done with the keyboard alone, its checkpoint included.
@@ -59,9 +59,16 @@ def run(browser, site_url, artifacts_dir):
 
         def axe(self, label):
             page.add_script_tag(content=AXE.read_text(encoding='utf-8'))
+            # The app bar and the action bar stay on screen while the page scrolls under them, so whatever ends half under
+            # them counts as a small target (target-size) until you scroll, wherever the content's length puts it. They
+            # are laid out in the flow while axe measures; test_short_screen_chrome_and_focus_not_obscured checks that a
+            # focused control is never hidden under them (WCAG 2.4.11).
+            page.add_style_tag(content='.axe-flow .appbar,.axe-flow .player-actions{position:static!important}')
+            page.evaluate("() => document.documentElement.classList.add('axe-flow')")
             found = page.evaluate("""tags => axe.run(document, {runOnly: {type: 'tag', values: tags}, resultTypes: ['violations']})
                 .then(r => r.violations.filter(v => v.impact === 'serious' || v.impact === 'critical')
                   .map(v => v.id + ' (' + v.nodes.map(n => n.target.join(' ')).slice(0, 3).join(', ') + ')'))""", TAGS)
+            page.evaluate("() => document.documentElement.classList.remove('axe-flow')")
             return [f'{label}: {v}' for v in found]
 
     yield Run()

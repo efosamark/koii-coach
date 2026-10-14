@@ -68,7 +68,7 @@
                   (.search-field > input#site-search) + .search-chips > .search-chip + .search-body >
                   .search-group > h2.search-group-title + ul.search-list > li > a.search-hit (.search-hit-title,
                   .search-hit-crumb, .search-hit-snip; <mark> is a matched word; a.search-hit.search-word for a word)
-     Text         .eyebrow (mono caps, ink-2) .meta (14px ink-2) .muted .sr (visually hidden) .lead
+     Text         .eyebrow (mono caps, ink-2) .meta (14px ink-2) .sr (visually hidden) .lead
      Layout       .page (1180px container) .page.reading (chapter reading column) .page-head .row .grid
                   (auto-fill tiles; .grid > div = inset tile) .split (two columns when wide) .sticky .section
      Chapter      .steps > details (section cards), .steps ol > li[data-step] rows, li.here, .tally (.all),
@@ -216,12 +216,10 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 .skip:focus{top:var(--sp-2)}
 .hidden{display:none!important}
 .icon{width:24px;height:24px;flex:none;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.icon.sm{width:20px;height:20px}
 
 /* ---------- Text helpers ---------- */
 .eyebrow{display:block;margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
 .meta,.tiny{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
-.muted{color:var(--ink-2)}
 .lead{font-size:var(--t-check);line-height:var(--t-check-lh)}
 
 /* ---------- Buttons ---------- */
@@ -590,9 +588,7 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 dl.gloss dt{margin-top:var(--sp-3)}
 #goals,.path{padding-left:0;list-style:none}
 .goal.ok{color:var(--done-ink);font-weight:600}
-.mt{margin-top:var(--sp-3)}
 .line{margin:0 0 var(--sp-2)}
-.row.toolbar{margin:var(--sp-3) 0 var(--sp-1)}
 @media (max-width:599px){
   .map thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
   .map,.map tbody,.map tr,.map th,.map td{display:block}
@@ -636,7 +632,7 @@ dl.gloss dt{margin-top:var(--sp-3)}
   :root{color-scheme:light;--bg:#fff;--surface-1:#fff;--surface-2:#fff;--surface-3:#fff;--ink:#000;--ink-2:#333;--line:#bbb;--line-strong:#666;--lcd-bg:#fff;--lcd-ink:#000;--lcd-line:#000;--key:#fff;--on-key:#000;--key-edge:#000;--e1:none;--e2:none;--e3:none}
   html.shell-on body{padding-left:0}
   body{background:#fff;color:#000}
-  .appbar,.rail,.sheet,.skip,.toast,.status-bar,#progress-note,.check,.tally,.chapters,.no-print,.menu-btn,.row button,.device,.strip-tools,.runner{display:none!important}
+  .appbar,.rail,.sheet,.skip,.toast,.status-bar,#progress-note,.check,.tally,.chapters,.menu-btn,.row button,.device,.strip-tools,.runner{display:none!important}
   .page{max-width:none;padding:0}
   .card,.steps > details{box-shadow:none;break-inside:avoid}
   details{break-inside:avoid}
@@ -665,7 +661,7 @@ dl.gloss dt{margin-top:var(--sp-3)}
 #firmware-card .row{margin-bottom:var(--sp-2)}
 #import-file:focus-visible + label{outline:3px solid var(--focus);outline-offset:2px}
 
-@media print{.toolbar,.hint{display:none!important}}
+@media print{.hint{display:none!important}}
 
 /* ---------- Chapter pages, continued: progress bar, "You are here", footer ---------- */
 /* Refines the base "Chapter pages" styles above for the six checklist pages (00, 07 to 11). It comes last so it wins,
@@ -998,8 +994,20 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .player-chips li.warn{display:inline-flex;align-items:center;gap:var(--sp-2);border-color:var(--caution-line);background:var(--caution-surface);color:var(--caution-ink)}
 .player-chips li.warn .icon{width:18px;height:18px}
 .player-chips li.warn a{color:inherit}
-/* "You will make" leads the start screen. */
-html[data-player="start"] main > .makes{font-size:var(--t-check);line-height:var(--t-check-lh)}
+/* The start screen's promise and "Before you start" rows (plan 5.2): only there; All steps, print and pages without
+   JavaScript show the full preamble as written. */
+main > .promise,main > .needs{display:none}
+html[data-player="start"] main > .promise{display:block;margin:0 0 var(--sp-3)}
+html[data-player="start"] main > .needs{display:block;margin:var(--sp-4) 0}
+.needs > h2{margin:0 0 var(--sp-2);font-size:var(--t-check);line-height:var(--t-check-lh)}
+.needs-list{margin:0;padding:0;list-style:none}
+.needs-list li{display:flex;align-items:flex-start;gap:var(--sp-3);max-width:none;margin:0;padding:6px 0;border-top:1px solid var(--line)}
+.needs-list li:first-child{border-top:0}
+.needs-list .icon{flex:none;width:22px;height:22px;margin-top:2px;color:var(--ink-2)}
+.player-more{margin:var(--sp-4) 0;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1)}
+.player-more > summary .icon{color:var(--ink-2)}
+.player-more .inside > h2,.player-more .inside h2{margin-top:var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
+.player-more .inside > :last-child{margin-bottom:0}
 /* Reference for this chapter: the page's reference cards, folded (they stay in place in All steps). */
 .player-reference{margin:var(--sp-4) 0;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1)}
 .player-reference > summary .icon{color:var(--ink-2)}
@@ -1010,6 +1018,12 @@ html[data-player="start"] main > .makes{font-size:var(--t-check);line-height:var
 .player-safety > summary .icon{width:22px;height:22px}
 .player-safety > .inside{padding:0 var(--sp-4) var(--sp-3)}
 .player-safety .notice{margin:var(--sp-2) 0}
+/* The short safety list shows only in the start screen's safety box; the page itself keeps the full notices. */
+main > .safety-short{display:none}
+.player-safety .safety-short{margin:0 0 var(--sp-2);padding-left:1.25em}
+.player-safety .safety-short li{margin:0 0 var(--sp-1)}
+.safety-full{margin:var(--sp-2) 0}
+.safety-full > summary{min-height:44px;display:flex;align-items:center;font-weight:600}
 .player-parts{margin:var(--sp-5) 0}
 .pp-list{margin:0;padding:0;overflow:hidden;list-style:none;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
 .pp-list li{max-width:none;margin:0;border-top:1px solid var(--line)}
@@ -1024,6 +1038,10 @@ html[data-player="start"] main > .makes{font-size:var(--t-check);line-height:var
   html[data-player="start"] main.reading > *{grid-column:1;min-width:0}
   html[data-player="start"] main.reading > .player-parts{grid-column:2;grid-row:1/span var(--start-rows,6);align-self:start;position:sticky;top:calc(var(--sticky-top) + var(--sp-4));margin-top:var(--sp-2)}
 }
+/* All steps: "You're on Part 3, step 31 of 61 · Continue", under the chapter's title. */
+.list-resume{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--sp-2) var(--sp-4);max-width:none;margin:0 0 var(--sp-4);padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4);border:1px solid var(--line);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-1);font-weight:600}
+.list-resume[hidden]{display:none}
+@media print{.list-resume{display:none!important}}
 /* Player | All steps: two 44px choices, the chosen one outlined in ink as well as filled */
 .player-modes{display:inline-flex;gap:2px;margin:var(--sp-2) 0 var(--sp-3);padding:3px;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2)}
 .player-modes button{min-height:44px;padding:0 var(--sp-4);border:0;border-radius:9px;background:transparent;color:var(--ink);font-weight:600}
@@ -1118,7 +1136,7 @@ html[data-text="larger"][data-player="step"] li.is-current > .step-check{margin-
   html.has-device .player-device .press-order .key{font-size:13px}
 }
 @media (min-width:1200px){
-  :root{--device-w:320px}
+  :root{--device-w:360px}   /* the 360px right panel of plan 4.5 */
   html.has-device body{padding-right:var(--device-w)}
   html.has-device .appbar{margin-right:calc(-1 * var(--device-w))}
   html.has-device .player-device{display:block;position:fixed;top:var(--appbar-h);right:0;bottom:0;z-index:20;width:var(--device-w);overflow-y:auto;overscroll-behavior:contain;padding:var(--sp-4);border-left:1px solid var(--line);background:var(--surface-1)}
@@ -1307,6 +1325,11 @@ html.pl-kbd .tools-panel:focus-visible{outline:3px solid var(--focus);outline-of
 @media (min-width:600px){
   .sheet.tools-sheet{width:min(480px,calc(100vw - 48px));height:100vh;height:100dvh;margin:0 0 0 auto;border-radius:var(--r-card) 0 0 var(--r-card);box-shadow:-16px 0 48px rgb(0 0 0/.24)}
   .sheet.tools-sheet[open]{animation-name:sheet-in-right}
+}
+/* From 1200px, beside a step, Tools takes the right panel's place (plan 5.7) instead of covering the step card. */
+@media (min-width:1200px){
+  html.has-device .sheet.tools-sheet{width:var(--device-w);height:calc(100dvh - var(--appbar-h));margin:var(--appbar-h) 0 0 auto;border-left:1px solid var(--line);border-radius:0;box-shadow:none}
+  html.has-device .sheet.tools-sheet::backdrop{background:rgb(0 0 0/.08)}
 }
 /* A beginner word in a step: a dotted underline (a link to the glossary; with JavaScript it opens the Words tab). */
 a.term-link{color:inherit;text-decoration:underline dotted;text-decoration-thickness:2px;text-underline-offset:4px;text-decoration-color:var(--ink-2);cursor:help}

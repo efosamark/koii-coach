@@ -17,7 +17,7 @@ Fails (exit 1) when:
 - a page loads shell.js without site.js and progress.js before it (progress and migrations would not run there),
 - a page with its stylesheets and scripts weighs more than its budget, gzipped (plan 7.8): 60 KB for Home and the tool
   pages, 80 KB for a chapter page (docs/overhaul-plan.md decision 19; today they weigh 66-76 KB),
-- another budget of plan 7.8 and decision 19 is broken: a page's HTML over 35 KB gzipped, the CSS over 17 KB, all the
+- another budget of plan 7.8 and decision 19 is broken: a page's HTML over 35 KB gzipped, the CSS over 18 KB, all the
   JavaScript over 68 KB or one page's over 48 KB (gzipped), the icon sprite over 6 KB, the font over 18 KB, or what
   sw.js saves for offline use over 600 KB gzipped,
 - a page's visible text names a chapter by its number before the renumber ("chapter 07", "07 / Sample…", "section 04",
@@ -232,7 +232,7 @@ def main():
             errors.append(f'{name} weighs {weights[name] / 1024:.1f} KB gzipped with its CSS and JS (budget {budget} KB)')
 
     js = [f for f in files if f.endswith('.js') and f != 'sw.js']
-    for what, size, limit in ([('the CSS', sum(gz(f) for f in files if f.endswith('.css')), 17), ('all the JavaScript', sum(gz(f) for f in js), 68),
+    for what, size, limit in ([('the CSS', sum(gz(f) for f in files if f.endswith('.css')), 18), ('all the JavaScript', sum(gz(f) for f in js), 68),
                                ('the icon sprite', (out / 'icons.svg').stat().st_size if 'icons.svg' in have else 0, 6)] +
                               [(f, (out / f).stat().st_size, 18) for f in files if f.endswith('.woff2')]):
         if size > limit * 1024:

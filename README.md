@@ -133,7 +133,7 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 | `progress.js` | Saved progress shared by every page: carrying Chapters 1 and 2 over from older versions, the progress file and Reset. |
 | `search.js`, `wake.js` | Search across every chapter and tool (works offline), and keeping the screen on while you practise. |
 | `icons.svg`, `fonts/` | Icons and the self-hosted IBM Plex Mono font for keys and display values (SIL Open Font License, see `fonts/OFL.txt`). |
-| `chapter.js`, `player.js`, `toolsheet.js` | Ticks, progress and resume for every chapter page, the step player on top of them, and the Tools sheet (the step's keys, fixes and words; the map, troubleshooting, glossary and cheat sheet). |
+| `chapter.js`, `player.js`, `toolsheet.js` | Ticks, progress and resume for every chapter page, the step player on top of them, and the Tools sheet (the step's keys, fixes and words; the map, troubleshooting, glossary and cheat sheet), which player.js loads once the page is idle. |
 | `sw.js` | Offline support (service worker). |
 | `manifest.webmanifest`, `icon.svg`, `icons/` | Home-screen app name and icons. |
 | `tests/test_smoke.py`, `tests/test_progress.py`, `tests/test_player.py`, `tests/test_fold.py`, `tests/test_a11y.py`, `tests/test_urls.py`, `tests/test_search.py`, `tests/test_behaviour.py`, `tests/test_perf.py`, `tests/conftest.py`, `tests/support.py`, `pytest.ini` | Browser tests (pytest and Playwright for Python); `tests/vendor/` holds the pinned axe-core they use. |

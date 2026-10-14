@@ -24,7 +24,6 @@
   <script src="wake.js" defer></script>
   <script src="chapter.js" defer></script>
   <script src="player.js" defer></script>
-  <script src="toolsheet.js" defer></script>
 </head>
 <body data-chapter="tech-house">
   <a class="skip" href="#main">Skip to content</a>
@@ -38,14 +37,30 @@
       <h1>Tech house</h1>
       <p class="subtitle">A full 128 BPM track</p>
     </header>
+    <p class="promise">Build a 3½-minute tech-house track at 128 BPM, with two drops and a breakdown.</p>
     <p>Build a complete tech-house track at 128 BPM: four-on-the-floor drums, a rolling bassline that ducks under the kick, moving percussion, a short vocal hook in your own recording, two different drops, a breakdown, a build and an ending. Song mode then plays it as 112 bars, about 3½ minutes. This is a step-by-step recipe, not a promise of a mastered release: your sound choices and your speaker still matter.</p>
     <p class="makes"><b>You will make:</b> a tech-house track at 128 BPM, about 3:30 long, with two drops, a breakdown and a build: 28 song positions, 112 bars.</p>
+    <section class="needs" aria-labelledby="needs-title">
+      <h2 id="needs-title">Before you start</h2>
+      <ul class="needs-list">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-info"></use></svg><span>OS 2.0 or newer (OS 2.5 for a few optional steps)</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-grid"></use></svg><span>Empty project 9</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-headphones"></use></svg><span>Headphones or a speaker</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-mic"></use></svg><span>For the vocal hook: your voice, a phone over USB-C, or a line cable</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-list"></use></svg><span>Paper and a pen for scene numbers</span></li>
+      </ul>
+    </section>
     <section class="card">
       <h2>Before you start</h2>
       <p><b>Firmware:</b> written and checked for OS 2.5.1. Song mode and sidechain need OS 2.0 or later; a few optional steps say “OS 2.5”. Older OS: update first (see the <a href="https://teenage.engineering/guides/ep-133/whats-new">official OS notes</a>).</p>
       <p><b>You need:</b> your K.O. II, headphones or a speaker, and for the vocal hook either your own voice (built-in microphone), a phone or computer connected with a USB-C cable (OS 2.5), or a line cable. No way to record? Load a short sound from 500–599 on C1 instead and skip the two recording steps in Part 7. Paper and a pen for scene numbers.</p>
       <p><b>You should already know</b> the moves from <a href="./first-beat.html">Chapter 1 · First beat</a> (placing notes with RECORD, a brief erase, undo, commit) and <a href="./song.html">Chapter 2 · Make it a song</a> (the song list). <a href="./sampling.html">Chapter 3 · Sample, chop &amp; resample</a> and <a href="./perform.html">Chapter 4 · Play &amp; perform</a> explain sampling and live playing in more depth; this chapter only uses what it needs.</p>
     </section>
+    <ul class="safety-short">
+      <li>Stop playback before every position-by-position edit.</li>
+      <li>Never use <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">SOUND</kbd></kbd>: it deletes the sample from the device.</li>
+      <li><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> undoes a cleared note or pad while the umbrella icon is lit.</li>
+    </ul>
     <div class="notice caution"><b>Safety:</b> stop playback before every position-by-position edit. A <b>brief</b> ERASE + pad removes the one note at the current step. <b>Holding</b> ERASE + pad until TRK blinks clears every note of that pad in this pattern: this chapter uses both, on purpose. SHIFT + B undoes while the umbrella icon is lit.</div>
     <div class="notice danger">Never use ERASE + SOUND here: it deletes the sample from the device.</div>
     <section class="card reference">
@@ -76,13 +91,13 @@
             <p class="step-do">Press <kbd class="key">MAIN</kbd>. If music is playing, press <kbd class="key">PLAY</kbd> to stop it. Hold <kbd class="key">MAIN</kbd>, hold <kbd class="key pad">pad 9</kbd> as well, then release both.</p>
             <p class="step-check"><span class="sr">Check: </span>While both are held, the display shows <samp class="lcd">P 9</samp>.</p>
             <p class="step-note">Write the project number on your paper.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says “hold main and one of the pads (1-9) to select an empty project”, and on a new unit projects 6–9 are empty. This course keeps project 6 for Chapters 1, 2 and 4 (First beat, Make it a song, Play &amp; perform), 7 for Chapter 3 (Sample, chop &amp; resample) and 8 for Chapter 5 (Full hip-hop beat). Project 9 was your scratch project in <a href="./setup.html">Chapter 0 · Set up your K.O. II</a> and now becomes this track.</p></details><details class="step-more"><summary>Not working?</summary><p>Not sure what 9 holds? See help <a href="./help.html#my-project-is-not-empty">“My project is not empty”</a> in <a href="./help.html">Troubleshooting</a>.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says “hold main and one of the pads (1-9) to select an empty project”, and on a new unit projects 6–9 are empty. This course keeps project 6 for Chapters 1, 2 and 4 (First beat, Make it a song, Play &amp; perform), 7 for Chapter 3 (Sample, chop &amp; resample) and 8 for Chapter 5 (Full hip-hop beat); project 9, your scratch project in <a href="./setup.html">Chapter 0 · Set up your K.O. II</a>, now becomes this track.</p></details><details class="step-more"><summary>Not working?</summary><p>Not sure what 9 holds? See help <a href="./help.html#my-project-is-not-empty">“My project is not empty”</a> in <a href="./help.html">Troubleshooting</a>.</p></details></div>
           </li>
           <li data-step="check-empty-project">
             <h3 class="step-title">Check that project 9 is empty</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>. Press <kbd class="key">PLAY</kbd> again to stop. Tap <kbd class="key">A</kbd>, then tap a few pads.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear nothing: in an empty project the pads have no sounds yet.</p>
-            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Pads 1, 2 and 3 may still play the kick, snare and hat you picked in the tour in Chapter 0; that is fine, because Part 2 puts new sounds on them. If music plays, you are not in an empty project. On OS 2.0+ <kbd class="key">MAIN</kbd> + a number can also select a scene: a quick press goes to that scene. Try step 1 again and keep <kbd class="key pad">pad 9</kbd> held until the display shows <samp class="lcd">P 9</samp>, P and the project number.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p><kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd> may still play the kick, snare and hat you picked in the tour in Chapter 0; that is fine, because Part 2 puts new sounds on them. If music plays, you are not in an empty project. On OS 2.0+ <kbd class="key">MAIN</kbd> + a number can also select a scene: a quick press goes to that scene. Try step 1 again and keep <kbd class="key pad">pad 9</kbd> held until the display shows <samp class="lcd">P 9</samp>, P and the project number.</p></details></div>
           </li>
           <li data-step="set-tempo-128">
             <h3 class="step-title">Set the tempo to 128 BPM</h3>
@@ -110,7 +125,7 @@
         <ol start="6">
           <li data-step="choose-kick">
             <h3 class="step-title">A1: load sound 001</h3>
-            <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">A</kbd>, then tap <kbd class="key pad">pad 1</kbd>. Hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd> on the pads and release: that loads sound 001. Tap <kbd class="key pad">A1</kbd> to hear it.</p>
+            <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">A</kbd>, then tap <kbd class="key pad">A1</kbd>. Hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd> on the pads and release: that loads sound 001. Tap <kbd class="key pad">A1</kbd> to hear it.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> plays a kick, sound 001.</p>
           </li>
           <li data-step="choose-kick-browse">
@@ -121,13 +136,13 @@
           </li>
           <li data-step="choose-clap-and-hat">
             <h3 class="step-title">A2: choose a clap or snare</h3>
-            <p class="step-do">In <kbd class="key">SOUND</kbd> with group <kbd class="key">A</kbd>, tap <kbd class="key pad">pad 2</kbd>. Hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and browse with <kbd class="key">−</kbd> / <kbd class="key">+</kbd> for a crisp, short clap or snare.</p>
+            <p class="step-do">In <kbd class="key">SOUND</kbd> with group <kbd class="key">A</kbd>, tap <kbd class="key pad">A2</kbd>. Hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and browse with <kbd class="key">−</kbd> / <kbd class="key">+</kbd> for a crisp, short clap or snare.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A2</kbd> plays a crisp, short clap or snare.</p>
             <p class="step-note">Snares are stored at 100–199. Claps are with the percussion: in the factory library, 300 to 316 are claps.</p>
           </li>
           <li data-step="choose-hat">
             <h3 class="step-title">A3: choose a closed hat</h3>
-            <p class="step-do">Tap <kbd class="key pad">pad 3</kbd>, hold <kbd class="key">SOUND</kbd>, type <kbd class="key">2</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and choose a short closed hat (hi-hats: 200–299).</p>
+            <p class="step-do">Tap <kbd class="key pad">A3</kbd>, hold <kbd class="key">SOUND</kbd>, type <kbd class="key">2</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and choose a short closed hat (hi-hats: 200–299).</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A3</kbd> plays a short closed hat.</p>
           </li>
           <li data-step="hat-level">
@@ -154,7 +169,7 @@
           </li>
           <li data-step="choose-bass-copy-b2">
             <h3 class="step-title">B1: choose a bass</h3>
-            <p class="step-do">Tap <kbd class="key">B</kbd>, then <kbd class="key pad">pad 1</kbd>. Hold <kbd class="key">SOUND</kbd>, type <kbd class="key">4</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and browse 400–499 (bass) for a clean, short bass.</p>
+            <p class="step-do">Tap <kbd class="key">B</kbd>, then <kbd class="key pad">B1</kbd>. Hold <kbd class="key">SOUND</kbd>, type <kbd class="key">4</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and browse 400–499 (bass) for a clean, short bass.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">B1</kbd> plays a clean, short bass.</p>
           </li>
           <li data-step="bass-level">
@@ -164,7 +179,7 @@
           </li>
           <li data-step="copy-bass-b2">
             <h3 class="step-title">Copy B1 onto B2</h3>
-            <p class="step-do">Now copy it to <kbd class="key pad">B2</kbd>: with <kbd class="key pad">B1</kbd> selected press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> once, tap <kbd class="key pad">pad 2</kbd>, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>. Tap <kbd class="key pad">B2</kbd>. Press <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-do">Now copy it to <kbd class="key pad">B2</kbd>: with <kbd class="key pad">B1</kbd> selected press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> once, tap <kbd class="key pad">B2</kbd>, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>. Tap <kbd class="key pad">B2</kbd>. Press <kbd class="key">MAIN</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>It plays the same bass.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p><kbd class="key pad">B2</kbd> becomes the answer note at the end of bar 4.</p></details></div>
           </li>
@@ -421,7 +436,7 @@
             <p class="step-do">Hold <kbd class="key pad">C1</kbd>, sing or say two to four words, then release.</p>
             <p class="step-check"><span class="sr">Check: </span>Recording stops as you release; <kbd class="key pad">C1</kbd> now holds your words.</p>
             <p class="step-note">Keep it under about 1.5 seconds (one bar at 128 BPM lasts about 1.9 seconds). Using a line from someone else’s record? Fine for practice; for public release of music containing someone else’s record, check and obtain the necessary permissions.</p>
-            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Need both hands, for example to start audio on your phone? Instead of holding <kbd class="key pad">C1</kbd>, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key pad">pad 1</kbd></kbd> for hands-free sampling (OS 2.0+), then press <kbd class="key">SAMPLE</kbd> to stop.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Need both hands, for example to start audio on your phone? Instead of holding <kbd class="key pad">C1</kbd>, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key pad">C1</kbd></kbd> for hands-free sampling (OS 2.0+), then press <kbd class="key">SAMPLE</kbd> to stop.</p></details></div>
           </li>
           <li data-step="record-vocal-listen">
             <h3 class="step-title">Listen to C1</h3>
@@ -431,7 +446,7 @@
           </li>
           <li data-step="trim-vocal-hook">
             <h3 class="step-title">C1: select it in SOUND</h3>
-            <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">C</kbd>, then tap <kbd class="key pad">pad 1</kbd> to select <kbd class="key pad">C1</kbd>.</p>
+            <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">C</kbd>, then tap <kbd class="key pad">C1</kbd> to select it.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">C1</kbd> plays your hook as you select it.</p>
           </li>
           <li data-step="trim-vocal-open">
@@ -492,7 +507,7 @@
           </li>
           <li data-step="add-synth-answer">
             <h3 class="step-title">DROP B: select C2</h3>
-            <p class="step-do">In DROP B, press <kbd class="key">SOUND</kbd>, tap <kbd class="key">C</kbd> and tap <kbd class="key pad">pad 2</kbd>.</p>
+            <p class="step-do">In DROP B, press <kbd class="key">SOUND</kbd>, tap <kbd class="key">C</kbd> and tap <kbd class="key pad">C2</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <kbd class="key pad">C2</kbd>’s sample number.</p>
           </li>
           <li data-step="synth-answer-sound">
@@ -626,12 +641,12 @@
           <li data-step="optional-riser-sound" data-os="2.5" data-optional>
             <h3 class="step-title">Optional: copy C1’s sound</h3>
             <p class="badge os-badge">Needs OS 2.5 or newer</p>
-            <p class="step-do">Optional, OS 2.5 reverse: press <kbd class="key">SOUND</kbd>, tap <kbd class="key">C</kbd>, tap <kbd class="key pad">pad 1</kbd> and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> once to copy <kbd class="key pad">C1</kbd>’s sound.</p>
+            <p class="step-do">Optional, OS 2.5 reverse: press <kbd class="key">SOUND</kbd>, tap <kbd class="key">C</kbd>, tap <kbd class="key pad">C1</kbd> and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> once to copy <kbd class="key pad">C1</kbd>’s sound.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">C1</kbd> plays your hook as you tap it.</p>
           </li>
           <li data-step="riser-paste" data-optional>
             <h3 class="step-title">Optional: paste it onto D1</h3>
-            <p class="step-do">Tap <kbd class="key">D</kbd>, tap <kbd class="key pad">pad 1</kbd> and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd> to paste it.</p>
+            <p class="step-do">Tap <kbd class="key">D</kbd>, tap <kbd class="key pad">D1</kbd> and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd> to paste it.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> now plays your hook.</p>
           </li>
           <li data-step="riser-reverse" data-os="2.5" data-optional>
@@ -707,7 +722,7 @@
             <p class="step-note">Scene numbers and song-position numbers are different things: check each one against your paper.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Extra position? Select it and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> to cut it.</p></details></div>
           </li>
-          <li data-step="play-song-list" data-setting="420" data-os="2.0">
+          <li data-step="play-song-list" data-os="2.0">
             <h3 class="step-title">Checkpoint: play the song</h3>
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> to play the song from the start.</p>
@@ -843,16 +858,16 @@
             <p class="step-do">Type <kbd class="key">4</kbd><kbd class="key">1</kbd><kbd class="key">0</kbd> the same way to switch back.</p>
             <p class="step-check"><span class="sr">Check: </span>Scene changes are instant again.</p>
           </li>
-          <li data-step="finished-check">
+          <li data-step="finished-check" data-os="2.0">
             <h3 class="step-title">Checkpoint: the finished track</h3>
-            <p class="step-do">You are done when the whole track plays, kick and bass stay clear, the vocal appears only where it matters, and the two drops feel different.</p>
-            <p class="step-check"><span class="sr">Check: </span>The whole track plays and stops by itself.</p>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
+            <p class="step-do">In the song list, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> and listen to the whole track.</p>
+            <p class="step-check"><span class="sr">Check: </span>Kick and bass stay clear, the vocal sits where it matters, the drops differ.</p>
             <p class="step-note">Resist adding sounds at the last minute: try new ideas in a fresh copy (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>) so the finished scenes stay safe.</p>
           </li>
           <li data-step="tech-house-recap" data-kind="recap">
             <h3 class="step-title">Your tech house moves</h3>
             <p class="step-do">Read the seven moves below, then try one from memory without reading this app.</p>
-            <p class="step-check"><span class="sr">Check: </span>You can build a loop, make it breathe and arrange a full track.</p>
             <ul class="step-moves"><li>Load by number: hold <kbd class="key">SOUND</kbd>, type the number on the pads, release.</li><li>Double a pattern: arm <kbd class="key">RECORD</kbd>, hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd>, then disarm.</li><li>A fresh pattern for a group: tap it, then <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd>.</li><li>Sidechain: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">FX</kbd></kbd>, <kbd class="key">+</kbd>; hold a group button and press a pad for the source, <kbd class="key">SHIFT</kbd> + a group to duck.</li><li>Sections: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>, then clear what you don’t need with <kbd class="key">ERASE</kbd> + the pad until <samp class="lcd">TRK</samp> blinks.</li><li>Reverb: tap the group, <kbd class="key">FX</kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to reverb, raise the fader.</li><li>Song list: hold <kbd class="key">MAIN</kbd> and press <kbd class="key">ENTER</kbd>; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a position, <kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd> picks its scene.</li></ul>
           </li>
         </ol>

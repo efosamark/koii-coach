@@ -24,7 +24,6 @@
   <script src="wake.js" defer></script>
   <script src="chapter.js" defer></script>
   <script src="player.js" defer></script>
-  <script src="toolsheet.js" defer></script>
 </head>
 <body data-chapter="vocal-house">
   <a class="skip" href="#main">Skip to content</a>
@@ -38,9 +37,23 @@
       <h1>Vocal house</h1>
       <p class="subtitle">House with your own vocal samples</p>
     </header>
+    <p class="promise">Build a 4-minute house track at 128 BPM around five vocal samples of your own.</p>
     <p>Build a 4-minute house track at 128 BPM from factory drums and bass, plus five short vocal samples you record or upload yourself. This page calls them V1 to V5. The voice gives the track its identity: a hook, an answer, tiny chops, a long texture and a second phrase. The drums and bass keep people moving. You build the biggest section first, then copy it and take things away to make the quieter sections. In one live-played moment you bring the kick back in yourself. The finished song list has 32 positions of four bars: 128 bars, exactly 4:00.</p>
     <p class="makes"><b>You will make:</b> a 4-minute house track at 128 BPM built around five vocal samples of your own: 32 song positions, 128 bars.</p>
+    <section class="needs" aria-labelledby="needs-title">
+      <h2 id="needs-title">Before you start</h2>
+      <ul class="needs-list">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-info"></use></svg><span>OS 2.5.1</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-headphones"></use></svg><span>Headphones or speakers</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-mic"></use></svg><span>Five short vocal sounds: your voice, a phone or audio files</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-list"></use></svg><span>Paper and a pencil for project, scene and sample numbers</span></li>
+      </ul>
+    </section>
     <div class="notice info"><b>Before you start.</b> Written for OS 2.5.1. Older OS: update first (<a href="./setup.html">Chapter 0 · Set up your K.O. II</a>). Song mode needs OS 2.0 or newer; USB audio, reverse and crop need OS 2.5. This chapter builds on <a href="./first-beat.html">Chapter 1 · First beat</a>, <a href="./song.html">Chapter 2 · Make it a song</a> (scenes, commit, song list) and <a href="./sampling.html">Chapter 3 · Sample, chop &amp; resample</a>, and doesn’t teach them again. The app can’t see your K.O. II, so trust your display and your ears.</div>
+    <ul class="safety-short">
+      <li>Never use <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">SOUND</kbd></kbd>: held until <samp class="lcd">SND</samp> blinks, it deletes the sample from the device.</li>
+      <li><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> undoes a cleared note or pad while the umbrella icon is lit.</li>
+    </ul>
     <div class="notice caution"><b>Moves you’ll use all chapter.</b> Stop playback before you edit positions. In stopped MAIN, − / + moves one step and SHIFT + − / + jumps a whole bar, but only while RECORD is not armed: when it is armed, SHIFT + + doubles the pattern instead. Don’t hold a pad while you do this, because SHIFT + pad + − / + nudges that pad’s note. <b>Write a note:</b> hold RECORD, tap the pad, release. <b>Remove one note:</b> go to it and briefly press ERASE + that pad. <b>Remove every note of one pad in this pattern:</b> with playback stopped, hold ERASE + that pad until TRK blinks. <b>Undo:</b> SHIFT + B while the umbrella icon is lit.</div>
     <div class="notice danger"><b>Never</b> use ERASE + SOUND: held until SND blinks, it deletes the sample from the device.</div>
     <section class="card">
@@ -123,7 +136,7 @@
             <p class="preflight">Only for the reused project’s own old music, and only after a backup.</p>
             <p class="step-consequence">Erases the current pattern of every group.</p>
             <p class="step-do">Hold <kbd class="key">ERASE</kbd> and <kbd class="key">A</kbd> until <samp class="lcd">PTN</samp> blinks on the display, and do the same with <kbd class="key">B</kbd>, <kbd class="key">C</kbd> and <kbd class="key">D</kbd>.</p>
-            <p class="step-undo">Wrong project? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once while the umbrella is lit.</p>
+            <p class="step-undo"><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> restores only the last group; the backup has the rest.</p>
             <p class="step-check"><span class="sr">Check: </span><samp class="lcd">PTN</samp> blinks for each group; <kbd class="key">PLAY</kbd> now plays nothing.</p>
             <p class="step-note">In project 7, that is your Chapter 3 voice kit or the bounced beat. Or restore your backup. Stop.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says this erases “the current patterns”.</p></details></div>
@@ -133,7 +146,7 @@
             <p class="step-do">Empty them first, with playback stopped: press <kbd class="key">SOUND</kbd>, tap <kbd class="key">D</kbd>, tap <kbd class="key pad">D1</kbd>, hold <kbd class="key">SOUND</kbd>, type <kbd class="key">0</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and release <kbd class="key">SOUND</kbd>. Repeat for <kbd class="key pad">D2</kbd> to <kbd class="key pad">D5</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> are now empty and play nothing.</p>
             <p class="step-note">A reused project keeps its pad sounds and pad settings; Parts 2 and 4 put new sounds on every pad this chapter uses. If one of them later plays backwards, stretched or cut short (Chapter 3 leaves <kbd class="key pad">A4</kbd> reversed and <kbd class="key pad">B1</kbd> stretched to one bar), check that pad in SOUND EDIT, as in Chapter 3, Parts 5 and 8. The Chapter 3 recordings stay in the sound library.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Reused project 7? Its <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> still hold your Chapter 3 recordings, so they won’t blink in <kbd class="key">SAMPLE</kbd>, and hands-free sampling is not allowed on a pad that already holds a recording. The official how-to says setting a pad to “000” “will create an empty pad”.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>In a reused project 7, <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> still hold your Chapter 3 recordings, so they won’t blink in <kbd class="key">SAMPLE</kbd>, and hands-free sampling is not allowed on a pad that already holds a recording. The official how-to says setting a pad to “000” “will create an empty pad”.</p></details></div>
           </li>
           <li data-step="prepare-paper" data-kind="info">
             <h3 class="step-title">Write the project and V1 to V5</h3>
@@ -181,7 +194,7 @@
           </li>
           <li data-step="record-v1-d1">
             <h3 class="step-title">D1: record V1</h3>
-            <p class="step-do">Get ready, then press and hold pad <kbd class="key pad">D1</kbd> (<kbd class="key pad">pad 1</kbd>, with <kbd class="key">D</kbd> selected). Perform V1, and release right after the last word.</p>
+            <p class="step-do">Get ready, then press and hold <kbd class="key pad">D1</kbd>. Perform V1, and release right after the last word.</p>
             <p class="step-check"><span class="sr">Check: </span>The pad stops blinking and stays lit: it now has a sample.</p>
             <p class="step-note">Need both hands? In <kbd class="key">SAMPLE</kbd>, <kbd class="key">SHIFT</kbd> + an empty, blinking pad starts hands-free recording, and pressing <kbd class="key">SAMPLE</kbd> stops it.</p>
           </li>
@@ -794,7 +807,7 @@
           </li>
           <li data-step="contrast-test">
             <h3 class="step-title">Contrast test</h3>
-            <p class="step-do">Contrast test: BREAK should feel clearly emptier than the drops, and PEAK should feel like the biggest moment.</p>
+            <p class="step-do">Contrast test: play BREAK, then switch to DROP A and PEAK (hold <kbd class="key">MAIN</kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd>) and compare.</p>
             <p class="step-check"><span class="sr">Check: </span>BREAK is clearly emptier; PEAK is the biggest moment.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>If not, take more out of BREAK or add one more V3 chop to PEAK.</p></details></div>
           </li>
@@ -804,7 +817,7 @@
             <p class="step-do">On OS 2.5, connect the K.O. II by USB-C to a computer or phone and record its USB audio output.</p>
             <p class="step-check"><span class="sr">Check: </span>You have a recording of the full 4-minute track.</p>
             <p class="step-note">You can also record the headphone output with an external recorder.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Record one full pass before you change anything else. Commit only copies scenes inside the K.O. II; it doesn’t export audio. The guide: “usb audio out, to record sound directly into your DAW”.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Record one full pass before you change anything else: commit only copies scenes inside the K.O. II and doesn’t export audio. The guide: “usb audio out, to record sound directly into your DAW”.</p></details></div>
           </li>
           <li data-step="backup-and-rights">
             <h3 class="step-title">Back up, and check the rights</h3>
@@ -815,7 +828,6 @@
           <li data-step="vocal-recap" data-kind="recap">
             <h3 class="step-title">Your vocal house moves</h3>
             <p class="step-do">Read the seven moves below, then try one from memory without reading this app.</p>
-            <p class="step-check"><span class="sr">Check: </span>You can shape your vocals and grow one drop into a full track.</p>
             <ul class="step-moves"><li>Load a sample by number: <kbd class="key">SOUND</kbd>, tap the pad, hold <kbd class="key">SOUND</kbd>, type the number, release.</li><li>Trim: briefly <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to the trim page; <kbd class="key knob">X</kbd> start, <kbd class="key knob">Y</kbd> length.</li><li>Play to the end: on the sound page, turn <kbd class="key knob">X</kbd> to <samp class="lcd">oneshot</samp>.</li><li>Reverb on a group: tap it, <kbd class="key">FX</kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to reverb, raise the fader.</li><li>Grow and strip: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>, then hold <kbd class="key">ERASE</kbd> + the pad until <samp class="lcd">TRK</samp> blinks to clear one sound.</li><li>Play it in: tap <kbd class="key">RECORD</kbd>, press <kbd class="key">PLAY</kbd>, play after the count-in.</li><li>Song list: hold <kbd class="key">MAIN</kbd> and press <kbd class="key">ENTER</kbd>; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a position, <kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd> picks its scene.</li></ul>
           </li>
         </ol>

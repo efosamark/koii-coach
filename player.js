@@ -226,10 +226,16 @@ function copy(node){
   return c;
 }
 // Start screen: chips, safety summary, reference summary, parts list.
-const chips=el('ul','player-chips pl-own'),safety=el('details','player-safety pl-own'),refBox=el('details','disclosure player-reference pl-own'),partsBox=el('section','player-parts pl-own');
+const chips=el('ul','player-chips pl-own'),safety=el('details','player-safety pl-own'),refBox=el('details','disclosure player-reference pl-own'),partsBox=el('section','player-parts pl-own'),
+  moreBox=el('details','disclosure player-more pl-own');
 chips.setAttribute('aria-label','About this chapter');
 partsBox.setAttribute('aria-labelledby','player-parts-title');
-[chips,safety,refBox,partsBox].forEach(e=>{e.hidden=true;});
+[chips,safety,refBox,partsBox,moreBox].forEach(e=>{e.hidden=true;});
+// Safety on the start screen: the danger notices, and a caution notice that starts with "Safety".
+const isSafety=e=>e.matches('.notice.danger')||(e.matches('.notice.caution')&&/^\s*Safety/i.test(e.textContent));
+// One screen (plan 5.2): with a p.promise and section.needs on the page, the long preamble (the intro, "What you need",
+// other notices) folds into "About this chapter in full" under the parts. List mode and print show it as written.
+const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!==pageHead&&!e.classList.contains('pl-own')&&!isSafety(e)&&!e.matches('.promise,.needs,.makes,.reference,.safety-short')):[];
 (()=>{
   const time=eyebrow?clean(eyebrow.textContent.split('/').slice(1).join('/')).toLowerCase():'';
   // Text nodes joined with spaces, so "<b>Your project</b><br>Project 6" reads "Your project Project 6".
@@ -245,18 +251,28 @@ partsBox.setAttribute('aria-labelledby','player-parts-title');
     (old?`<li class="warn">${icon('warning')}<span>Needs ${osText} · <a href="./setup.html#s-update-open-utility">Update first</a></span></li>`:'');
   const intro=pageHead&&pageHead.nextElementSibling&&pageHead.nextElementSibling.tagName==='P'?pageHead.nextElementSibling:pageHead;
   if(intro)intro.after(chips);else main.prepend(chips);
-  const dangers=preSteps().filter(e=>e.matches('.notice.danger')),hard=steps.filter(li=>/^(delete|overwrite|erase-scene)$/.test(li.dataset.risk||'')).length;
+  const dangers=preSteps().filter(isSafety),hard=steps.filter(li=>/^(delete|overwrite|erase-scene)$/.test(li.dataset.risk||'')).length;
   if(dangers.length){
     safety.innerHTML=`<summary>${icon('warning')}<span>${hard?esc(plural(hard,'action','actions'))+' in this chapter cannot be undone':'Safety: read this before you start'}</span></summary><div class="inside"></div>`;
-    dangers.forEach(d=>safety.lastElementChild.append(copy(d)));
+    // The page's short list first (ul.safety-short), then the notices in full, one tap further (plan 5.2).
+    const short=main.querySelector(':scope > .safety-short'),box=safety.lastElementChild;
+    if(short){box.append(copy(short));const full=el('details','safety-full','<summary>The full safety notes</summary>');dangers.forEach(d=>full.append(copy(d)));box.append(full);}
+    else dangers.forEach(d=>box.append(copy(d)));
+    box.insertAdjacentHTML('beforeend','<p class="meta"><a href="./safety.html">Safety and erasing</a> lists every action that erases something, and its undo.</p>');
     dangers[0].before(safety);
   }
   partsBox.innerHTML='<h2 id="player-parts-title">Parts</h2><ol class="pp-list"></ol>';
   (progress&&progress.parentElement===main?progress:wrap).before(partsBox);
+  // Below the parts (plan 5.2): the reference cards, then the preamble in full.
   if(references.length){
     refBox.innerHTML=`<summary>${icon('list')}<span>Reference for this chapter</span></summary><div class="inside"></div>`;
     references.forEach(r=>{const c=copy(r);c.classList.remove('card','reference','reentry');c.classList.add('ref-part');refBox.lastElementChild.append(c);});
-    partsBox.before(refBox);
+    partsBox.after(refBox);
+  }
+  if(longPre.length){
+    moreBox.innerHTML=`<summary>${icon('info')}<span>About this chapter in full</span></summary><div class="inside"></div>`;
+    longPre.forEach(e=>{const c=copy(e);c.classList.remove('card');moreBox.lastElementChild.append(c);});
+    (references.length?refBox:partsBox).after(moreBox);
   }
 })();
 // Player / All steps switch: at the top of the list (list mode), in the menu and in the chapter actions.
@@ -265,6 +281,10 @@ const pressModes=box=>box.querySelectorAll('.player-modes [data-mode]').forEach(
 const listModes=el('div','player-modes pl-own',modesHTML);
 listModes.setAttribute('role','group');listModes.setAttribute('aria-label','Show the steps');listModes.hidden=true;
 wrap.before(listModes);
+// All steps (plan 5.10): where you are, in the first screen, with the way there ("You're on Part 3, step 31 of 61").
+const listBanner=el('p','list-resume pl-own');listBanner.hidden=true;
+(pageHead||h1||wrap).after(listBanner);
+listBanner.addEventListener('click',e=>{if(!e.target.closest('[data-resume]'))return;const id=C.resumeId();if(id){setUrl('#s-'+id);C.go(id);}});
 // Above the step card: the way back to the step to continue at, and "Get back in" after a break.
 const pill=el('button','back-pill pl-own');pill.type='button';pill.hidden=true;
 // It shows perform's "How every section starts" (.reentry) and the scene and sample numbers on your notes (chapter.js).
@@ -294,7 +314,20 @@ actions.id='player-actions';actions.hidden=true;
 actions.setAttribute('role','group');actions.setAttribute('aria-label','Step controls');
 main.after(actions);
 const backBtn=actions.querySelector('#player-back'),toolsBtn=actions.querySelector('#player-tools-btn'),nextBtn=actions.querySelector('#player-next'),goLink=actions.querySelector('#player-go'),more=actions.querySelector('.pa-more');
-toolsBtn.addEventListener('click',()=>{if(window.CoachTools)CoachTools.open(toolsBtn);});
+toolsBtn.addEventListener('click',()=>{if(window.CoachTools)CoachTools.open(toolsBtn);else loadTools(()=>{if(window.CoachTools)CoachTools.open(toolsBtn);});});
+// The Tools sheet and the keys panel (toolsheet.js) load once the page is idle (decision 19), or at once when Tools is
+// pressed first. Same release as this page: the address carries its version, like the page's own scripts.
+let toolsWaiting=[];
+function loadTools(then){
+  if(window.CoachTools){if(then)then();return;}
+  if(then)toolsWaiting.push(then);
+  if(document.querySelector('script[data-coach-tools]'))return;
+  const s=document.createElement('script');s.dataset.coachTools='';
+  s.src='toolsheet.js'+(site&&site.version?'?v='+encodeURIComponent(site.version):'');
+  s.onload=()=>{const w=toolsWaiting;toolsWaiting=[];w.forEach(f=>f());};
+  document.head.append(s);
+}
+if(Shell){const later=()=>(window.requestIdleCallback||(f=>setTimeout(f,200)))(()=>loadTools(),{timeout:2000});if(document.readyState==='complete')later();else addEventListener('load',later,{once:true});}
 // "This step doesn't match my K.O. II": one link, moved to the end of the step on screen and filled in for it
 // (the fields of .github/ISSUE_TEMPLATE/wrong-instruction.yml).
 const reportEl=el('p','step-report pl-own',`<a id="player-report" href="#" target="_blank" rel="noopener noreferrer">This step doesn’t match my K.O. II<span class="sr"> (opens in a new tab)</span></a>`);
@@ -370,7 +403,8 @@ function render(){
   const want=new Set(),k=kids();
   if(v==='start'){
     want.add(wrap);if(progress)want.add(progress);
-    if(safety.childElementCount)preSteps().filter(e=>e.matches('.notice.danger')).forEach(e=>want.add(e));   // the summary holds copies
+    if(safety.childElementCount)preSteps().filter(isSafety).forEach(e=>want.add(e));   // the summary holds copies
+    longPre.forEach(e=>want.add(e));   // so does "About this chapter in full"
     if(references.length)references.forEach(e=>want.add(e));   // so does "Reference for this chapter"
   }else if(v==='step'&&cur){
     const P=partOf(cur);
@@ -396,9 +430,13 @@ function render(){
   chips.hidden=partsBox.hidden=v!=='start';
   safety.hidden=v!=='start'||!safety.childElementCount;
   refBox.hidden=v!=='start'||!references.length;
+  moreBox.hidden=v!=='start'||!longPre.length;
   about.hidden=!(v==='step'&&about.querySelector('.inside').childElementCount);
   checkCard.hidden=v!=='check';doneCard.hidden=v!=='done';
   listModes.hidden=v!=='list';
+  const here=v==='list'&&!printing&&C.hasProgress()&&C.count()<C.total()&&byId.get(C.resumeId());
+  listBanner.hidden=!here;
+  if(here)listBanner.innerHTML=`<span>You’re on Part ${partOf(here).n}, step ${num(here)} of ${steps.length}</span><button class="btn" type="button" data-resume>Continue${icon('next')}</button>`;
   pressModes(main);
   actions.hidden=v==='list'||!v;
   if(v!=='step')getback.hidden=true;
@@ -421,7 +459,7 @@ function paint(){
     }else Shell.setTitle(chName,chNum?'Chapter '+chNum:'');
   }
   backBtn.hidden=view==='start';
-  toolsBtn.hidden=view==='start'||!window.CoachTools;
+  toolsBtn.hidden=view==='start'||!Shell;
   actions.querySelector('.pa-hint').hidden=!(view==='step'||view==='check');
   let label='',go='';
   nextBtn.removeAttribute('aria-disabled');

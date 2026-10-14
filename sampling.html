@@ -24,7 +24,6 @@
   <script src="wake.js" defer></script>
   <script src="chapter.js" defer></script>
   <script src="player.js" defer></script>
-  <script src="toolsheet.js" defer></script>
 </head>
 <body data-chapter="sampling">
   <a class="skip" href="#main">Skip to content</a>
@@ -37,8 +36,23 @@
       <p class="eyebrow">CHAPTER 3 / ABOUT 2–3 HOURS</p>
       <h1>Sample, chop &amp; resample</h1>
     </header>
+    <p class="promise">Record your own sounds, build a kit from them, chop a recording and resample a beat.</p>
     <p>In Chapters 1 and 2 you built a beat from factory sounds. Now you make the sounds yourself. You will record your voice with the built-in mic, turn mouth noises into a drum kit, sample your phone, shape and reverse a sound, chop a recording into slices and bounce a whole beat onto one pad. Each section is one small project with a check at the end. Take a break between sections whenever you like: your recordings are saved automatically.</p>
     <p class="makes"><b>You will make:</b> a drum kit from your own voice, a reversed snare, a recording chopped into slices and your whole beat bounced onto one pad, in project 7.</p>
+    <section class="needs" aria-labelledby="needs-title">
+      <h2 id="needs-title">Before you start</h2>
+      <ul class="needs-list">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-info"></use></svg><span>OS 2.5 or newer</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-grid"></use></svg><span>Empty project 7, and Chapters 1 and 2 done</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-headphones"></use></svg><span>Headphones or a speaker</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-usb"></use></svg><span>For Part 3, optional: a phone with a 3.5 mm or USB-C cable</span></li>
+      </ul>
+    </section>
+    <ul class="safety-short">
+      <li>Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> only with the K.O. II already on: held while switching on, it formats the drive.</li>
+      <li>Held, <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">SOUND</kbd></kbd> deletes a sample and <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> on the trim page crops one. Neither can be undone.</li>
+      <li>Back up first, and work in empty project 7.</li>
+    </ul>
     <div class="notice danger"><b>Safety, read this first.</b> Only press SHIFT + ERASE while the K.O. II is already switched on: that opens system settings, which this chapter uses in Parts 3 and 4. Holding SHIFT + ERASE while you switch the unit on does something completely different: it formats the drive and erases all your work and every factory sound, and the official guide warns that factory sounds cannot be recovered. Before you change settings, back up with the official EP sample tool (see <a href="./setup.html">Chapter 0 · Set up your K.O. II</a>). Two more actions are permanent: holding ERASE + SOUND deletes the selected sample from the device, and holding SHIFT + SOUND on the trim page crops a sample file (one optional step below). Work in an empty project so nothing you care about is overwritten.</div>
     <section class="card">
       <h2>What you need</h2>
@@ -395,7 +409,7 @@
             <h3 class="step-title">Set A2 to oneshot</h3>
             <p class="step-do">Press <kbd class="key">−</kbd> until you reach the sound page. Turn <kbd class="key knob">X</kbd> to oneshot. Tap <kbd class="key pad">A2</kbd> very briefly.</p>
             <p class="step-check"><span class="sr">Check: </span>The whole snare plays even though you let go at once.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide names the three play modes oneshot, key and legato, so check the display as you turn. Oneshot plays the whole sample, one at a time; key lets copies of the sample overlap (good for <kbd class="key">KEYS</kbd>); legato continues from the same point when you change notes while holding. <kbd class="key knob">Y</kbd> on this page is pan.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide names three play modes, so check the display as you turn: oneshot plays the whole sample, one at a time; key lets copies of the sample overlap (good for <kbd class="key">KEYS</kbd>); legato continues from the same point when you change notes while holding. <kbd class="key knob">Y</kbd> on this page is pan.</p></details></div>
           </li>
           <li data-step="copy-snare-pad">
             <h3 class="step-title">Copy A2’s sound</h3>
@@ -457,7 +471,7 @@
             <p class="step-do">In <kbd class="key">MAIN</kbd> tap <kbd class="key">D</kbd>, tap <kbd class="key pad">D2</kbd>, tap <kbd class="key">C</kbd>, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SAMPLE</kbd></kbd> and tap C pads in time with the words.</p>
             <p class="step-check"><span class="sr">Check: </span>In CHOP the display shows <samp class="lcd">Cho</samp>.</p>
             <p class="step-note">Whatever happens, press <kbd class="key">MAIN</kbd> when done; the next steps overwrite group <kbd class="key">C</kbd> anyway.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Optional first look at manual chopping, which the guide calls live chop: in CHOP mode you “press a pad to CHOP… keep pressing pads as the sample plays”, and the time between presses decides where each cut falls. The guide’s picture shows <samp class="lcd">Cho</samp> on the display and the first pad pressed at the very start of the sample. It doesn’t say what starts playback, and no owner report we found does, so treat this as an experiment.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide calls manual chopping live chop: in CHOP mode you “press a pad to CHOP… keep pressing pads as the sample plays”, the time between presses decides where each cut falls, and its picture shows <samp class="lcd">Cho</samp> on the display and the first pad pressed at the very start of the sample. Neither the guide nor any owner report we found says what starts playback, so treat this as an experiment.</p></details></div>
           </li>
           <li data-step="chop-select-source" data-os="2.0.1">
             <h3 class="step-title">D2: select the count to chop</h3>
@@ -565,7 +579,7 @@
             <h3 class="step-title">Choose the filter for group B</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>, tap <kbd class="key">B</kbd>, press <kbd class="key">FX</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until you reach the filter. Raise the fader.</p>
             <p class="step-check"><span class="sr">Check: </span>Your bounced beat plays from <kbd class="key pad">B1</kbd>.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This sets up an effect for group <kbd class="key">B</kbd>. The guide lists delay, reverb, distortion, chorus, filter and compressor. In <kbd class="key">FX</kbd> it sets group <kbd class="key">B</kbd>’s send.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This sets up an effect for group <kbd class="key">B</kbd>: in <kbd class="key">FX</kbd> the fader sets group <kbd class="key">B</kbd>’s send. The guide lists delay, reverb, distortion, chorus, filter and compressor.</p></details></div>
           </li>
           <li data-step="fx-setup-shape">
             <h3 class="step-title">Shape the sound with X</h3>
@@ -624,7 +638,7 @@
             <h3 class="step-title">Stretch B1 to one bar</h3>
             <p class="step-do">Turn <kbd class="key knob">X</kbd> (time stretch mode: BPM, BAR or reverse) until <samp class="lcd">BAR</samp> shows. Turn <kbd class="key knob">Y</kbd> (sample length) until the display shows <samp class="lcd">1 bar</samp>.</p>
             <p class="step-check"><span class="sr">Check: </span>The stopwatch TIME icon is now lit.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide: “if you choose 1 bar it stretches your sample to be 1 bar long.” The mode can also be off: teenage engineering’s factory sounds are stored with <code>"time.mode":"off"</code>. The stopwatch TIME icon “indicates if active sound has time stretch enabled”, so watch it as you turn <kbd class="key knob">X</kbd>.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide: “if you choose 1 bar it stretches your sample to be 1 bar long.” The mode can also be off (teenage engineering’s factory sounds are stored with <code>"time.mode":"off"</code>), and the stopwatch TIME icon “indicates if active sound has time stretch enabled”, so watch it as you turn <kbd class="key knob">X</kbd>.</p></details></div>
           </li>
           <li data-step="stretch-check">
             <h3 class="step-title">Play it at 110 BPM</h3>
@@ -664,17 +678,15 @@
             <p class="step-check"><span class="sr">Check: </span>The loop ends and the full beat plays on.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p><a href="./perform.html">Chapter 4 · Play &amp; perform</a> has more live tricks.</p></details></div>
           </li>
-          <li data-step="keep-samples">
+          <li data-step="keep-samples" data-kind="info">
             <h3 class="step-title">Write down where your sounds live</h3>
             <p class="step-do">Keep your work: write down project 7, the scene numbers VOICE KIT and BOUNCE, and the sample number FIRST.</p>
-            <p class="step-check"><span class="sr">Check: </span>You know where each of your sounds lives.</p>
             <p class="step-note">To copy them to a computer, load audio files onto the K.O. II or make a backup, use the official <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a> over USB-C. Press <kbd class="key">MAIN</kbd> to leave SAMPLE mode before transferring: older OS versions could corrupt uploads made while in <kbd class="key">SAMPLE</kbd>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Your recordings are already stored on the K.O. II.</p></details></div>
           </li>
           <li data-step="sampling-recap" data-kind="recap">
             <h3 class="step-title">Your sampling moves</h3>
             <p class="step-do">Read the seven moves below, then try one from memory without reading this app.</p>
-            <p class="step-check"><span class="sr">Check: </span>You can record, edit, chop and resample a sound.</p>
             <ul class="step-moves"><li>Sample: tap the group, press <kbd class="key">SAMPLE</kbd>, pick the source with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>; <kbd class="key knob">X</kbd> is the level, <kbd class="key knob">Y</kbd> the threshold. Hold a pad to record.</li><li>Hands-free: hold <kbd class="key">SHIFT</kbd> and press an empty pad; press <kbd class="key">SAMPLE</kbd> to stop.</li><li>Sound edit: <kbd class="key">SOUND</kbd>, tap the pad, briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>; <kbd class="key">−</kbd> / <kbd class="key">+</kbd> steps through its pages.</li><li>Copy a sound: in <kbd class="key">SOUND</kbd>, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd>; tap another pad, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>.</li><li>Time page (<samp class="lcd">tim</samp>): <kbd class="key knob">X</kbd> chooses <samp class="lcd">BPM</samp>, <samp class="lcd">BAR</samp> or <samp class="lcd">rev</samp>.</li><li>Chop: select the sample, tap the destination group, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SAMPLE</kbd></kbd>; hold the group button and <kbd class="key">−</kbd> / <kbd class="key">+</kbd> for <samp class="lcd">EQU</samp>.</li><li>Resample: source <samp class="lcd">rsp</samp>, hold <kbd class="key">SHIFT</kbd> and press an empty pad, then <kbd class="key">PLAY</kbd>.</li></ul>
           </li>
         </ol>

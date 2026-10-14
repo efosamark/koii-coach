@@ -1,7 +1,6 @@
 'use strict';
 /* The Tools sheet of the chapter pages (docs/overhaul-plan.md 4.6, 5.7): one tap from every step (the player's Tools
-   button, or T on a keyboard). Load it after player.js:
-     <script src="toolsheet.js" defer></script>
+   button, or T on a keyboard). player.js loads it (see below), so no page names it in a <script>.
    It opens on "For this step": the keys of the step's Do lines lit on the control map, numbered in press order; the
    troubleshooting topics the step links to, already open; the glossary words in the step; and the moves of the
    chapters you have finished. A step without topics or words falls back to the troubleshooting groups. The other tabs
@@ -27,7 +26,9 @@
    list; from 1200px wide the same panel sits on the right, and tapping a control there explains it in a fixed-height
    box. It shows in the step view only; html.has-device makes room for it (coach.css).
 
-   window.CoachTools.open(opener, {tab: 'step'|'map'|'fixes'|'words'|'cheat', topic: <help id>, term: <term id>}) */
+   window.CoachTools.open(opener, {tab: 'step'|'map'|'fixes'|'words'|'cheat', topic: <help id>, term: <term id>})
+   player.js loads this file once the chapter page is idle (decision 19: it is not part of the first paint), or at once
+   when Tools is pressed before that. */
 (()=>{
 const Shell=window.CoachShell,C=window.CoachChapter;
 if(!Shell||!C)return;
@@ -305,5 +306,5 @@ function underline(d){
   });
 }
 const idle=window.requestIdleCallback||(f=>setTimeout(f,1500));
-addEventListener('load',()=>idle(()=>load().then(underline)),{once:true});
+if(document.readyState==='complete')idle(()=>load().then(underline));else addEventListener('load',()=>idle(()=>load().then(underline)),{once:true});
 })();

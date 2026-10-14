@@ -24,7 +24,6 @@
   <script src="wake.js" defer></script>
   <script src="chapter.js" defer></script>
   <script src="player.js" defer></script>
-  <script src="toolsheet.js" defer></script>
 </head>
 <body data-chapter="perform">
   <a class="skip" href="#main">Skip to content</a>
@@ -37,8 +36,18 @@
       <p class="eyebrow">CHAPTER 4 / ABOUT 2–3 HOURS</p>
       <h1>Play &amp; perform</h1>
     </header>
+    <p class="promise">Play the K.O. II live: feel, a bassline in a scale, rolls, effects and scene changes.</p>
     <p>Until now you placed most notes one step at a time. In this chapter you play the K.O. II like an instrument. You record with feel, play a bassline in a scale and roll hi-hats. You also throw in effects, nudge notes by hand, switch scenes live, make the mix pump and record what you play. Each section is one short mini-project that starts from a practice copy of a scene you already made. Do the sections in any order: your finished scenes stay safe.</p>
     <p class="makes"><b>You will make:</b> a live performance of your own beat: played with feel, with a bassline in a scale, rolled hats, effects and live scene changes, and a recording of it.</p>
+    <section class="needs" aria-labelledby="needs-title">
+      <h2 id="needs-title">Before you start</h2>
+      <ul class="needs-list">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-grid"></use></svg><span>Project 6 with your scenes and song list from Chapters 1–2</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-headphones"></use></svg><span>Headphones or speakers</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-list"></use></svg><span>Paper and a pencil for scene numbers</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-usb"></use></svg><span>For Part 9: a USB-C cable, or a 3.5 mm cable to a recorder</span></li>
+      </ul>
+    </section>
     <div class="notice info"><b>Written for OS 2.5.1.</b> Every step here works on a K.O. II running OS 2.5.1. The official “what’s new” page describes features up to OS 2.5 and has no separate 2.5.1 notes. This chapter was checked against it and the official guide on 13 October 2026. Older OS: <a href="https://teenage.engineering/apps/update">update first</a>. This app cannot see your hardware, so trust your display and your ears.</div>
     <section class="card">
       <h2>What you need</h2>
@@ -50,6 +59,11 @@
         <div><b>Order</b><br>Any. Parts 6 and 7 use your Chapter 2 scenes and song</div>
       </div>
     </section>
+    <ul class="safety-short">
+      <li>Work only in practice copies: every part starts by making one.</li>
+      <li>Never use <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">SOUND</kbd></kbd>: it deletes a sample from the device.</li>
+      <li>Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> only with the K.O. II already on: held while switching on, it formats the drive.</li>
+    </ul>
     <div class="notice danger"><b>Safety.</b> Work only in practice copies: every section starts by making one, and the ERASE moves here only touch those copies. Never use ERASE + SOUND: it deletes a sample from the device. Open system settings with SHIFT + ERASE <b>only while the K.O. II is already switched on</b>. Holding SHIFT + ERASE while you switch it on formats the drive, and the official guide warns that factory sounds “can not be recovered”. If this K.O. II holds work you care about, back it up first with the official <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a> on a computer. SHIFT + B undoes the last change while the umbrella icon is lit.</div>
     <section class="card reference reentry">
       <h2>How every section starts</h2>
@@ -72,7 +86,7 @@
           <li data-step="live-copy">
             <h3 class="step-title">Copy BEAT as a practice scene</h3>
             <p class="step-do">In project 6, make a practice copy of BEAT: stopped, hold <kbd class="key">MAIN</kbd>, select BEAT with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>, release, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>You are now in the copy, not BEAT.</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not BEAT’s.</p>
           </li>
           <li data-step="live-copy-listen" data-note="LIVE">
             <h3 class="step-title">Name it LIVE and listen</h3>
@@ -215,7 +229,7 @@
           <li data-step="keys-copy">
             <h3 class="step-title">Copy DRUMS as BASSLINE</h3>
             <p class="step-do">In project 6, make a practice copy of DRUMS, your drums-only scene: stopped, hold <kbd class="key">MAIN</kbd>, select DRUMS with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>, release, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>You are now in the copy, not DRUMS.</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, the copy’s.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>No DRUMS scene? Copy BEAT instead.</p></details></div>
           </li>
           <li data-step="keys-copy-listen" data-note="BASSLINE">
@@ -303,11 +317,16 @@
         <summary><h2 class="part-title">Part 3 · Note repeat, hat rolls and the arpeggio</h2></summary>
         <p><b>Goal:</b> let the K.O. II repeat a pad for you. You finger-drum the hi-hats and a roll, latch a repeat so it plays hands-free, and arpeggiate notes in KEYS.</p>
         <ol start="35">
-          <li data-step="repeat-copy" data-note="ROLL" data-risk="erase">
-            <h3 class="step-title">Copy BEAT as ROLL, clear the hats</h3>
-            <p class="preflight">Clear only in the copy: after <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> the number must change.</p>
+          <li data-step="repeat-copy" data-note="ROLL">
+            <h3 class="step-title">Copy BEAT as ROLL</h3>
+            <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select BEAT, release and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>: note the copy as ROLL.</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not BEAT’s.</p>
+          </li>
+          <li data-step="repeat-clear-hats" data-risk="erase">
+            <h3 class="step-title">ROLL: clear the hats</h3>
+            <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be ROLL.</p>
             <p class="step-consequence">Clears every note of <kbd class="key pad">A3</kbd> in ROLL.</p>
-            <p class="step-do">Make a practice copy of BEAT and write it as ROLL. Tap <kbd class="key">A</kbd>. Stopped, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A3</kbd></kbd> until <samp class="lcd">TRK</samp> blinks.</p>
+            <p class="step-do">Stopped, tap <kbd class="key">A</kbd> and hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A3</kbd></kbd> until <samp class="lcd">TRK</samp> blinks.</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: kick, snare and bass only.</p>
             <p class="step-note">Stop.</p>
@@ -432,10 +451,10 @@
       <details>
         <summary><h2 class="part-title">Part 4 · Punch-in FX and fader moves</h2></summary>
         <p><b>Goal:</b> perform effects on the running beat with punch-in FX. Then record a fader move into the pattern, and erase only that move.</p>
-        <ol start="55">
+        <ol start="56">
           <li data-step="fx-copy" data-note="FXJAM">
             <h3 class="step-title">Copy BEAT as FXJAM</h3>
-            <p class="step-do">In project 6, make a practice copy of BEAT and write it as FXJAM. Press <kbd class="key">PLAY</kbd> and leave it running.</p>
+            <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select BEAT, release and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>: note the copy as FXJAM. Press <kbd class="key">PLAY</kbd> and leave it running.</p>
             <p class="step-check"><span class="sr">Check: </span>The copy plays the same beat as BEAT.</p>
           </li>
           <li data-step="fx-beat-repeat">
@@ -450,7 +469,7 @@
             <p class="step-do">Still playing, hold <kbd class="key">FX</kbd> and try the other pads one at a time, for a beat or two each. Write down your two favourite pad numbers.</p>
             <p class="step-check"><span class="sr">Check: </span>Each pad changes the beat differently while held.</p>
             <p class="step-note">Stop.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Punch-in FX respond to how hard you press, and you can combine them by holding two pads. The guide doesn’t list every pad; the update notes name FX + 1 beat repeat and a tape-stop effect. Owner lists (<a href="https://ep133.joeyh.org">unofficial cheat sheet</a>, <a href="https://www.elektronauts.com/t/ep-133-tips-and-tricks/204124/71">Elektronauts</a>) agree on 2 tape stop, 4 low-pass, 5 high-pass, 6 effect send and 9 bit crush, and differ on the rest, so trust your ears.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Punch-in FX respond to how hard you press and combine when you hold two pads; the guide doesn’t list every pad, and the update notes name FX + 1 beat repeat and a tape-stop effect. Owner lists (<a href="https://ep133.joeyh.org">unofficial cheat sheet</a>, <a href="https://www.elektronauts.com/t/ep-133-tips-and-tricks/204124/71">Elektronauts</a>) agree on 2 tape stop, 4 low-pass, 5 high-pass, 6 effect send and 9 bit crush, and differ on the rest, so trust your ears.</p></details></div>
           </li>
           <li data-step="fx-assign-pitch">
             <h3 class="step-title">Read the fader labels</h3>
@@ -511,11 +530,11 @@
       <details>
         <summary><h2 class="part-title">Part 5 · Edit by pad: copy, paste and shift</h2></summary>
         <p><b>Goal:</b> layer your kick with a second sound by copying one pad’s notes to another pad. Then shift that layer, and one snare, by a few ticks to change the feel.</p>
-        <ol start="66">
+        <ol start="67">
           <li data-step="pad-copy-scene" data-note="EDIT">
             <h3 class="step-title">Copy BEAT as EDIT</h3>
-            <p class="step-do">In project 6, make a practice copy of BEAT and write it as EDIT. Tap <kbd class="key">A</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>You are in EDIT, a copy with its own number.</p>
+            <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select BEAT, release and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>: note the copy as EDIT. Tap <kbd class="key">A</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not BEAT’s.</p>
           </li>
           <li data-step="pad-load-layer">
             <h3 class="step-title">A4: choose a free pad</h3>
@@ -558,7 +577,7 @@
             <p class="step-do">Hold <kbd class="key pad">A4</kbd> and, still holding it, press <kbd class="key">+</kbd> six times, then release.</p>
             <p class="step-check"><span class="sr">Check: </span>Every <kbd class="key pad">A4</kbd> note now sits six ticks later.</p>
             <p class="step-note">Holding a pad while the beat plays quantizes its notes as they pass, so keep playback stopped.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Shift the whole layer a little later. Each press moves every <kbd class="key pad">A4</kbd> note one tick later. A step is 24 ticks, so six ticks are a quarter step, about 40 ms at 90 BPM.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Each press shifts the whole layer, every <kbd class="key pad">A4</kbd> note, one tick later. A step is 24 ticks, so six ticks are a quarter step, about 40 ms at 90 BPM.</p></details></div>
           </li>
           <li data-step="pad-shift-layer-play">
             <h3 class="step-title">Hear the flam</h3>
@@ -593,7 +612,7 @@
       <details>
         <summary><h2 class="part-title">Part 6 · Scenes as a live performance</h2></summary>
         <p><b>Goal:</b> perform your Chapter 2 sections live, with every scene change landing on time, and learn to clear a scene safely.</p>
-        <ol start="78">
+        <ol start="79">
           <li data-step="scene-sync" data-setting="412">
             <h3 class="step-title">Make scene changes wait (412)</h3>
             <p class="step-do">In project 6, stop playback. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, type <kbd class="key">4</kbd>, <kbd class="key">1</kbd>, <kbd class="key">2</kbd>, press <kbd class="key">ENTER</kbd>, then press <kbd class="key">MAIN</kbd>.</p>
@@ -621,7 +640,7 @@
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Try a direct jump while stopped: hold <kbd class="key">MAIN</kbd> and type a scene number on the pads, then press <kbd class="key">PLAY</kbd> to check.</p>
             <p class="step-check"><span class="sr">Check: </span>The scene whose number you typed plays.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says MAIN + numpad “can now always switch to any scene 1-99” (OS 2.0+). It also says to hold <kbd class="key">MAIN</kbd> and press pad 1–9 to change project. A quick tap switches scene; keeping the pad held until the display shows P and its number changes project, as the guide’s picture (P 1) and <a href="https://www.elektronauts.com/t/ep-133-tips-and-tricks/204124/152">owners</a> show.</p></details><details class="step-more"><summary>Not working?</summary><p>If the music is suddenly not yours, you changed project. Hold <kbd class="key">MAIN</kbd> and press your project’s pad (6 if you followed Chapter 1) to go back, and switch scenes with <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd></kbd> when performing.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says MAIN + numpad “can now always switch to any scene 1-99” (OS 2.0+), and that you hold <kbd class="key">MAIN</kbd> and press pad 1–9 to change project. A quick tap switches scene; keeping the pad held until the display shows P and its number changes project, as the guide’s picture (P 1) and <a href="https://www.elektronauts.com/t/ep-133-tips-and-tricks/204124/152">owners</a> show.</p></details><details class="step-more"><summary>Not working?</summary><p>If the music is suddenly not yours, you changed project. Hold <kbd class="key">MAIN</kbd> and press your project’s pad (6 if you followed Chapter 1) to go back, and switch scenes with <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd></kbd> when performing.</p></details></div>
           </li>
           <li data-step="scene-perform">
             <h3 class="step-title">Perform your running order</h3>
@@ -680,7 +699,7 @@
       <details>
         <summary><h2 class="part-title">Part 7 · Song mode, deeper</h2></summary>
         <p><b>Goal:</b> lengthen the breakdown in your Chapter 2 song by giving its scene a longer pattern. Then rehearse with song loop and move a position. A song can hold up to 99 positions.</p>
-        <ol start="90">
+        <ol start="91">
           <li data-step="song-break-copy" data-note="BREAK2">
             <h3 class="step-title">Copy BREAK as BREAK2</h3>
             <p class="step-do">In project 6, stop playback. Hold <kbd class="key">MAIN</kbd>, select BREAK, release, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>. Write the new number as BREAK2.</p>
@@ -712,7 +731,7 @@
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> to play from the start.</p>
             <p class="step-check"><span class="sr">Check: </span>The breakdown at position 7 now lasts four bars.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Because a song position lasts as long as the longest pattern in its scene. Position 10 still uses BREAK, so the ending stays short. The song is now 18 bars, about 48 seconds at 90 BPM, and it stops by itself at the end.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A song position lasts as long as the longest pattern in its scene, and position 10 still uses BREAK, so the ending stays short. The song is now 18 bars, about 48 seconds at 90 BPM, and it stops by itself at the end.</p></details></div>
           </li>
           <li data-step="song-loop" data-setting="421">
             <h3 class="step-title">Make the song loop (421)</h3>
@@ -754,7 +773,7 @@
       <details>
         <summary><h2 class="part-title">Part 8 · Make the mix pump with sidechain</h2></summary>
         <p><b>Goal:</b> make the bass and melody dip each time the kick hits, so the kick punches through and the groove “breathes” (OS 2.0+). Sidechain sits in the output settings, not in a scene, so expect it to affect every scene in this project.</p>
-        <ol start="100">
+        <ol start="101">
           <li data-step="sc-play">
             <h3 class="step-title">Play MELODY</h3>
             <p class="step-do">In project 6, hold <kbd class="key">MAIN</kbd>, select MELODY (drums, bass and melody), release and press <kbd class="key">PLAY</kbd>. Leave it running for the whole section.</p>
@@ -793,7 +812,7 @@
             <h3 class="step-title">Leave the settings and listen</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd> to leave the settings, then stop. Play BEAT and INTRO too, and compare them.</p>
             <p class="step-check"><span class="sr">Check: </span>BEAT’s bass pumps too; INTRO, drums only, stays steady.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>To soften it later, open sidechain again (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">FX</kbd></kbd>, then <kbd class="key">+</kbd>) and shorten X. The guide explains how to add sources and destinations but not how to remove them, and no owner report we found does. Holding <kbd class="key">SHIFT</kbd> and pressing <kbd class="key">B</kbd> or <kbd class="key">C</kbd> again is the likeliest way, so listen to check. Sidechain belongs to this project, so your other projects never pump.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Sidechain belongs to this project, so your other projects never pump. To soften it later, open sidechain again (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">FX</kbd></kbd>, then <kbd class="key">+</kbd>) and shorten X.</p></details><details class="step-more"><summary>Not working?</summary><p>Want <kbd class="key">B</kbd> or <kbd class="key">C</kbd> to stop dipping? The guide explains how to add sources and destinations but not how to remove them, and no owner report we found does; holding <kbd class="key">SHIFT</kbd> and pressing <kbd class="key">B</kbd> or <kbd class="key">C</kbd> again is the likeliest way, so listen to check.</p></details></div>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> the bass and melody dip on every kick and swell back between kicks.</p>
@@ -803,7 +822,7 @@
       <details>
         <summary><h2 class="part-title">Part 9 · Record your performance</h2></summary>
         <p><b>Goal:</b> capture your live song as an audio file on a phone or computer.</p>
-        <ol start="106">
+        <ol start="107">
           <li data-step="rec-usb" data-os="2.5">
             <h3 class="step-title">Connect the K.O. II over USB-C</h3>
             <p class="badge os-badge">Needs OS 2.5 or newer</p>
@@ -847,7 +866,6 @@
           <li data-step="perform-recap" data-kind="recap">
             <h3 class="step-title">Your performance moves</h3>
             <p class="step-do">Read the eight moves below, then try one from memory without reading this app.</p>
-            <p class="step-check"><span class="sr">Check: </span>You can record live, play KEYS, repeat, add FX and pump the mix.</p>
             <ul class="step-moves"><li>Record live: at <samp class="lcd">1.1.1</samp> tap <kbd class="key">RECORD</kbd>, press <kbd class="key">PLAY</kbd>, play after the count-in, then press <kbd class="key">RECORD</kbd>.</li><li><kbd class="key">TIMING</kbd>: <kbd class="key knob">X</kbd> sets the grid, <kbd class="key">−</kbd> quantize, <kbd class="key">+</kbd> free time, <kbd class="key knob">Y</kbd> swing.</li><li>KEYS: select a pad, press <kbd class="key">KEYS</kbd>; hold it and turn <kbd class="key knob">X</kbd> for the key, <kbd class="key knob">Y</kbd> for the scale.</li><li>Note repeat: hold <kbd class="key">TIMING</kbd> and a pad; in TIMING, <kbd class="key">SHIFT</kbd> + the pad latches it.</li><li>Punch-in FX: while playing, hold <kbd class="key">FX</kbd> and press a pad.</li><li>Copy a pad’s notes: hold it, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd>; hold another, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>.</li><li>Next scene in time: hold <kbd class="key">MAIN</kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> before the change lands.</li><li>Sidechain: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">FX</kbd></kbd>, <kbd class="key">+</kbd>; hold a group button and press a pad for the source, <kbd class="key">SHIFT</kbd> + a group to dip.</li></ul>
           </li>
         </ol>

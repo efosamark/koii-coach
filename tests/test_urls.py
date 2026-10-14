@@ -127,7 +127,8 @@ def test_every_page_offline(run):
 
 def test_a_new_release_under_an_open_page(browser, tmp_path):
     """Plan 7.6: deploy release N+1 while a page of release N is open. The new service worker takes over, the page says
-    "Coach updated" with a Reload button, search still opens in the old page, and Reload brings the new release."""
+    "Coach updated" with a Reload button, search still opens in the old page with its own release's search.js (from
+    release N's cache, kept for one release), and Reload brings the new release."""
     import http.server
     import shutil
     import threading
@@ -149,9 +150,11 @@ def test_a_new_release_under_an_open_page(browser, tmp_path):
         page.reload(wait_until='networkidle')
         page.wait_for_function('() => Boolean(navigator.serviceWorker.controller)')
         assert page.locator('#toast', has_text='Coach updated').count() == 0, 'No notice on the first install'
-        # Release N+1: a new sw.js (its VERSION, so its cache, changes).
+        # Release N+1: a new sw.js (its VERSION, so its cache, changes) and a changed search.js.
         sw = (site / 'sw.js').read_text(encoding='utf-8')
         (site / 'sw.js').write_text(sw.replace("const VERSION='", "const VERSION='next-", 1), encoding='utf-8')
+        search = site / 'search.js'
+        search.write_text(search.read_text(encoding='utf-8') + "\nwindow.__searchRelease = 'next';\n", encoding='utf-8')
         page.evaluate('() => navigator.serviceWorker.getRegistration().then(r => r.update())')
         page.locator('#toast', has_text='Coach updated').wait_for(timeout=30000)
         page.locator('body').click(position={'x': 5, 'y': 300})
@@ -159,10 +162,14 @@ def test_a_new_release_under_an_open_page(browser, tmp_path):
         page.locator('#site-search').wait_for()
         page.keyboard.type('sidechain')
         page.locator('#site-results .search-hit').first.wait_for(timeout=15000)
+        # The old page loads search.js of its own release (?v=N) from release N's cache, kept for one release (N−1).
+        assert page.evaluate('() => window.__searchRelease') is None, 'The old page got the new release\'s search.js'
         page.keyboard.press('Escape')
         page.locator('#toast [data-reload]').click()
         page.wait_for_load_state('networkidle')
-        assert page.evaluate("() => caches.keys()").count('koii-coach-next-' + sw.split("const VERSION='", 1)[1].split("'", 1)[0]) == 1, 'The new release is the cache now'
+        version = sw.split("const VERSION='", 1)[1].split("'", 1)[0]
+        keys = page.evaluate("() => caches.keys()")
+        assert keys.count('koii-coach-next-' + version) == 1 and keys.count('koii-coach-' + version) == 1, f'The new release, and the one before kept for a release ({keys})'
         assert errors == [], errors
     finally:
         context.close()

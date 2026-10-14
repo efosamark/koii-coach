@@ -24,7 +24,6 @@
   <script src="wake.js" defer></script>
   <script src="chapter.js" defer></script>
   <script src="player.js" defer></script>
-  <script src="toolsheet.js" defer></script>
 </head>
 <body data-chapter="setup">
   <a class="skip" href="#main">Skip to content</a>
@@ -37,8 +36,18 @@
       <p class="eyebrow">CHAPTER 0 / ABOUT 45–60 MINUTES</p>
       <h1>Set up your K.O. II</h1>
     </header>
+    <p class="promise">Get your K.O. II ready: hear it, read its screen, update it and back it up.</p>
     <p>Before your first beat, get the K.O. II ready. You will switch it on and hear it, learn to read the screen and the button language, update to the latest OS (2.5.1), back it up to a computer, choose an empty project for the course and tour the factory sounds. Each section ends with a checkpoint, so you always know whether it worked.</p>
     <p class="makes"><b>You will have:</b> a K.O. II on OS 2.5.1, backed up on your computer, with an empty project chosen for the course and the factory sounds explored.</p>
+    <section class="needs" aria-labelledby="needs-title">
+      <h2 id="needs-title">Before you start</h2>
+      <ul class="needs-list">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-usb"></use></svg><span>Power: 4 AAA batteries, or USB-C and a 5 V, 1 A charger</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-headphones"></use></svg><span>Headphones or a speaker (the built-in speaker works to start)</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-usb"></use></svg><span>A computer with Chrome and a USB-C cable that carries data</span></li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-list"></use></svg><span>Paper and a pencil for project and scene numbers</span></li>
+      </ul>
+    </section>
     <section class="card">
       <h2>What you need</h2>
       <p><b>Your K.O. II</b> (EP-133). The official pages we checked don’t list what is in the box, so look in yours before you start.</p>
@@ -47,6 +56,11 @@
       <p><b>For the update and the backup:</b> a computer with internet and Google Chrome (the official update utility also names Microsoft Edge and Brave), and a USB cable with a USB-C end for the K.O. II that carries data. Some cables only charge.</p>
       <p><b>Paper and pencil:</b> the course has you write down project and scene numbers.</p>
     </section>
+    <ul class="safety-short">
+      <li>Switch on with your hands off the buttons: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> held while switching on formats the drive, and <kbd class="key">MAIN</kbd> starts lock mode.</li>
+      <li><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> with the K.O. II already on is safe: it opens system settings.</li>
+      <li>Nothing in Parts 1–7 erases music.</li>
+    </ul>
     <div class="notice danger"><b>Safety first.</b> Nothing in Parts 1–7 erases music. Switch the K.O. II on with your hands off the buttons, because two buttons held during start-up change what happens. Holding SHIFT + ERASE while you switch on <b>formats the drive</b>: all your work and the factory sounds are erased (see Part 8). Holding MAIN while you switch on starts lock mode: LOK shows for about a second, and any changes you make are reset when you restart. Pressing SHIFT + ERASE while the K.O. II is already on is safe: it opens system settings (Part 7).</div>
     <div id="progress" class="status-bar" hidden>
       <p id="progress-count" role="status"></p>
@@ -255,8 +269,8 @@
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">P 1</samp> before you release.</p>
           </li>
           <li data-step="project-factory-pads">
-            <h3 class="step-title">Tap A, then pads 1, 2 and 3</h3>
-            <p class="step-do">Tap <kbd class="key">A</kbd> (a short tap selects group <kbd class="key">A</kbd>) and tap pads 1, 2 and 3.</p>
+            <h3 class="step-title">Tap A, then A1, A2 and A3</h3>
+            <p class="step-do">Tap <kbd class="key">A</kbd> (a short tap selects group <kbd class="key">A</kbd>) and tap <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear sounds, because project 1 is one of the factory projects.</p>
           </li>
           <li data-step="project-empty-six">
@@ -266,7 +280,7 @@
           </li>
           <li data-step="project-empty-six-check">
             <h3 class="step-title">Check every group is silent</h3>
-            <p class="step-do">Tap <kbd class="key">A</kbd> and pads 1, 2 and 3 again, then tap <kbd class="key">B</kbd>, <kbd class="key">C</kbd> and <kbd class="key">D</kbd> and try a few pads in each.</p>
+            <p class="step-do">Tap <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd> again, then tap <kbd class="key">B</kbd>, <kbd class="key">C</kbd> and <kbd class="key">D</kbd> and try a few pads in each.</p>
             <p class="step-check"><span class="sr">Check: </span>Silence everywhere.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide: “press a few pads in an empty project and you will notice that the pads do not have any sounds.”</p></details></div>
           </li>
@@ -310,14 +324,14 @@
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">P 9</samp> before you release.</p>
           </li>
           <li data-step="library-select-pad-1">
-            <h3 class="step-title">SOUND: select pad 1</h3>
-            <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">A</kbd>, then tap <kbd class="key pad">pad 1</kbd>.</p>
+            <h3 class="step-title">SOUND: select A1</h3>
+            <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">A</kbd>, then tap <kbd class="key pad">A1</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The SOUND icon lights; <kbd class="key pad">A1</kbd> is still silent.</p>
           </li>
           <li data-step="library-browse-kicks">
             <h3 class="step-title">Browse the kicks</h3>
-            <p class="step-do">Press <kbd class="key">+</kbd> and tap <kbd class="key pad">pad 1</kbd>. Repeat a few times.</p>
-            <p class="step-check"><span class="sr">Check: </span>The display shows the sample number and pad 1 plays a different sound each time.</p>
+            <p class="step-do">Press <kbd class="key">+</kbd> and tap <kbd class="key pad">A1</kbd>. Repeat a few times.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows the sample number and <kbd class="key pad">A1</kbd> plays a different sound each time.</p>
             <p class="step-note">Numbers 1–99 are kicks.</p>
           </li>
           <li data-step="library-jump-ten">
@@ -327,7 +341,7 @@
           </li>
           <li data-step="library-jump-categories">
             <h3 class="step-title">Jump to the snares</h3>
-            <p class="step-do">Jump straight to a category: hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> on the pads, release <kbd class="key">SOUND</kbd> and tap <kbd class="key pad">pad 1</kbd>.</p>
+            <p class="step-do">Jump straight to a category: hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> on the pads, release <kbd class="key">SOUND</kbd> and tap <kbd class="key pad">A1</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear a snare.</p>
           </li>
           <li data-step="library-other-categories">
@@ -338,12 +352,12 @@
           </li>
           <li data-step="library-mini-kit">
             <h3 class="step-title">Mini kit: your favourite kick</h3>
-            <p class="step-do">Mini project: still in SOUND with group <kbd class="key">A</kbd>, tap <kbd class="key pad">pad 1</kbd> and browse to your favourite kick.</p>
+            <p class="step-do">Mini project: still in SOUND with group <kbd class="key">A</kbd>, tap <kbd class="key pad">A1</kbd> and browse to your favourite kick.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> plays your favourite kick, numbered 1–99.</p>
           </li>
           <li data-step="mini-kit-snare-hat">
             <h3 class="step-title">Pick a snare and a hi-hat</h3>
-            <p class="step-do">Tap <kbd class="key pad">pad 2</kbd> and choose a snare, tap <kbd class="key pad">pad 3</kbd> and choose a hi-hat. Write the three numbers on your paper.</p>
+            <p class="step-do">Tap <kbd class="key pad">A2</kbd> and choose a snare, tap <kbd class="key pad">A3</kbd> and choose a hi-hat. Write the three numbers on your paper.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A2</kbd> plays a snare and <kbd class="key pad">A3</kbd> a hi-hat.</p>
           </li>
           <li data-step="mini-kit-play">
@@ -482,7 +496,6 @@
           <li data-step="setup-recap" data-kind="recap">
             <h3 class="step-title">Set-up done: your moves</h3>
             <p class="step-do">Read the six moves below, then try one from memory without reading this app.</p>
-            <p class="step-check"><span class="sr">Check: </span>You can find your way home, browse sounds and change a setting.</p>
             <ul class="step-moves"><li>Home: press <kbd class="key">MAIN</kbd>; <kbd class="key">PLAY</kbd> starts and stops.</li><li>To the start: hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>.</li><li>Change project: hold <kbd class="key">MAIN</kbd>, hold a pad 1–9 as well, then release both.</li><li>Browse sounds: <kbd class="key">SOUND</kbd>, tap the pad, then <kbd class="key">−</kbd> / <kbd class="key">+</kbd> (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">+</kbd></kbd> jumps ten). Hold <kbd class="key">SOUND</kbd> and type a number to jump there.</li><li>System settings, with the unit already on: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, three digits, <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd>.</li><li>Undo: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</li></ul>
           </li>
           <li data-step="ready-open-first-beat" data-kind="info">

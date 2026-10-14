@@ -33,7 +33,7 @@ Every step needs `h3.step-title`, one or more `p.step-do` and exactly one `p.ste
 | Thing | Markup |
 |---|---|
 | A button | `<kbd class="key">SOUND</kbd>` |
-| A pad | `<kbd class="key pad">pad 3</kbd>`, or with its group `<kbd class="key pad">B1</kbd>` (group B, then pad 1) |
+| A pad | Always with its group: `<kbd class="key pad">B1</kbd>` (group B, then pad 1). Write `<kbd class="key pad">pad 6</kbd>` only where the group does not matter: choosing a project (MAIN + pad 6), punch-in effects (FX + pad 1) and picking a sidechain source after its group button |
 | Knob X or Y | `<kbd class="key knob">X</kbd>` |
 | Two keys together | `<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd>` |
 | What the display shows | `<samp class="lcd">1.2.3</samp>` |

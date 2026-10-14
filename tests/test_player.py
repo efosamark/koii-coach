@@ -84,7 +84,7 @@ def test_every_step_says_what_to_check(name):
         kind = re.search(r'data-kind="([^"]+)"', attrs)
         checks = re.findall(r'<p class="step-check">(.*?)</p>', body, re.S)
         if kind and kind.group(1) in ('info', 'recap'):
-            assert not (kind.group(1) == 'info' and (checks or 'data-risk' in attrs)), f'{name}/{sid}: an info step has no Check and no risk'
+            assert not checks and 'data-risk' not in attrs, f'{name}/{sid}: an info or recap step has no Check and no risk (plan 5.4 f)'
             continue
         if len(checks) != 1:
             missing.append(sid)
@@ -454,6 +454,44 @@ def test_device_panel_landscape_and_desktop(run):
     assert panel.bounding_box()['x'] > 900
     panel.locator('.control[data-key="SOUND"]').click()
     assert 'SOUND' in panel.locator('.map-info').text_content()
+    # Tools takes the right panel's place (plan 5.7): it never covers the step card.
+    page.locator('#player-tools-btn').click()
+    sheet = page.locator('#tools-sheet')
+    sheet.wait_for(state='visible')
+    card = page.locator('li.is-current').bounding_box()
+    assert sheet.bounding_box()['x'] >= card['x'] + card['width'], 'The Tools sheet sits beside the card, not over it'
+
+
+@pytest.mark.browser
+def test_start_screen_on_one_screen_and_list_banner(run):
+    """Plan 5.2: a first visit shows the promise, the chips, "Before you start" rows and the parts; the long preamble
+    waits in "About this chapter in full". Plan 5.10: All steps puts "You're on Part N, step X of M · Continue" in the
+    first screen."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    for ch in ('setup', 'first-beat', 'song', 'sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house'):
+        run.go(f'./{ch}.html')
+        assert page.locator('main > .promise').is_visible() and 3 <= page.locator('.needs-list li:visible').count() <= 5, ch
+        intro = page.locator('main > p:not([class])').first
+        assert not intro.is_visible(), f'{ch}: the long intro waits in "About this chapter in full"'
+        more = page.locator('.player-more')
+        more.locator('summary').click()
+        assert more.locator('.inside p').first.is_visible()
+    # The parts start in the first screen, or within one and a half while the safety notes are open on a first visit.
+    run.go('./first-beat.html')
+    assert page.locator('.player-parts').bounding_box()['y'] < 844
+    run.go('./sampling.html')
+    assert page.locator('.player-safety').get_attribute('open') is not None and page.locator('.player-safety .safety-short li').count() == 3
+    assert page.locator('.player-parts').bounding_box()['y'] < 844 * 1.6
+    # All steps with progress: the banner is in the first screen, and Continue goes to the step.
+    run.go('./sampling.html#all')
+    page.evaluate("() => { CoachChapter.setDone('open-empty-project', true); CoachChapter.setDone('choose-mic-source', true); }")
+    run.go('./sampling.html#all')
+    banner = page.locator('.list-resume')
+    banner.wait_for()
+    assert banner.bounding_box()['y'] < 844 and 'step' in banner.text_content()
+    banner.get_by_role('button', name='Continue').click()
+    page.wait_for_function("() => document.activeElement && document.activeElement.closest('li[data-step]')")
 
 
 @pytest.mark.browser
