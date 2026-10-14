@@ -4,6 +4,31 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.18
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2, and for the answers below on 14 October 2026 (the guide says "ver 2.5"; the newest OS on the downloads page is 2.5.1). **Written for:** OS 2.5.1. No button sequence changed.
+
+Questions the course had left open, answered from the official guide, teenage engineering's own files and owners' reports:
+
+- **Changing project shows P and the project number.** The guide's drawing of "change project" shows it, and owners say to keep the pad held until it appears; a quick MAIN + number switches scene instead (OS 2.0 and later). Chapter 1: "When it changes, it shows P 6: P and the project number." (was "Owners report the display briefly shows P 6; the official guide does not describe it, so trust the silent pads."). Chapter 6: "a quick press goes to that scene. Try step 1 again and keep pad 9 held until the display shows P 9, P and the project number." (was "the guide does not say how the device tells the two apart, so check your display and try step 1 again"). Chapters 0, 3, 5 and 7: "until the display shows P 6" (P 7, P 8, or P and the project's number) (was "check your display" or "check again").
+- **Lock mode:** "Switch off, then on again without holding any button: that is the only way out of lock mode, as there is no unlock setting." (was "The official guide does not describe a separate unlock step.").
+- **Which OS is installed:** "The K.O. II does not show its OS version on its own display: the update utility reads it and tells you whether your unit is up to date or which version is available, and the EP sample tool shows it too." (Troubleshooting; Chapter 0's Part 3 goal says the same) (was "The official guide does not describe a way to show the installed version on the device itself.").
+- **Sound edit pages:** Chapter 7: "The six pages show as SND, TRI, ENV, TIM, MID and GRP: sound, trim, envelope, time, midi and mute group. Stop at TRI." (was "…so check your display").
+- **Pattern length:** the display shows it as Ln and the bars. "The display shows Ln.2: C's pattern is two bars long." in Chapters 2, 4, 5 and 6 (was "The display shows the pattern length change from 1 to 2"), and "The display shows Ln.4: the pattern is four bars long." in Chapter 7 (was "Check your display: the pattern length should now be 4 bars.").
+- **Claps:** Chapter 6: "Claps are with the percussion: in the factory library, 300 to 316 are claps." (was "the guide does not list claps separately, so … try the percussion range 300–399"), from teenage engineering's factory-sound file for the EP sample tool.
+
+Steps that now fit the screen without scrolling, on every phone size the course is tested at:
+
+- Six "Before you press" warnings are shorter, with the explanation moved to Why or a note: "Always press SHIFT + SOUND briefly: held, it saves your edits, and on the trim page it crops the file." (Chapter 3); "Never hold SHIFT + SOUND on this page: it crops the recording on disk for good." (Chapter 5, with "C2 (and later D1) play the same recording, so a crop would cut them too." under Why); "If 9 already holds work you want to keep, back it up first with the EP sample tool (Chapter 0, Part 4)." (Chapter 6, with the help link under Not working?); "Never hold SHIFT + ERASE while switching the unit on: that formats the drive." and "With the unit already switched on, press SHIFT + ERASE …" (Chapter 6, the same words, the first sentence joined to the press); "Don’t hold RECORD while you move the fader, or FX while you press a group button." (Chapter 7, with what each would do under Why).
+- Chapter 4: "Open timing correct" and "A4: move the layer six ticks later" are two steps now (111 steps), with its warning on the second. Your ticks carry over.
+- The Check comes before the placement helper and the target rhythm in Chapter 1, before the recap's moves in Chapters 1 and 2, and before the fields for your notes. On shorter phones (up to 760px tall) and with Larger text, the card is tighter and an optional run's skip offer sits after the step.
+
+Also:
+
+- **The control map is now a schematic of the unit's top**, drawn from teenage engineering's top-view photo: every key, pad and knob where it is, the ports, the battery lid, the speaker and mic, the display, VOLUME, the fader, and the small words above the pads that FADER picks. It is labelled as a schematic, not to scale and not an official drawing. The arrow keys move between controls as they sit on the unit. The keys panel and Tools › For this step use it too, and its display shows what yours should show in that step (TRK, 1.1.1 and so on).
+- Accessibility: placed positions in Chapter 1's placement helper are now readable (they were dimmed below 4.5:1); "More below" is no longer a Tab stop, since it hides itself as you scroll.
+- The site check now fails when a part's step numbering (`<ol start>`) does not follow on from the part before. New tests: the fold gate for every step and an accessibility suite (axe-core, keyboard-only part, 320×256, forced colours).
+
 ## 2026.10.14.17
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No instruction changed.

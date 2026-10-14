@@ -72,7 +72,8 @@ function show(li){
   if(i>=0&&n.placed.has(n.cols[i]))i=-1;   // a position an earlier step placed is not where to start
   if(i<0){i=n.cols.findIndex(c=>!n.placed.has(c));if(i<0)i=0;save(n.pad,n.cols[i]);}
   here={li,...n,i,finished:false};
-  const after=li.querySelector(':scope > .step-do');
+  // Under the Check: the gate is Do and Check, and the helper and the pattern follow them (plan 5.4 e).
+  const after=li.querySelector(':scope > .step-check')||[...li.querySelectorAll(':scope > .step-do')].pop();
   (after||li.firstElementChild).after(runner);
   runner.hidden=false;
   paint();

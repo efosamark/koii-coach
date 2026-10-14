@@ -273,7 +273,8 @@ checkCard.setAttribute('aria-labelledby','player-check-title');doneCard.setAttri
 wrap.after(checkCard,doneCard);
 // Action bar, after <main> in reading order: Back, Tools, the one primary.
 const actions=el('div','player-actions pl-own',
-  `<button class="pa-more" type="button" hidden>${downIcon}More below</button>`+
+  // "More below" is for pointers: it hides itself as the page scrolls, and Tab already scrolls, so it is not a Tab stop.
+  `<button class="pa-more" type="button" tabindex="-1" hidden>${downIcon}More below</button>`+
   `<div class="pa-row"><button class="pa-btn" id="player-back" type="button" aria-keyshortcuts="ArrowLeft">${icon('back')}<span>Back</span></button>`+
   `<button class="pa-btn" id="player-tools-btn" type="button" aria-haspopup="dialog" aria-keyshortcuts="T">${icon('grid')}<span>Tools</span></button>`+
   `<button class="btn primary pa-main" id="player-next" type="button"><span class="pa-label">Done · Next</span>${icon('next')}</button>`+

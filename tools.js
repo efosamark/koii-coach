@@ -8,7 +8,7 @@
    - help.html: #search filters the topics as you type (whole words, the last one may be half typed), hides the empty
      groups and keeps the query in the address (?q=) so it can be shared. "Search every step, lesson and word" opens the
      site search with the same words.
-   - controls.html: the buttons ([data-control]) are two radio groups with arrow keys; the chosen one's explanation,
+   - controls.html: the buttons ([data-control]) sit on the schematic in one radio group; the arrow keys move as on the unit; the chosen one's explanation,
      copied from "Every control" below the map, shows in #info under the buttons (a fixed-height panel, so nothing moves).
      controls.html#control-<name> chooses that control.
    - cheat-sheet.html: "Only chapters I've done" (#only-done) hides the sections of chapters not finished yet
@@ -137,16 +137,21 @@ if(radios.length&&info){
     if(focus)b.focus();
   }
   radios.forEach(b=>b.addEventListener('click',()=>choose(b,false)));
+  // The arrow keys move to the nearest control in that direction on the schematic, as on the unit; Home and End go to
+  // the first and last control in reading order.
+  const centre=b=>{const r=b.getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2];};
   $$('[role="radiogroup"]').forEach(g=>g.addEventListener('keydown',e=>{
     const list=[...g.querySelectorAll('[data-control]')],i=list.indexOf(e.target);
     if(i<0)return;
-    const cols=g.classList.contains('pads')?3:4;
-    const step={ArrowRight:1,ArrowDown:cols,ArrowLeft:-1,ArrowUp:-cols}[e.key];
-    let j=-1;
-    if(step)j=(i+step+list.length)%list.length;
-    else if(e.key==='Home')j=0;else if(e.key==='End')j=list.length-1;
-    if(j<0)return;
-    e.preventDefault();choose(list[j],true);
+    const dir={ArrowRight:[1,0],ArrowLeft:[-1,0],ArrowDown:[0,1],ArrowUp:[0,-1]}[e.key];
+    let to=null;
+    if(dir){
+      const [x,y]=centre(e.target);let best=Infinity;
+      list.forEach(b=>{if(b===e.target)return;const [bx,by]=centre(b),dx=bx-x,dy=by-y,along=dx*dir[0]+dy*dir[1],across=Math.abs(dx*dir[1]+dy*dir[0]);
+        if(along<=2)return;const score=along+across*2.5;if(score<best){best=score;to=b;}});
+    }else if(e.key==='Home')to=list[0];else if(e.key==='End')to=list[list.length-1];
+    if(!to)return;
+    e.preventDefault();choose(to,true);
   }));
   const fromHash=()=>{const m=/^control-([a-z]+)$/.exec(hashId());return m&&$(`[data-control="${m[1].toUpperCase()}"]`);};
   choose(fromHash()||$('[data-control="MAIN"]')||radios[0],false);

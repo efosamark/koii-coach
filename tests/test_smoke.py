@@ -186,7 +186,9 @@ def run_target(browser, artifacts_dir, name, url, results):
         assert_match(page.locator('#info').text_content(), r'capture|source|input', re.I)
         assert page.locator('[data-control="SAMPLE"]').get_attribute('aria-checked') == 'true'
         page.keyboard.press('ArrowRight')
-        assert page.locator('[data-control="KEYS"]').get_attribute('aria-checked') == 'true', 'Arrow keys move through the controls'
+        assert page.locator('[data-control="TIMING"]').get_attribute('aria-checked') == 'true', 'Arrow keys move as on the unit (TIMING is right of SAMPLE)'
+        page.keyboard.press('ArrowDown')
+        assert page.locator('[data-control="ERASE"]').get_attribute('aria-checked') == 'true', 'and down (ERASE is under TIMING)'
         result['checks'].append('Control map: a tap explains the control; arrow keys move')
 
         page.goto(absolute('./learn.html'), wait_until='networkidle')

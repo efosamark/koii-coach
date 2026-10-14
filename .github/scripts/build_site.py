@@ -168,6 +168,16 @@ def main():
             if page in step_ids and sid not in step_ids[page]:
                 errors.append(f'{name} links to {page}#s-{sid}, but {page} has no step "{sid}"')
     for name in [f for f in files if f.endswith('.html')]:
+        # Steps are numbered across parts: each part's <ol start> follows on from the part before (readers without JS).
+        n = 0
+        for m in re.finditer(r'<ol(?: start="(\d+)")?>(.*?)</ol>', (out / name).read_text(encoding='utf-8'), re.S):
+            count = len(re.findall(r'<li data-step=', m.group(2)))
+            if not count:
+                continue
+            if int(m.group(1) or 1) != n + 1:
+                errors.append(f'{name} has <ol start="{m.group(1) or 1}"> where the steps before it make it {n + 1}')
+            n += count
+    for name in [f for f in files if f.endswith('.html')]:
         src = (out / name).read_text(encoding='utf-8')
         order = re.findall(r'<script src="(site|progress|shell)\.js"></script>', src)
         if 'shell' in order and order[:3] != ['site', 'progress', 'shell']:

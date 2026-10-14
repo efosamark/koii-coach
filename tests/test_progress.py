@@ -162,3 +162,22 @@ def test_split_steps_keep_their_ticks(run):
     page.evaluate("() => CoachChapter.setDone('open-empty-project', true)")
     run.go('./index.html')
     assert run.get('koii-coach-ch-sampling')['done'] == ['open-empty-project'], 'Ticking a first part never ticks the others'
+
+
+def test_split_batches_apply_in_order_once(run):
+    """Chapter 4 has two batches: v1 (the 2026.10.14.6 rewrite) split pad-shift-layer in two, v2 (2026.10.14.18)
+    split its first part again. Each runs once, oldest first, and m ends at the newest."""
+    seed = lambda rec: run.seed({'koii-coach-ch-perform': rec, 'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    seed({'v': 1, 'done': ['pad-shift-layer'], 'last': 'pad-shift-layer', 'n': 1})
+    run.go('./index.html')
+    rec = run.get('koii-coach-ch-perform')
+    assert rec['done'] == ['pad-shift-layer', 'pad-shift-layer-play', 'pad-shift-layer-hold'] and rec['n'] == 3 and rec['m'] == 2, rec
+    # Already at v1: only v2 runs.
+    seed({'v': 1, 'done': ['pad-shift-layer', 'pad-shift-layer-play'], 'last': 'pad-shift-layer-play', 'n': 2, 'm': 1})
+    run.go('./index.html')
+    rec = run.get('koii-coach-ch-perform')
+    assert rec['done'] == ['pad-shift-layer', 'pad-shift-layer-play', 'pad-shift-layer-hold'] and rec['m'] == 2, rec
+    # At v2: a part unticked later stays unticked.
+    seed({'v': 1, 'done': ['pad-shift-layer'], 'last': 'pad-shift-layer', 'n': 1, 'm': 2})
+    run.go('./index.html')
+    assert run.get('koii-coach-ch-perform')['done'] == ['pad-shift-layer'], 'Nothing runs twice'

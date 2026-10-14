@@ -19,7 +19,8 @@
      per step. It is a link to the glossary; with this file it opens the Words tab at that word.
    A pad named with its group (B1) lights the group button and the pad printed with that number, as the course defines
    it ("tap B, then pad 1 (B1)"); the pads are named by the numbers printed on them, which the official guide also uses
-   ("hold MAIN and select pads 1 - 9 to change project"). The map is a schematic, not the exact layout.
+   ("hold MAIN and select pads 1 - 9 to change project"). The map is the schematic from controls.html: every control where it
+   is on the unit, not to scale.
 
    Beside the step card (aside#player-device, docs/overhaul-plan.md 5.5): on a short landscape screen (at most 480px
    high, at least 600px wide) the left 40% shows the step's keys lit and numbered in press order, with the press-order
@@ -128,16 +129,18 @@ const topicsOf=li=>[...new Set([...li.querySelectorAll('a[href*="help.html#"]')]
 const stepText=li=>[...li.querySelectorAll(':scope > :is(.step-title,.preflight,.step-do,.step-body,.step-undo,.step-check,.step-note)')].map(e=>e.textContent).join(' ')||li.textContent;
 
 // ---------- Panels ----------
-function mapHTML(d,lit,interactive){
+// The schematic with the given keys lit and numbered; its display shows readout (the step's display values) when given.
+function mapHTML(d,lit,interactive,readout){
   if(!d.device)return'';
   const c=strip(d.device),order=new Map();
+  const screen=c.querySelector('.schem-display');if(screen&&readout!=null)screen.textContent=readout;
   lit.forEach((k,i)=>[k.key,k.pad].forEach(x=>{if(x&&!order.has(x))order.set(x,i+1);}));
   c.querySelectorAll('[role]').forEach(x=>x.removeAttribute('role'));
   c.querySelectorAll('.control').forEach(b=>{
     b.removeAttribute('aria-checked');b.removeAttribute('tabindex');
     const n=order.get(b.dataset.key);
     if(n){b.classList.add('hot');b.insertAdjacentHTML('beforeend',`<span class="order" aria-hidden="true">${n}</span>`);}
-    if(!interactive){const s=el('span',b.className,b.innerHTML);s.dataset.key=b.dataset.key;b.replaceWith(s);}
+    if(!interactive){const s=el('span',b.className,b.innerHTML);s.dataset.key=b.dataset.key;s.setAttribute('style',b.getAttribute('style')||'');b.replaceWith(s);}
     else b.setAttribute('aria-pressed','false');
   });
   if(!interactive)c.setAttribute('aria-hidden','true');
@@ -156,14 +159,16 @@ async function fill(k){
   box.innerHTML='<p class="meta tools-loading">Loading…</p>';
   const d=await load();
   if(k==='step')box.innerHTML=stepPanel(d);
-  else if(k==='map')box.innerHTML=d.device?`<p class="meta">Tap a control to see what it does.</p>${mapHTML(d,[],true)}<div class="map-info card info" aria-live="polite"><p class="meta">Nothing chosen yet.</p></div><p class="meta">A schematic, not the exact layout. <a href="./controls.html">Control map</a> has every control.</p>`:failed('The control map','./controls.html');
+  else if(k==='map')box.innerHTML=d.device?`<p class="meta">Tap a control to see what it does.</p>${mapHTML(d,[],true)}<div class="map-info card info" aria-live="polite"><p class="meta">Nothing chosen yet.</p></div><p class="meta">A schematic of the top of the unit, not to scale. <a href="./controls.html">Control map</a> explains every control.</p>`:failed('The control map','./controls.html');
   else if(k==='fixes')box.innerHTML=d.groups?groupsHTML(d,3):failed('Troubleshooting','./help.html');
   else if(k==='words')box.innerHTML=d.terms?`<dl class="gloss tools-gloss">${d.terms.map(termHTML).join('')}</dl>`:failed('The glossary','./glossary.html');
   else if(k==='cheat')box.innerHTML=d.cheat?cheatHTML(d):failed('The cheat sheet','./cheat-sheet.html');
   filled[k]=true;
   after(k);
 }
-const keysHTML=(d,keys,interactive)=>mapHTML(d,keys,interactive)+
+// What the display should show in this step: the display values of its Do and Check lines, in order.
+const readoutOf=li=>{const v=[...new Set([...li.querySelectorAll(':scope > :is(.step-do,.step-check) samp.lcd')].map(s=>clean(s.textContent)))];return v.length?v.slice(0,3).join(' · ')+(v.length>3?' …':''):'';};
+const keysHTML=(d,keys,interactive,li)=>mapHTML(d,keys,interactive,li?readoutOf(li):null)+
   `<ol class="press-order">${keys.map((k,i)=>`<li><span class="po-n" aria-hidden="true">${i+1}</span><kbd class="key">${esc(k.label)}</kbd></li>`).join('')}</ol>`;
 function stepPanel(d){
   const li=step();
@@ -173,7 +178,7 @@ function stepPanel(d){
   const text=stepText(li),words=(d.terms||[]).filter(t=>t.re&&!/^term-(step|pad)$/.test(t.id)&&t.re.test(text)).sort((a,b)=>b.beginner-a.beginner).slice(0,8);
   const title=li.querySelector(':scope > .step-title'),name=title?clean([...title.childNodes].filter(n=>!(n.nodeType===1&&n.classList.contains('pl-own'))).map(n=>n.textContent).join('')):'';
   let h=`<p class="tools-eyebrow">For step ${C.steps().indexOf(li)+1}${name?': '+esc(name):''}</p>`;
-  if(keys.length&&d.device)h+=`<h3 class="sub">Keys in press order</h3>${keysHTML(d,keys,false)}`;
+  if(keys.length&&d.device)h+=`<h3 class="sub">Keys in press order</h3>${keysHTML(d,keys,false,li)}`;
   if(topics.length)h+='<h3 class="sub">Fixes for this step</h3>'+topics.map(t=>topicHTML(t,true,4)).join('');
   if(words.length)h+=`<h3 class="sub">Words in this step</h3><dl class="gloss tools-gloss">${words.map(termHTML).join('')}</dl>`;
   const mine=done(),moves=(d.cheat||[]).filter(s=>mine.includes(s.dataset.chapter)&&s.querySelector('.moves'));
@@ -256,7 +261,7 @@ async function device(){
   if(step()!==li||devFor!==key)return;
   const keys=keysOf(li);
   dev.innerHTML=`<h2 class="device-title" id="player-device-title">Keys for this step</h2>`+
-    (keys.length&&d.device?keysHTML(d,keys,wide.matches)+(wide.matches?'<div class="map-info card info" aria-live="polite"><p class="meta">Tap a control to see what it does.</p></div>':''):
+    (keys.length&&d.device?keysHTML(d,keys,wide.matches,li)+(wide.matches?'<div class="map-info card info" aria-live="polite"><p class="meta">Tap a control to see what it does.</p></div>':''):
       d.device?'<p class="meta">No keys to press in this step.</p>':failed('The control map','./controls.html'));
 }
 document.addEventListener('coach:view',device);

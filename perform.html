@@ -209,7 +209,7 @@
           <li data-step="keys-two-bars">
             <h3 class="step-title">Make group B two bars long</h3>
             <p class="step-do">Stopped in MAIN with group <kbd class="key">B</kbd> selected, hold <kbd class="key">RECORD</kbd>, press <kbd class="key">+</kbd> once and release both.</p>
-            <p class="step-check"><span class="sr">Check: </span>The display should show B's pattern length change from 1 to 2.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">Ln.2</samp>: B's pattern is two bars long.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A stays one bar long and simply repeats underneath.</p></details></div>
           </li>
           <li data-step="keys-on">
@@ -478,9 +478,14 @@
             <p class="step-note">Stop.</p>
           </li>
           <li data-step="pad-shift-layer">
-            <h3 class="step-title">Shift the A4 layer later</h3>
-            <p class="preflight">Careful: in timing correct, a plain tap on a pad while stopped quantizes all its notes back onto the grid. Holding a pad while the beat plays quantizes its notes as they pass, so keep playback stopped.</p>
-            <p class="step-do">With playback stopped, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">TIMING</kbd></kbd> to open timing correct. Hold <kbd class="key pad">A4</kbd> and, still holding it, press <kbd class="key">+</kbd> six times, then release.</p>
+            <h3 class="step-title">Open timing correct</h3>
+            <p class="step-do">With playback stopped, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">TIMING</kbd></kbd> to open timing correct.</p>
+          </li>
+          <li data-step="pad-shift-layer-hold">
+            <h3 class="step-title">A4: move the layer six ticks later</h3>
+            <p class="preflight">Careful: in timing correct, a plain tap on a pad while stopped quantizes all its notes back onto the grid.</p>
+            <p class="step-do">Hold <kbd class="key pad">A4</kbd> and, still holding it, press <kbd class="key">+</kbd> six times, then release.</p>
+            <p class="step-note">Holding a pad while the beat plays quantizes its notes as they pass, so keep playback stopped.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Shift the whole layer a little later. Each press moves every <kbd class="key pad">A4</kbd> note one tick later. A step is 24 ticks, so six ticks are a quarter step, about 40 ms at 90 BPM.</p></details></div>
           </li>
           <li data-step="pad-shift-layer-play">
@@ -515,7 +520,7 @@
       <details>
         <summary><h2 class="part-title">Part 6 · Scenes as a live performance</h2></summary>
         <p><b>Goal:</b> perform your Chapter 2 sections live, with every scene change landing on time, and learn to clear a scene safely.</p>
-        <ol start="77">
+        <ol start="78">
           <li data-step="scene-sync" data-setting="412">
             <h3 class="step-title">Make scene changes wait (412)</h3>
             <p class="step-do">In project 6, stop playback. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, type <kbd class="key">4</kbd>, <kbd class="key">1</kbd>, <kbd class="key">2</kbd>, press <kbd class="key">ENTER</kbd>, then press <kbd class="key">MAIN</kbd>.</p>
@@ -587,7 +592,7 @@
       <details>
         <summary><h2 class="part-title">Part 7 · Song mode, deeper</h2></summary>
         <p><b>Goal:</b> lengthen the breakdown in your Chapter 2 song by giving its scene a longer pattern. Then rehearse with song loop and move a position. A song can hold up to 99 positions.</p>
-        <ol start="89">
+        <ol start="90">
           <li data-step="song-break-copy" data-note="BREAK2">
             <h3 class="step-title">Copy BREAK as BREAK2</h3>
             <p class="step-do">In project 6, stop playback. Hold <kbd class="key">MAIN</kbd>, select BREAK, release, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>. Write the new number as BREAK2.</p>
@@ -648,7 +653,7 @@
       <details>
         <summary><h2 class="part-title">Part 8 · Make the mix pump with sidechain</h2></summary>
         <p><b>Goal:</b> make the bass and melody dip each time the kick hits, so the kick punches through and the groove “breathes” (OS 2.0+). Sidechain sits in the output settings, not in a scene, so expect it to affect every scene in this project.</p>
-        <ol start="99">
+        <ol start="100">
           <li data-step="sc-play">
             <h3 class="step-title">Play MELODY</h3>
             <p class="step-do">In project 6, hold <kbd class="key">MAIN</kbd>, select MELODY (drums, bass and melody), release and press <kbd class="key">PLAY</kbd>. Leave it running for the whole section.</p>
@@ -689,7 +694,7 @@
       <details>
         <summary><h2 class="part-title">Part 9 · Record your performance</h2></summary>
         <p><b>Goal:</b> capture your live song as an audio file on a phone or computer.</p>
-        <ol start="105">
+        <ol start="106">
           <li data-step="rec-usb">
             <h3 class="step-title">Connect the K.O. II over USB-C</h3>
             <p class="step-do">Connect the K.O. II to your phone or computer with a USB-C cable, plus any adapter your phone needs.</p>

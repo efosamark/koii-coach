@@ -378,7 +378,7 @@ window.CoachChapter={
 
 // ---------- Your notes: scene and sample numbers (koii-coach-notes, docs/overhaul-plan.md 7.7) ----------
 // A step with data-note="DRUMS" (several: "V1|V2|V3", and data-note-kind="sample" for sample numbers) asks you to
-// write a number down; it gets LCD-style fields under its Do lines for them. Paper still works: the fields are
+// write a number down; it gets LCD-style fields under its Check for them. Paper still works: the fields are
 // optional. Numbers are kept per project, so Chapters 1, 2 and 4 (all in project 6) share theirs:
 // koii-coach-notes = {v:1, values:{'project-6/DRUMS':'3', 'tech-house/GROOVE':'5', …}}. A later step that names a
 // noted scene or sample in its Before you press or Do lines shows "Your notes: GROOVE 5" there, and "Get back in"
@@ -418,7 +418,8 @@ steps.forEach(li=>{
   box.innerHTML=`<p class="note-hint">Keep ${names.length>1?'them':'it'} here too, if you like (paper works as well):</p>`+
     names.map(n=>`<label class="note-field"><span class="note-name">${esc(n)}</span><input class="lcd-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off" spellcheck="false" data-note-name="${esc(n)}" aria-label="${esc(n)}, ${kind} number" value="${esc(vals[n]||'')}"></label>`).join('');
   box.querySelectorAll('input').forEach(i=>i.addEventListener('input',()=>{const v=i.value.replace(/\D/g,'').slice(0,3);if(v!==i.value)i.value=v;setNote(i.dataset.noteName,v);}));
-  const dos=li.querySelectorAll(':scope > .step-do');(dos[dos.length-1]||li.querySelector(':scope > .step-title')||li.firstElementChild).after(box);
+  // Under the Check (the step's gate is its Do and Check), or under the Do lines when there is none.
+  const dos=li.querySelectorAll(':scope > .step-do');(li.querySelector(':scope > .step-check')||dos[dos.length-1]||li.querySelector(':scope > .step-title')||li.firstElementChild).after(box);
 });
 recall();
 addEventListener('storage',e=>{if(e.key===NOTES)recall();});

@@ -492,12 +492,37 @@ html:has(.sheet[open]){overflow:hidden}
 .card.start h2{margin-top:var(--sp-1)}
 h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
 .device{padding:var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-card);background:var(--surface-3)}
+/* The schematic (controls.html, copied into the Tools sheet and the keys panel): the unit's top as original line art,
+   every control placed where it is on the K.O. II (positions in % of the panel, taken from teenage engineering's top-view
+   photo). Not to scale, and not an official drawing: no logo or printed artwork, only the parts and their labels. */
+.device.schem{position:relative;container-type:inline-size;width:min(100%,calc(60dvh * 522 / 712));aspect-ratio:522/712;margin:0 auto;padding:0;border-width:2px;border-radius:2.5cqw;background:var(--surface-2)}
+.schem-art,.schem-keys{position:absolute;inset:0}
+.schem-art > *,.device.schem .schem-keys > .control{position:absolute;box-sizing:border-box}
+.schem-port{display:grid;place-items:center;border:1px solid var(--line-strong);border-top:0;border-radius:0 0 1cqw 1cqw;color:var(--ink-2);font:600 2.1cqw/1 var(--font-mono);letter-spacing:.03em}
+.schem-power{border-color:var(--key-edge)}
+.schem-lid{display:flex;align-items:flex-end;padding:2cqw 2.5cqw;border:1px solid var(--line);border-radius:1.2cqw;background:var(--surface-1);color:var(--ink-2);font:600 2.6cqw/1.2 var(--font-mono)}
+.schem-speaker{display:flex;align-items:flex-end;justify-content:flex-end;padding:1.5cqw 2cqw;border-radius:1.2cqw;background:radial-gradient(circle,var(--line-strong) 26%,transparent 30%) 0 0/3.4cqw 3.4cqw;color:var(--ink-2);font:600 2.4cqw/1 var(--font-mono)}
+.schem-mic{display:grid;place-items:center;border-radius:999px;background:var(--surface-1);color:var(--ink);font:600 1.9cqw/1 var(--font-mono)}
+.schem-volume{border:1.5px solid var(--line-strong);border-radius:50%;background:var(--surface-1);box-shadow:inset 0 0 0 4cqw var(--surface-2)}
+.schem-fader{border-radius:999px;background:var(--line-strong)}
+.schem-fader::after{content:"";position:absolute;left:-180%;right:-180%;top:44%;height:14%;border:1.5px solid var(--line-strong);border-radius:1cqw;background:var(--surface-1)}
+.schem-label{display:grid;place-items:center;color:var(--ink-2);font:600 1.9cqw/1 var(--font-mono);letter-spacing:.02em;white-space:nowrap}
+.device.schem .display.schem-display{display:grid;place-items:center;margin:0;padding:1.5cqw;border-radius:1cqw;font:600 3.6cqw/1.3 var(--font-mono);text-align:center;overflow:hidden}
+.device.schem .schem-keys > .control{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5cqw;min-height:0;padding:0;border-radius:1.4cqw;box-shadow:0 .7cqw 0 var(--line-strong);font:600 2.15cqw/1 var(--font-mono);letter-spacing:-.02em;overflow-wrap:normal;white-space:nowrap}
+.device.schem .schem-keys > .control small{font-size:1.6cqw;font-weight:600;color:var(--ink-2)}
+.device.schem .schem-keys > .control.hot small{color:inherit}
+.device.schem .schem-keys > .control.knob{border-radius:50%;font-size:3.6cqw}
+.device.schem .schem-keys > .control.flat{border-radius:1cqw;box-shadow:0 .4cqw 0 var(--line-strong);font-size:2.1cqw}
+.device.schem .schem-keys > .control.sym{font-size:5cqw}
+.device.schem .schem-keys > .control[data-key^="PAD"]{font-size:4.2cqw}
+.device.schem .schem-keys > .control.chosen{outline:3px solid var(--ink);outline-offset:2px}
+.schem-note{margin:var(--sp-2) 0 0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh);text-align:center}
 .display{margin-bottom:var(--sp-3);padding:var(--sp-3) var(--sp-4);border:1px solid var(--lcd-line);border-radius:var(--r-control);background:var(--lcd-bg);color:var(--lcd-ink);font:600 15px/1.4 var(--font-mono);letter-spacing:.04em}
 .display small{display:block;font-size:var(--t-cap)}
 .device .info{margin:0 0 var(--sp-3);padding:var(--sp-3) var(--sp-4);box-shadow:none}
 .device .info h3{margin:var(--sp-1) 0}
 .hint{margin:0 0 var(--sp-2)}
-.controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-2)}
+.controls:not(.schem-keys){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-2)}
 .pads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-2);margin-top:var(--sp-3)}
 .control{min-height:48px;padding:var(--sp-1);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);box-shadow:0 3px 0 var(--line-strong);font:600 var(--t-cap)/1.2 var(--font-mono);overflow-wrap:anywhere}
 .control:active{transform:translateY(1px)}
@@ -1038,6 +1063,25 @@ input.lcd-input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .note-recall .note-pair{white-space:nowrap;color:var(--ink);font-weight:600}
 .note-recall .lcd{font-size:14px}
 .getback-notes .note-recall{margin:0 0 var(--sp-3);font-size:var(--t-body)}
+/* Shorter phones (up to 760px tall, such as 360×740): the same room-making as on a phone on its side, so the step's Do
+   and Check still sit above Done · Next: a tighter card, Before you press at body size with its label inline, and the
+   skip offer of an optional run after the step. */
+@media (max-height:760px){
+  html[data-player="step"] .steps ol > li.is-current{display:flex;flex-direction:column;padding-top:var(--sp-3)}
+  html[data-player="step"] li.is-current > .step-head{margin-bottom:var(--sp-2)}
+  html[data-player="step"] li.is-current > .preflight{margin-bottom:var(--sp-2);padding:var(--sp-2) var(--sp-3);font-size:var(--t-body);line-height:var(--t-body-lh)}
+  html[data-player="step"] li.is-current > .preflight::before{display:inline;margin:0 .5em 0 0}
+  html[data-player="step"] li.is-current > .skip-box{order:1;margin:var(--sp-3) 0 0}
+  html[data-player="step"] li.is-current > .step-check{margin-top:var(--sp-3)}
+  html[data-player="step"] main{padding-top:var(--sp-3)}
+/* Larger text: the same, at any height. */
+html[data-text="larger"][data-player="step"] .steps ol > li.is-current{display:flex;flex-direction:column;padding-top:var(--sp-3)}
+html[data-text="larger"][data-player="step"] li.is-current > .step-head{margin-bottom:var(--sp-2)}
+html[data-text="larger"][data-player="step"] li.is-current > .preflight{margin-bottom:var(--sp-2);padding:var(--sp-2) var(--sp-3);font-size:var(--t-body);line-height:var(--t-body-lh)}
+html[data-text="larger"][data-player="step"] li.is-current > .preflight::before{display:inline;margin:0 .5em 0 0}
+html[data-text="larger"][data-player="step"] li.is-current > .skip-box{order:1;margin:var(--sp-3) 0 0}
+html[data-text="larger"][data-player="step"] li.is-current > .step-check{margin-top:var(--sp-3)}
+}
 /* The device panel (toolsheet.js, plan 5.5): the step's keys lit and numbered beside the card, in the step view only.
    A short landscape screen gives it the left 40% (controls and pads side by side) and sets Do at 20/28; from 1200px it
    is a column on the right with a fixed-height box that explains a tapped control. */
@@ -1061,10 +1105,7 @@ input.lcd-input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
   html.has-device[data-player="step"] main{padding-top:var(--sp-2)}
   html.has-device .player-actions{left:40%}
   html.has-device .player-device{display:block;position:fixed;top:0;bottom:0;left:0;z-index:26;width:40%;overflow-y:auto;padding:var(--sp-2) var(--sp-3) var(--sp-3);border-right:1px solid var(--line);background:var(--surface-2)}
-  html.has-device .player-device .device{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:var(--sp-2);align-items:start;padding:var(--sp-2)}
-  html.has-device .player-device .pads{margin-top:0}
-  html.has-device .player-device .control{min-height:30px;padding:1px 2px;font-size:10px}
-  html.has-device .player-device .control.sym{font-size:16px}
+  html.has-device .player-device .device.schem{width:min(100%,calc((100dvh - 44px) * 522 / 712))}
   html.has-device .player-device .press-order{gap:var(--sp-1) var(--sp-3)}
   html.has-device .player-device .press-order .key{font-size:13px}
 }
@@ -1073,8 +1114,6 @@ input.lcd-input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
   html.has-device body{padding-right:var(--device-w)}
   html.has-device .appbar{margin-right:calc(-1 * var(--device-w))}
   html.has-device .player-device{display:block;position:fixed;top:var(--appbar-h);right:0;bottom:0;z-index:20;width:var(--device-w);overflow-y:auto;overscroll-behavior:contain;padding:var(--sp-4);border-left:1px solid var(--line);background:var(--surface-1)}
-  html.has-device .player-device .control{padding:2px 3px;font-size:12px}
-  html.has-device .player-device .control.sym{font-size:18px}
   html.has-device .player-device .map-info{height:168px;margin:var(--sp-3) 0 0;overflow-y:auto}
   html.has-device .player-device .map-info h3{margin:0 0 var(--sp-1);font-size:var(--t-body);line-height:var(--t-body-lh)}
 }
@@ -1188,7 +1227,7 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 #placement{font:600 var(--t-check)/var(--t-check-lh) var(--font-mono)}
 .runner-list{display:flex;flex-wrap:wrap;gap:var(--sp-2);max-width:none;margin:0 0 var(--sp-3)}
 .runner-pos .lcd{font-size:15px}
-.runner-pos.done .lcd{opacity:.55}
+.runner-pos.done .lcd{border-color:var(--line);background:var(--surface-2);color:var(--ink-2)}   /* placed: muted, still 4.5:1 */
 .runner-pos.done .lcd::after{content:" ✓"}
 .runner-pos.now .lcd{font-size:22px;line-height:1.4;outline:3px solid var(--key);outline-offset:2px}
 .runner-row{gap:var(--sp-2)}
@@ -1219,8 +1258,7 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 html.pl-kbd .tools-panel:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .tools-panel h3.sub,.tools-panel h4.sub{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
 .tools-eyebrow{margin:0 0 var(--sp-2);font-weight:600}
-.tools-panel .device,.player-device .device{padding:var(--sp-3)}
-.tools-panel .device .display,.player-device .device .display{display:none}
+.tools-panel .device.schem{width:min(100%,calc(60dvh * 522 / 712))}
 .tools-panel .control,.player-device .control{position:relative;min-height:36px;padding:2px 6px;box-shadow:0 2px 0 var(--line-strong)}
 .tools-panel .control.hot,.player-device .control.hot{box-shadow:0 2px 0 var(--key-edge)}
 .tools-panel .controls,.tools-panel .pads,.player-device .controls,.player-device .pads{gap:6px}
