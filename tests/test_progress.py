@@ -15,9 +15,14 @@ from support import watch
 
 pytestmark = pytest.mark.browser
 
-FIRST = ('beat-empty-project beat-tempo-grid beat-load-kick beat-load-snare beat-load-hat beat-hats-quieter beat-placement-move '
-         'beat-kicks beat-snares beat-hats beat-listen-drums beat-balance beat-commit-drums beat-bass-sound beat-bass-pulses '
-         'beat-bass-trim beat-reverb beat-scene-sync beat-performance beat-live-practice beat-live-record beat-live-undo beat-recap').split()
+# first-beat.html's steps in page order (progress.js ORDER), since Chapter 1 was rewritten to the step budget.
+FIRST = ('beat-empty-project beat-open-project-6 beat-check-empty beat-tempo-grid beat-grid-16 beat-load-kick '
+         'beat-hear-kick beat-load-snare beat-load-hat beat-hats-quieter beat-placement-move beat-kicks '
+         'beat-snares beat-hats beat-listen-drums beat-balance beat-balance-levels beat-commit-drums '
+         'beat-commit-copy beat-bass-sound beat-bass-load beat-bass-pulses beat-bass-trim beat-bass-trim-y '
+         'beat-reverb beat-reverb-send beat-scene-sync beat-performance beat-perform-start beat-perform '
+         'beat-live-practice beat-live-play-along beat-live-record beat-live-record-tap beat-live-record-stop '
+         'beat-live-undo beat-live-erase-note beat-live-beat-clean beat-recap beat-recap-try').split()
 V2_FIELDS = {'schema', 'step', 'stepId', 'note', 'song', 'songId', 'view', 'done', 'firmware', 'finished', 'songFinished', 'lab'}
 
 
@@ -63,7 +68,8 @@ def test_place_in_01_carries_over_and_moves_are_written_back(run):
     run.seed({'koii-coach-v2': v2(step=5, stepId='beat-hats-quieter', note=3, done=['groups-and-scenes'], firmware='2')})
     run.go('./index.html')
     rec = run.get('koii-coach-ch-first-beat')
-    assert rec['done'] == FIRST[:5] and rec['cur'] == 'beat-hats-quieter' and rec['n'] == 5, f'Derived from the old position ({rec})'
+    hq = FIRST.index('beat-hats-quieter')
+    assert rec['done'] == FIRST[:hq] and rec['cur'] == 'beat-hats-quieter' and rec['n'] == hq, f'Derived from the old position ({rec})'
     assert rec['derivedFrom'] == 'beat-hats-quieter'
     assert run.get('koii-coach-prefs')['setup'] == 'ready', 'A learner with progress is never sent back to 00'
     page = run.page
@@ -75,8 +81,8 @@ def test_place_in_01_carries_over_and_moves_are_written_back(run):
     run.go('./first-beat.html')
     page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'beat-hats-quieter'")
     assert 'carried over' in page.locator('#progress-note').text_content()
-    assert page.evaluate("() => document.querySelector('.appbar-meter .meter-fill').style.width") == '22%', 'The app bar meter shows 5 of 23'
-    assert 'Step 6 of 6' in page.locator('#appbar .bar-sub').text_content(), 'The app bar says where you are in the part'
+    assert page.evaluate("() => document.querySelector('.appbar-meter .meter-fill').style.width") == f'{int(100 * hq / len(FIRST) + 0.5)}%', 'The app bar meter shows the steps before it as done'
+    assert 'Step 10 of 10' in page.locator('#appbar .bar-sub').text_content(), 'The app bar says where you are in the part'
     page.locator('#player-next').click()
     old = run.get('koii-coach-v2')
     assert set(old) == V2_FIELDS, f'koii-coach-v2 keeps its twelve fields ({sorted(old)})'
@@ -84,14 +90,14 @@ def test_place_in_01_carries_over_and_moves_are_written_back(run):
     assert (old['firmware'], old['done'], old['note']) == ('2', ['groups-and-scenes'], 3), 'The other fields stay'
     run.go('./first-beat.html')
     assert 'carried over' not in (page.locator('#progress-note').text_content() or ''), 'The notice shows once'
-    assert run.get('koii-coach-ch-first-beat')['done'] == FIRST[:6], 'No second derivation from our own write'
+    assert run.get('koii-coach-ch-first-beat')['done'] == FIRST[:FIRST.index('beat-placement-move')], 'No second derivation from our own write'
 
     # An older copy of the site moves the old position on (or the release is reverted and re-deployed): derive again,
     # keeping every tick.
     page.evaluate("() => { const v = JSON.parse(localStorage.getItem('koii-coach-v2')); v.step = 10; v.stepId = 'beat-listen-drums'; localStorage.setItem('koii-coach-v2', JSON.stringify(v)); }")
     run.go('./index.html')
     rec = run.get('koii-coach-ch-first-beat')
-    assert rec['done'] == FIRST[:10] and rec['cur'] == 'beat-listen-drums', f'Derived again after the old key moved ({rec})'
+    assert rec['done'] == FIRST[:FIRST.index('beat-listen-drums')] and rec['cur'] == 'beat-listen-drums', f'Derived again after the old key moved ({rec})'
 
 
 def test_schema_2_and_finished_records(run):
@@ -100,7 +106,7 @@ def test_schema_2_and_finished_records(run):
     run.go('./learn.html')
     assert run.page.locator('#learn-count').text_content().startswith('2 of 19'), 'Lessons saved by position count as tried'
     rec = run.get('koii-coach-ch-first-beat')
-    assert rec['cur'] == 'beat-recap' and rec['done'] == FIRST[:-1], f'Schema 2 step 18 is the recap ({rec})'
+    assert rec['cur'] == 'beat-recap' and rec['done'] == FIRST[:FIRST.index('beat-recap')], f'Schema 2 step 18 is the recap ({rec})'
     run.go('./settings.html')
     assert run.page.locator('#firmware').input_value() == '2.5', 'Schema 2 "not sure" becomes OS 2.5'
 

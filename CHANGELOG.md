@@ -4,6 +4,16 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.11
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.
+
+Chapter 1 · First beat, rewritten for a glance, like Chapters 0 and 3 to 7 (23 steps became 40). Your ticks, links and a place carried over from the old app all follow: the old position still maps to the same step, and progress.js lists the new page order.
+
+- Each step has a title, at most three moves and one short Check. Seven steps that were already short stay as they were. The pattern figures, the placement helper, "Hear this recipe" and the recap's six moves stay with the step that uses them.
+- The optional live recording is eight optional steps, still skipped together from its first step; erasing a single note is its own step, so the amber "Clears notes" tag sits only there. The recap is two steps, and both tick themselves on the chapter-complete screen.
+- Changed wording: "A1 lights at all four positions, …" (was "at each of the four positions"); "The placement helper lists them one by one." and "“Hear this recipe” gives a rough reference." (both said "below", but now come after it); the drum beat's Check is "All three rows match the target rhythm above.", with the positions it replaces kept as a note; "You hear your extra snare while you tap it; it disappears when you stop tapping." (was ", and it disappears"); "The extra snare now repeats by itself near the end of every loop." (was "After you stop recording, the extra snare repeats …"); "do the optional scene-change step first", now a link (was "the optional step before this one"); and "so in the performance steps that follow you can pick the next scene a little early" (was "in the next step").
+
 ## 2026.10.14.10
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.

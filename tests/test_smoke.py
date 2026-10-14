@@ -120,9 +120,13 @@ def run_target(browser, artifacts_dir, name, url, results):
         assert page.evaluate('() => document.documentElement.dataset.player') == 'start', '01 opens on its start screen'
         page.locator('#player-next').click()
         page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'beat-empty-project'")
-        assert_match(page.title(), r'^Start in an empty project · Step 1 of 6', message='The tab title names the step')
-        page.locator('#player-next').click()
-        assert store(page, 'koii-coach-ch-first-beat')['done'] == ['beat-empty-project'], 'Done · Next ticks the 01 step'
+        assert_match(page.title(), r'^Go home, and stop playback · Step 1 of 10', message='The tab title names the step')
+        # The old app's first step is three steps now: the old place moves on once all three are ticked.
+        first = ['beat-empty-project', 'beat-open-project-6', 'beat-check-empty']
+        for i, sid in enumerate(first):
+            page.locator('#player-next').click()
+            page.wait_for_function(f"() => (document.activeElement && document.activeElement.closest('li[data-step]') || {{dataset: {{}}}}).dataset.step === {(first[i + 1] if i + 1 < len(first) else 'beat-tempo-grid')!r}")
+        assert store(page, 'koii-coach-ch-first-beat')['done'] == first, 'Done · Next ticks the 01 steps'
         v2 = store(page, 'koii-coach-v2')
         assert v2['step'] == 1 and v2['stepId'] == 'beat-tempo-grid' and v2['schema'] == 4, f'01 moves are written back to koii-coach-v2 ({v2})'
         result['checks'].append('01 First beat runs in the player; Done · Next ticks and writes the place back to koii-coach-v2')

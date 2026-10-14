@@ -69,7 +69,7 @@ def test_risky_steps_check_before_the_press_and_undo_after(name):
 # Chapters rewritten to the glance budget (plan 5.3, P7). Each step: a title of at most 48 characters; Do at most 26
 # words in at most 3 sentences (a risk step: Before you press and Do together at most 40); Check at most 15 words; undo
 # at most 12. Add a chapter here when it is rewritten.
-STRUCTURED = ['sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house', 'setup']
+STRUCTURED = ['sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house', 'setup', 'first-beat']
 
 
 def _words(h):
@@ -88,7 +88,7 @@ def _sentences(h):
 def test_glance_budget(name):
     page = (ROOT / f'{name}.html').read_text(encoding='utf-8')
     over = []
-    for sid, attrs, body in re.findall(r'<li data-step="([^"]+)"([^>]*)>(.*?)</li>', page, re.S):
+    for sid, attrs, body in re.findall(r'<li data-step="([^"]+)"([^>]*)>(.*?)\n *</li>', page, re.S):   # not a nested </li>
         title = re.search(r'<h3 class="step-title">(.*?)</h3>', body, re.S)
         field = lambda c: ' '.join(re.findall(rf'<p class="{c}">(.*?)</p>', body, re.S))
         do, pre, check, undo = field('step-do'), field('preflight'), field('step-check'), field('step-undo')
@@ -145,13 +145,14 @@ def test_skip_a_run_of_optional_steps(run):
     page = run.page
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
     run.go('./first-beat.html#s-beat-live-practice')
+    run_ids = ['beat-live-practice', 'beat-live-play-along', 'beat-live-record', 'beat-live-record-tap', 'beat-live-record-stop', 'beat-live-undo', 'beat-live-erase-note', 'beat-live-beat-clean']
     box = page.locator('li[data-step="beat-live-practice"] .skip-box')
-    assert box.is_visible() and 'Skip these 3 steps' in box.text_content(), 'The first of three optional steps offers to skip them'
+    assert box.is_visible() and f'Skip these {len(run_ids)} steps' in box.text_content(), 'The first of a run of optional steps offers to skip them all'
     total = page.evaluate('() => CoachChapter.total()')
     box.locator('[data-skip]').click()
     rec = run.get('koii-coach-ch-first-beat')
-    assert rec['skip'] == ['beat-live-practice', 'beat-live-record', 'beat-live-undo'], f'The run is saved as skipped ({rec})'
-    assert page.evaluate('() => CoachChapter.total()') == total - 3, 'Skipped steps stop counting'
+    assert rec['skip'] == run_ids, f'The run is saved as skipped ({rec})'
+    assert page.evaluate('() => CoachChapter.total()') == total - len(run_ids), 'Skipped steps stop counting'
     page.wait_for_function(STEP + " === 'beat-recap'")
     page.locator('#toast button', has_text='Undo').click()
     page.wait_for_function(STEP + " === 'beat-live-practice'")
@@ -214,13 +215,14 @@ def test_tools_sheet(run):
     sheet.wait_for(state='visible')
     page.keyboard.press('Escape')
     sheet.wait_for(state='hidden')
-    # A help link inside the step opens the sheet at that topic, expanded.
-    step = page.locator('li[data-step="beat-load-kick"]')
+    # A help link inside the step opens the sheet at that topic, expanded (the next step holds the kick's fixes).
+    run.go('./first-beat.html#s-beat-hear-kick')
+    step = page.locator('li[data-step="beat-hear-kick"]')
     step.locator('.step-more summary', has_text='Not working?').click()
     step.locator('a[href="./help.html#a-pad-is-silent"]').click()
     topic = page.locator('#tools-panel-fixes details[data-topic="a-pad-is-silent"]')
     topic.wait_for()
-    assert topic.evaluate('d => d.open') and page.url.endswith('#s-beat-load-kick'), 'The topic opens in the sheet; the page stays'
+    assert topic.evaluate('d => d.open') and page.url.endswith('#s-beat-hear-kick'), 'The topic opens in the sheet; the page stays'
 
 
 @pytest.mark.browser

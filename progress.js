@@ -50,7 +50,7 @@ const SPA={
 };
 // The steps of first-beat.html and song.html in page order. Keep in step with the pages: chapter.js warns when they differ.
 const ORDER={
-  'first-beat':[...SPA['first-beat'].slice(0,17),'beat-scene-sync',...SPA['first-beat'].slice(17)],
+  'first-beat':'beat-empty-project beat-open-project-6 beat-check-empty beat-tempo-grid beat-grid-16 beat-load-kick beat-hear-kick beat-load-snare beat-load-hat beat-hats-quieter beat-placement-move beat-kicks beat-snares beat-hats beat-listen-drums beat-balance beat-balance-levels beat-commit-drums beat-commit-copy beat-bass-sound beat-bass-load beat-bass-pulses beat-bass-trim beat-bass-trim-y beat-reverb beat-reverb-send beat-scene-sync beat-performance beat-perform-start beat-perform beat-live-practice beat-live-play-along beat-live-record beat-live-record-tap beat-live-record-stop beat-live-undo beat-live-erase-note beat-live-beat-clean beat-recap beat-recap-try'.split(' '),
   song:SPA.song.slice()
 };
 // Schema 2 (until 2026-10-12) saved 01's step as a position in that day's 19 steps, and the Learn lessons as positions.
@@ -206,6 +206,8 @@ function restore(snap){
 // record's m holds the last batch applied, and a record made after a batch starts at that batch (chapter.js), so a
 // tick on the first part later never ticks the rest. Frozen history: add batches, never edit one that shipped.
 const MIGRATIONS={
+  // 2026.10.14.11: rewritten to the step budget
+  'first-beat':[{v:1,split:{'beat-empty-project':['beat-empty-project','beat-open-project-6','beat-check-empty'],'beat-tempo-grid':['beat-tempo-grid','beat-grid-16'],'beat-load-kick':['beat-load-kick','beat-hear-kick'],'beat-balance':['beat-balance','beat-balance-levels'],'beat-commit-drums':['beat-commit-drums','beat-commit-copy'],'beat-bass-sound':['beat-bass-sound','beat-bass-load'],'beat-bass-trim':['beat-bass-trim','beat-bass-trim-y'],'beat-reverb':['beat-reverb','beat-reverb-send'],'beat-performance':['beat-performance','beat-perform-start','beat-perform'],'beat-live-practice':['beat-live-practice','beat-live-play-along'],'beat-live-record':['beat-live-record','beat-live-record-tap','beat-live-record-stop'],'beat-live-undo':['beat-live-undo','beat-live-erase-note','beat-live-beat-clean'],'beat-recap':['beat-recap','beat-recap-try']}}],
   // 2026.10.14.10: rewritten to the step budget
   setup:[{v:1,split:{'listen-headphones':['listen-headphones','listen-headphones-volume'],'screen-shift-combo':['screen-shift-combo','screen-shift-minus'],'screen-icons':['screen-icons','screen-icon-table'],'update-connect':['update-connect','update-allow-midi'],'backup-check-file':['backup-check-file','backup-second-copy'],'project-factory-sounds':['project-factory-sounds','project-factory-pads'],'project-empty-six':['project-empty-six','project-empty-six-check'],'project-write-down':['project-write-down','project-write-course'],'library-scratch-project':['library-scratch-project','library-select-pad-1'],'library-browse-kicks':['library-browse-kicks','library-jump-ten'],'library-jump-categories':['library-jump-categories','library-other-categories'],'library-mini-kit':['library-mini-kit','mini-kit-snare-hat','mini-kit-play'],'settings-menu-metronome':['settings-menu-metronome','settings-metronome-on'],'settings-hear-click':['settings-hear-click','settings-click-play'],'settings-code-401':['settings-code-401','settings-401-check'],'ready-empty-project':['ready-empty-project','ready-silence']}}],
   // 2026.10.14.9: rewritten to the step budget
