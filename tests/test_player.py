@@ -143,6 +143,15 @@ def test_voice():
     assert not found, 'Process notes on a page (CONTRIBUTING §3 "Voice"):\n' + '\n'.join(found)
 
 
+def test_home_made_matches_each_chapter():
+    """Home's course-complete card lists site.js "made", which must say what each page's "You will make" line says."""
+    site = (ROOT / 'site.js').read_text(encoding='utf-8')
+    for href, made in re.findall(r"href:'\./([\w-]+\.html)'[^}]*?made:'((?:[^'\\]|\\.)*)'", site):
+        line = re.search(r'<p class="makes">(.*?)</p>', (ROOT / href).read_text(encoding='utf-8'), re.S).group(1)
+        line = re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', '', line))).strip()
+        assert re.sub(r'^You will (make|have): ', '', line).rstrip('.') == made.replace("\\'", "'"), href
+
+
 # Chapters rewritten to the glance budget (plan 5.3, P7). Each step: a title of at most 48 characters; Do at most 26
 # words in at most 3 sentences (a risk step: Before you press, its consequence and Do together at most 40); Check at
 # most 15 words; undo
