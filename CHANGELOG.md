@@ -4,6 +4,16 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.12
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.
+
+Chapter 2 · Make it a song, rewritten for a glance, like every other chapter now (24 steps became 33). Your ticks, links and a place carried over from the old app all follow, as for Chapter 1. Thirteen steps that were already short stay as they were.
+
+- Each step has a title, at most three moves and one short Check. The OS badge stays under the title of each song-list step, and the recap is two steps that both tick themselves on the chapter-complete screen.
+- Changed wording: "Do its Part 4, “Add a bass”, first." (was "its two bass steps", now more); the scene check is "INTRO: drums only. BEAT: drums, bass. MELODY: drums, bass, melody. BREAK: melody, snare, hats." (was "drums and bass" and so on); "Choose INTRO for position 2." and "Do the same four more times: 3 BEAT, 4 BEAT, 5 MELODY, 6 MELODY." (was "Do this five times: 2 INTRO, …"), so adding position 2 is a step of its own; "Release SHIFT, step through with − / +: exactly 10 positions, matching the song map." (was "… in the order of the song map"); "… in that order; about 43 seconds, then it stops." (was "…, then it stops by itself"); the recap's Check is split between its two steps ("You changed one thing yourself." on the second), its first sentence reads "Make one change from memory, without reading this app." (was "Then make …: for example …"), and the example is a note; and "repeat the two steps before this one in INTRO" (was "the previous step").
+- Chapters 6 and 7: the same fix for adding song positions. The first step is now "Add position 2: INTRO" and ends "Choose INTRO for position 2."; the next is "Add positions 3 to 12" with "Repeat for positions 3–4 GROOVE; …" in Chapter 6 (was "2 INTRO; 3–4 GROOVE; …") and "Positions 3 to 12" with "Set positions 3 and 4 to INTRO, …" in Chapter 7 (was "2–4"), so nobody adds position 2 twice.
+
 ## 2026.10.14.11
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.

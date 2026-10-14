@@ -56,12 +56,22 @@
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. chapter.js numbers the steps and saves ticks by id. No nested ol inside a step. -->
       <details id="make-the-intro" open>
         <summary><h2 class="part-title">Part 1 · Make the intro</h2></summary>
-        <ol start="1">
+        <ol>
           <li data-step="song-find-beat">
-            <h3 class="step-title">Stop and find your beat</h3>
-            <p class="step-do">Press <span class="nobr"><kbd class="key">MAIN</kbd>.</span> If the K.O. II is playing, press <kbd class="key">PLAY</kbd> to stop. Hold <kbd class="key">MAIN</kbd> and use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows the scene number you wrote down for BEAT (drums + bass) in Chapter 1. Release <span class="nobr"><kbd class="key">MAIN</kbd>.</span> Press <kbd class="key">PLAY</kbd> to check you hear drums and bass, then press <kbd class="key">PLAY</kbd> to stop.</p>
+            <h3 class="step-title">Go home, and stop playback</h3>
+            <p class="step-do">Press <span class="nobr"><kbd class="key">MAIN</kbd>.</span> If the K.O. II is playing, press <kbd class="key">PLAY</kbd> to stop.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Your finished beat stays untouched: you build each section in a copy. You will name four scenes in this chapter, BEAT, INTRO, MELODY and BREAK, so keep paper handy.</p></details></div>
+          </li>
+          <li data-step="song-select-beat">
+            <h3 class="step-title">Select BEAT</h3>
+            <p class="step-do">Hold <kbd class="key">MAIN</kbd> and use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows the scene number you wrote down for BEAT (drums + bass) in Chapter 1. Release <span class="nobr"><kbd class="key">MAIN</kbd>.</span></p>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>No number written down? Hold MAIN, step through scenes with − / + and play each briefly. Do not press ERASE now. See help: “<a href="./help.html#which-scene-am-i-in">Which scene am I in?</a>”.</p></details></div>
+          </li>
+          <li data-step="song-check-beat">
+            <h3 class="step-title">Check that BEAT plays</h3>
+            <p class="step-do">Press <kbd class="key">PLAY</kbd> to check you hear drums and bass, then press <kbd class="key">PLAY</kbd> to stop.</p>
             <p class="step-check"><span class="sr">Check: </span>Playback is stopped and BEAT (drums + bass) is selected.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Your finished beat stays untouched: you build each section in a copy. You will name four scenes in this chapter, BEAT, INTRO, MELODY and BREAK, so keep paper handy.</p></details><details class="step-more"><summary>Not working?</summary><p>Skipped the bass in Chapter 1? Do its two bass steps first. No number written down? Hold MAIN, step through scenes with − / + and play each briefly. Do not press ERASE now. See help: “<a href="./help.html#which-scene-am-i-in">Which scene am I in?</a>”.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Skipped the bass in Chapter 1? Do its Part 4, “Add a bass”, first.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="song-copy-intro">
@@ -71,9 +81,13 @@
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Commit saves the current scene and creates a new copy, and you are now in that copy. Changes here do not overwrite BEAT.</p></details><details class="step-more"><summary>Not working?</summary><p>Commit is not a backup file; it makes a new scene inside this project.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
-          <li data-step="song-intro-remove-bass" data-risk="erase">
+          <li data-step="song-intro-remove-bass">
+            <h3 class="step-title">INTRO: select group B</h3>
+            <p class="step-do">In INTRO, tap <kbd class="key">B</kbd> once (do not hold it) to select group B. Press <kbd class="key">MAIN</kbd> and make sure playback is stopped.</p>
+          </li>
+          <li data-step="song-intro-erase-bass" data-risk="erase">
             <h3 class="step-title">Make the intro: remove the bass</h3>
-            <p class="step-do">In INTRO, tap <kbd class="key">B</kbd> once (do not hold it) to select group B. Press <kbd class="key">MAIN</kbd> and make sure playback is stopped. Use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">1.1.1</samp> and briefly press <span class="nobr"><kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">B1</kbd></kbd>.</span> Go to <samp class="lcd">1.3.1</samp> and briefly press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">B1</kbd></kbd> again.</p>
+            <p class="step-do">Use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">1.1.1</samp> and briefly press <span class="nobr"><kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">B1</kbd></kbd>.</span> Go to <samp class="lcd">1.3.1</samp> and briefly press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">B1</kbd></kbd> again.</p>
             <p class="step-undo">Erased the wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>At <samp class="lcd">1.1.1</samp> and <samp class="lcd">1.3.1</samp> pad <kbd class="key pad">B1</kbd> no longer lights.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>An intro is smaller than the main beat. A brief ERASE + pad removes only the note on the current step.</p></details><details class="step-more"><summary>Not working?</summary><p>Holding B while pressing − / + switches group B to another pattern instead of selecting it; see help “<a href="./help.html#minus-and-plus-change-the-wrong-thing">− and + change the wrong thing</a>”. Never use ERASE + SOUND: it deletes the sample file. See help: “<a href="./help.html#i-erased-or-changed-the-wrong-thing">I erased or changed the wrong thing</a>”.</p></details></div>
@@ -83,7 +97,7 @@
             <h3 class="step-title">Check the intro and your original</h3>
             <p class="step-do">Press <span class="nobr"><kbd class="key">PLAY</kbd>,</span> listen to four loops and press <kbd class="key">PLAY</kbd> to stop. Then hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> select BEAT and press <span class="nobr"><kbd class="key">PLAY</kbd>:</span> its bass is still there. Stop.</p>
             <p class="step-check"><span class="sr">Check: </span>INTRO: kick, snare and hats, no bass. BEAT: drums and bass.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Copies are independent: changing INTRO did not change BEAT. That is what makes commit safe.</p></details><details class="step-more"><summary>Not working?</summary><p>If BEAT lost its bass, you erased in BEAT: press SHIFT + B at once (while the umbrella is lit), or write B1 again at 1.1.1 and 1.3.1 with RECORD + B1. If INTRO still has bass, repeat the previous step in INTRO.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Copies are independent: changing INTRO did not change BEAT. That is what makes commit safe.</p></details><details class="step-more"><summary>Not working?</summary><p>If BEAT lost its bass, you erased in BEAT: press SHIFT + B at once (while the umbrella is lit), or write B1 again at 1.1.1 and 1.3.1 with RECORD + B1. If INTRO still has bass, repeat the two steps before this one in INTRO.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="song-copy-melody">
@@ -97,10 +111,14 @@
       </details>
       <details id="set-up-the-melody">
         <summary><h2 class="part-title">Part 2 · Set up the melody</h2></summary>
-        <ol start="6">
+        <ol start="9">
           <li data-step="song-melody-sound">
+            <h3 class="step-title">MELODY: select C1</h3>
+            <p class="step-do">In MELODY, tap <kbd class="key">C</kbd> to select group C. Press <kbd class="key">SOUND</kbd> and tap pad <span class="nobr"><kbd class="key pad">C1</kbd>.</span></p>
+          </li>
+          <li data-step="song-melody-load">
             <h3 class="step-title">Choose a melody sound</h3>
-            <p class="step-do">In MELODY, tap <kbd class="key">C</kbd> to select group C. Press <kbd class="key">SOUND</kbd> and tap pad <span class="nobr"><kbd class="key pad">C1</kbd>.</span> Hold <span class="nobr"><kbd class="key">SOUND</kbd>,</span> type <span class="nobr"><kbd class="key">5</kbd>,</span> <span class="nobr"><kbd class="key">0</kbd>,</span> <kbd class="key">0</kbd> on the pads and release <span class="nobr"><kbd class="key">SOUND</kbd>.</span> Tap <kbd class="key pad">C1</kbd> to hear it.</p>
+            <p class="step-do">Hold <span class="nobr"><kbd class="key">SOUND</kbd>,</span> type <span class="nobr"><kbd class="key">5</kbd>,</span> <span class="nobr"><kbd class="key">0</kbd>,</span> <kbd class="key">0</kbd> on the pads and release <span class="nobr"><kbd class="key">SOUND</kbd>.</span> Tap <kbd class="key pad">C1</kbd> to hear it.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">C1</kbd> plays a melodic sound.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Group C holds the melody. Factory melodic sounds are stored at 500–599.</p></details><details class="step-more"><summary>Not working?</summary><p>If 500 is silent or unsuitable, browse 500–599 with − / + and choose one short sound you like. See help: “<a href="./help.html#a-pad-is-silent">A pad is silent</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
@@ -123,7 +141,7 @@
       </details>
       <details id="place-the-melody">
         <summary><h2 class="part-title">Part 3 · Place the melody</h2></summary>
-        <ol start="9">
+        <ol start="13">
           <li data-step="song-melody-note-1">
             <h3 class="step-title">Place melody note 1</h3>
             <p class="step-do">In stopped MAIN with group C, hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <span class="nobr"><samp class="lcd">1.1.1</samp>.</span> Hold <span class="nobr"><kbd class="key">RECORD</kbd>,</span> tap <kbd class="key pad">C1</kbd> once, then release <span class="nobr"><kbd class="key">RECORD</kbd>.</span></p>
@@ -161,8 +179,9 @@
           </li>
           <li data-step="song-melody-pitch">
             <h3 class="step-title">Fit the melody pitch</h3>
-            <p class="step-do">Press <kbd class="key">SOUND</kbd> and tap <span class="nobr"><kbd class="key pad">C1</kbd>.</span> Turn <kbd class="key knob">Y</kbd> a small amount while tapping <span class="nobr"><kbd class="key pad">C1</kbd>,</span> and play the beat to compare. Keep the setting that sounds best with the bass.</p>
+            <p class="step-do">Press <kbd class="key">SOUND</kbd> and tap <span class="nobr"><kbd class="key pad">C1</kbd>.</span> Turn <kbd class="key knob">Y</kbd> a small amount while tapping <span class="nobr"><kbd class="key pad">C1</kbd>,</span> and play the beat to compare.</p>
             <p class="step-check"><span class="sr">Check: </span>The melody sounds comfortable with the kick and bass.</p>
+            <p class="step-note">Keep the setting that sounds best with the bass.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>In SOUND, Y is pitch. A small pitch change can make the melody fit the bass.</p></details><details class="step-more"><summary>Not working?</summary><p>Change Y a little at a time. If nothing fits, choose a different melody sample instead.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
@@ -170,7 +189,7 @@
       </details>
       <details id="make-the-breakdown">
         <summary><h2 class="part-title">Part 4 · Make the breakdown</h2></summary>
-        <ol start="15">
+        <ol start="19">
           <li data-step="song-copy-break">
             <h3 class="step-title">Make a copy for the breakdown</h3>
             <p class="step-do">Stop playback and press <span class="nobr"><kbd class="key">MAIN</kbd>.</span> Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once. Hold <kbd class="key">MAIN</kbd> and read the new number; write it down as BREAK.</p>
@@ -190,7 +209,7 @@
           <li data-step="song-check-scenes">
             <h3 class="step-title">Check all four scenes</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and select INTRO, BEAT, MELODY and BREAK in turn. In each, press <kbd class="key">PLAY</kbd> briefly, then stop.</p>
-            <p class="step-check"><span class="sr">Check: </span>INTRO: drums only. BEAT: drums and bass. MELODY: drums, bass and melody. BREAK: melody, snare and hats.</p>
+            <p class="step-check"><span class="sr">Check: </span>INTRO: drums only. BEAT: drums, bass. MELODY: drums, bass, melody. BREAK: melody, snare, hats.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Song mode only plays the scenes you made. If a scene is wrong now, the song will be wrong too.</p></details><details class="step-more"><summary>Not working?</summary><p>If one is wrong, fix it in that scene now. Your paper list of numbers is your map for the next steps. See help: “<a href="./help.html#which-scene-am-i-in">Which scene am I in?</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
@@ -202,7 +221,7 @@
         <table class="map"><thead><tr><th scope="col">Section</th><th scope="col">Scene</th><th scope="col">Song positions</th><th scope="col">Bars</th><th scope="col">What you hear</th></tr></thead><tbody><tr><th scope="row">Intro</th><td data-label="Scene">INTRO</td><td data-label="Song positions">1–2</td><td data-label="Bars">2</td><td data-label="What you hear">Drums only: kick, snare and hats</td></tr><tr><th scope="row">Main groove</th><td data-label="Scene">BEAT</td><td data-label="Song positions">3–4</td><td data-label="Bars">2</td><td data-label="What you hear">Your Chapter 1 · First beat: drums and bass</td></tr><tr><th scope="row">Melody</th><td data-label="Scene">MELODY</td><td data-label="Song positions">5–6</td><td data-label="Bars">4</td><td data-label="What you hear">Drums, bass and the two-bar C melody</td></tr><tr><th scope="row">Breakdown</th><td data-label="Scene">BREAK</td><td data-label="Song positions">7</td><td data-label="Bars">2</td><td data-label="What you hear">Melody, snare and hats; kick and bass removed</td></tr><tr><th scope="row">Melody return</th><td data-label="Scene">MELODY</td><td data-label="Song positions">8–9</td><td data-label="Bars">4</td><td data-label="What you hear">Kick and bass come back under the melody</td></tr><tr><th scope="row">Ending</th><td data-label="Scene">BREAK</td><td data-label="Song positions">10</td><td data-label="Bars">2</td><td data-label="What you hear">The melody without kick and bass, then the song stops</td></tr></tbody></table>
         <p><b>Total: 16 bars.</b> At 90 BPM in 4/4 that is about 43 seconds.</p>
         <div class="notice tip">Listen to how long each song position lasts on your K.O. II. To make a section longer, give it another song position with the same scene: in the song list, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a position and <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd></kbd> chooses its scene.</div>
-        <ol start="18">
+        <ol start="22">
           <li data-step="song-plan">
             <h3 class="step-title">Plan the song: one position, one pass</h3>
             <p class="step-do">Read the song map on this page. It uses 10 song positions: 1–2 INTRO, 3–4 BEAT, 5–6 MELODY, 7 BREAK, 8–9 MELODY, 10 BREAK.</p>
@@ -211,26 +230,37 @@
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/workflow">Workflow</a></p>
           </li>
           <li data-step="song-list-open" data-os="2.0">
-            <h3 class="step-title">Open the song list and set position 1</h3>
+            <h3 class="step-title">Open the song list</h3>
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
-            <p class="step-do">Stop playback. Hold <kbd class="key">MAIN</kbd> and press <kbd class="key">ENTER</kbd> to open the song list editor. A new list starts with one position. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to choose INTRO’s scene number for it.</p>
-            <p class="step-check"><span class="sr">Check: </span>Position 1 holds INTRO. You will confirm it by listening at the end.</p>
+            <p class="step-do">Stop playback. Hold <kbd class="key">MAIN</kbd> and press <kbd class="key">ENTER</kbd> to open the song list editor.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Song mode plays the positions in order by itself.</p></details><details class="step-more"><summary>Not working?</summary><p>Nothing opens? Song mode needs OS 2.0 or later, and this course assumes OS 2.5.1: older OS, update first (see Chapter 0 · Set up your K.O. II). If this list already holds a song you care about, leave it alone and use an empty project. See help: “<a href="./help.html#the-song-is-too-short-or-has-extra-positions">The song is too short or has extra positions</a>”.</p></details></div>
+          </li>
+          <li data-step="song-position-1" data-os="2.0">
+            <h3 class="step-title">Set position 1 to INTRO</h3>
+            <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to choose INTRO’s scene number for it.</p>
+            <p class="step-check"><span class="sr">Check: </span>Position 1 holds INTRO.</p>
+            <p class="step-note">You will confirm it by listening at the end.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A new list starts with one position.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="song-list-first-half" data-os="2.0">
-            <h3 class="step-title">Add positions 2–6</h3>
+            <h3 class="step-title">Add position 2: INTRO</h3>
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
-            <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">A</kbd> to add a position, then, still holding <span class="nobr"><kbd class="key">SHIFT</kbd>,</span> use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to choose its scene. Do this five times: 2 INTRO, 3 BEAT, 4 BEAT, 5 MELODY, 6 MELODY.</p>
+            <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">A</kbd> to add a position, then, still holding <span class="nobr"><kbd class="key">SHIFT</kbd>,</span> use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to choose its scene. Choose INTRO for position 2.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>SHIFT + A adds one position; SHIFT + − / + picks the scene for the selected position. Do not assume a new position copies the previous scene: set each one.</p></details><details class="step-more"><summary>Not working?</summary><p>Add while you are on the last position.</p></details></div>
+          </li>
+          <li data-step="song-list-3-6" data-os="2.0">
+            <h3 class="step-title">Add positions 3–6</h3>
+            <p class="step-do">Do the same four more times: 3 BEAT, 4 BEAT, 5 MELODY, 6 MELODY.</p>
             <p class="step-check"><span class="sr">Check: </span>Release <kbd class="key">SHIFT</kbd> and use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to step through the positions: there are exactly six.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>SHIFT + A adds one position; SHIFT + − / + picks the scene for the selected position. Do not assume a new position copies the previous scene: set each one.</p></details><details class="step-more"><summary>Not working?</summary><p>Add while you are on the last position. Extra position? Select it and press SHIFT + C to cut it. Wrong scene? Select the position and hold SHIFT + − / +.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Extra position? Select it and press SHIFT + C to cut it. Wrong scene? Select the position and hold SHIFT + − / +.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="song-list-second-half" data-os="2.0">
             <h3 class="step-title">Add positions 7–10</h3>
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Add four more positions the same way: 7 BREAK, 8 MELODY, 9 MELODY, 10 BREAK. That makes nine <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> presses in total.</p>
-            <p class="step-check"><span class="sr">Check: </span>Release <kbd class="key">SHIFT</kbd> and step through with <kbd class="key">−</kbd> / <span class="nobr"><kbd class="key">+</kbd>:</span> exactly 10 positions, in the order of the song map.</p>
+            <p class="step-check"><span class="sr">Check: </span>Release <kbd class="key">SHIFT</kbd>, step through with <kbd class="key">−</kbd> / <span class="nobr"><kbd class="key">+</kbd>:</span> exactly 10 positions, matching the song map.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Repeating MELODY gives each melody section four bars; the final BREAK works as a soft ending.</p></details><details class="step-more"><summary>Not working?</summary><p>Lost count? Step back to position 1 with − and check each position against the song map. See help: “<a href="./help.html#the-song-is-too-short-or-has-extra-positions">The song is too short or has extra positions</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
@@ -238,27 +268,42 @@
       </details>
       <details id="play-the-song">
         <summary><h2 class="part-title">Part 6 · Play the whole song</h2></summary>
-        <ol start="22">
+        <ol start="28">
           <li data-step="song-play" data-os="2.0">
             <h3 class="step-title">Play the whole song</h3>
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> to play the song from the start. Listen without touching anything.</p>
-            <p class="step-check"><span class="sr">Check: </span>INTRO, BEAT, MELODY, BREAK, MELODY, BREAK in that order, about 43 seconds, then it stops by itself.</p>
+            <p class="step-check"><span class="sr">Check: </span>INTRO, BEAT, MELODY, BREAK, MELODY, BREAK in that order; about 43 seconds, then it stops.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This is the moment your separate loops become one song.</p></details><details class="step-more"><summary>Not working?</summary><p>Much shorter than 43 seconds, or a section is missing: a position is missing or holds the wrong scene. Much longer: a pattern is longer than planned. Keeps looping: song loop is on (system setting 420 turns it off). See help: “<a href="./help.html#the-song-is-too-short-or-has-extra-positions">The song is too short or has extra positions</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="song-reverb">
-            <h3 class="step-title">Add a little space</h3>
-            <p class="step-do">In the song list, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> to start the song. Tap <span class="nobr"><kbd class="key">A</kbd>,</span> press <kbd class="key">FX</kbd> and choose reverb with <kbd class="key">−</kbd> / <span class="nobr"><kbd class="key">+</kbd>.</span> Raise the fader slightly: that is group A’s send. Tap <kbd class="key">C</kbd> and raise its fader a little too. Leave B’s send low.</p>
+            <h3 class="step-title">Start the song</h3>
+            <p class="step-do">In the song list, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> to start the song.</p>
+          </li>
+          <li data-step="song-reverb-a">
+            <h3 class="step-title">A: add a little reverb</h3>
+            <p class="step-do">Tap <span class="nobr"><kbd class="key">A</kbd>,</span> press <kbd class="key">FX</kbd> and choose reverb with <kbd class="key">−</kbd> / <span class="nobr"><kbd class="key">+</kbd>.</span> Raise the fader slightly: that is group A’s send.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A little reverb helps drums and melody sound as if they share one room. There is one shared effect; each group only sets how much it sends.</p></details><details class="step-more"><summary>Not working?</summary><p>Change one thing at a time; if it sounds blurry, lower the fader. Do not hold FX while pressing a group button: that solos it.</p></details></div>
+          </li>
+          <li data-step="song-reverb-c">
+            <h3 class="step-title">C a little too, B low</h3>
+            <p class="step-do">Tap <kbd class="key">C</kbd> and raise its fader a little too. Leave B’s send low.</p>
             <p class="step-check"><span class="sr">Check: </span>The song sounds more finished, while the kick and bass stay clear.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A little reverb helps drums and melody sound as if they share one room. There is one shared effect; each group only sets how much it sends.</p></details><details class="step-more"><summary>Not working?</summary><p>Change one thing at a time; if it sounds blurry, lower the fader. Do not hold FX while pressing a group button: that solos it. If the song ends, start it again.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>If the song ends, start it again.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/effects">Effects</a></p>
           </li>
           <li data-step="song-recap" data-kind="recap">
             <h3 class="step-title">Your song is ready to develop</h3>
-            <p class="step-do">In the song list, play the song once more with <span class="nobr"><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd>.</span> Then make one change from memory, without reading this app: for example step to the last position with <kbd class="key">+</kbd> and add one more BREAK position <span class="nobr">(<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd>,</span> then <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd> / <span class="nobr"><kbd class="key">+</kbd>).</span> That adds about 5 seconds.</p>
+            <p class="step-do">In the song list, play the song once more with <span class="nobr"><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd>.</span></p>
             <ul class="step-moves"><li><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> commits and moves you into a copy.</li><li>Hold <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd> selects a scene.</li><li>Brief <kbd class="key">ERASE</kbd> + pad removes one note; holding <kbd class="key">ERASE</kbd> + pad until <samp class="lcd">TRK</samp> blinks clears a track.</li><li><kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">ENTER</kbd></kbd> opens the song list; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a position; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd> picks its scene; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> plays from the start.</li></ul>
-            <p class="step-check"><span class="sr">Check: </span>Your song has an intro, main groove, melody, breakdown, melody return and ending, and you changed one thing yourself.</p>
+            <p class="step-check"><span class="sr">Check: </span>Your song has an intro, main groove, melody, breakdown, melody return and ending.</p>
+          </li>
+          <li data-step="song-recap-change" data-kind="recap">
+            <h3 class="step-title">Make one change from memory</h3>
+            <p class="step-do">Make one change from memory, without reading this app.</p>
+            <p class="step-check"><span class="sr">Check: </span>You changed one thing yourself.</p>
+            <p class="step-note">For example step to the last position with <kbd class="key">+</kbd> and add one more BREAK position <span class="nobr">(<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd>,</span> then <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd> / <span class="nobr"><kbd class="key">+</kbd>).</span> That adds about 5 seconds.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Back up the project with the official EP sample tool (computer + USB-C). To record audio, the K.O. II can send its sound over USB to a computer or phone. This app cannot capture your K.O. II. See help: “<a href="./help.html#how-do-i-export-or-back-up">How do I export or back up?</a>”. Next: Chapter 3 · Sample, chop &amp; resample, where you record your own sounds.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/workflow">Workflow</a></p>
           </li>

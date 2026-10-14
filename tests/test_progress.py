@@ -118,7 +118,7 @@ def test_schema_2_and_finished_records(run):
     run.go('./song.html')
     assert run.page.evaluate('location.hash') == '#done' and run.page.locator('#player-done').is_visible()
     song = run.get('koii-coach-ch-song')
-    assert len(song['done']) == 24 and song['derivedFrom'] == 'song-recap:done'
+    assert len(song['done']) == run.page.evaluate('() => CoachChapter.ids().length') and song['derivedFrom'] == 'song-recap:done', 'Every step is done'
 
 
 def test_progress_file_round_trip(run, tmp_path):

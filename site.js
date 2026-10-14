@@ -26,13 +26,13 @@
               Keep it in step with that line. */
 window.COACH_SITE={
   name:'K.O. II Coach',
-  version:'2026.10.14.11',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
+  version:'2026.10.14.12',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
   repo:'https://github.com/efosamark/koii-coach',
   report:'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml',
   chapters:[
     {num:'0',title:'Set up your K.O. II',short:'Set up',oldTitle:'Start here',href:'./setup.html',slug:'setup',steps:53,minutes:[45,60],made:'a K.O. II on OS 2.5.1, backed up on your computer, with an empty project chosen for the course and the factory sounds explored'},
     {num:'1',title:'First beat',short:'First beat',href:'./first-beat.html',slug:'first-beat',steps:40,minutes:[30,50],made:'a one-bar drum and bass loop at 90 BPM, kept as two scenes, DRUMS and BEAT, and a tiny performance with them'},
-    {num:'2',title:'Make it a song',short:'Song',href:'./song.html',slug:'song',steps:24,minutes:[60,90],made:'a 16-bar song, about 43 seconds at 90 BPM, from four scenes in a 10-position song list'},
+    {num:'2',title:'Make it a song',short:'Song',href:'./song.html',slug:'song',steps:33,minutes:[60,90],made:'a 16-bar song, about 43 seconds at 90 BPM, from four scenes in a 10-position song list'},
     {num:'3',formerly:'07',title:'Sample, chop & resample',short:'Sample',href:'./sampling.html',slug:'sampling',steps:88,minutes:[120,180],made:'a drum kit from your own voice, a reversed snare, a recording chopped into slices and your whole beat bounced onto one pad, in project 7'},
     {num:'4',formerly:'08',title:'Play & perform',short:'Perform',href:'./perform.html',slug:'perform',steps:110,minutes:[120,180],made:'a live performance of your own beat: played with feel, with a bassline in a scale, rolled hats, effects and live scene changes, and a recording of it'},
     {num:'5',formerly:'09',title:'Full hip-hop beat',short:'Hip-hop',href:'./hiphop.html',slug:'hiphop',legacy:'koii-hiphop-vocal-checklist-v2',steps:109,minutes:[120,180],made:'a 64-bar old-school hip-hop beat with a sung phrase you sampled, six scenes and a six-position song list, in project 8'},

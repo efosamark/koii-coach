@@ -227,7 +227,7 @@ def run_target(browser, artifacts_dir, name, url, results):
         # 02: the step on screen survives a reload (the address holds it).
         page.locator('#player-next').click()
         page.reload(wait_until='networkidle')
-        page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'song-list-first-half'")
+        page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'song-position-1'")
         result['checks'].append('A 02 step survives a reload')
 
         page.goto(absolute('./lab.html'), wait_until='networkidle')
