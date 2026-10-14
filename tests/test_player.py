@@ -69,7 +69,7 @@ def test_risky_steps_check_before_the_press_and_undo_after(name):
 # Chapters rewritten to the glance budget (plan 5.3, P7). Each step: a title of at most 48 characters; Do at most 26
 # words in at most 3 sentences (a risk step: Before you press and Do together at most 40); Check at most 15 words; undo
 # at most 12. Add a chapter here when it is rewritten.
-STRUCTURED = ['sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house']
+STRUCTURED = ['sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house', 'setup']
 
 
 def _words(h):
@@ -162,7 +162,7 @@ def test_skip_a_run_of_optional_steps(run):
 def test_part_checkpoint_not_quite(run):
     page = run.page
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'new'}})
-    run.go('./setup.html#s-listen-headphones')
+    run.go('./setup.html#s-listen-headphones-volume')  # the last step of Part 1
     page.locator('#player-next').click()
     page.locator('#player-check').wait_for(state='visible')
     assert 'Part 1 done' in page.locator('#player-check h2').text_content()
@@ -172,7 +172,7 @@ def test_part_checkpoint_not_quite(run):
     assert run.get('koii-coach-meta')['checkpoints'] == {'setup': {'part-1': 'not-yet'}}
     page.locator('#player-check [data-redo]').click()
     page.wait_for_function(STEP + " === 'power-batteries'")
-    assert run.get('koii-coach-ch-setup')['done'] == ['listen-headphones'], 'A checkpoint answer never changes ticks'
+    assert run.get('koii-coach-ch-setup')['done'] == ['listen-headphones-volume'], 'A checkpoint answer never changes ticks'
 
 
 @pytest.mark.browser

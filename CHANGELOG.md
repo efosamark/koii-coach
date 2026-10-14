@@ -4,6 +4,16 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.10
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.
+
+Chapter 0 · Set up your K.O. II, rewritten for a glance, like Chapters 3 to 7 (36 steps became 53). Your ticks and links carry over.
+
+- Each step has a title, at most three moves and one short Check; reasons and fixes are under "Why" and "Not working?".
+- Warnings now stand before the press they guard: "Don't unplug the cable …" before installing the update, "Don't use its delete or restore features today." before saving the backup, the input socket before plugging in headphones, X and Y before SOUND, and "never format" before the alternatives. An erased library's fixes moved under "Not working?" of "Library complete? Move on", so most people tick one step there.
+- Changed wording: "You should hear them from the built-in speaker." with "A new K.O. II comes with sounds in projects 1–5." under Why (was one sentence joined by "so"); "The MAIN icon is lit and the display shows a position such as 1.1.1." with "The three numbers are bar, beat and step." as a note (was "a position made of three numbers, such as 1.1.1 (bar, beat, step)"); "The SOUND icon lights and the display shows the sample number of the selected pad." (was "a number, the sample on the selected pad"); "Read the icon table below." (was "Then read …"); "The USB MIDI icon lights, and the utility finds your K.O. II." (was "the USB MIDI icon on the K.O. II lights"); and "(the tool itself suggests Chrome or Brave)" and ", and use − and + to hear a few neighbours each time" became their own sentences.
+
 ## 2026.10.14.9
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.
