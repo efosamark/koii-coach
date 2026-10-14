@@ -247,7 +247,7 @@ function update(){
   const fw=window.CoachProgress?CoachProgress.v2().firmware:'2.5',num={'2.5':2.5,'2':2,older:1}[fw],
     name={'2.5':'OS 2.5.x','2':'OS 2.0.x',older:'an OS older than 2.0'}[fw],upd='<a href="./setup.html">Chapter 0 · Set up your K.O. II</a> shows how';
   steps.forEach(li=>{
-    const os=li.dataset.os;if(!os||!/^\d+(\.\d+)?$/.test(os))return;
+    const os=li.dataset.os;if(!os||!/^\d+(\.\d+){0,2}$/.test(os))return;
     const b=document.createElement(num>=parseFloat(os)?'p':'div'),tag='Needs OS '+os+'+';
     if(num>=parseFloat(os)){b.className='badge ok';b.textContent=tag+' · your '+name+' has it.';}
     else{b.className='badge warn';b.innerHTML='<b>'+tag+'</b> '+(num?'You chose '+name+' in <a href="./settings.html">Settings</a>, which doesn’t have this. Update to the latest OS first ('+upd+'), or skip this step.':'Not sure which OS you have? Update to the latest OS first ('+upd+'), then choose it in <a href="./settings.html">Settings</a>.');}

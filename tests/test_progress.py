@@ -152,9 +152,9 @@ def test_split_steps_keep_their_ticks(run):
               'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
     run.go('./index.html')
     rec = run.get('koii-coach-ch-sampling')
-    assert rec['done'] == ['open-empty-project', 'set-tempo-grid', 'check-empty-project', 'set-grid-16'] and rec['n'] == 4 and rec['m'] == 1, rec
+    assert rec['done'] == ['open-empty-project', 'set-tempo-grid', 'check-empty-project', 'set-grid-16'] and rec['n'] == 4 and rec['m'] == 2, rec
     run.go('./sampling.html#all')
-    assert page.locator('#progress-count').text_content().startswith('4 of 88'), page.locator('#progress-count').text_content()
+    assert page.locator('#progress-count').text_content().startswith('4 of 89'), page.locator('#progress-count').text_content()
     assert run.get('koii-coach-ch-sampling')['cur'] == 'choose-mic-source', 'The place to continue at stays'
     # A record made now starts at the current level.
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
@@ -165,18 +165,18 @@ def test_split_steps_keep_their_ticks(run):
 
 
 def test_split_batches_apply_in_order_once(run):
-    """Chapter 4 has two batches: v1 (the 2026.10.14.6 rewrite) split pad-shift-layer in two, v2 (2026.10.14.18)
-    split its first part again. Each runs once, oldest first, and m ends at the newest."""
+    """Chapter 4's batches: v1 (the 2026.10.14.6 rewrite) split pad-shift-layer in two, v2 (2026.10.14.18) split its
+    first part again, v3 (2026.10.14.21) added the recap. Each runs once, oldest first, and m ends at the newest."""
     seed = lambda rec: run.seed({'koii-coach-ch-perform': rec, 'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
     seed({'v': 1, 'done': ['pad-shift-layer'], 'last': 'pad-shift-layer', 'n': 1})
     run.go('./index.html')
     rec = run.get('koii-coach-ch-perform')
-    assert rec['done'] == ['pad-shift-layer', 'pad-shift-layer-play', 'pad-shift-layer-hold'] and rec['n'] == 3 and rec['m'] == 2, rec
+    assert rec['done'] == ['pad-shift-layer', 'pad-shift-layer-play', 'pad-shift-layer-hold'] and rec['n'] == 3 and rec['m'] == 3, rec
     # Already at v1: only v2 runs.
     seed({'v': 1, 'done': ['pad-shift-layer', 'pad-shift-layer-play'], 'last': 'pad-shift-layer-play', 'n': 2, 'm': 1})
     run.go('./index.html')
     rec = run.get('koii-coach-ch-perform')
-    assert rec['done'] == ['pad-shift-layer', 'pad-shift-layer-play', 'pad-shift-layer-hold'] and rec['m'] == 2, rec
+    assert rec['done'] == ['pad-shift-layer', 'pad-shift-layer-play', 'pad-shift-layer-hold'] and rec['m'] == 3, rec
     # At v2: a part unticked later stays unticked.
     seed({'v': 1, 'done': ['pad-shift-layer'], 'last': 'pad-shift-layer', 'n': 1, 'm': 2})
     run.go('./index.html')
@@ -223,3 +223,17 @@ def test_clean_up_after_eight_weeks(run, tmp_path):
     page.locator('#toast', has_text='Progress loaded').wait_for()
     run.go('./hiphop.html')
     assert run.get('koii-coach-ch-hiphop')['done'][:3] == ['note-original-scene', 'copy-to-work-scene', 'group-a-two-bars'], 'The old file’s ticks arrive'
+
+
+def test_a_finished_chapter_stays_finished_with_its_new_recap(run):
+    """2026.10.14.21 added a recap step to Chapters 0 and 3-7. A learner who had finished one keeps it finished."""
+    rec = {'v': 1, 'done': ['keep-samples'], 'last': 'keep-samples', 'n': 1, 'm': 1}
+    run.seed({'koii-coach-ch-sampling': rec, 'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./index.html')
+    assert run.get('koii-coach-ch-sampling')['done'] == ['keep-samples', 'sampling-recap'], 'The recap is ticked with the last step'
+    # A record made now starts at the newest level, so ticking the last step later never ticks the recap.
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./sampling.html#all')
+    run.page.evaluate("() => CoachChapter.setDone('keep-samples', true)")
+    run.go('./index.html')
+    assert run.get('koii-coach-ch-sampling')['done'] == ['keep-samples']

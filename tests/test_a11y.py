@@ -9,7 +9,7 @@
 - Forced colours (Windows contrast themes): a lit key, a hit in the Rhythm lab, a ticked step and the meter keep a
   visible state. Screenshots go to the artifacts folder.
 - Without JavaScript every page still reads: every step of every chapter is there to open, nothing scrolls sideways,
-  and the Rhythm lab shows the recipe to copy.
+  the Rhythm lab shows the recipe to copy, and the 404 page three folders deep keeps its links and stylesheet.
 Run after a build, like test_smoke.py:  python -m pytest tests/test_a11y.py
 """
 import hashlib
@@ -216,5 +216,10 @@ def test_every_page_reads_without_javascript(browser, site_url):
             found.append(f"{href}: {r['text']} characters, hidden steps {r['hidden'][:5]}, sideways scroll {r['wide']}")
         if href == 'lab.html' and r['lab'] < 16:
             found.append('lab.html: the recipe positions are missing')
+    # An unknown address three folders deep: the 404 page's links and stylesheet still work (its static <base>).
+    page.goto(urljoin(site_url, 'a/b/c'))
+    deep = page.evaluate("""() => ({home: document.querySelector('a.btn.primary').href, styled: getComputedStyle(document.querySelector('a.btn.primary')).display !== 'inline'})""")
+    if deep != {'home': urljoin(site_url, 'index.html'), 'styled': True}:
+        found.append(f'404 three folders deep: {deep}')
     context.close()
     assert found == [], 'Pages that do not read without JavaScript:\n' + '\n'.join(found)

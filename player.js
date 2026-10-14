@@ -21,6 +21,7 @@
                                         "Yes, I have checked" is pressed (per visit, never saved)
                                         (each risk tag links to its entry on safety.html)
      li[data-setting="401"]             neutral "System setting 401" tag
+     li[data-os="2.5"]                  "Needs OS 2.5+" tag (chapter.js's badge then shows only when it warns)
      li[data-optional]                  "Optional" tag; a run of optional steps in one part can be skipped at once
      li[data-kind="recap"]              the chapter's recap: ticked by itself on the chapter-complete screen once
                                         every other step is done; its ul.step-moves show there as "New moves"
@@ -152,11 +153,17 @@ function answer(P,a){
 const RISK={erase:['caution','Clears notes','recoverable'],delete:['danger','Deletes · no undo','delete-sample'],overwrite:['danger','Overwrites · no undo','crop-sample']};
 const gates=new Map(),heads=new Map();
 steps.forEach(li=>{
-  const risk=RISK[li.dataset.risk]||null,setting=clean(li.dataset.setting);
+  const risk=RISK[li.dataset.risk]||null,setting=clean(li.dataset.setting),os=/^\d+(\.\d+){0,2}$/.test(li.dataset.os||'')?li.dataset.os:'';
   const isCheck=/^Checkpoint\b/.test(firstBold(li.querySelector(':scope > .step-do')||li));
   if(isCheck)li.classList.add('is-checkpoint');
-  const tags=[risk?`<a class="tag ${risk[0]}" href="./safety.html#${risk[2]}">${risk[1]}</a>`:'',setting?`<span class="tag info">System setting ${esc(setting)}</span>`:'',
+  const tags=[risk?`<a class="tag ${risk[0]}" href="./safety.html#${risk[2]}">${risk[1]}</a>`:'',setting?`<span class="tag info">System setting ${esc(setting)}</span>`:'',os?`<span class="tag os">Needs OS ${os}+</span>`:'',
     'optional' in li.dataset?'<span class="tag">Optional</span>':'',isCheck?'<span class="tag done">Checkpoint</span>':'','<span class="tag skipped-tag" hidden>Skipped</span>'].join('');
+  // Every step names its source (plan 6.7): a step without its own p.step-source shows its part's "Official guide"
+  // links in the step player (the list shows them once per part).
+  if(!li.querySelector(':scope > .step-source')){
+    const g=(partOf(li)||{notes:[]}).notes.find(e=>e.tagName==='P'&&/^\s*Official guide/.test(e.textContent));
+    if(g){const s=copy(g);s.className='step-source pl-own part-source';li.append(s);}
+  }
   const [k,n]=inPart(li);
   // The step's place in its part ("2 of 5"); the list keeps its own chapter-wide numbers.
   const head=el('div','step-head pl-own',`<span class="step-num"><span class="sr">Step </span>${k} of ${n}</span>${tags}`);
@@ -482,7 +489,8 @@ function showCheck(P,opt){
     `<div class="pc-fix" hidden><div class="pc-fix-text"></div><p><button class="btn" type="button" data-redo>${icon('back')}Redo Part ${P.n} from its first step</button></p></div>`;
   if(P.checkpoint){const q=copy(P.checkpoint);q.className='';checkCard.querySelector('.pc-q').append(...q.childNodes);}
   const fix=checkCard.querySelector('.pc-fix');
-  if(P.ifnot)fix.querySelector('.pc-fix-text').append(copy(P.ifnot));
+  if(P.ifnot)fix.querySelector('.pc-fix-text').innerHTML=fixCards(P);
+  fix.querySelectorAll('[data-redo-step]').forEach(b=>b.addEventListener('click',()=>{const li=byId.get(b.dataset.redoStep);if(li){C.setCurrent(li.dataset.step);showStep(li);}}));
   const nb=checkCard.querySelector('.pc-not');
   if(nb)nb.addEventListener('click',()=>{fixOpen=!fixOpen;nb.setAttribute('aria-expanded',String(fixOpen));fix.hidden=!fixOpen;if(fixOpen)answer(P,'not-yet');});
   fix.querySelector('[data-redo]').addEventListener('click',()=>{C.setCurrent(P.steps[0].dataset.step);showStep(P.steps[0]);});
@@ -491,6 +499,32 @@ function showCheck(P,opt){
   document.title='Part '+P.n+' done / '+baseTitle;
   scrollTo(0,0);
   if(!opt||opt.focus!==false)checkCard.focus({preventScroll:true});
+}
+// "Not quite": the part's "If it doesn't" text as one card per symptom (plan 5.9). A sentence ending in "?" starts a
+// card ("No bass? Tap B…"), and so does "symptom: fix" ("the bass repeats after one bar: repeat…"); the sentences
+// after it are its fix. A fix that links to a step of this chapter gets a "Redo step N" button. Text without a
+// symptom stays one card.
+function fixCards(P){
+  const c=copy(P.ifnot),b=c.querySelector('b');
+  if(b&&/^If it doesn['’]t/i.test(b.textContent))b.remove();
+  const plain=h=>h.replace(/<[^>]+>/g,'').trim(),cap=h=>h.replace(/^([^<]*?)([a-z])/,(m,a,l)=>a+l.toUpperCase());
+  const parts=c.innerHTML.trim().replace(/K\.O\. /g,'K.O.\u00a0').replace(/([.?!])\s+(?=[A-Z0-9<“"])/g,'$1\u0000').split('\u0000').map(s=>s.trim()).filter(Boolean);
+  // With "?" symptoms, a "label: …" sentence starts a card only for a short label ("USB:", "Older OS:"), never an instruction.
+  const asks=parts.some(s=>/\?$/.test(plain(s))),cards=[];
+  const label=h=>{const w=plain(h).split(/\s+/);return !asks||w.length<=3&&!/^(Try|Press|Hold|Tap|Go|Use|Check|Repeat|Select|Set|Turn|Open|Stop|Then)$/.test(w[0]);};
+  parts.forEach(s=>{
+    const last=cards[cards.length-1],k=s.indexOf(': ');
+    if(/\?$/.test(plain(s)))cards.push({sym:s,fix:[]});
+    else if(k>0&&(!last||last.fix.length)&&!/<kbd/.test(s.slice(0,k))&&plain(s.slice(0,k)).length<plain(s).length*0.7&&label(s.slice(0,k)))cards.push({sym:s.slice(0,k),fix:[s.slice(k+2)]});
+    else if(last)last.fix.push(s);
+    else cards.push({sym:'',fix:[s]});
+  });
+  return cards.map(x=>{
+    const fix=x.fix.join(' '),m=/href="#s-([^"]+)"/.exec(fix),li=m&&byId.get(m[1]);
+    let redo='';
+    if(li){const [k]=inPart(li),Q=partOf(li);redo=`<p><button class="btn" type="button" data-redo-step="${esc(li.dataset.step)}">${icon('back')}Redo ${Q===P?'':'Part '+Q.n+', '}step ${k}</button></p>`;}
+    return`<div class="fix-card">${x.sym?`<p class="fix-sym">${cap(x.sym)}</p>`:''}${fix?`<p>${cap(fix)}</p>`:''}${redo}</div>`;
+  }).join('');
 }
 // "You made: …" from the page's "You will make" line.
 function made(){

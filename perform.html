@@ -135,7 +135,11 @@
           </li>
           <li data-step="live-fix" data-risk="erase">
             <h3 class="step-title">Not happy? Undo, or erase while it plays</h3>
-            <p class="step-do">Not happy? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit and record again. To remove hits while the beat plays, hold <kbd class="key">ERASE</kbd> and <kbd class="key pad">A2</kbd> while they sound; the guide calls this playback erase.</p>
+            <p class="preflight">Only in LIVE, your practice copy: hold <kbd class="key">MAIN</kbd> to check.</p>
+            <p class="step-do">Not happy? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit and record again. Or, while it plays, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">A2</kbd></kbd> as the unwanted hits sound.</p>
+            <p class="step-undo">Too much gone? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p>
+            <p class="step-check"><span class="sr">Check: </span>Only the hits you wanted are gone; the rest repeats.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide calls erasing while the beat plays “playback erase”.</p></details></div>
           </li>
           <li data-step="live-fix-velocity">
             <h3 class="step-title">Fix a ghost note that is too loud</h3>
@@ -163,6 +167,8 @@
             <h3 class="step-title">Optional: clear the hats in LIVE</h3>
             <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be LIVE.</p>
             <p class="step-do">Stopped, with group <kbd class="key">A</kbd> selected, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A3</kbd></kbd> until <samp class="lcd">TRK</samp> blinks to clear the hats in LIVE only.</p>
+            <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
+            <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: no hats, everything else plays. Stop.</p>
           </li>
           <li data-step="live-swing-record" data-optional>
             <h3 class="step-title">Optional: record swung hats</h3>
@@ -180,7 +186,7 @@
             <h3 class="step-title">Set the metronome back (401)</h3>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, type <kbd class="key">4</kbd>, <kbd class="key">0</kbd>, <kbd class="key">1</kbd>, press <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd> to return the metronome to its default.</p>
             <p class="step-note">Keep velocity on (<samp class="lcd">301</samp>) if you like it, or type <samp class="lcd">300</samp> the same way to switch it off.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>With velocity on, notes you write with held <kbd class="key">RECORD</kbd> + pad may also come out quieter if you press softly.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>With velocity on, notes you write with held <kbd class="key">RECORD</kbd> + pad also come out quieter when you press softly.</p></details></div>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> LIVE plays your own snare backbeat with a few soft ghost notes, and BEAT still plays the snare you placed.</p>
@@ -203,8 +209,10 @@
           </li>
           <li data-step="keys-copy-clear" data-risk="erase">
             <h3 class="step-title">Copied BEAT? Clear its bass</h3>
+            <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be BASSLINE, not BEAT.</p>
             <p class="step-do">Then, stopped with <kbd class="key">B</kbd> selected, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">B1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks to clear its bass notes.</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
+            <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: drums only, no bass. Stop.</p>
           </li>
           <li data-step="keys-two-bars">
             <h3 class="step-title">Make group B two bars long</h3>
@@ -223,13 +231,15 @@
             <p class="step-do">For a deeper bass, hold <kbd class="key">KEYS</kbd> and press <kbd class="key">−</kbd> once: every pad drops an octave.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Too boomy on small speakers? Hold <kbd class="key">KEYS</kbd> and press <kbd class="key">+</kbd> to go back up.</p></details></div>
           </li>
-          <li data-step="keys-key-scale">
+          <li data-step="keys-key-scale" data-os="2.5">
             <h3 class="step-title">Choose a key</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Hold <kbd class="key">KEYS</kbd> and slowly turn <kbd class="key knob">X</kbd>: the display shows the key, the note the scale is built on.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Over drums alone any key works, so pick one.</p></details></div>
           </li>
-          <li data-step="keys-scale">
+          <li data-step="keys-scale" data-os="2.5">
             <h3 class="step-title">Choose the blues scale</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Still holding <kbd class="key">KEYS</kbd>, turn <kbd class="key knob">Y</kbd> to choose the scale. OS 2.5 added BLU (blues), H.MI (harmonic minor) and M.MI (melodic minor); choose BLU for this bassline.</p>
           </li>
           <li data-step="keys-scale-play">
@@ -260,7 +270,7 @@
             <p class="step-do">Press <kbd class="key">KEYS</kbd> again to switch KEYS off. Tap <kbd class="key">A</kbd>, then <kbd class="key pad">A1</kbd> and <kbd class="key pad">A2</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>You should hear kick and snare, not one sound at different pitches.</p>
             <p class="step-note">Check the display: the piano icon, KEYS MODE (official icon map: “all 12 pads in ‘chromatic’ mode”), should now be off. Finally, hold <kbd class="key">MAIN</kbd> and select BEAT: it still has its two original bass pulses.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide shows how to switch KEYS on but not off, and no owner report we found says either, so this step tries <kbd class="key">KEYS</kbd> again. The piano icon and the pads tell you whether it worked.</p></details><details class="step-more"><summary>Not working?</summary><p>Piano icon still lit, or the pads still play one sound at many pitches? Press <kbd class="key">MAIN</kbd> and tap <kbd class="key">A</kbd> again. Then tell us what worked on your unit with the “This step doesn’t match my K.O. II” link, so this step can say it for sure.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide shows how to switch KEYS on but not off, and no owner report we found says either, so this step tries <kbd class="key">KEYS</kbd> again. The piano icon and the pads tell you whether it worked.</p></details><details class="step-more"><summary>Not working?</summary><p>Piano icon still lit, or the pads still play one sound at many pitches? Try <kbd class="key">MAIN</kbd>, then tap <kbd class="key">A</kbd> again: no source says this works either. Tell us what worked on your unit with the “This step doesn’t match my K.O. II” link, so this step can say it for sure.</p></details></div>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> BASSLINE plays the drums plus your own two-bar bassline, and every note fits the scale.</p>
@@ -273,6 +283,7 @@
         <ol start="35">
           <li data-step="repeat-copy" data-note="ROLL" data-risk="erase">
             <h3 class="step-title">Copy BEAT as ROLL, clear the hats</h3>
+            <p class="preflight">Clear only in the copy: after <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> the number must change.</p>
             <p class="step-do">In project 6, make a practice copy of BEAT and write it as ROLL. Tap <kbd class="key">A</kbd>. Stopped, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A3</kbd></kbd> until <samp class="lcd">TRK</samp> blinks to clear the hats.</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: kick, snare and bass only.</p>
@@ -318,18 +329,21 @@
             <h3 class="step-title">Set the grid back to 16</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd>, turn <kbd class="key knob">X</kbd> back to <samp class="lcd">16</samp>, then press <kbd class="key">MAIN</kbd>.</p>
           </li>
-          <li data-step="repeat-latch">
+          <li data-step="repeat-latch" data-os="2.0">
             <h3 class="step-title">Set the repeat to one per beat</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hands-free hats: press <kbd class="key">PLAY</kbd>. Press <kbd class="key">TIMING</kbd> and turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">4</samp>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>One hat per beat (1/1, 1/2 and 1/4 arrived in OS 2.0).</p></details></div>
           </li>
-          <li data-step="repeat-latch-on">
+          <li data-step="repeat-latch-on" data-os="2.0">
             <h3 class="step-title">Latch the hat</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">While still in TIMING, hold <kbd class="key">SHIFT</kbd> and tap <kbd class="key pad">A3</kbd>: the hat keeps repeating after you let go.</p>
             <p class="step-note">Play <kbd class="key pad">A1</kbd> and <kbd class="key pad">A2</kbd> on top for fun; RECORD is off, so nothing is written.</p>
           </li>
-          <li data-step="repeat-latch-off">
+          <li data-step="repeat-latch-off" data-os="2.0">
             <h3 class="step-title">Stop the latch and reset</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">To stop it, hold <kbd class="key">SHIFT</kbd> and tap <kbd class="key pad">A3</kbd> again while in TIMING. Stop playback, press <kbd class="key">TIMING</kbd>, turn <kbd class="key knob">X</kbd> back to <samp class="lcd">16</samp> and press <kbd class="key">MAIN</kbd>.</p>
           </li>
           <li data-step="arp-sound">
@@ -355,8 +369,9 @@
             <h3 class="step-title">Switch on KEYS at the 16 grid</h3>
             <p class="step-do">Tap <kbd class="key pad">C2</kbd> so it is selected, then press <kbd class="key">KEYS</kbd>. Press <kbd class="key">PLAY</kbd>. Press <kbd class="key">TIMING</kbd> and turn <kbd class="key knob">X</kbd> to <samp class="lcd">16</samp>; the TIMING interval sets the arpeggio's speed.</p>
           </li>
-          <li data-step="arp-play-hold">
+          <li data-step="arp-play-hold" data-os="2.5">
             <h3 class="step-title">Play an arpeggio</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Now hold <kbd class="key">TIMING</kbd> and press and hold three pads, one after another.</p>
             <p class="step-check"><span class="sr">Check: </span>You should hear the notes one at a time, in the order you pressed them.</p>
             <p class="step-note">Let go to stop. Try <samp class="lcd">8</samp> for a slower arpeggio, then stop playback.</p>
@@ -423,9 +438,12 @@
             <p class="step-do">Now hold <kbd class="key">FADER</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The pitch pad blinks, because functions with recorded moves blink.</p>
           </li>
-          <li data-step="fx-erase-move" data-risk="erase">
+          <li data-step="fx-erase-move" data-os="2.5" data-risk="erase">
             <h3 class="step-title">Erase the pitch moves only</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
+            <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be FXJAM.</p>
             <p class="step-do">Stopped, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">FADER</kbd></kbd> and press the pitch pad.</p>
+            <p class="step-undo">Umbrella lit? <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> undoes it; otherwise record the move again.</p>
             <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: the drums no longer bend.</p>
             <p class="step-note">Stop. To erase every fader move in this group and pattern at once: stopped, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">FADER</kbd></kbd> for 2 seconds, until <samp class="lcd">FDR</samp> blinks and then <samp class="lcd">DEL</samp> shows.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This OS 2.5 move erases the recorded moves of that one fader function only.</p></details></div>
@@ -467,8 +485,9 @@
             <h3 class="step-title">Make it quieter than the kick</h3>
             <p class="step-do">Turn <kbd class="key knob">X</kbd> so it is quieter than the kick. Press <kbd class="key">MAIN</kbd>.</p>
           </li>
-          <li data-step="pad-copy-paste">
+          <li data-step="pad-copy-paste" data-os="2.5">
             <h3 class="step-title">Copy A1’s notes onto A4</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Stopped in MAIN: hold <kbd class="key pad">A1</kbd>, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd>, and release everything. Now hold <kbd class="key pad">A4</kbd>, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>, and release.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This copies <kbd class="key pad">A1</kbd>'s notes only (OS 2.5). Without a pad held, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> copies a whole bar or pattern instead.</p></details></div>
           </li>
@@ -482,8 +501,9 @@
             <h3 class="step-title">Open timing correct</h3>
             <p class="step-do">With playback stopped, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">TIMING</kbd></kbd> to open timing correct.</p>
           </li>
-          <li data-step="pad-shift-layer-hold">
+          <li data-step="pad-shift-layer-hold" data-os="2.5">
             <h3 class="step-title">A4: move the layer six ticks later</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="preflight">Careful: in timing correct, a plain tap on a pad while stopped quantizes all its notes back onto the grid.</p>
             <p class="step-do">Hold <kbd class="key pad">A4</kbd> and, still holding it, press <kbd class="key">+</kbd> six times, then release.</p>
             <p class="step-note">Holding a pad while the beat plays quantizes its notes as they pass, so keep playback stopped.</p>
@@ -542,10 +562,11 @@
             <p class="step-check"><span class="sr">Check: </span>The change lands at the end of the pattern, though you chose it early.</p>
             <p class="step-note">Work through your running order, then press <kbd class="key">PLAY</kbd> to stop.</p>
           </li>
-          <li data-step="scene-numpad">
+          <li data-step="scene-numpad" data-os="2.0">
             <h3 class="step-title">Try a direct jump to a scene</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Try a direct jump while stopped: hold <kbd class="key">MAIN</kbd> and type a scene number on the pads, then press <kbd class="key">PLAY</kbd> to check.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says MAIN + numpad “can now always switch to any scene 1-99” (OS 2.0+). It also says to hold <kbd class="key">MAIN</kbd> and press pad 1–9 to change project, without explaining how the two are told apart.</p></details><details class="step-more"><summary>Not working?</summary><p>If the music is suddenly not yours, you changed project. Hold <kbd class="key">MAIN</kbd> and press your project's pad (6 if you followed Chapter 1) to go back, and switch scenes with <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd></kbd> when performing.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says MAIN + numpad “can now always switch to any scene 1-99” (OS 2.0+). It also says to hold <kbd class="key">MAIN</kbd> and press pad 1–9 to change project. A quick tap switches scene; keeping the pad held until the display shows P and its number changes project, as the guide’s picture (P 1) and owners show.</p></details><details class="step-more"><summary>Not working?</summary><p>If the music is suddenly not yours, you changed project. Hold <kbd class="key">MAIN</kbd> and press your project's pad (6 if you followed Chapter 1) to go back, and switch scenes with <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd></kbd> when performing.</p></details></div>
           </li>
           <li data-step="scene-perform">
             <h3 class="step-title">Perform your running order</h3>
@@ -561,10 +582,13 @@
             <p class="preflight">Only ever do this on a scene whose number you have just checked.</p>
             <p class="step-do">Hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">MAIN</kbd></kbd> for 2 seconds: <samp class="lcd">CLR</samp> shows, because a scene with notes is cleared, not deleted.</p>
             <p class="step-noundo">No undo: this course does not rely on undo for a cleared or deleted scene.</p>
+            <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: TRASH is silent. Stop.</p>
           </li>
           <li data-step="scene-erase-delete" data-risk="delete">
             <h3 class="step-title">Delete the empty TRASH scene</h3>
+            <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be still TRASH.</p>
             <p class="step-do">Hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">MAIN</kbd></kbd> for 2 seconds again.</p>
+            <p class="step-noundo">No undo: a deleted scene cannot be brought back.</p>
             <p class="step-check"><span class="sr">Check: </span>Hold <kbd class="key">MAIN</kbd> to see which scene you are in now.</p>
             <p class="step-note">Then select the scene you copied and press <kbd class="key">PLAY</kbd>: it should be unchanged.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The scene is now empty, so if it is not in the song list, <samp class="lcd">DEL</samp> blinks and it is deleted.</p></details></div>
@@ -607,8 +631,9 @@
             <p class="step-note">Stop.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This doubles C's pattern to four bars and copies its notes into the new bars. The RECORD icon “blinks when armed to record”, says the official icon map.</p></details></div>
           </li>
-          <li data-step="song-assign">
+          <li data-step="song-assign" data-os="2.0">
             <h3 class="step-title">Open the song list</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and press <kbd class="key">ENTER</kbd> to open the song list.</p>
           </li>
           <li data-step="song-assign-break2">
@@ -659,26 +684,29 @@
             <h3 class="step-title">Play MELODY</h3>
             <p class="step-do">In project 6, hold <kbd class="key">MAIN</kbd>, select MELODY (drums, bass and melody), release and press <kbd class="key">PLAY</kbd>. Leave it running for the whole section.</p>
           </li>
-          <li data-step="sc-open">
+          <li data-step="sc-open" data-os="2.0">
             <h3 class="step-title">Open the sidechain settings</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">FX</kbd></kbd>: the output settings (the master compressor) open. Press <kbd class="key">+</kbd> once to reach the sidechain settings.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">OUT</samp>, then <samp class="lcd">S.Ch</samp> after <kbd class="key">+</kbd>.</p>
             <p class="step-note">Do not turn <kbd class="key knob">X</kbd> or <kbd class="key knob">Y</kbd> yet.</p>
           </li>
-          <li data-step="sc-source">
+          <li data-step="sc-source" data-os="2.0">
             <h3 class="step-title">A1: make the kick the trigger</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Choose the kick as the trigger: hold <kbd class="key">A</kbd>, press <kbd class="key pad">pad 1</kbd> (<kbd class="key pad">A1</kbd>), then release.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Sidechain on the K.O. II reacts to notes, so every <kbd class="key pad">A1</kbd> note now starts a dip.</p></details></div>
           </li>
-          <li data-step="sc-destination">
+          <li data-step="sc-destination" data-os="2.0">
             <h3 class="step-title">Choose B and C to dip</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="preflight">Do not add A, or the drums would dip under their own kick.</p>
             <p class="step-do">Choose which groups dip: hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">B</kbd>, then hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">C</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>You may already hear the bass and melody dip on every kick.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The next step sets how much.</p></details></div>
           </li>
-          <li data-step="sc-shape">
+          <li data-step="sc-shape" data-os="2.0">
             <h3 class="step-title">Shape the dip with X and Y</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Turn <kbd class="key knob">X</kbd> (the length of the dip) and <kbd class="key knob">Y</kbd> (its shape) a little at a time.</p>
             <p class="step-check"><span class="sr">Check: </span>The kick sits clearly on top, and the melody swells back between kicks.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A short X gives a quick dip right under the kick; a long X gives a big, breathing pump. The guide’s pictures show <samp class="lcd">LEN</samp> on the display for the length and <samp class="lcd">ShP</samp> for the shape.</p></details></div>
@@ -697,8 +725,9 @@
         <summary><h2 class="part-title">Part 9 · Record your performance</h2></summary>
         <p><b>Goal:</b> capture your live song as an audio file on a phone or computer.</p>
         <ol start="106">
-          <li data-step="rec-usb">
+          <li data-step="rec-usb" data-os="2.5">
             <h3 class="step-title">Connect the K.O. II over USB-C</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Connect the K.O. II to your phone or computer with a USB-C cable, plus any adapter your phone needs.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Since OS 2.5 it works as a USB audio device with “any class compliant USB audio host”.</p></details></div>
           </li>
@@ -726,6 +755,12 @@
             <p class="step-do">Connect a stereo 3.5 mm cable to the line input of an audio interface or recorder, and start with low levels.</p>
             <p class="step-note">Either way your recording is audio only: back up the project itself with the official EP sample tool on a computer.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>No USB audio? Use the 3.5 mm output, a stereo headphone/line output.</p></details></div>
+          </li>
+          <li data-step="perform-recap" data-kind="recap">
+            <h3 class="step-title">Your performance moves</h3>
+            <p class="step-do">Read the eight moves below, then try one from memory without reading this app.</p>
+            <p class="step-check"><span class="sr">Check: </span>You can record live, play KEYS, repeat, add FX and pump the mix.</p>
+            <ul class="step-moves"><li>Record live: at <samp class="lcd">1.1.1</samp> tap <kbd class="key">RECORD</kbd>, press <kbd class="key">PLAY</kbd>, play after the count-in, then press <kbd class="key">RECORD</kbd>.</li><li><kbd class="key">TIMING</kbd>: <kbd class="key knob">X</kbd> sets the grid, <kbd class="key">−</kbd> quantize, <kbd class="key">+</kbd> free time, <kbd class="key knob">Y</kbd> swing.</li><li>KEYS: select a pad, press <kbd class="key">KEYS</kbd>; hold it and turn <kbd class="key knob">X</kbd> for the key, <kbd class="key knob">Y</kbd> for the scale.</li><li>Note repeat: hold <kbd class="key">TIMING</kbd> and a pad; in TIMING, <kbd class="key">SHIFT</kbd> + the pad latches it.</li><li>Punch-in FX: while playing, hold <kbd class="key">FX</kbd> and press a pad.</li><li>Copy a pad’s notes: hold it, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd>; hold another, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>.</li><li>Next scene in time: hold <kbd class="key">MAIN</kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> before the change lands.</li><li>Sidechain: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">FX</kbd></kbd>, <kbd class="key">+</kbd>; hold a group button and press a pad for the source, <kbd class="key">SHIFT</kbd> + a group to dip.</li></ul>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> a file on your phone or computer plays your song, including your live effects.</p>

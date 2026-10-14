@@ -29,7 +29,7 @@ The course is written for a K.O. II on **OS 2.5.1**, the newest release (3 July 
 
 **Tools** you can open any time, from the menu or Home: **Learn** (short lessons on the main functions), **Control map** (tap a control to see what it does), **Rhythm lab** (try drum patterns on a grid in the browser), **Troubleshooting** (symptom-first answers, with their own search), **Glossary**, **Cheat sheet** (the moves and reference tables of every chapter, and the system settings), **Safety and erasing** (every action that erases or overwrites something, and its undo) and **Settings** (your OS version, keeping the screen on, larger step text, Done · Next on the left for left hands, your progress file). The search button in the app bar searches every step, lesson, help topic and word.
 
-**Projects on the device:** a new K.O. II has factory sounds in projects 1–5, and projects 6–9 are empty. The course uses project 6 for Chapters 1, 2 and 4, project 7 for Chapter 3, project 8 for Chapter 5, and project 9 as a scratch project in Chapter 0 and then for Chapter 6. That uses all four empty projects, so chapter 11 shows how to back up and reuse one.
+**Projects on the device:** a new K.O. II has factory sounds in projects 1–5, and projects 6–9 are empty. The course uses project 6 for Chapters 1, 2 and 4, project 7 for Chapter 3, project 8 for Chapter 5, and project 9 as a scratch project in Chapter 0 and then for Chapter 6. That uses all four empty projects, so Chapter 7 shows how to back up and reuse one.
 
 **Before you start:** if your K.O. II runs an older OS, update it first (Chapter 0 shows how). Some steps can erase or overwrite things on the device, and the app warns you at those steps. Never switch the K.O. II on while holding SHIFT + ERASE unless you really mean to format it: that erases all your work and the factory sounds, and the official guide says factory sounds can't be recovered. Back up with the official EP sample tool first. If the device ever behaves differently from the app, follow the [official guide](https://teenage.engineering/guides/ep-133) and [report the step](#report-a-wrong-instruction).
 
@@ -58,7 +58,7 @@ If a step doesn't match what your EP-133 does, please [open a "Wrong instruction
 
 The instructions follow the [official EP-133 guide](https://teenage.engineering/guides/ep-133). They were last checked against it on **13 October 2026**, when the guide was marked "ver 2.5". The guide's [What's new](https://teenage.engineering/guides/ep-133/whats-new) page describes OS 2.0 to 2.5. OS 2.5.1 (3 July 2026) is listed only on the [official downloads page](https://teenage.engineering/downloads/ep-133), as a bug-fix release, so the course treats it as OS 2.5. Settings shows the check date (from `site.js`), and [CHANGELOG.md](CHANGELOG.md) records it for each release. Steps that need a newer OS than the one you choose in Settings show a "Needs OS …+" badge.
 
-Where the guide is silent or unclear, the step says so and names its other source: teenage engineering's own files and pictures, or owners' reports (the Elektronauts EP-133 threads, an unofficial cheat sheet), always labelled as such. Two details have no source at all yet, how KEYS mode ends and how to remove a sidechain destination, and their steps say so. Not every step has been tried on a real device. If you find a difference, the official guide is right, and a report helps everyone.
+Where the guide is silent or unclear, the step says so and names its other source: teenage engineering's own files and pictures, or owners' reports (the Elektronauts EP-133 threads, an unofficial cheat sheet), always labelled as such. Three details have no source at all yet, how KEYS mode ends, how to remove a sidechain destination and what starts playback in live chop, and their steps say so. Not every step has been tried on a real device. If you find a difference, the official guide is right, and a report helps everyone.
 
 ## Testing
 
@@ -90,7 +90,7 @@ python -m venv .venv
 .venv\Scripts\python -m pytest --browser-channel chrome
 ```
 
-`--browser-channel chrome` uses the Google Chrome you already have. To use Playwright's own Chromium instead, run `.venv\Scripts\python -m playwright install chromium` once and leave the option out. On macOS or Linux, use `python3` and `.venv/bin/python`. The test serves `_site/` itself, as GitHub Pages would (`.github/scripts/serve.py`: an unknown address gets `404.html`); set `LOCAL_URL` to test a copy that is already being served. Rebuild `_site/` after you change a file.
+`--browser-channel chrome` uses the Google Chrome you already have. To use Playwright's own Chromium instead, run `.venv\Scripts\python -m playwright install chromium` once and leave the option out. On macOS or Linux, use `python3` and `.venv/bin/python`. The test serves `_site/` itself, as GitHub Pages would (`.github/scripts/serve.py`: under `/koii-coach/`, and an unknown address gets `404.html`); set `LOCAL_URL` to test a copy that is already being served. Rebuild `_site/` after you change a file.
 
 Screenshots, traces and `artifacts/results.json` are written to `artifacts/`. In GitHub Actions they are attached to each run as the `coach-browser-evidence` artifact, and a short result appears in the run summary. Results are no longer committed to the repository.
 

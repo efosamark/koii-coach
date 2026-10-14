@@ -962,6 +962,10 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .pc-q{max-width:var(--measure);margin:0 0 var(--sp-4);font-size:var(--t-do);line-height:var(--t-do-lh)}
 .pc-fix{margin-top:var(--sp-4);padding:var(--sp-3) var(--sp-4);border-radius:var(--r-control);background:var(--surface-2)}
 .pc-fix > :last-child{margin-bottom:0}
+.fix-card{padding:var(--sp-3) 0;border-bottom:1px solid var(--line)}
+.fix-card:first-child{padding-top:0}
+.fix-card p{margin:0 0 var(--sp-2)}
+.fix-sym{font-weight:600}
 .pd-title{font-size:var(--t-h1);line-height:var(--t-h1-lh)}
 .pd-open{margin:0 0 var(--sp-4);padding:0;list-style:none}
 .pd-open li{max-width:none;margin:0}
@@ -1190,6 +1194,9 @@ html[data-text="larger"][data-player="step"] li.is-current > .step-check{margin-
 .step-more > p{max-width:none;margin:0;padding:0 var(--sp-4) var(--sp-3);font-size:var(--t-body);line-height:var(--t-body-lh)}
 .steps li > .step-source,.steps li > .step-report,.step-source{margin:var(--sp-2) 0 0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .steps li > .badge{margin:0 0 var(--sp-3)}
+/* In the step player the head's "Needs OS x+" tag says it; the badge stays only as a warning (an older OS chosen). */
+html[data-player] .steps li > .badge.ok{display:none}
+html:not([data-player="step"]) .steps li > .part-source{display:none}
 /* A note at body size; "No undo" in the danger colours, where an undo would stand. */
 .steps li > .step-note{margin:var(--sp-3) 0 var(--sp-2);color:var(--ink-2)}
 .steps li > .step-noundo,.risk .step-noundo{margin:var(--sp-3) 0;padding:var(--sp-2) var(--sp-3);border-left:4px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}

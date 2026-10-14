@@ -218,7 +218,9 @@
           </li>
           <li data-step="add-open-hats" data-risk="erase">
             <h3 class="step-title">A4: open hats instead of closed</h3>
+            <p class="preflight">Press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">A3</kbd></kbd> briefly: a long hold clears every closed hat.</p>
             <p class="step-do">Write <kbd class="key pad">A4</kbd> (open hat) at <samp class="lcd">2.4.3</samp> and <samp class="lcd">4.4.3</samp>. At both positions also briefly press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A3</kbd></kbd>, so the open hat replaces the closed hat instead of stacking on it.</p>
+            <p class="step-undo">Wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>At <samp class="lcd">2.4.3</samp> <kbd class="key pad">A4</kbd> lights and <kbd class="key pad">A3</kbd> does not.</p>
           </li>
           <li data-step="add-rim">
@@ -245,20 +247,22 @@
             <p class="step-do">Listen to one more loop and press <kbd class="key">PLAY</kbd> to stop.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Quantize (the <kbd class="key">−</kbd> you chose in <kbd class="key">TIMING</kbd>) snaps your taps to the nearest step.</p></details></div>
           </li>
-          <li data-step="check-tom-fill" data-risk="erase">
+          <li data-step="check-tom-fill">
             <h3 class="step-title">Check the tom fill</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The tom fill now plays by itself at the end of every four bars.</p>
             <p class="step-note">Stop.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>It turns the phrase back to bar 1.</p></details><details class="step-more"><summary>Not working?</summary><p>Too many hits or in the wrong place? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit, or, stopped, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A7</kbd></kbd> until <samp class="lcd">TRK</samp> blinks to clear every <kbd class="key pad">A7</kbd> note, then record again. Prefer exact placement? Write <kbd class="key pad">A7</kbd> at <samp class="lcd">4.4.2</samp> and <samp class="lcd">4.4.4</samp> with <kbd class="key">RECORD</kbd> instead.</p></details></div>
           </li>
-          <li data-step="optional-shaker-push" data-optional>
+          <li data-step="optional-shaker-push" data-os="2.5" data-optional>
             <h3 class="step-title">Optional: open timing correct</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Stopped, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">TIMING</kbd></kbd> to open timing correct. Check <kbd class="key knob">X</kbd> shows <samp class="lcd">16</samp> and leave <kbd class="key knob">Y</kbd> alone.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Optional, OS 2.5: push the shaker slightly late for a looser groove.</p></details></div>
           </li>
-          <li data-step="optional-shaker-push-move" data-optional>
+          <li data-step="optional-shaker-push-move" data-os="2.5" data-optional>
             <h3 class="step-title">Optional: push the shaker later</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Hold <kbd class="key pad">A6</kbd> and press <kbd class="key">+</kbd> three times. Press <kbd class="key">MAIN</kbd>, play and compare.</p>
             <p class="step-note">To undo, open timing correct again, hold <kbd class="key pad">A6</kbd> and press <kbd class="key">−</kbd> three times.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Every shaker note moves three ticks later (one 16th step is 24 ticks).</p></details></div>
@@ -296,7 +300,9 @@
           </li>
           <li data-step="bass-answer-b2" data-risk="erase">
             <h3 class="step-title">B2: the answer at 4.4.3</h3>
+            <p class="preflight">Press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">B1</kbd></kbd> briefly: a long hold clears the whole bassline.</p>
             <p class="step-do">Go to <samp class="lcd">4.4.3</samp>. Briefly press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">B1</kbd></kbd>, then hold <kbd class="key">RECORD</kbd> and tap <kbd class="key pad">B2</kbd>.</p>
+            <p class="step-undo">Wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>At <samp class="lcd">4.4.3</samp> only <kbd class="key pad">B2</kbd> lights.</p>
             <p class="step-note">Optional: press <kbd class="key">SOUND</kbd>, tap <kbd class="key pad">B2</kbd> and turn <kbd class="key knob">Y</kbd> (pitch) up a little so the answer is a different note; turn it back if it clashes.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Bar 4 now ends on <kbd class="key pad">B2</kbd>, the answer before the loop restarts.</p></details></div>
@@ -317,17 +323,20 @@
             <p class="step-note">Stop.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>If not, change one thing only: the bass level (<kbd class="key knob">X</kbd> in <kbd class="key">SOUND</kbd>), its length (trim, as in the checkpoint above) or a different bass sound.</p></details></div>
           </li>
-          <li data-step="sidechain-kick-to-bass">
+          <li data-step="sidechain-kick-to-bass" data-os="2.0">
             <h3 class="step-title">Open the sidechain page</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">FX</kbd></kbd> to open the output settings (master compressor), then press <kbd class="key">+</kbd> once to reach sidechain.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Sidechain (OS 2.0+) ducks the bass each time the kick plays.</p></details></div>
           </li>
-          <li data-step="sidechain-route">
+          <li data-step="sidechain-route" data-os="2.0">
             <h3 class="step-title">Kick as source, bass as destination</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hold the <kbd class="key">A</kbd> group button and press <kbd class="key pad">pad 1</kbd>: the kick <kbd class="key pad">A1</kbd> becomes the source. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">B</kbd>: the bass group becomes the destination.</p>
           </li>
-          <li data-step="sidechain-shape">
+          <li data-step="sidechain-shape" data-os="2.0">
             <h3 class="step-title">Set the duck</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Turn <kbd class="key knob">X</kbd> (length of the duck) to short and <kbd class="key knob">Y</kbd> (shape) to about the middle.</p>
             <p class="step-check"><span class="sr">Check: </span>Stop adjusting when the bass dips under each kick and recovers before its next note.</p>
             <p class="step-note">Press <kbd class="key">MAIN</kbd>, then <kbd class="key">PLAY</kbd> to stop.</p>
@@ -477,6 +486,7 @@
           </li>
           <li data-step="outro-clear" data-risk="erase">
             <h3 class="step-title">Clear the open hats, rim and tom</h3>
+            <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be OUTRO.</p>
             <p class="step-do">Tap <kbd class="key">A</kbd>. Hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A4</kbd></kbd> until <samp class="lcd">TRK</samp> blinks, then release: every open hat in this pattern is gone. Do the same with <kbd class="key pad">A5</kbd> (rim) and <kbd class="key pad">A7</kbd> (tom).</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key">PLAY</kbd> gives kick, clap, closed hats, shaker and bass.</p>
@@ -488,6 +498,7 @@
           </li>
           <li data-step="intro-clear-bass" data-risk="erase">
             <h3 class="step-title">Clear INTRO’s bass</h3>
+            <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be INTRO.</p>
             <p class="step-do">Tap <kbd class="key">B</kbd>. Hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">B1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks, then do the same with <kbd class="key pad">B2</kbd>.</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key">PLAY</kbd> gives drums only, no bass.</p>
@@ -499,6 +510,7 @@
           </li>
           <li data-step="build-clear" data-risk="erase">
             <h3 class="step-title">Clear the bass and hats</h3>
+            <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be BUILD.</p>
             <p class="step-do">Tap <kbd class="key">B</kbd> and clear <kbd class="key pad">B1</kbd> and <kbd class="key pad">B2</kbd> (hold <kbd class="chord"><kbd class="key">ERASE</kbd> + pad</kbd> until <samp class="lcd">TRK</samp> blinks). Tap <kbd class="key">A</kbd> and clear <kbd class="key pad">A3</kbd> (closed hats) and <kbd class="key pad">A4</kbd> (open hats) the same way.</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key">PLAY</kbd> gives kick, clap, rim, shaker, tom fill and hook, no bass or hats.</p>
@@ -515,6 +527,7 @@
           </li>
           <li data-step="break-clear" data-risk="erase">
             <h3 class="step-title">Clear the kick, clap and tom</h3>
+            <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be BREAK.</p>
             <p class="step-do">Tap <kbd class="key">A</kbd> and clear <kbd class="key pad">A1</kbd> (kick), <kbd class="key pad">A2</kbd> (clap) and <kbd class="key pad">A7</kbd> (tom) with the same <samp class="lcd">TRK</samp> hold.</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key">PLAY</kbd> gives just the rim, shaker and your hook.</p>
@@ -527,7 +540,9 @@
           </li>
           <li data-step="peak-last-kick" data-risk="erase">
             <h3 class="step-title">Remove the last kick</h3>
+            <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be PEAK. Press briefly.</p>
             <p class="step-do">Tap <kbd class="key">A</kbd>, go to <samp class="lcd">4.4.1</samp> and briefly press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A1</kbd></kbd>.</p>
+            <p class="step-undo">Wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key">PLAY</kbd> sounds like DROP B with one kick missing at the very end.</p>
             <p class="step-note">Stop.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A tiny breath before the loop restarts.</p></details></div>
@@ -552,8 +567,9 @@
             <p class="step-note">Keep the bass dry: do not raise B’s send. Press <kbd class="key">MAIN</kbd>, then <kbd class="key">PLAY</kbd> to stop.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>In <kbd class="key">FX</kbd> it sets group C’s send.</p></details><details class="step-more"><summary>Not working?</summary><p>If the words blur, lower the fader before changing anything else.</p></details></div>
           </li>
-          <li data-step="optional-riser-sound" data-optional>
+          <li data-step="optional-riser-sound" data-os="2.5" data-optional>
             <h3 class="step-title">Optional: copy C1’s sound</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Optional, OS 2.5 reverse: press <kbd class="key">SOUND</kbd>, tap <kbd class="key">C</kbd>, tap <kbd class="key pad">pad 1</kbd> and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> once to copy <kbd class="key pad">C1</kbd>’s sound.</p>
           </li>
           <li data-step="riser-paste" data-optional>
@@ -561,8 +577,9 @@
             <p class="step-do">Tap <kbd class="key">D</kbd>, tap <kbd class="key pad">pad 1</kbd> and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd> to paste it.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> now plays your hook.</p>
           </li>
-          <li data-step="riser-reverse" data-optional>
+          <li data-step="riser-reverse" data-os="2.5" data-optional>
             <h3 class="step-title">Optional: reverse D1</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">With <kbd class="key pad">D1</kbd> selected, briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>, press <kbd class="key">+</kbd> until the display shows <samp class="lcd">tim</samp>, and turn <kbd class="key knob">X</kbd> until it shows <samp class="lcd">rev</samp>. Tap <kbd class="key pad">D1</kbd>. Press <kbd class="key">MAIN</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>Your hook plays backwards. <kbd class="key pad">C1</kbd> is unchanged.</p>
           </li>
@@ -571,7 +588,7 @@
             <p class="step-do">Optional: hold <kbd class="key">MAIN</kbd>, use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to select BUILD and release. Stopped, tap <kbd class="key">D</kbd> and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> once.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A fresh empty pattern for D in this scene only.</p></details></div>
           </li>
-          <li data-step="riser-write" data-optional data-risk="erase">
+          <li data-step="riser-write" data-optional>
             <h3 class="step-title">Optional: D1 at 4.1.1, four bars</h3>
             <p class="step-do">Hold <kbd class="key">RECORD</kbd> and press <kbd class="key">+</kbd> three times for four bars. Go to <samp class="lcd">4.1.1</samp> (hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd> to jump bars), hold <kbd class="key">RECORD</kbd> and tap <kbd class="key pad">D1</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: the reversed hook swells through bar 4 into the next section.</p>
@@ -600,8 +617,9 @@
             <p class="step-note">Groups you never lengthened stay one bar and simply repeat underneath; that is fine.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A song position lasts as long as its scene’s longest pattern, so every scene must loop every four bars.</p></details></div>
           </li>
-          <li data-step="open-song-list">
+          <li data-step="open-song-list" data-os="2.0">
             <h3 class="step-title">Open the song list</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Stopped, hold <kbd class="key">MAIN</kbd> and press <kbd class="key">ENTER</kbd> to open the song list editor.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>In this fresh project the list starts with one position.</p></details></div>
           </li>
@@ -748,6 +766,12 @@
             <p class="step-do">You are done when the whole track plays, kick and bass stay clear, the vocal appears only where it matters, and the two drops feel different.</p>
             <p class="step-note">Resist adding sounds at the last minute: try new ideas in a fresh copy (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>) so the finished scenes stay safe.</p>
           </li>
+          <li data-step="tech-house-recap" data-kind="recap">
+            <h3 class="step-title">Your tech house moves</h3>
+            <p class="step-do">Read the seven moves below, then try one from memory without reading this app.</p>
+            <p class="step-check"><span class="sr">Check: </span>You can build a loop, make it breathe and arrange a full track.</p>
+            <ul class="step-moves"><li>Load by number: hold <kbd class="key">SOUND</kbd>, type the number on the pads, release.</li><li>Double a pattern: arm <kbd class="key">RECORD</kbd>, hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd>, then disarm.</li><li>A fresh pattern for a group: tap it, then <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd>.</li><li>Sidechain: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">FX</kbd></kbd>, <kbd class="key">+</kbd>; hold a group button and press a pad for the source, <kbd class="key">SHIFT</kbd> + a group to duck.</li><li>Sections: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>, then clear what you don’t need with <kbd class="key">ERASE</kbd> + the pad until <samp class="lcd">TRK</samp> blinks.</li><li>Reverb: tap the group, <kbd class="key">FX</kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to reverb, raise the fader.</li><li>Song list: hold <kbd class="key">MAIN</kbd> and press <kbd class="key">ENTER</kbd>; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a position, <kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd> picks its scene.</li></ul>
+          </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> you have a recording of the full track and a written list of scenes.</p>
         <p><b>If it doesn’t:</b> recording silent? Check that K.O. II is chosen as the input in your recording app, or record from the headphone output instead.</p>
@@ -815,7 +839,7 @@
           <tr><td>Copy and paste a bar</td><td>MAIN → SHIFT + C once (twice copies the whole pattern) → go to the target bar → SHIFT + D</td></tr>
           <tr><td>Trim a sample</td><td>Select pad → brief SHIFT + SOUND → − / + to trim → X start, Y length</td></tr>
           <tr><td>Copy a scene (commit)</td><td>SHIFT + MAIN. You move into the new copy; the scene you left is the finished one</td></tr>
-          <tr><td>Select a scene</td><td>Hold MAIN + − / +. The guide also documents typing a scene number while holding MAIN (OS 2.0+), but MAIN + pad 1–9 is documented for changing project too, so check the display</td></tr>
+          <tr><td>Select a scene</td><td>Hold MAIN + − / +. Or hold MAIN and type the scene number (OS 2.0+): a quick tap picks a scene, while keeping pad 1–9 held until P and the number show changes project</td></tr>
           <tr><td>Clear the current scene</td><td>Hold ERASE + MAIN for 2 seconds: CLR, or DEL if it is empty and not in the song. Check the scene number first</td></tr>
           <tr><td>Song list</td><td>MAIN + ENTER → SHIFT + A adds a position → SHIFT + − / + picks its scene → SHIFT + C cuts → SHIFT + PLAY plays from the start</td></tr>
           <tr><td>Sidechain (OS 2.0+)</td><td>SHIFT + FX → + → hold A + pad 1 (source) → SHIFT + B (destination) → X length, Y shape</td></tr>

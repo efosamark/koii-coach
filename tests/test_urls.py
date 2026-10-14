@@ -136,7 +136,7 @@ def test_a_new_release_under_an_open_page(browser, tmp_path):
     shutil.copytree(SITE, site)
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), serve.handler(site))
     threading.Thread(target=server.serve_forever, daemon=True).start()
-    base = f'http://127.0.0.1:{server.server_address[1]}/'
+    base = f'http://127.0.0.1:{server.server_address[1]}{serve.PREFIX}'
     context = browser.new_context(viewport={'width': 390, 'height': 844})
     page = context.new_page()
     errors = []

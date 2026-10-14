@@ -40,13 +40,13 @@ jobs:
         run: |
           python3 .github/scripts/serve.py _site 8080 > /tmp/coach-server.log 2>&1 &
           for i in $(seq 1 30); do
-            if curl -fsS http://127.0.0.1:8080/ > /dev/null; then break; fi
+            if curl -fsS http://127.0.0.1:8080/koii-coach/ > /dev/null; then break; fi
             sleep 1
           done
-          curl -fsS http://127.0.0.1:8080/ > /dev/null
+          curl -fsS http://127.0.0.1:8080/koii-coach/ > /dev/null
       - name: Browser smoke test (local copy only, never the live site)
         env:
-          LOCAL_URL: http://127.0.0.1:8080/
+          LOCAL_URL: http://127.0.0.1:8080/koii-coach/
           LIVE_URL: ''
         run: .venv/bin/python -m pytest
       - name: Write results to the run summary

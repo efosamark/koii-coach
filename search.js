@@ -6,13 +6,14 @@
    The index is built in the browser, once per page load, from the pages themselves: each one is fetch()ed (they are
    precached, so this works offline) and read with DOMParser.
      chapter pages       every .steps ol > li[data-step] and every part (<details> with its summary). A step's title is
-                         its h3.step-title (01, 02); other steps have none yet, so their id stands in for one:
-                         "record-first-sample" shows as "Record first sample".
+                         its h3.step-title; a step without one would show its id instead ("record-first-sample" as
+                         "Record first sample").
      help.html           every details[data-topic], with its group heading
      learn.html          every details[data-lesson]
      glossary.html       every .term (dt and dd)
      controls.html       every control explained under "Every control" ([data-key])
      safety.html         every .risk card
+     cheat-sheet.html    every move (section[id] .moves > li), under the chapter it comes from
    A source that fails to load is skipped, and tried again the next time the overlay opens.
 
    Where a result goes:
@@ -152,6 +153,10 @@ const TOOLS=[
     const title=text(b);if(b)b.remove();
     return doc({type:'help',title,body:text(e.querySelector('dd')),cap:{MINUS:'−',PLUS:'+',PAD:'0–9'}[k]||k,keys:[k],crumb:['Control map',text(e.querySelector('dt'))],href:'./controls.html#'+e.id});
   })],
+  ['./cheat-sheet.html',dom=>[...dom.querySelectorAll('section[id] .moves > li')].map(li=>{
+    const s=li.closest('section'),t=text(li),k=t.indexOf(':');
+    return doc({type:'cheat',title:k>0&&k<40?t.slice(0,k):t.split(' ').slice(0,6).join(' ')+' …',body:t,crumb:['Cheat sheet',text(s.querySelector('h2')).replace(/:[^:]*$/,'')],href:'./cheat-sheet.html#'+s.id});
+  })],
   ['./safety.html',dom=>[...dom.querySelectorAll('.risk[id]')].map(e=>{
     const h=e.querySelector('h3'),title=text(h);h.remove();e.querySelectorAll('.step-source').forEach(x=>x.remove());
     return doc({type:'help',title,body:text(e),crumb:['Safety and erasing'],href:'./safety.html#'+e.id});
@@ -241,9 +246,9 @@ function snippet(body,m){
   if(to<body.length&&body.lastIndexOf(' ',to)>from)to=body.lastIndexOf(' ',to);
   return(from?'… ':'')+marked(body.slice(from,to),m)+(to<body.length?' …':'');
 }
-const GROUPS=[['step','Steps','steps'],['help','Help','help topics'],['learn','Learn','lessons'],['word','Words','words']];
+const GROUPS=[['step','Steps','steps'],['help','Help','help topics'],['learn','Learn','lessons'],['word','Words','words'],['cheat','Cheat sheet','moves']];
 const TRY=['silent pad','undo','chop','sidechain','song list'];
-const CAP={step:5,help:4,learn:4,word:3},PAGE=30;   // rows per group under All (a glossary entry is several lines long), and per page of one group
+const CAP={step:5,help:4,learn:4,word:3,cheat:3},PAGE=30;   // rows per group under All (a glossary entry is several lines long), and per page of one group
 const NEEDS=`<p class="search-note"><b>Search needs the offline copy.</b> Open the course once while online so every page is saved, then try again. ${HELP} has its own search.</p>`;
 
 function mount(dlg,enter){   // enter: Enter was pressed before this file had loaded
@@ -251,12 +256,12 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
   mount.done=true;
   const input=dlg.querySelector('#site-search'),list=dlg.querySelector('#site-results'),status=dlg.querySelector('#site-search-status'),
     body=dlg.querySelector('.search-body'),chips=[...dlg.querySelectorAll('[data-type]')];
-  let type='all',shown=PAGE,found={step:[],help:[],learn:[],word:[]},timer=0,openFirst=Boolean(enter);
+  let type='all',shown=PAGE,found={step:[],help:[],learn:[],word:[],cheat:[]},timer=0,openFirst=Boolean(enter);
 
   function run(){
     clearTimeout(timer);
     const alts=parse(input.value);
-    found={step:[],help:[],learn:[],word:[]};
+    found={step:[],help:[],learn:[],word:[],cheat:[]};
     if(alts&&ready){
       for(const d of all){
         let best=0,alt=null;

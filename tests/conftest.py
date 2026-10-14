@@ -1,9 +1,9 @@
 """Shared fixtures for the Python browser tests in tests/.
 
 The site under test is the built folder (_site/), never the repository files directly.
-- LOCAL_URL: a server that serves _site/ (CI: .github/scripts/serve.py on http://127.0.0.1:8080/). Without it, the
-  tests serve _site/ themselves on a free localhost port with the same handler (an unknown address gets 404.html, as on
-  GitHub Pages), so `python -m pytest` is enough after a build.
+- LOCAL_URL: a server that serves _site/ (CI: .github/scripts/serve.py, http://127.0.0.1:8080/koii-coach/). Without
+  it, the tests serve _site/ themselves on a free localhost port with the same handler: under /koii-coach/, with 404.html
+  for an unknown address, as on GitHub Pages. So `python -m pytest` is enough after a build.
 - LIVE_URL: optional; adds the deployed site as a second smoke-test target.
 - ARTIFACTS_DIR: where screenshots, traces and results.json go (default: artifacts).
 
@@ -37,7 +37,7 @@ def site_url():
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
-        yield f'http://127.0.0.1:{server.server_address[1]}/'
+        yield f'http://127.0.0.1:{server.server_address[1]}{serve.PREFIX}'
     finally:
         server.shutdown()
         server.server_close()

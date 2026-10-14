@@ -142,7 +142,9 @@
         <ol start="12">
           <li data-step="erase-test-note" data-risk="erase">
             <h3 class="step-title">Erase the test note</h3>
+            <p class="preflight">Press briefly: a long hold clears every note of the pad.</p>
             <p class="step-do">In <kbd class="key">MAIN</kbd>, stopped, with group <kbd class="key">D</kbd> selected, go to <samp class="lcd">1.1.1</samp> and briefly press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">D1</kbd></kbd>.</p>
+            <p class="step-undo">Wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> no longer lights at <samp class="lcd">1.1.1</samp> and <kbd class="key">PLAY</kbd> stays silent.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Erasing a note only removes it from the pattern; your recording stays on the pad and in the library.</p></details></div>
           </li>
@@ -257,8 +259,9 @@
             <p class="step-check"><span class="sr">Check: </span>You hear the phone's sound, clean and undistorted.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Distorted: turn <kbd class="key knob">X</kbd> down and record again on an empty pad. Too quiet: raise <kbd class="key knob">X</kbd> or the phone's volume.</p></details></div>
           </li>
-          <li data-step="usb-connect">
+          <li data-step="usb-connect" data-os="2.5">
             <h3 class="step-title">Connect over USB audio (OS 2.5)</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Connect the K.O. II to the phone or a computer with a USB-C cable.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This is USB audio (OS 2.5), for example if your phone has no headphone output.</p></details></div>
           </li>
@@ -274,12 +277,14 @@
             <p class="step-note">Type <kbd class="key">5</kbd><kbd class="key">1</kbd><kbd class="key">0</kbd> the same way to switch back.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Optional, to hear the phone through the K.O. II while you sample. Setting <samp class="lcd">511</samp> is “sampler + live monitoring”; the default, <samp class="lcd">510</samp>, is “sampler only”.</p></details></div>
           </li>
-          <li data-step="usb-handsfree-record">
+          <li data-step="usb-handsfree-record" data-os="2.5">
             <h3 class="step-title">Select USB as the source</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Tap <kbd class="key">D</kbd>, press <kbd class="key">SAMPLE</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">usb</samp> (mono and stereo share this label). Leave <kbd class="key knob">Y</kbd> slightly up.</p>
           </li>
-          <li data-step="usb-record-d3">
+          <li data-step="usb-record-d3" data-os="2.5">
             <h3 class="step-title">D3: record over USB, hands-free</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key pad">D3</kbd>, start the audio on the phone and press <kbd class="key">SAMPLE</kbd> when it has finished. Tap the pad.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear the phone's sound from the K.O. II.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>If <kbd class="key pad">D3</kbd> already holds a line-in sample, use the next empty pad.</p></details></div>
@@ -384,13 +389,14 @@
             <h3 class="step-title">A4: open the time page</h3>
             <p class="step-do">With <kbd class="key pad">A4</kbd> selected in <kbd class="key">SOUND</kbd>, briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>, then press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">tim</samp>.</p>
           </li>
-          <li data-step="reverse-copy-rev">
+          <li data-step="reverse-copy-rev" data-os="2.5">
             <h3 class="step-title">Reverse A4</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Turn <kbd class="key knob">X</kbd> until it shows <samp class="lcd">rev</samp>. Tap <kbd class="key pad">A4</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The snare plays backwards, a soft swell that ends in a snap.</p>
             <p class="step-note">Tap <kbd class="key pad">A2</kbd>: it still plays forwards.</p>
           </li>
-          <li data-step="place-reverse" data-risk="erase">
+          <li data-step="place-reverse">
             <h3 class="step-title">A4: place the reversed snare</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd>. Stopped, with group <kbd class="key">A</kbd> selected, go to <samp class="lcd">1.4.3</samp>, hold <kbd class="chord"><kbd class="key">RECORD</kbd> + <kbd class="key pad">A4</kbd></kbd> and release. Press <kbd class="key">PLAY</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The reversed snare swells and its loud end lands as the loop starts again.</p>
@@ -402,11 +408,13 @@
             <p class="preflight">Optional and permanent: skip this if you are unsure.</p>
             <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key pad">A1</kbd>, briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>, go to the trim page and set <kbd class="key knob">X</kbd> and <kbd class="key knob">Y</kbd> so only the kick remains.</p>
           </li>
-          <li data-step="crop-optional-crop" data-optional data-risk="overwrite">
+          <li data-step="crop-optional-crop" data-os="2.5" data-optional data-risk="overwrite">
             <h3 class="step-title">Optional: crop the kick</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="preflight">Only crop a recording you made today, never a factory sound.</p>
             <p class="step-do">Then hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>.</p>
             <p class="step-noundo">Cropping rewrites the sample file to its trim points; the guide says it “will overwrite the file and cannot be undone”.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> sounds as before; the file now ends at your trim points.</p>
             <p class="step-note">Because the file itself changes, every pad in every project that uses this sample plays the cropped version from now on.</p>
           </li>
         </ol>
@@ -422,10 +430,11 @@
             <h3 class="step-title">Optional: try live chop</h3>
             <p class="step-do">In <kbd class="key">MAIN</kbd> tap <kbd class="key">D</kbd>, tap <kbd class="key pad">D2</kbd>, tap <kbd class="key">C</kbd>, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SAMPLE</kbd></kbd> and tap C pads in time with the words.</p>
             <p class="step-note">Whatever happens, press <kbd class="key">MAIN</kbd> when done; the next steps overwrite group <kbd class="key">C</kbd> anyway.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Optional first look at manual chopping, which the guide calls live chop: in CHOP mode you “press a pad to CHOP… keep pressing pads as the sample plays”, and the time between presses decides where each cut falls. The guide’s picture shows <samp class="lcd">Cho</samp> on the display and the first pad pressed at the very start of the sample. It doesn’t say what starts playback, so treat this as an experiment.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Optional first look at manual chopping, which the guide calls live chop: in CHOP mode you “press a pad to CHOP… keep pressing pads as the sample plays”, and the time between presses decides where each cut falls. The guide’s picture shows <samp class="lcd">Cho</samp> on the display and the first pad pressed at the very start of the sample. It doesn’t say what starts playback, and no owner report we found does, so treat this as an experiment.</p></details></div>
           </li>
-          <li data-step="chop-select-source">
+          <li data-step="chop-select-source" data-os="2.0.1">
             <h3 class="step-title">D2: select the count to chop</h3>
+            <p class="badge os-badge">Needs OS 2.0.1 or newer</p>
             <p class="step-do">In <kbd class="key">MAIN</kbd>, tap <kbd class="key">D</kbd>, then tap <kbd class="key pad">D2</kbd>. Tap <kbd class="key">C</kbd>: group <kbd class="key">C</kbd> becomes the destination.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear the count, and <kbd class="key pad">D2</kbd> is now the selected sample.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Chopping from one group into another needs OS 2.0.1 or newer. Auto chop “will reset any pad assignments” in the destination group, which is why you use the empty group <kbd class="key">C</kbd>.</p></details></div>
@@ -459,7 +468,9 @@
           </li>
           <li data-step="chop-remix" data-risk="erase">
             <h3 class="step-title">Remix the count</h3>
+            <p class="preflight">Stop first, and press briefly: a long hold clears every note of the pad.</p>
             <p class="step-do">Remix it: go to <samp class="lcd">1.3.1</samp>, briefly press <kbd class="key">ERASE</kbd> + the “three” pad, then hold <kbd class="key">RECORD</kbd> and tap the “one” pad there. Press <kbd class="key">PLAY</kbd>.</p>
+            <p class="step-undo">Wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>The count now goes one, two, one, four.</p>
             <p class="step-note">Press <kbd class="key">PLAY</kbd> to stop.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Rearranging slices like this is the heart of chopping.</p></details></div>
@@ -611,6 +622,12 @@
             <p class="step-note">To copy them to a computer, load audio files onto the K.O. II or make a backup, use the official <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a> over USB-C. Press <kbd class="key">MAIN</kbd> to leave SAMPLE mode before transferring: older OS versions could corrupt uploads made while in <kbd class="key">SAMPLE</kbd>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Your recordings are already stored on the K.O. II.</p></details></div>
           </li>
+          <li data-step="sampling-recap" data-kind="recap">
+            <h3 class="step-title">Your sampling moves</h3>
+            <p class="step-do">Read the seven moves below, then try one from memory without reading this app.</p>
+            <p class="step-check"><span class="sr">Check: </span>You can record, edit, chop and resample a sound.</p>
+            <ul class="step-moves"><li>Sample: tap the group, press <kbd class="key">SAMPLE</kbd>, pick the source with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>; <kbd class="key knob">X</kbd> is the level, <kbd class="key knob">Y</kbd> the threshold. Hold a pad to record.</li><li>Hands-free: hold <kbd class="key">SHIFT</kbd> and press an empty pad; press <kbd class="key">SAMPLE</kbd> to stop.</li><li>Sound edit: <kbd class="key">SOUND</kbd>, tap the pad, briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>; <kbd class="key">−</kbd> / <kbd class="key">+</kbd> steps through its pages.</li><li>Copy a sound: in <kbd class="key">SOUND</kbd>, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd>; tap another pad, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>.</li><li>Time page (<samp class="lcd">tim</samp>): <kbd class="key knob">X</kbd> chooses <samp class="lcd">BPM</samp>, <samp class="lcd">BAR</samp> or <samp class="lcd">rev</samp>.</li><li>Chop: select the sample, tap the destination group, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SAMPLE</kbd></kbd>; hold the group button and <kbd class="key">−</kbd> / <kbd class="key">+</kbd> for <samp class="lcd">EQU</samp>.</li><li>Resample: source <samp class="lcd">rsp</samp>, hold <kbd class="key">SHIFT</kbd> and press an empty pad, then <kbd class="key">PLAY</kbd>.</li></ul>
+          </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> <kbd class="key pad">B1</kbd> stays in time at both 90 and 110 BPM.</p>
         <p><b>If it doesn't:</b> the <samp class="lcd">tim</samp> page must show <samp class="lcd">BAR</samp> (not <samp class="lcd">BPM</samp> or <samp class="lcd">rev</samp>) and <kbd class="key knob">Y</kbd> must be <samp class="lcd">1 bar</samp>. Using BPM mode instead? <kbd class="key knob">Y</kbd> must match the tempo you recorded at, 90. Still out of time? Check that you edited <kbd class="key pad">B1</kbd>: press <kbd class="key">SOUND</kbd> and tap <kbd class="key pad">B1</kbd>, then open sound edit again. The tempo knob turns from 60 to 180 BPM; hold <kbd class="key">TEMPO</kbd> and type a number for anything outside that.</p>
@@ -641,7 +658,7 @@
     </section>
     <section class="card">
       <h2>Button instructions and sources</h2>
-      <p>Original teaching recipe; every button sequence was checked against teenage engineering's official EP-133 guide on 13 October 2026, using its OS 2.5 notes (latest release OS 2.5.1). Where the guide does not describe a detail, the step says so and names where the detail comes from instead, such as an unofficial cheat sheet. UI checks cannot validate your installed firmware, your recordings or physical device actions.</p>
+      <p>Original teaching recipe; every button sequence was checked against teenage engineering's official EP-133 guide on 13 October 2026, using its OS 2.5 notes (latest release OS 2.5.1). Where the guide does not describe a detail, the step says so and names where the detail comes from instead, such as an unofficial cheat sheet. One detail has no source yet, and its step says so: what starts playback in live chop. UI checks cannot validate your installed firmware, your recordings or physical device actions.</p>
       <p><a href="https://teenage.engineering/guides/ep-133/functions">Sample, chop, timing, loop and sample tool</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Sound, sound edit, tempo and tempo match</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record">Step sequence, copy/paste, erase and undo</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">How-to: resample a chord, sample over USB</a> · <a href="https://teenage.engineering/guides/ep-133/system">System settings</a> · <a href="https://teenage.engineering/guides/ep-133/effects">Effects</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">What's new (OS 2.0–2.5)</a> · <a href="https://teenage.engineering/guides/ep-133/erase-drive">Erase drive (format warning)</a> · <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a></p>
       <p class="notice danger">Safety recap: SHIFT + ERASE held while switching on formats the drive, and factory sounds cannot be recovered. ERASE + SOUND deletes a sample file. Holding SHIFT + SOUND on trim crops it. Auto chop resets the destination group's pad assignments. Back up with the EP sample tool before experimenting with anything you want to keep.</p>
       <div class="row">

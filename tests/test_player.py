@@ -64,6 +64,12 @@ def test_risky_steps_check_before_the_press_and_undo_after(name):
                 assert i > first_do, f"{name}/{s['id']}: {cls} comes after the press ({parts})"
     for s in risky:
         assert s['parts'].count('step-do') >= 1, f"{name}/{s['id']}: a risky step names its press in a Do line"
+        # Plan principle 2: a check that prevents loss above the press, the undo or an explicit "No undo" after it.
+        assert 'preflight' in s['parts'], f"{name}/{s['id']}: a risky step has Before you press ({s['parts']})"
+        assert 'step-undo' in s['parts'] or 'step-noundo' in s['parts'], f"{name}/{s['id']}: a risky step has its undo or No undo"
+        assert 'step-check' in s['parts'], f"{name}/{s['id']}: a risky step says what to check after the press"
+        if s['risk'] in ('delete', 'overwrite'):
+            assert 'step-noundo' in s['parts'], f"{name}/{s['id']}: an irreversible step says No undo"
 
 
 # Chapters rewritten to the glance budget (plan 5.3, P7). Each step: a title of at most 48 characters; Do at most 26
@@ -169,11 +175,22 @@ def test_part_checkpoint_not_quite(run):
     assert 'Part 1 done' in page.locator('#player-check h2').text_content()
     assert page.locator('#player-check .led-row .led').count() == page.locator('.steps > details').count(), 'One LED per part'
     page.locator('#player-check .pc-not').click()
-    assert page.locator('#player-check .pc-fix').is_visible() and 'If it doesn' in page.locator('#player-check .pc-fix').text_content()
+    assert page.locator('#player-check .pc-fix').is_visible() and page.locator('#player-check .fix-card').count() >= 1, 'The fixes, as symptom cards'
     assert run.get('koii-coach-meta')['checkpoints'] == {'setup': {'part-1': 'not-yet'}}
     page.locator('#player-check [data-redo]').click()
     page.wait_for_function(STEP + " === 'power-batteries'")
     assert run.get('koii-coach-ch-setup')['done'] == ['listen-headphones-volume'], 'A checkpoint answer never changes ticks'
+    # One card per symptom (plan 5.9), the symptom first; a fix that names a step offers to redo it.
+    run.go('./hiphop.html#s-check-source-heard')   # the last step of Part 3
+    page.locator('#player-next').click()
+    page.locator('#player-check .pc-not').click()
+    cards = page.locator('#player-check .fix-card')
+    assert cards.count() == 2, [cards.nth(i).text_content() for i in range(cards.count())]
+    assert page.locator('#player-check .fix-sym').first.text_content().startswith('Check the input') is False
+    redo = page.locator('#player-check [data-redo-step="check-source-heard"]')
+    assert redo.text_content().endswith('step 8'), redo.text_content()
+    redo.click()
+    page.wait_for_function(STEP + " === 'check-source-heard'")
 
 
 @pytest.mark.browser
@@ -191,6 +208,13 @@ def test_chapter_complete_ticks_the_recap(run):
     assert card.locator('.pd-made').text_content().startswith('You made:'), 'You made, from the page'
     assert card.locator('.pd-moves li').count() == 6, 'New moves, from the recap'
     assert card.locator('.led-row .led.on').count() == 16
+    # Every chapter's done screen lists its new moves.
+    for ch, moves in (('setup', 6), ('sampling', 7), ('perform', 8), ('hiphop', 7), ('tech-house', 7), ('thodorakis-house', 7)):
+        run.go(f'./{ch}.html#all')
+        page.evaluate("() => CoachChapter.ids().filter(id => !/recap/.test(id)).forEach(id => CoachChapter.setDone(id, true))")
+        run.go(f'./{ch}.html#done')
+        page.locator('#player-done').wait_for(state='visible')
+        assert page.locator('#player-done .pd-moves li').count() == moves, f'{ch}: New moves, from its recap'
 
 
 @pytest.mark.browser
@@ -215,6 +239,9 @@ def test_tools_sheet(run):
     sheet.wait_for(state='visible')
     page.keyboard.press('Escape')
     sheet.wait_for(state='hidden')
+    # Closing the sheet goes back in history (it added an entry when it opened): let that land before navigating on.
+    page.wait_for_function("() => location.hash === '#s-beat-load-kick' && !(history.state && history.state.coachDialog)")
+    page.wait_for_timeout(100)
     # A help link inside the step opens the sheet at that topic, expanded (the next step holds the kick's fixes).
     run.go('./first-beat.html#s-beat-hear-kick')
     step = page.locator('li[data-step="beat-hear-kick"]')
@@ -393,3 +420,29 @@ def test_notes_scene_numbers(run):
     box = page.locator('.getback')
     box.wait_for()
     assert 'BEAT 4' in box.text_content(), 'Get back in shows your notes'
+
+
+def test_os_badges_follow_settings_in_every_chapter(run):
+    """Plan 7.2 and 8.1: every step that needs a newer OS says so in every chapter, following the OS chosen in Settings
+    (koii-coach-v2.firmware): a warning for an older OS; for a new enough one, the step player's head tag only."""
+    page = run.page
+    base = {'schema': 4, 'step': 0, 'stepId': 'beat-empty-project', 'note': 0, 'song': 0, 'songId': 'song-find-beat', 'view': 'first',
+            'done': [], 'finished': False, 'songFinished': False, 'lab': None}
+    tagged = {}
+    for fw in ('older', '2.5'):
+        run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready', 'modes': {}}, 'koii-coach-v2': dict(base, firmware=fw)})
+        for ch in ('song', 'sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house'):
+            run.go(f'./{ch}.html#all')
+            n, warn, ok = page.evaluate("""() => { const s = [...document.querySelectorAll('li[data-os]')];
+                return [s.length, s.filter(li => li.querySelector(':scope > .badge.warn')).length, s.filter(li => li.querySelector(':scope > .badge.ok')).length]; }""")
+            tagged[ch] = n
+            assert n > 0, f'{ch}: some steps need a newer OS'
+            if fw == 'older':
+                assert warn == n, f'{ch}: {warn} of {n} OS steps warn with an older OS chosen'
+            else:
+                assert ok == n, f'{ch}: {ok} of {n} OS steps say the chosen OS has it'
+    # In the step player, the head carries the tag and the "has it" badge stays out of the way.
+    run.go('./perform.html#s-sc-open')
+    page.wait_for_function("() => (document.querySelector('li.is-current') || {dataset: {}}).dataset.step === 'sc-open'")
+    assert page.locator('li.is-current .step-head .tag.os').text_content() == 'Needs OS 2.0+'
+    assert not page.locator('li.is-current > .badge.ok').is_visible()
