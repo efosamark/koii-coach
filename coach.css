@@ -1002,6 +1002,8 @@ html[data-player="start"] main > .needs{display:block;margin:var(--sp-3) 0}
 .needs-list{margin:0;padding:0;list-style:none}
 .needs-list li{display:flex;align-items:flex-start;gap:var(--sp-3);max-width:none;margin:0;padding:2px 0;border-top:1px solid var(--line)}
 .needs-list li:first-child{border-top:0}
+/* Beside the rail, "Before you start" takes two columns, so the safety box and the parts stay on a laptop's first screen. */
+@media (min-width:1024px){html[data-player="start"] .needs-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--sp-5)}html[data-player="start"] .needs-list li:nth-child(2){border-top:0}html[data-player="start"] .needs-list li{padding:0}.player-safety > summary{min-height:44px}}
 .needs-list .icon{flex:none;width:22px;height:22px;margin-top:2px;color:var(--ink-2)}
 .player-more{margin:var(--sp-4) 0;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1)}
 .player-more > summary .icon{color:var(--ink-2)}
@@ -1024,6 +1026,7 @@ main > .safety-short{display:none}
 .player-safety .meta{margin:0}
 .player-safety .safety-more{list-style:none;margin-left:-1.25em;color:var(--ink-2)}
 .player-parts{margin:var(--sp-4) 0}
+html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
 .pp-list{margin:0;padding:0;overflow:hidden;list-style:none;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
 .pp-list li{max-width:none;margin:0;border-top:1px solid var(--line)}
 .pp-list li:first-child{border-top:0}
@@ -1031,9 +1034,10 @@ main > .safety-short{display:none}
 .pp-list a:hover{background:var(--surface-2)}
 .pp-list a:hover .pp-t,.ps-step:hover .ps-t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .pp-list .tally,.ps-part .tally{margin-left:0}
-/* From 1024px the parts list stands beside everything above it, so it is on the first screen (plan 5.2; player.js
-   counts those rows into --start-rows). */
-@media (min-width:1024px){
+/* A wide screen: the parts list stands beside everything above it (player.js counts those rows into --start-rows).
+   From 1024px the rail beside the page lists every part with its tally, so the start screen keeps one column until
+   there is room for two beside the rail (decision 24). */
+@media (min-width:1360px){
   html[data-player="start"] main.reading{display:grid;grid-template-columns:minmax(0,46rem) minmax(16rem,20rem);column-gap:var(--sp-6);align-content:start;max-width:calc(66rem + var(--sp-6) + 2 * var(--gutter))}
   html[data-player="start"] main.reading > *{grid-column:1;min-width:0}
   html[data-player="start"] main.reading > .player-parts{grid-column:2;grid-row:1/span var(--start-rows,6);align-self:start;position:sticky;top:calc(var(--sticky-top) + var(--sp-4));margin-top:var(--sp-2)}
@@ -1044,10 +1048,10 @@ main > .safety-short{display:none}
 @media (min-width:600px){.padgrids{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .padgrid{margin:0;min-width:0}
 .padgrid figcaption{margin:0 0 var(--sp-1);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
-.pads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;max-width:156px}
+.pads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;max-width:156px}
 .pads span{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border:1px solid var(--line-strong);border-radius:5px;color:var(--ink-2);font:600 14px/1 var(--font-mono)}
 .pads .on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
-.pads .enter{letter-spacing:-.1em}
+.pads .enter{letter-spacing:-.12em}
 .pad-legend{max-width:none;margin:var(--sp-1) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 @media (forced-colors:active){.pads .on{forced-color-adjust:none;background:CanvasText;color:Canvas}}
 /* All steps: "You're on Part 3, step 31 of 61 · Continue", under the chapter's title. */
@@ -1145,7 +1149,7 @@ html[data-text="larger"][data-player="step"] li.is-current > .step-check{margin-
   html.has-device .player-device{display:block;position:fixed;top:0;bottom:0;left:0;z-index:26;width:40%;overflow-y:auto;padding:var(--sp-2) var(--sp-3) var(--sp-3);border-right:1px solid var(--line);background:var(--surface-2)}
   html.has-device .player-device .device.schem{width:min(100%,calc((100dvh - 44px) * 522 / 712))}
   html.has-device .player-device .press-order{gap:var(--sp-1) var(--sp-3)}
-  html.has-device .player-device .press-order .key{font-size:13px}
+  html.has-device .player-device .press-order .key{font-size:14px}
 }
 @media (min-width:1200px){
   :root{--device-w:360px}   /* the 360px right panel of plan 4.5 */
@@ -1256,7 +1260,7 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .pattern{margin:var(--sp-3) 0;padding:var(--sp-3);border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-2)}
 .pattern figcaption{margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
 .pattern-text{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:1.9}
-.pattern-text .lcd{font-size:13px}
+.pattern-text .lcd{font-size:14px}
 .pattern-lab{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .strip{display:grid;grid-template-columns:3.4em repeat(16,minmax(0,1fr));gap:3px;align-items:center}
 .strip-beat{grid-column:span 4;font:600 12px/1.2 var(--font-mono);color:var(--ink-2)}

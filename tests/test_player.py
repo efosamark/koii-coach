@@ -514,25 +514,35 @@ def test_start_screen_on_one_screen_and_list_banner(run):
     # "About this chapter in full"), the Parts heading is wholly above the action bar in every chapter at 390×844, and
     # at 360×740 in the chapters with no safety box, or in all once the box is closed. From 1024px the parts stand
     # beside the rest.
-    def parts_on_screen(ch, rows=0, closed=False):
+    def parts_on_screen(ch, rows=0, closed=False, inset=0, safety=False):
         run.go(f'./{ch}.html')
-        if closed:   # as on any later visit to #start
+        if closed:   # as once the chapter has a ticked step
             page.evaluate("() => { const s = document.querySelector('.player-safety'); if (s) s.open = false; }")
-        bar = page.locator('#player-actions').bounding_box()['y']
+        bar = page.locator('#player-actions').bounding_box()['y'] - inset
         last = page.locator('.pp-list li').nth(rows - 1) if rows else page.locator('#player-parts-title')
         box = last.bounding_box()
-        return box['y'] + box['height'] <= bar
+        fits = box['y'] + box['height'] <= bar
+        if safety and page.locator('.player-safety .safety-short').count():
+            notes = page.locator('.player-safety .safety-short li:not(.safety-more)').last.bounding_box()
+            fits = fits and notes['y'] + notes['height'] <= bar
+        return fits
     chapters = ('setup', 'first-beat', 'song', 'sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house')
-    for ch in chapters:
-        assert parts_on_screen(ch), f'{ch}: the Parts heading is on the first screen at 390×844'
+    for ch in chapters:   # also with an installed app's 34px safe-area inset
+        assert parts_on_screen(ch, inset=34), f'{ch}: the Parts heading is on the first screen at 390×844'
     page.set_viewport_size({'width': 360, 'height': 740})
     for ch in ('first-beat', 'song', 'hiphop'):
         assert parts_on_screen(ch), f'{ch}: the Parts heading is on the first screen at 360×740'
     for ch in chapters:
         assert parts_on_screen(ch, closed=True), f'{ch}: with the safety box closed, the Parts heading fits at 360×740'
-    page.set_viewport_size({'width': 1024, 'height': 768})
+    # Beside the rail (which lists every part): the safety notes and the Parts heading on a laptop's first screen.
+    for size in ({'width': 1024, 'height': 768}, {'width': 1280, 'height': 720}):
+        page.set_viewport_size(size)
+        for ch in chapters:
+            assert parts_on_screen(ch, safety=True), f'{ch}: at {size} the safety notes and Parts are on the first screen'
+        assert page.locator('.rail .rail-chapter, .rail').first.is_visible()
+    page.set_viewport_size({'width': 1366, 'height': 768})
     for ch in chapters:
-        assert parts_on_screen(ch, rows=3), f'{ch}: at 1024×768 the parts list is beside the rest'
+        assert parts_on_screen(ch, rows=3, safety=True), f'{ch}: from 1360px the parts list is beside the rest'
     page.set_viewport_size({'width': 390, 'height': 844})
     # The safety box names the actions its heading counts, with their keys.
     run.go('./sampling.html')

@@ -4,6 +4,60 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.28
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23 (doubling a pattern with RECORD armed and SHIFT + + copies its notes, play and record; auto-chop fills the pads from the bottom left, functions). **Written for:** OS 2.5.1. No button sequence changed.
+
+Fixes from an eighth independent review of the overhaul.
+
+**Start screen on a laptop** (plan 5.2, decision 24 corrected): 2026.10.14.27 put the parts list beside the start screen from 1024 px, which squeezed the rest into a 320 px column beside the rail and pushed the safety notes below the first screen (at 1024×768 in Chapters 0 and 6 the whole box, in Chapters 3, 4 and 7 the lines naming the irreversible actions). Now:
+- The start screen keeps one column until 1360 px, as before .27; the rail beside it lists every part with its tally from 1024 px.
+- From 1024 px "Before you start" takes two columns, with slimmer rows and a 44 px safety heading, and Parts sits 12 px under the box (was 16 px, also on phones). At 1024×768 and 1280×720 the safety notes and the Parts heading are on the first screen in every chapter (the Parts heading starts at 437–603 px and 443–586 px; the bar at 678 and 630 px).
+- Chapter 7’s "Before you start" drops its "OS 2.5.1" row, which the OS chip above already shows, so at 390×844 the Parts heading clears the action bar in every chapter also inside an installed app with a 34 px home-bar inset (its bottom at 536–729 px; with the inset the bar starts at 737 px).
+
+**Decision 24 corrected:** the safety box closes once the chapter has a ticked step, not on "every later visit"; the 390×844 fit now holds with the 34 px inset; the laptop sizes are 1024×768 and 1280×720 beside the rail. **Decision 21:** the rail steps aside whenever the Tools sheet docks, which is below 1200 px and also on the start screen and in All steps at any width from 1024 px (2026.10.14.27 said 1024–1199 px only).
+
+**Control map** (decision 20, new wording): the drawing keeps the unit’s proportions, so at phone width its printed labels (about 7–8 px), its 32 px buttons and the 12 px press-order badges are below the 14 px floor and the 44 px targets. This is recorded as accepted for the drawing only: each control’s name is its accessible name, choosing one shows its name and job at full size, and "Every control" under the drawing gives every control in body text. Two other 13 px texts are now 14 px: the positions under Chapter 1’s target rhythm and the press-order keycaps in the keys panel.
+
+**Content** (listed below): Checks you can see or hear in Chapters 1 and 3–7, the 15 the review found (using the display’s `Ln.2` / `Ln.4`, pads that light at a position, the MAIN icon, PLAY and the blinking pads, as elsewhere in the course; where the next step already plays the result, the Check says what shows now); Chapter 1 "Optional: a little room, not a wash" now says to turn X, as Chapters 6 and 7 do; Chapter 4 "Copy a throwaway scene: TRASH" no longer opens with "Clear a throwaway scene." (this step only copies; the clear is the next step). Chapter 1’s "2.7 seconds a bar" moved from the Check to the step’s Why.
+
+**Pad plans:** 3 px between pads (was 4) and tighter ENTER lettering, so ENTER clears its cell’s border at 320 px.
+
+**Corrections to the 2026.10.14.27 entry:** the Parts heading at 1024×768 was at 498–681 px before .27 (it said 482–661 px); the docked-Tools rail change applies at any width without a right panel (see Decision 21 above); and the parts list beside the start screen from 1024 px put the safety notes off screen, which it did not say (fixed above).
+
+**Tests:** the start screen at 390×844 with a 34 px inset; at 1024×768 and 1280×720, the safety notes and the Parts heading above the bar with the rail shown; from 1366×768 the first three parts beside the rest.
+
+**Step by step** ("was" gives the old text):
+
+- **Chapter 1** (3 steps):
+  - “Set the tempo to 90 BPM”: Check: “The display shows 90, the new tempo in BPM.” (was “At 90 BPM one bar (four beats) lasts about 2.7 seconds.”); Why added: “At 90 BPM one bar (four beats) lasts about 2.7 seconds.”.
+  - “Commit: make a copy”: Check: “Holding MAIN shows a new number: the copy’s.” (was “The number has changed. You are now in a copy.”).
+  - “Optional: a little room, not a wash”: Do: “Raise the fader only a little: in FX it sets group A’s send. Turn X low for a short reverb.” (was “Raise the fader only a little: in FX it sets group A’s send. X sets the reverb length; start short.”).
+- **Chapter 3** (1 step):
+  - “Chop into four slices”: Check: “The MAIN icon is lit again.” (was “Back in MAIN, group C holds four slices of your count.”).
+- **Chapter 4** (3 steps):
+  - “Copy A1’s notes onto A4”: Check: “Wherever A1 lights, A4 now lights too.” (was “A4 now has a note wherever A1 has one.”).
+  - “A4: move the layer six ticks later”: Check: “The display still shows timing correct; you hear the result in the next step.” (was “Every A4 note now sits six ticks later.”).
+  - “Copy a throwaway scene: TRASH”: Do: “Stopped, press SHIFT + MAIN to copy the scene you are in, then hold MAIN and write the new number as TRASH.” (was “Clear a throwaway scene. Stopped, press SHIFT + MAIN to copy the scene you are in, then hold MAIN and write the new number as TRASH.”).
+- **Chapter 5** (2 steps):
+  - “HOOK only: drop the bass”: Check: “Press PLAY: HOOK plays without its bass. Stop.” (was “Every B1 note in HOOK is gone; VERSE keeps its bass.”).
+  - “Clear the kicks, write one per bar”: Check: “Press PLAY: one kick per bar under the snare and hats. Stop.” (was “END keeps the snare and hats, with one kick per bar.”).
+- **Chapter 6** (3 steps):
+  - “Double A to two bars”: Check: “The display shows Ln.2: bar 2 plays bar 1’s notes.” (was “The pattern doubles to two bars and its notes are copied.”).
+  - “Double B to four bars”: Check: “The display shows Ln.4: bars 3 and 4 repeat bars 1 and 2.” (was “B doubles to four bars, its notes copied.”); Note removed (was “B is now four bars long, and bars 3 and 4 repeat bars 1 and 2.”).
+  - “Set the input level”: Check: “The pads keep blinking: you are still in SAMPLE.” (was “The input level is strong but not distorted.”).
+- **Chapter 7** (5 steps):
+  - “A1: the first kick”: Check: “A1 lights at 1.1.1.” (was “The kick is written on the first step.”).
+  - “Double A to two bars”: Check: “The display shows Ln.2: bar 2 plays bar 1’s notes.” (was “The pattern doubles to two bars, and bar 2 is a copy of bar 1.”).
+  - “Double B to four bars”: Check: “The display shows Ln.4: all four bars play the same bass.” (was “All four bars now have the same bass notes.”).
+  - “GROOVE: clear D3, D4 and D5”: Check: “Press PLAY: drums, bass, hook and answer, without D3–D5. Stop.” (was “GROOVE keeps the drums, bass, hook and answer.”).
+  - “BREAK: clear the kick and clap”: Check: “Press PLAY: the hats still play, with no kick or clap. Stop.” (was “The closed and open hats stay.”).
+
+**Outside the steps** ("was" gives the old text; " · " separates list items):
+
+- **Chapter 7**:
+  - Before you start: “Headphones or speakers” · “Five short vocal sounds” · “Paper and a pencil” (was “OS 2.5.1” · “Headphones or speakers” · “Five short vocal sounds” · “Paper and a pencil”)
+
 ## 2026.10.14.27
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23 (a new pattern’s length shows as `ln.1`, get started; TIMING sets the note interval and quantize, functions). **Written for:** OS 2.5.1. No button sequence changed.
