@@ -37,7 +37,7 @@
       <h1>Set up your K.O. II</h1>
     </header>
     <p class="promise">Get your K.O. II ready: hear it, read its screen, update and back it up.</p>
-    <p>Before your first beat, get the K.O. II ready. You will switch it on and hear it, learn to read the screen and the button language, update to the latest OS (2.5.1), back it up to a computer, choose an empty project for the course and tour the factory sounds. Each section ends with a checkpoint, so you always know whether it worked.</p>
+    <p>Then choose your course project and tour the factory sounds. Each part ends with a checkpoint.</p>
     <p class="makes"><b>You will have:</b> a K.O. II on OS 2.5.1, backed up, with your course project chosen.</p>
     <section class="needs" aria-labelledby="needs-title">
       <h2 id="needs-title">Before you start</h2>
@@ -50,17 +50,17 @@
     </section>
     <section class="card">
       <h2>What you need</h2>
-      <p><b>Your K.O. II</b> (EP-133). The official pages we checked don’t list what is in the box, so look in yours before you start.</p>
-      <p><b>Power:</b> 4 fresh AAA batteries, or a USB-C cable and a good charger (5 V, at least 1 A; teenage engineering recommends a “USB-IF” compliant charger).</p>
-      <p><b>Listening:</b> the built-in speaker is enough to start. For better sound, use headphones or a speaker with a 3.5 mm stereo plug.</p>
-      <p><b>For the update and the backup:</b> a computer with internet and Google Chrome (the official update utility also names Microsoft Edge and Brave), and a USB cable with a USB-C end for the K.O. II that carries data. Some cables only charge.</p>
-      <p><b>Paper and pencil:</b> the course has you write down project and scene numbers.</p>
+      <p><b>Your K.O. II</b> (EP-133).</p>
+      <p><b>Power:</b> 4 fresh AAA batteries, or a USB-C charger: 5 V, at least 1 A, ideally “USB-IF” compliant.</p>
+      <p><b>Sound:</b> the built-in speaker, or headphones or a speaker with a 3.5 mm stereo plug.</p>
+      <p><b>For the update and the backup:</b> a computer with internet and Google Chrome, and a USB-C cable that carries data. Some cables only charge.</p>
+      <p><b>Paper and a pencil,</b> for project and scene numbers.</p>
     </section>
     <ul class="safety-short">
       <li>Never hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> as you switch on.</li>
       <li>Nothing in Parts 1–7 erases music.</li>
     </ul>
-    <div class="notice danger"><b>Safety first.</b> Nothing in Parts 1–7 erases music. Switch the K.O. II on with your hands off the buttons, because two buttons held during start-up change what happens. Holding SHIFT + ERASE while you switch on <b>formats the drive</b>: all your work and the factory sounds are erased (see Part 8). Holding MAIN while you switch on starts lock mode: LOK shows for about a second, and any changes you make are reset when you restart. Pressing SHIFT + ERASE while the K.O. II is already on is safe: it opens system settings (Part 7).</div>
+    <div class="notice danger"><b>Safety first.</b> Nothing in Parts 1–7 erases music. Switch on with your hands off the buttons. Holding SHIFT + ERASE as you switch on <b>formats the drive</b>: all your work and the factory sounds are erased (Part 8). Holding MAIN as you switch on starts lock mode: LOK shows for about a second, and your changes are reset at the next restart. Once the K.O. II is on, SHIFT + ERASE is safe: it opens system settings (Part 7).</div>
     <div id="progress" class="status-bar" hidden>
       <p id="progress-count" role="status"></p>
       <span class="meter" aria-hidden="true"><span class="meter-fill"></span></span>
@@ -71,7 +71,7 @@
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. chapter.js numbers the steps and saves ticks by id. No nested lists inside a step. -->
       <details open>
         <summary><h2 class="part-title">Part 1 · Power on and hear it</h2></summary>
-        <p><b>Goal:</b> switch the K.O. II on, hear its sounds and know where the sound comes out.</p>
+        <p><b>Goal:</b> switch on and hear the pads through the speaker or headphones.</p>
         <ol>
           <li data-step="power-batteries">
             <h3 class="step-title">Fit four AAA batteries</h3>
@@ -94,7 +94,7 @@
             <h3 class="step-title">Tap pads 1, 2 and 3</h3>
             <p class="step-do">Tap pads 1, 2 and 3.</p>
             <p class="step-check"><span class="sr">Check: </span>Each pad plays a sound through the built-in speaker.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A new K.O. II comes with sounds in projects 1–5.</p></details><details class="step-more"><summary>Not working?</summary><p>Silent? You may be in one of the empty projects: hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 1</kbd> as well, release both and tap again. Also check that the fader is not all the way down: by default it sets the level of the selected group.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A new K.O. II comes with sounds in projects 1–5.</p></details><details class="step-more"><summary>Not working?</summary><p>Silent? You may be in an empty project: hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 1</kbd> as well, release both and tap again. Also check the fader isn’t all the way down.</p></details></div>
           </li>
           <li data-step="listen-headphones" data-optional>
             <h3 class="step-title">Optional: plug in headphones</h3>
@@ -108,27 +108,27 @@
             <p class="step-check"><span class="sr">Check: </span>The pads sound clearly through your headphones or speaker.</p>
           </li>
         </ol>
-        <p>Finishing a session? Wait until the floppy icon (saving) is off, then slide the power switch back.</p>
-        <p class="checkpoint"><b>Checkpoint:</b> the screen is lit and you hear the pads through the speaker or your headphones.</p>
-        <p><b>If it doesn’t:</b> a dark screen usually means power. Check which way round the batteries are, try fresh ones, or use USB-C power from another charger. <samp class="lcd">BAT</samp> on the display as it switches off means the batteries are too low. An error code such as <samp class="lcd">E.10</samp>: go to Part 8.</p>
-        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/power-on">Power on</a> · <a href="https://teenage.engineering/guides/ep-133/hardware-overview">Hardware overview (inputs and outputs)</a></p>
+        <p>Switching off? Wait until the floppy icon (saving) goes out, then slide the power switch back.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> the screen is lit and you hear the pads.</p>
+        <p><b>If it doesn’t:</b> a dark screen usually means power: check which way round the batteries are, or try fresh ones or USB-C power. <samp class="lcd">BAT</samp> as it switches off means the batteries are low. An error code such as <samp class="lcd">E.10</samp>? See Part 8.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/power-on">Power on</a> · <a href="https://teenage.engineering/guides/ep-133/hardware-overview">Hardware overview</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 2 · Read the screen and the button language</h2></summary>
-        <p><b>Goal:</b> understand what “hold X + press Y” means, find your way home to MAIN, and read the icons this course checks most.</p>
+        <p><b>Goal:</b> learn the button words, find your way home to MAIN, and read the icons you will check most.</p>
         <ol start="7">
           <li data-step="button-language" data-kind="info">
             <h3 class="step-title">Learn the four button words</h3>
             <p class="step-do">Learn the four words this course uses.</p>
-            <p class="step-note">Press: tap and release. Hold: press and keep it down. X + Y: hold X, press Y, then release both. Then: one after the other. Many buttons and the <kbd class="key knob">X</kbd> and <kbd class="key knob">Y</kbd> knobs change job with the mode, so always check which mode you are in.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>They follow the official guide conventions.</p></details></div>
+            <p class="step-note">Press: tap and release. Hold: press and keep it down. X + Y: hold X, press Y, then release both. Then: one after the other. Many buttons and the <kbd class="key knob">X</kbd> and <kbd class="key knob">Y</kbd> knobs change job with the mode, so check which mode you are in.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide uses the same words.</p></details></div>
           </li>
           <li data-step="screen-main-position">
             <h3 class="step-title">MAIN: your home screen</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd>. If something is playing, press <kbd class="key">PLAY</kbd> to stop it.</p>
             <p class="step-check"><span class="sr">Check: </span>The MAIN icon is lit and the display shows a position such as <samp class="lcd">1.1.1</samp>.</p>
             <p class="step-note">The three numbers are bar, beat and step.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide calls MAIN your home screen: press it whenever you feel lost.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>MAIN is your home screen: press it whenever you feel lost.</p></details></div>
           </li>
           <li data-step="screen-shift-combo">
             <h3 class="step-title">Step through the beat</h3>
@@ -139,7 +139,7 @@
             <h3 class="step-title">Your first combination: SHIFT + −</h3>
             <p class="step-do">Now your first combination: hold <kbd class="key">SHIFT</kbd>, press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>, then release <kbd class="key">SHIFT</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">1.1.1</samp> again.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p><kbd class="key">SHIFT</kbd> is the gateway to other functions; together with <kbd class="key">−</kbd> and <kbd class="key">+</kbd> it moves a whole bar at a time.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p><kbd class="key">SHIFT</kbd> gives buttons a second job. With <kbd class="key">−</kbd> or <kbd class="key">+</kbd>, it moves a whole bar at a time.</p></details></div>
           </li>
           <li data-step="screen-sound-mode">
             <h3 class="step-title">SOUND: the selected pad</h3>
@@ -182,20 +182,20 @@
             <tr><td>Clip</td><td>Lit when the input clips (too loud)</td></tr>
           </tbody>
         </table>
-        <p>Meanings come from the official icon map, which shows all 66 icons on the display.</p>
-        <p class="checkpoint"><b>Checkpoint:</b> you can tell <kbd class="key">MAIN</kbd> from <kbd class="key">SOUND</kbd> by the lit icon, read a position such as <samp class="lcd">1.1.1</samp>, and get back to <samp class="lcd">1.1.1</samp> with <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd>.</p>
-        <p><b>If it doesn’t:</b> the number doesn’t look like <samp class="lcd">1.1.1</samp>? You are probably in <kbd class="key">SOUND</kbd> (a sample number) or <kbd class="key">TEMPO</kbd> (the BPM): press <kbd class="key">MAIN</kbd>. The position keeps changing by itself? Playback is running: press <kbd class="key">PLAY</kbd>.</p>
+        <p>The official icon map, linked below, shows the rest.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> you can tell <kbd class="key">MAIN</kbd> from <kbd class="key">SOUND</kbd> by the lit icon, and get back to <samp class="lcd">1.1.1</samp> with <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd>.</p>
+        <p><b>If it doesn’t:</b> no position like <samp class="lcd">1.1.1</samp> on the display? Press <kbd class="key">MAIN</kbd>. It keeps moving? Press <kbd class="key">PLAY</kbd> to stop.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/screen">Screen (icon map)</a> · <a href="https://teenage.engineering/guides/ep-133/guide-conventions">Guide conventions</a> · <a href="https://teenage.engineering/guides/ep-133/buttons-and-combos">Buttons and combos</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 3 · Update to the latest OS (2.5.1)</h2></summary>
-        <p><b>Goal:</b> run the newest OS, so every instruction in this course matches your K.O. II. The course is checked against OS 2.5.1, released on 3 July 2026 according to the official downloads page. The K.O. II doesn’t show its OS version on its own display, so let the official update utility read it for you.</p>
-        <p>Already made music on this unit that you care about, or bought it second-hand? Do Part 4 (backup) first, then come back here.</p>
+        <p><b>Goal:</b> the newest OS on your K.O. II, so every step matches it.</p>
+        <p>Music on this unit you care about, or bought it second-hand? Back it up first (Part 4), then come back.</p>
         <ol start="14">
           <li data-step="update-open-utility" data-kind="info">
             <h3 class="step-title">Open the update utility</h3>
             <p class="step-do">On your computer, open Google Chrome and go to <a href="https://teenage.engineering/apps/update">teenage.engineering/apps/update</a>.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The utility needs a browser that supports Web MIDI and names Chrome, Microsoft Edge and Brave.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The K.O. II doesn’t show its OS version, so the utility reads it for you. It works in Chrome, Microsoft Edge or Brave.</p></details></div>
           </li>
           <li data-step="update-connect">
             <h3 class="step-title">Connect the K.O. II</h3>
@@ -211,7 +211,7 @@
             <h3 class="step-title">Read the result</h3>
             <p class="step-do">Read what the utility tells you: either that a newer version is available, or that your K.O. II is up to date.</p>
             <p class="step-note">If a newer one appears later, install that.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The newest version on the official downloads page is 2.5.1.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The newest version is OS 2.5.1.</p></details></div>
           </li>
           <li data-step="update-install">
             <h3 class="step-title">Install the update</h3>
@@ -221,26 +221,26 @@
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> the update utility says your K.O. II is up to date.</p>
-        <p><b>If it doesn’t:</b> the utility doesn’t find the K.O. II? Try another cable (one that carries data) or another USB port, close music software and other browser tabs that use the K.O. II, update your browser, then reload. On Windows, the utility links teenage engineering’s own Windows setup guide. Still stuck: <a href="https://support.teenage.engineering/">teenage engineering support</a>. Can’t update yet? Older OS: update before you go further, because song mode needs OS 2.0 and USB audio needs OS 2.5.</p>
-        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/power-on">Power on (keep it up to date)</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">What’s new</a> · <a href="https://teenage.engineering/downloads/ep-133">OS downloads and release notes</a></p>
+        <p><b>If it doesn’t:</b> the utility doesn’t find the K.O. II? Try another data cable or USB port, close other music apps and tabs, then reload. Still stuck? Contact <a href="https://support.teenage.engineering/">teenage engineering support</a>. Update before you go further: song mode needs OS 2.0 and USB audio OS 2.5.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/power-on">Power on</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">What’s new</a> · <a href="https://teenage.engineering/downloads/ep-133">OS downloads</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 4 · Back up with the EP sample tool</h2></summary>
-        <p><b>Goal:</b> keep a copy of your projects and sounds on your computer before you change anything. Commit (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>), which Chapter 1 teaches, only copies a scene inside the K.O. II. It is not a backup.</p>
+        <p><b>Goal:</b> a copy of your projects and sounds on your computer, before you change anything.</p>
         <ol start="19">
           <li data-step="backup-open-tool">
             <h3 class="step-title">Open the EP sample tool</h3>
             <p class="step-do">Close the update utility tab. Keep the K.O. II on and connected, and open <a href="https://teenage.engineering/apps/ep-sample-tool">teenage.engineering/apps/ep-sample-tool</a> in Chrome. Allow MIDI access if the browser asks.</p>
             <p class="step-check"><span class="sr">Check: </span>The tool shows your K.O. II.</p>
-            <p class="step-note">The tool itself suggests Chrome or Brave.</p>
+            <p class="step-note">The tool suggests Chrome or Brave.</p>
           </li>
           <li data-step="backup-save">
             <h3 class="step-title">Save a backup</h3>
             <p class="preflight">Don’t use its delete or restore features today.</p>
             <p class="step-do">Use the tool’s backup feature to save a backup of your K.O. II to the computer.</p>
             <p class="step-check"><span class="sr">Check: </span>The tool reports that the backup has finished.</p>
-            <p class="step-note">Button names can change between versions of the tool, so follow its own labels.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Backup and restore arrived with OS 1.2.0, and the official product page says you can also back up and restore single projects.</p></details></div>
+            <p class="step-note">Follow the tool’s own button labels: they can change.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Only a backup on a computer keeps your music safe: copying a scene inside the K.O. II is not one. The tool can also back up and restore single projects.</p></details></div>
           </li>
           <li data-step="backup-check-file">
             <h3 class="step-title">Find the backup file</h3>
@@ -251,16 +251,16 @@
             <h3 class="step-title">Copy it to a second place</h3>
             <p class="step-do">Copy it to a second place, such as a USB stick or cloud storage.</p>
             <p class="step-check"><span class="sr">Check: </span>The backup file also appears in the second place.</p>
-            <p class="step-note">Make a fresh backup after each chapter you care about and before every update or troubleshooting. Restoring a backup can replace what is on the K.O. II, so back up the current state before you ever restore.</p>
+            <p class="step-note">Back up again after each chapter you care about, and before any update or troubleshooting. Restoring can replace what is on the K.O. II, so back up before you ever restore.</p>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> a new backup file is on your computer and in one more safe place.</p>
-        <p><b>If it doesn’t:</b> the tool doesn’t see the K.O. II? Close the update utility and any music software, unplug and reconnect the cable, reload the page and allow MIDI. The backup stops halfway? Try a better cable and run it again; OS 2.5 fixed a crash with unstable USB connections, which is one more reason to update first.</p>
-        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">Functions (sample tool section)</a> · <a href="https://teenage.engineering/downloads/ep-133">OS downloads (OS 1.2.0 notes: backup/restore)</a></p>
+        <p><b>If it doesn’t:</b> the tool doesn’t see the K.O. II? Close the update utility and other music apps, reconnect the cable, reload and allow MIDI. The backup stops halfway? Use a better cable and run it again.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">Functions</a> · <a href="https://teenage.engineering/downloads/ep-133">OS downloads</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 5 · Choose your empty project</h2></summary>
-        <p><b>Goal:</b> pick an empty project for the course. A project is one composition: think of it as a song. The K.O. II holds 9 projects. Each has 4 groups (A–D) of 12 pads, up to 99 patterns per group and up to 99 scenes. Fresh out of the box, projects 1–5 come with sounds and projects 6–9 are completely empty.</p>
+        <p><b>Goal:</b> choose an empty project for the course. A project is one song, with 4 groups (A–D) of 12 pads. Out of the box, projects 1–5 hold sounds and 6–9 are empty.</p>
         <ol start="23">
           <li data-step="project-factory-sounds">
             <h3 class="step-title">Open factory project 1</h3>
@@ -281,7 +281,7 @@
             <h3 class="step-title">Check every group is silent</h3>
             <p class="step-do">Tap <kbd class="key">A</kbd>, then <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd> again, then tap <kbd class="key">B</kbd>, <kbd class="key">C</kbd> and <kbd class="key">D</kbd> and try a few pads in each.</p>
             <p class="step-check"><span class="sr">Check: </span>Silence everywhere.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide: “press a few pads in an empty project and you will notice that the pads do not have any sounds.”</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>An empty project has no sounds on any pad.</p></details></div>
           </li>
           <li data-step="project-write-down">
             <h3 class="step-title">PLAY: silence</h3>
@@ -291,17 +291,17 @@
           <li data-step="project-write-course" data-kind="info">
             <h3 class="step-title">Write PROJECT 6 = COURSE</h3>
             <p class="step-do">Write PROJECT 6 = COURSE on your paper.</p>
-            <p class="step-note">Later chapters each start in a project of their own: 7 for Chapter 3, 8 for Chapter 5 and 9 for Chapter 6, so keep 7 and 8 empty. Until Chapter 6, use project 9 as a scratch project for trying things (next section). Leave the factory projects 1–5 as they are.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Chapters 1 and 2 build your beat and song here, and Chapter 4 plays with them. A new unit has only these four empty projects, so Chapter 7 shows you how to back up and reuse one.</p></details></div>
+            <p class="step-note">Chapters 3, 5 and 6 use projects 7, 8 and 9, so keep 7 and 8 empty. Until then, project 9 is your scratch project. Leave factory projects 1–5 as they are.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Chapters 1 and 2 build your beat and song here. A new unit has only four empty projects, so Chapter 7 shows how to back up and reuse one.</p></details></div>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> in project 1 the pads make sounds. In project 6 every pad is silent and <kbd class="key">PLAY</kbd> plays nothing. PROJECT 6 is on your paper.</p>
-        <p><b>If it doesn’t:</b> the pads still sound after <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key pad">pad 6</kbd></kbd>? On OS 2.0 and newer, <kbd class="key">MAIN</kbd> + a number can also switch scenes, so you may have changed scene instead of project. Try again: hold <kbd class="key">MAIN</kbd> first, then hold <kbd class="key pad">pad 6</kbd> as well, and release both only when the display shows <samp class="lcd">P 6</samp>. Second-hand unit with music in 6–9? Back it up (Part 4) and choose any project whose pads are all silent; step 1 of Chapter 1 also has a fallback.</p>
-        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started (step 1)</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Modes (main: change project)</a> · <a href="https://teenage.engineering/guides/ep-133/workflow">Workflow (projects, groups, scenes)</a></p>
+        <p class="checkpoint"><b>Checkpoint:</b> project 1 plays sounds, project 6 is silent everywhere, and PROJECT 6 is on your paper.</p>
+        <p><b>If it doesn’t:</b> the pads still sound after <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key pad">pad 6</kbd></kbd>? You may have switched scene instead of project. Hold <kbd class="key">MAIN</kbd> first, then <kbd class="key pad">pad 6</kbd> as well, and release both only when the display shows <samp class="lcd">P 6</samp>. Music in 6–9 on a second-hand unit? Back it up (Part 4), then use any project whose pads are all silent.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a> · <a href="https://teenage.engineering/guides/ep-133/workflow">Workflow</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 6 · Tour the factory sound library</h2></summary>
-        <p><b>Goal:</b> hear every kind of factory sound and learn where each lives by number. You do this in scratch project 9, so project 6 stays empty.</p>
+        <p><b>Goal:</b> hear each kind of factory sound and learn its number range, in scratch project 9 so project 6 stays empty.</p>
         <table>
           <thead>
             <tr><th>Sample numbers</th><th>Factory sounds stored there</th></tr>
@@ -315,7 +315,7 @@
             <tr><td>500–599</td><td>Melodic sounds</td></tr>
           </tbody>
         </table>
-        <p>Out of the box the K.O. II comes loaded with over 300 samples. It has 999 sample slots and 128 MB of memory; your own recordings go into the next free slot.</p>
+        <p>A new K.O. II holds over 300 factory samples in these ranges.</p>
         <ol start="29">
           <li data-step="library-scratch-project">
             <h3 class="step-title">Open scratch project 9</h3>
@@ -363,18 +363,18 @@
             <h3 class="step-title">Play your mini kit</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd> and tap 1, 2, 3, 2 like a beat.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear kick, snare, hi-hat, then snare.</p>
-            <p class="step-note">Chapter 1 starts from samples 001, 100 and 200; you can swap in your favourites there.</p>
+            <p class="step-note">Chapter 1 starts from samples 001, 100 and 200. Swap in your favourites there if you like.</p>
           </li>
         </ol>
         <p class="notice danger">Careful in SOUND: holding <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">SOUND</kbd></kbd> until <samp class="lcd">SND</samp> blinks permanently removes the selected sample from the K.O. II. You don’t need it here.</p>
-        <p>Tip: in SOUND, hold a pad to see its sample’s name, if it has one. The guide says a sample only has a name if it was imported or renamed with the EP sample tool.</p>
+        <p>Tip: in SOUND, hold a pad to see its sample’s name, if it has one.</p>
         <p class="checkpoint"><b>Checkpoint:</b> each number range plays the kind of sound in the table, and three favourite numbers are on your paper.</p>
-        <p><b>If it doesn’t:</b> no sound? Check that the <kbd class="key">SOUND</kbd> icon is lit and that you tap the pad you are browsing; in <kbd class="key">MAIN</kbd>, check the fader isn’t all the way down. Many numbers silent, or sounds that don’t match the table? The library may have been changed or erased: see Part 8.</p>
-        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes (sound: default samples)</a></p>
+        <p><b>If it doesn’t:</b> no sound? Check the <kbd class="key">SOUND</kbd> icon is lit and you tap the pad you are browsing. Many numbers silent, or sounds that don’t match the table? The library may have been changed or erased: see Part 8.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 7 · System settings worth knowing</h2></summary>
-        <p><b>Goal:</b> open system settings, change one setting with the menu, change it back with a number code, and leave safely.</p>
+        <p><b>Goal:</b> change one system setting in the menu, then change it back with a number code.</p>
         <p class="notice caution"><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> while the K.O. II is on opens system settings: safe. Held while you switch on, the same two buttons format the drive (Part 8).</p>
         <ol start="38">
           <li data-step="settings-open">
@@ -387,7 +387,7 @@
             <h3 class="step-title">Open the seq group</h3>
             <p class="step-do">Press <kbd class="key">+</kbd> or <kbd class="key">−</kbd> until the display shows <samp class="lcd">seq</samp>, then press <kbd class="key">ENTER</kbd> (one of the pads).</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows a setting inside <samp class="lcd">seq</samp>.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Use the menu, as in the official how-to.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The menu names each setting, so you see what you change.</p></details></div>
           </li>
           <li data-step="settings-metronome-on" data-setting="400">
             <h3 class="step-title">Turn the metronome on (400)</h3>
@@ -424,11 +424,11 @@
         </ol>
         <table>
           <thead>
-            <tr><th>Codes</th><th>Setting (official wording)</th><th>Course pick</th></tr>
+            <tr><th>Codes</th><th>Setting</th><th>Course pick</th></tr>
           </thead>
           <tbody>
             <tr><td>300 · 301 · 302</td><td>Pad velocity off (default) · high, for a soft touch · low, for vigorous playing</td><td><b>300</b>: every tap plays at the same level while you learn.</td></tr>
-            <tr><td>310 · 311</td><td>Sample audition on · off</td><td>Leave as it is. The guide gives no more detail.</td></tr>
+            <tr><td>310 · 311</td><td>Sample audition on · off</td><td>Leave as it is.</td></tr>
             <tr><td>320 · 321 · 322</td><td>LED brightness low · mid · high</td><td>Your choice. Brighter is clearer in daylight.</td></tr>
             <tr><td>330 · 331</td><td>Knob/fader takeover mode: scaling (default) · catch</td><td><b>330</b>, the default.</td></tr>
             <tr><td>400 · 401 · 402</td><td>Metronome at record + play · at record only (default) · at count-in only</td><td><b>401</b>, the default. Chapter 1’s live recording uses it.</td></tr>
@@ -439,10 +439,9 @@
             <tr><td>510 · 511</td><td>USB audio input mode: sampler only (default) · sampler + live monitoring</td><td><b>510</b>, the default, unless a later chapter asks for 511.</td></tr>
           </tbody>
         </table>
-        <p>“Default” is shown only where the official guide marks one.</p>
-        <p class="checkpoint"><b>Checkpoint:</b> with <samp class="lcd">400</samp> you heard a click while playing; with <samp class="lcd">401</samp> you didn’t; after <kbd class="key">MAIN</kbd> the SYSTEM icon is off.</p>
-        <p><b>If it doesn’t:</b> no click with <samp class="lcd">400</samp>? In <kbd class="key">TEMPO</kbd> turn <kbd class="key knob">Y</kbd> higher, and check that you chose <samp class="lcd">on</samp> (not <samp class="lcd">rec</samp> or <samp class="lcd">cnt</samp>). Lost in the menu? <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ENTER</kbd></kbd> goes back one level, and <kbd class="key">MAIN</kbd> leaves. Typed the wrong code? Open settings and type the right one. None of the codes in the table erases music.</p>
-        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/system">System (settings codes)</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">How to (velocity and metronome)</a></p>
+        <p class="checkpoint"><b>Checkpoint:</b> with <samp class="lcd">400</samp> you heard a click while playing, with <samp class="lcd">401</samp> you didn’t, and the SYSTEM icon is off.</p>
+        <p><b>If it doesn’t:</b> no click with <samp class="lcd">400</samp>? In <kbd class="key">TEMPO</kbd>, turn <kbd class="key knob">Y</kbd> higher. Lost in the menu? <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ENTER</kbd></kbd> goes back one level and <kbd class="key">MAIN</kbd> leaves. Typed the wrong code? Type the right one: none of these codes erases music.</p>
+        <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/system">System</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">How to</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 8 · If something is wrong: empty library, error codes and the format</h2></summary>
@@ -451,12 +450,12 @@
           <li data-step="trouble-empty-library" data-kind="info">
             <h3 class="step-title">Library complete? Move on</h3>
             <p class="step-do">If Part 6 played every category, your library is complete: tick this and move on.</p>
-            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>If projects 1–5 are silent and most sample numbers play nothing, the library has probably been erased, for example by a previous owner’s format. You can still follow the course with your own sounds: in Chapter 3, Part 2 <a href="./sampling.html#make-your-own-kit">“Build a drum kit from your voice”</a> records a kick, a snare and a hi-hat with the built-in mic onto <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd>. The official EP sample tool page also says the tool can “restore factory sounds”; if you try that, back up first, because restoring can replace what is on the K.O. II.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Projects 1–5 silent, and most sample numbers empty? The library has probably been erased, for example by a previous owner’s format. Chapter 3, Part 2 <a href="./sampling.html#make-your-own-kit">“Build a drum kit from your voice”</a> records your own kick, snare and hi-hat with the built-in mic onto <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd>. The EP sample tool can also restore the factory sounds: back up first, because restoring can replace what is on the K.O. II.</p></details></div>
           </li>
           <li data-step="trouble-error-codes" data-kind="info">
             <h3 class="step-title">Error code? Look it up</h3>
             <p class="step-do">If the display shows an error code when you switch on, look it up.</p>
-            <p class="step-note"><samp class="lcd">E.01</samp>, <samp class="lcd">E.02</samp> and <samp class="lcd">E.03</samp> (sram, flash and codec errors) mean the unit needs repair: contact teenage engineering support and don’t format. <samp class="lcd">E.05</samp>, <samp class="lcd">E.10</samp>, <samp class="lcd">E.11</samp> and <samp class="lcd">E.12</samp> are file-system errors, and the official fix is the format in the warning box below. Update the OS first if you can: teenage engineering says its updates keep fixing bugs that may cause these errors.</p>
+            <p class="step-note"><samp class="lcd">E.01</samp>, <samp class="lcd">E.02</samp> and <samp class="lcd">E.03</samp> mean the unit needs repair: contact teenage engineering support, and don’t format. <samp class="lcd">E.05</samp>, <samp class="lcd">E.10</samp>, <samp class="lcd">E.11</samp> and <samp class="lcd">E.12</samp> are file-system errors, fixed by the format in the warning below. Update the OS first if you can: updates keep fixing bugs that may cause them.</p>
           </li>
           <li data-step="trouble-never-format">
             <h3 class="step-title">Anything else: never format</h3>
@@ -465,9 +464,9 @@
             <p class="step-check"><span class="sr">Check: </span>The mistake is gone; your sounds are still there.</p>
           </li>
         </ol>
-        <div class="notice danger"><b>Warning: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> held while you switch on formats the drive.</b> The official guide says: “this will remove all your work as well as all factory sounds. once removed factory sounds can not be recovered!” Use it only as the official fix for errors <samp class="lcd">E.05</samp>, <samp class="lcd">E.10</samp>, <samp class="lcd">E.11</samp> and <samp class="lcd">E.12</samp>; a new K.O. II never needs it. Before any format, back up with the EP sample tool if the K.O. II still connects. So you recognise it: the guide says that with the K.O. II off, holding <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> while switching on shows <samp class="lcd">FMT</samp> for about 10 seconds, and then the K.O. II starts up with all content removed.</div>
+        <div class="notice danger"><b>Warning: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> held while you switch on formats the drive.</b> It removes all your work and all factory sounds. Factory sounds cannot be recovered. Use it only to fix errors <samp class="lcd">E.05</samp>, <samp class="lcd">E.10</samp>, <samp class="lcd">E.11</samp> and <samp class="lcd">E.12</samp>. A new K.O. II never needs it. Before any format, back up with the EP sample tool if the K.O. II still connects. So you recognise it: the display shows <samp class="lcd">FMT</samp> for about 10 seconds, then the K.O. II starts up with all content removed.</div>
         <p class="checkpoint"><b>Checkpoint:</b> you know which errors need a repair, which need a format, and that a new K.O. II needs neither.</p>
-        <p><b>If it doesn’t:</b> an error that isn’t listed here, or a format that doesn’t help? Contact <a href="https://support.teenage.engineering/">teenage engineering support</a>.</p>
+        <p><b>If it doesn’t:</b> an error not listed here, or a format that doesn’t help? Contact <a href="https://support.teenage.engineering/">teenage engineering support</a>.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/system">System (error codes)</a> · <a href="https://teenage.engineering/guides/ep-133/erase-drive">Erase drive</a></p>
       </details>
       <details>
@@ -495,7 +494,7 @@
           <li data-step="setup-recap" data-kind="recap">
             <h3 class="step-title">Set-up done: your moves</h3>
             <p class="step-do">Read the six moves below, then try one from memory without reading this app.</p>
-            <ul class="step-moves"><li>Home: press <kbd class="key">MAIN</kbd>; <kbd class="key">PLAY</kbd> starts and stops.</li><li>To the start: hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>.</li><li>Change project: hold <kbd class="key">MAIN</kbd>, hold a pad 1–9 as well, then release both.</li><li>Browse sounds: <kbd class="key">SOUND</kbd>, tap the pad, then <kbd class="key">−</kbd> / <kbd class="key">+</kbd> (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">+</kbd></kbd> jumps ten). Hold <kbd class="key">SOUND</kbd> and type a number to jump there.</li><li>System settings, with the unit already on: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, three digits, <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd>.</li><li>Undo: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</li></ul>
+            <ul class="step-moves"><li>Home: press <kbd class="key">MAIN</kbd>. <kbd class="key">PLAY</kbd> starts and stops.</li><li>To the start: hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>.</li><li>Change project: hold <kbd class="key">MAIN</kbd>, hold a pad 1–9 as well, then release both.</li><li>Browse sounds: <kbd class="key">SOUND</kbd>, tap the pad, then <kbd class="key">−</kbd> / <kbd class="key">+</kbd> (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">+</kbd></kbd> jumps ten). Hold <kbd class="key">SOUND</kbd> and type a number to jump there.</li><li>System settings, with the unit already on: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, three digits, <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd>.</li><li>Undo: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</li></ul>
           </li>
           <li data-step="ready-open-first-beat" data-kind="info">
             <h3 class="step-title">Open Chapter 1</h3>
@@ -503,15 +502,15 @@
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> all four items are ticked. You are ready for your first beat.</p>
-        <p><b>If it doesn’t:</b> one item isn’t true yet? Go back to its part (Part 3 update, Part 4 backup, Part 5 project). Each section works on its own.</p>
+        <p><b>If it doesn’t:</b> one item isn’t true yet? Go back to Part 3 (update), Part 4 (backup) or Part 5 (project).</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
       </details>
     </section>
     <section class="card">
-      <h2>Button instructions and sources</h2>
-      <p>Original teaching text. Hardware steps were checked against teenage engineering’s online guide, OS downloads page and app pages on 13 October 2026, for OS 2.5.1. Icon meanings come from the official icon map on the screen page. The app cannot see your hardware, so always trust your display over this page.</p>
+      <h2>Sources</h2>
+      <p>Written for OS 2.5.1. Each part links the pages of teenage engineering’s EP-133 guide it follows. If your display ever disagrees with a step, trust the display.</p>
       <p><a href="https://teenage.engineering/guides/ep-133/power-on">Power on</a> · <a href="https://teenage.engineering/guides/ep-133/hardware-overview">Hardware overview</a> · <a href="https://teenage.engineering/guides/ep-133/screen">Screen</a> · <a href="https://teenage.engineering/guides/ep-133/guide-conventions">Guide conventions</a> · <a href="https://teenage.engineering/guides/ep-133/buttons-and-combos">Buttons and combos</a> · <a href="https://teenage.engineering/guides/ep-133/workflow">Workflow</a> · <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a> · <a href="https://teenage.engineering/guides/ep-133/functions">Functions</a> · <a href="https://teenage.engineering/guides/ep-133/system">System</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">How to</a> · <a href="https://teenage.engineering/guides/ep-133/erase-drive">Erase drive</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">What’s new</a> · <a href="https://teenage.engineering/downloads/ep-133">OS downloads</a> · <a href="https://teenage.engineering/apps/update">Update utility</a> · <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a></p>
-      <p class="notice danger">Safety: SHIFT + ERASE held while switching on formats the drive, and the guide says factory sounds can’t be recovered. Holding ERASE + SOUND deletes a sample file. Neither is needed in this chapter. Back up with the EP sample tool before any update, restore or troubleshooting.</p>
+      <p class="notice danger">Safety: SHIFT + ERASE held while switching on formats the drive, and factory sounds can’t be recovered. Holding ERASE + SOUND deletes a sample file. This chapter needs neither. Back up with the EP sample tool before any update, restore or troubleshooting.</p>
       <div class="row">
         <button class="btn" id="print" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-print"></use></svg>Print all steps</button>
         <button class="btn danger" id="reset" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-undo"></use></svg>Restart this chapter</button>

@@ -38,32 +38,32 @@
     <div class="settings">
     <section class="card section" id="firmware-card" aria-labelledby="firmware-title">
       <h2 id="firmware-title">Your K.O. II’s OS version</h2>
-      <p>This course is written for OS 2.5.x, the latest release. Choose the version on your K.O. II: steps that need a newer OS than the one you choose show a “Needs OS …+” badge. The browser cannot detect or update it.</p>
+      <p>Choose the OS version on your K.O. II. Steps that need a newer one show a “Needs OS …+” badge. The chapters are written for OS 2.5.x, the latest release.</p>
       <div class="row"><label class="lbl" for="firmware">OS version</label><select id="firmware"><option value="2.5">OS 2.5.x (latest)</option><option value="2">OS 2.0.x (2.0 to 2.0.5)</option><option value="older">Older than OS 2.0</option><option value="unknown">Not sure</option></select></div>
       <p class="notice info" id="version-note" aria-live="polite"></p>
       <fieldset class="choice"><legend>My unit is set up</legend><div class="row"><label class="choice-opt"><input type="radio" name="setup" value="ready"><span>Yes</span></label><label class="choice-opt"><input type="radio" name="setup" value="new"><span>Not yet</span></label></div></fieldset>
-      <p class="meta" id="setup-note">Not yet: Home’s Continue opens <a href="./setup.html">Chapter 0 · Set up your K.O. II</a> until it is done. Yes: Continue goes on with the course, and Chapter 0 stays in the list to do any time.</p>
+      <p class="meta" id="setup-note">Not yet: Home’s Continue opens <a href="./setup.html">Chapter 0 · Set up your K.O. II</a> until it is done. Yes: Continue goes on with the course, and Chapter 0 stays in the list.</p>
       <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/whats-new">What’s new</a></p>
     </section>
     <section class="card section" aria-labelledby="wake-title">
       <h2 id="wake-title">While practising</h2>
       <fieldset class="choice"><legend>Keep the screen on while practising</legend><div class="row"><label class="choice-opt"><input type="radio" name="wake" value="auto" checked><span>Auto</span></label><label class="choice-opt"><input type="radio" name="wake" value="off"><span>Off</span></label></div></fieldset>
-      <p class="meta" id="wake-note">Auto keeps the screen awake while you work through the steps, so a propped-up phone stays readable between presses. Off leaves it to your device’s own screen timeout.</p>
+      <p class="meta" id="wake-note">Auto keeps the screen awake while you work through the steps, so a propped-up phone stays readable. Off leaves it to your device’s screen timeout.</p>
       <fieldset class="choice"><legend>Keyboard shortcuts</legend><div class="row"><label class="choice-opt"><input type="radio" name="keys" value="on" checked><span>On</span></label><label class="choice-opt"><input type="radio" name="keys" value="off"><span>Off</span></label></div></fieldset>
-      <p class="meta">With a keyboard: <kbd class="key">/</kbd> search, <kbd class="key">M</kbd> menu, <kbd class="key">T</kbd> the Tools sheet in a chapter, <kbd class="key">?</kbd> the full list. Off switches the letter keys off (some screen readers and voice control use them); <kbd class="key">Ctrl</kbd> + <kbd class="key">K</kbd> and the arrow keys in a chapter keep working.</p>
+      <p class="meta">With a keyboard: <kbd class="key">/</kbd> search, <kbd class="key">M</kbd> menu, <kbd class="key">T</kbd> the Tools sheet in a chapter, <kbd class="key">?</kbd> the full list. Off frees the letter keys for screen readers and voice control. <kbd class="key">Ctrl</kbd> + <kbd class="key">K</kbd> and the arrow keys in a chapter keep working.</p>
       <fieldset class="choice"><legend>Text size in the steps</legend><div class="row"><label class="choice-opt"><input type="radio" name="text" value="default" checked><span>Default</span></label><label class="choice-opt"><input type="radio" name="text" value="larger"><span>Larger</span></label></div></fieldset>
-      <p class="meta">Larger makes each step’s moves bigger again, for reading at arm’s length. Your browser’s own text size still counts on top.</p>
+      <p class="meta">Larger makes each step’s moves bigger, for reading at arm’s length. Your browser’s text size still applies on top.</p>
       <fieldset class="choice"><legend>Done · Next button</legend><div class="row"><label class="choice-opt"><input type="radio" name="hand" value="right" checked><span>On the right</span></label><label class="choice-opt"><input type="radio" name="hand" value="left"><span>On the left</span></label></div></fieldset>
       <p class="meta">On the left puts Done · Next under your left thumb, with Tools and Back to its right.</p>
     </section>
     <section class="card section" aria-labelledby="progress-title">
       <h2 id="progress-title">Your progress</h2>
       <p id="progress-summary">Progress stays in this browser.</p>
-      <p>Progress stays in this browser, without cloud sync. Clearing browser data, or some phones’ storage clean-up, can remove it. Save a progress file now and then; it covers every chapter.</p>
+      <p>There is no cloud sync. Clearing browser data, or a phone’s storage clean-up, can remove your progress. Save a progress file now and then: it covers every chapter.</p>
       <div class="row"><button type="button" class="btn" id="export">Save progress file</button><input id="import-file" class="sr" type="file" accept="application/json,.json"><label class="btn" for="import-file">Load progress file</label><button type="button" class="btn danger" id="reset">Reset all progress…</button></div>
       <p class="notice caution" id="progress-alert" role="alert" hidden></p>
       <div class="row reset-settings"><button type="button" class="btn ghost" id="reset-settings">Reset settings</button></div>
-      <p class="meta">Reset settings puts the choices on this page back to how they start: screen Auto, shortcuts On, text Default, Done · Next on the right, Player in every chapter, set-up not answered. Your progress and OS choice stay.</p>
+      <p class="meta">Reset settings restores the defaults: screen Auto, shortcuts On, text Default, Done · Next on the right, Player in every chapter, set-up not answered. Your progress and OS choice stay.</p>
     </section>
     <section class="card section" aria-labelledby="offline-title">
       <h2 id="offline-title">Offline and version</h2>
@@ -71,13 +71,13 @@
       <div class="offline-retry"></div>
       <div class="install-slot"></div>
       <p id="course-info"></p>
-      <p>Offline use needs one complete visit to the online site first; external guides still need internet.</p>
+      <p>Offline use needs one full visit to the online site first. External guides still need internet.</p>
     </section>
     <section class="card section" aria-labelledby="sources-title">
       <h2 id="sources-title">Sources and privacy</h2>
-      <p id="guide-checked">Original teaching text based on the official guide. Rhythm, melody and arrangement choices are creative suggestions, not manufacturer presets.</p>
+      <p id="guide-checked">Based on teenage engineering’s EP-133 guide.</p>
       <div class="links"><a class="source" href="https://teenage.engineering/guides/ep-133/get-started" target="_blank" rel="noopener noreferrer">Official get started guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/modes" target="_blank" rel="noopener noreferrer">Official modes guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/play-and-record" target="_blank" rel="noopener noreferrer">Official play and record guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/functions" target="_blank" rel="noopener noreferrer">Official functions guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/effects" target="_blank" rel="noopener noreferrer">Official effects guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/system" target="_blank" rel="noopener noreferrer">Official system guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/whats-new" target="_blank" rel="noopener noreferrer">Official what’s new guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/apps/ep-sample-tool" target="_blank" rel="noopener noreferrer">Official EP sample tool<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a></div>
-      <p>No accounts and no analytics: your progress stays in this browser, and the coach never connects to your K.O. II or touches its music.</p>
+      <p>No accounts and no analytics. Your progress stays in this browser, and nothing here connects to your K.O. II or touches its music.</p>
     </section>
     </div>
   </main>
