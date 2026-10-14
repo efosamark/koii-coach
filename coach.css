@@ -988,6 +988,10 @@ html[data-player="start"] main > .makes{font-size:var(--t-check);line-height:var
 .pa-hint{display:none}
 .pa-more{position:absolute;right:var(--gutter);bottom:calc(100% + var(--sp-2));display:inline-flex;align-items:center;gap:var(--sp-1);min-height:44px;padding:0 var(--sp-4) 0 var(--sp-3);border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);box-shadow:var(--e2);font:600 var(--t-cap)/1 var(--font-ui)}
 .pa-more .icon{width:18px;height:18px}
+/* Settings › While practising: Larger text (Do 30/40) and Done · Next on the left. */
+html[data-text="larger"]{--t-do:1.875rem;--t-do-lh:2.5rem;--t-check:1.375rem;--t-check-lh:1.875rem}
+html[data-hand="left"] .pa-row{flex-direction:row-reverse}
+html[data-hand="left"] .pa-more{right:auto;left:var(--gutter)}
 @media (max-height:480px){
   .player-actions{padding:0 var(--gutter) env(safe-area-inset-bottom,0px)}
   .pa-btn{flex-direction:row;gap:var(--sp-2);width:auto;min-height:48px;padding:0 var(--sp-3)}

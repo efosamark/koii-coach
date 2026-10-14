@@ -275,3 +275,26 @@ def test_renumbered_course(run):
     assert hit.get_attribute('href') == './sampling.html' and 'Chapter 3' in hit.text_content(), 'Search maps "07" to Chapter 3'
     page.locator('#site-search').fill('start here')
     page.locator('#site-results a.search-hit[href="./setup.html"]').first.wait_for()
+
+
+@pytest.mark.browser
+def test_larger_text_and_left_hand(run):
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./first-beat.html#s-beat-load-kick')
+    do = page.locator('li[data-step="beat-load-kick"] > .step-do').first
+    size = lambda: do.evaluate('e => parseFloat(getComputedStyle(e).fontSize)')
+    side = lambda: page.locator('#player-actions .pa-row').evaluate('e => getComputedStyle(e).flexDirection')
+    default = size()
+    assert side() == 'row', 'Done · Next starts on the right'
+    run.go('./settings.html')
+    page.locator('input[name="text"][value="larger"]').check()
+    page.locator('input[name="hand"][value="left"]').check()
+    prefs = run.get('koii-coach-prefs')
+    assert (prefs['text'], prefs['hand'], prefs['setup']) == ('larger', 'left', 'ready'), f'Both choices are saved, the rest kept ({prefs})'
+    run.go('./first-beat.html#s-beat-load-kick')
+    assert size() == 30 and size() > default, f'Larger sets Do at 30px ({size()} against {default})'
+    assert side() == 'row-reverse', 'On the left puts Done · Next first'
+    run.go('./settings.html')
+    page.locator('#reset-settings').click()
+    assert page.locator('input[name="text"][value="default"]').is_checked() and page.locator('input[name="hand"][value="right"]').is_checked(), 'Reset settings puts both back'

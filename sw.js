@@ -1,6 +1,6 @@
 'use strict';
 // Bump VERSION on every release (same value as version in site.js and the newest CHANGELOG.md heading).
-const VERSION='2026.10.14.12',CACHE='koii-coach-'+VERSION,TIMEOUT=3000;
+const VERSION='2026.10.14.13',CACHE='koii-coach-'+VERSION,TIMEOUT=1500;
 // Every page, script, stylesheet, font and icon. CI (.github/scripts/build_site.py) fails if one is missing or a page is left out.
 const ASSETS=['./','./index.html','./404.html',
   './setup.html','./first-beat.html','./song.html','./sampling.html','./perform.html','./hiphop.html','./tech-house.html','./thodorakis-house.html',
@@ -17,7 +17,8 @@ self.addEventListener('message',e=>{if(!e.data||e.data.type!=='koii-coach-status
 // the saved 404.html (it has the course list, search and links home), as GitHub Pages does online.
 const key=req=>{const u=new URL(req.url);u.search='';u.hash='';return u.href;};
 const cached=req=>caches.match(key(req),{ignoreSearch:true,ignoreVary:true}).then(r=>r||(req.mode==='navigate'?caches.match('./404.html'):undefined));
-// Network first so lessons stay current. If the network has not answered after TIMEOUT ms, or fails, answer from the cache;
+// Network first so lessons stay current. If the network has not answered after TIMEOUT ms (1.5 s, so a weak signal at the
+// device does not leave a blank page), or fails, answer from the cache;
 // a late network answer still refreshes the cache for next time.
 self.addEventListener('fetch',e=>{const req=e.request;if(req.method!=='GET'||new URL(req.url).origin!==self.location.origin)return;
   let saved=Promise.resolve();

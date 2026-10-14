@@ -4,6 +4,13 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.13
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No instruction changed.
+
+- Settings › While practising has two new choices. **Text size in the steps: Larger** sets each step's moves at 30/40 instead of 24/32 to 28/36 (and the Check and titles at 22/30), for reading at arm's length. **Done · Next button: On the left** puts the main button under your left thumb, with Tools and Back to its right. Both are saved in your settings (`koii-coach-prefs.text` and `.hand`, new fields: nothing that was there changes), and Reset settings puts them back.
+- Offline: when the network has not answered within 1.5 seconds (was 3), a page opens from the offline copy, and the network answer still refreshes that copy for next time.
+
 ## 2026.10.14.12
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.

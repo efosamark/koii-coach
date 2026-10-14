@@ -2,7 +2,8 @@
 /* Settings (settings.html): the K.O. II's OS version (#firmware, saved as koii-coach-v2.firmware; chapter pages show
    "Needs OS x+" badges from it), keeping the screen on (koii-coach-prefs.wake: wake.js reads it on every poke(), so
    switching to Off pokes once to let go of a hold), keyboard shortcuts (koii-coach-prefs.keys: false switches the
-   shell's letter shortcuts off), whether the unit is set up (koii-coach-prefs.setup 'ready' | 'new': Home's Continue
+   shell's letter shortcuts off), text size and which side Done · Next sits (koii-coach-prefs.text 'default' | 'larger'
+   and .hand 'right' | 'left', applied by shell.js as html[data-text] and html[data-hand]), whether the unit is set up (koii-coach-prefs.setup 'ready' | 'new': Home's Continue
    opens Chapter 0 until it is 'ready'), the progress file, Reset all progress and Reset settings. Loading a file and
    Reset all progress touch progress only: koii-coach-prefs and the OS choice stay. Reset settings clears
    koii-coach-prefs (progress.js sets setup again on the next page load for a learner with progress, as it does for
@@ -58,9 +59,14 @@ function choices(){
   $$('input[name="keys"]').forEach(r=>{r.checked=r.value===(pr.keys===false?'off':'on');});
   $$('input[name="setup"]').forEach(r=>{r.checked=r.value===(pr.setup==='ready'?'ready':'new');});
   $$('input[name="wake"]').forEach(r=>{r.checked=r.value===(pr.wake==='off'?'off':'auto');});
+  const text=pr.text==='larger'?'larger':'default',hand=pr.hand==='left'?'left':'right';
+  $$('input[name="text"]').forEach(r=>{r.checked=r.value===text;});
+  $$('input[name="hand"]').forEach(r=>{r.checked=r.value===hand;});
+  document.documentElement.dataset.text=text;document.documentElement.dataset.hand=hand;
 }
 choices();
 $$('input[name="keys"]').forEach(r=>r.addEventListener('change',()=>{if(r.checked)P.patch('koii-coach-prefs',{keys:r.value==='on'});}));
+['text','hand'].forEach(k=>$$(`input[name="${k}"]`).forEach(r=>r.addEventListener('change',()=>{if(r.checked){P.patch('koii-coach-prefs',{[k]:r.value});document.documentElement.dataset[k]=r.value;}})));
 $$('input[name="setup"]').forEach(r=>r.addEventListener('change',()=>{if(r.checked){P.patch('koii-coach-prefs',{setup:r.value});refresh();}}));
 $('#reset-settings').addEventListener('click',()=>{
   let before=null;

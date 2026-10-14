@@ -51,6 +51,10 @@
       <p class="meta" id="wake-note">Auto keeps the screen awake while you work through the steps, so a propped-up phone stays readable between presses. Off leaves it to your device’s own screen timeout.</p>
       <fieldset class="choice"><legend>Keyboard shortcuts</legend><div class="row"><label class="choice-opt"><input type="radio" name="keys" value="on" checked><span>On</span></label><label class="choice-opt"><input type="radio" name="keys" value="off"><span>Off</span></label></div></fieldset>
       <p class="meta">With a keyboard: <kbd class="key">/</kbd> search, <kbd class="key">M</kbd> menu, <kbd class="key">T</kbd> the Tools sheet in a chapter, <kbd class="key">?</kbd> the full list. Off switches the letter keys off (some screen readers and voice control use them); <kbd class="key">Ctrl</kbd> + <kbd class="key">K</kbd> and the arrow keys in a chapter keep working.</p>
+      <fieldset class="choice"><legend>Text size in the steps</legend><div class="row"><label class="choice-opt"><input type="radio" name="text" value="default" checked><span>Default</span></label><label class="choice-opt"><input type="radio" name="text" value="larger"><span>Larger</span></label></div></fieldset>
+      <p class="meta">Larger makes each step’s moves bigger again, for reading at arm’s length. Your browser’s own text size still counts on top.</p>
+      <fieldset class="choice"><legend>Done · Next button</legend><div class="row"><label class="choice-opt"><input type="radio" name="hand" value="right" checked><span>On the right</span></label><label class="choice-opt"><input type="radio" name="hand" value="left"><span>On the left</span></label></div></fieldset>
+      <p class="meta">On the left puts Done · Next under your left thumb, with Tools and Back to its right.</p>
     </section>
     <section class="card section" aria-labelledby="progress-title">
       <h2 id="progress-title">Your progress</h2>
@@ -59,7 +63,7 @@
       <div class="row"><button type="button" class="btn" id="export">Save progress file</button><input id="import-file" class="sr" type="file" accept="application/json,.json"><label class="btn" for="import-file">Load progress file</label><button type="button" class="btn danger" id="reset">Reset all progress…</button></div>
       <p class="notice caution" id="progress-alert" role="alert" hidden></p>
       <div class="row reset-settings"><button type="button" class="btn ghost" id="reset-settings">Reset settings</button></div>
-      <p class="meta">Reset settings puts the choices on this page back to how they start: screen Auto, shortcuts On, Player in every chapter, set-up not answered. Your progress and OS choice stay.</p>
+      <p class="meta">Reset settings puts the choices on this page back to how they start: screen Auto, shortcuts On, text Default, Done · Next on the right, Player in every chapter, set-up not answered. Your progress and OS choice stay.</p>
     </section>
     <section class="card section" aria-labelledby="offline-title">
       <h2 id="offline-title">Offline and version</h2>

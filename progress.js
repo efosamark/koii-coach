@@ -13,7 +13,7 @@
                            Writes keep all twelve fields: the old app rebuilt it from these and dropped anything else.
      koii-coach-ch-<slug>  a chapter's ticks, {v:1, done:[ids], last, n, cur?, at?, derivedFrom?, skip?, m?} (chapter.js
                            owns it; m is the last split migration applied to it, below)
-     koii-coach-prefs      settings, {v:1, setup, wake, modes}: Reset and loading a file keep it
+     koii-coach-prefs      settings, {v:1, setup, wake, modes, keys, text, hand}: Reset and loading a file keep it
      koii-coach-meta       {v:1, lastChapter, appAt, setupReason, notices:[{chapter, text}]}
 
    01 First beat and 02 Make it a song were views of the old app, which saved a position (step, song) instead of ticks.

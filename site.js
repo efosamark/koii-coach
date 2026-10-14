@@ -26,7 +26,7 @@
               Keep it in step with that line. */
 window.COACH_SITE={
   name:'K.O. II Coach',
-  version:'2026.10.14.12',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
+  version:'2026.10.14.13',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
   repo:'https://github.com/efosamark/koii-coach',
   report:'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml',
   chapters:[
