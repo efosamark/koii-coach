@@ -263,7 +263,9 @@ const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!=
     const box=safety.lastElementChild;
     if(shortSafety){const l=copy(shortSafety);l.insertAdjacentHTML('beforeend','<li class="safety-more">In full below, and in <a href="./safety.html">Safety and erasing</a>.</li>');box.append(l);}
     else{dangers.forEach(d=>box.append(copy(d)));box.insertAdjacentHTML('beforeend','<p class="meta"><a href="./safety.html">Safety and erasing</a> lists every action that erases something.</p>');}
-    dangers[0].before(safety);
+    // Above "Before you start" (decision 24), so on the smallest phone the warnings, not the list, are on the first screen.
+    const needs=main.querySelector(':scope > .needs');
+    (shortSafety&&needs?needs:dangers[0]).before(safety);
   }
   partsBox.innerHTML='<h2 id="player-parts-title">Parts</h2><ol class="pp-list"></ol>';
   (progress&&progress.parentElement===main?progress:wrap).before(partsBox);

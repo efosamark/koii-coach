@@ -788,7 +788,7 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
   .appbar .search-btn{display:inline-flex;align-items:center;gap:var(--sp-2);width:min(20rem,28vw);padding:0 var(--sp-2) 0 var(--sp-3);border-color:var(--line-strong);background:var(--surface-2);color:var(--ink-2);font-weight:400;justify-content:flex-start}
   .appbar .search-btn:hover{border-color:var(--ink-2);background:var(--surface-2)}
   .search-btn .search-btn-label{display:inline;flex:1;overflow:hidden;text-align:left;text-overflow:ellipsis;white-space:nowrap}
-  .search-btn > .key{display:inline-grid;min-width:24px;font-size:12px}
+  .search-btn > .key{display:inline-grid;min-width:24px;font-size:14px}
   .settings-btn{display:inline-grid}
 }
 /* A 320px phone has no room for the "CHAPTER 11" line beside two buttons, and a word cut in half reads worse than none. */
@@ -1071,6 +1071,8 @@ html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
 .pa-btn:hover{background:var(--surface-2)}
 .pa-btn:active{transform:translateY(1px)}
 .pa-main{flex:1 1 auto;min-width:0;min-height:56px;padding-inline:var(--sp-4)}
+/* The smallest phones: a little less padding, so "Done · Checkpoint" and "Continue at step 104" fit unshortened. */
+@media (max-width:389px){.pa-row{gap:var(--sp-1)}.pa-main{padding-inline:var(--sp-3)}}
 .pa-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .btn.primary.pa-main[aria-disabled="true"]{background:transparent;color:var(--ink-2);cursor:pointer}
 .pa-hint{display:none}
@@ -1090,7 +1092,7 @@ html[data-hand="left"] .pa-more{right:auto;left:var(--gutter)}
   .player-actions{position:sticky;left:auto;right:auto;max-width:calc(46rem + 2 * var(--gutter));margin:0 auto;padding:0 var(--gutter) var(--sp-4);border:0;background:none;box-shadow:none}
   .pa-row{max-width:none;padding:var(--sp-2);border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e2)}
   .pa-hint{display:block;width:max-content;max-width:100%;margin:var(--sp-2) auto 0;padding:2px var(--sp-3);border-radius:var(--r-chip);background:var(--bg);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh);text-align:center}
-  .pa-hint .key{font-size:12px}
+  .pa-hint .key{font-size:14px}
   html[data-player] .toast{bottom:calc(var(--bar-h) + var(--sp-6))}
 }
 /* Your notes (chapter.js): LCD-style fields for the scene or sample numbers a step asks you to write down, and the
@@ -1263,7 +1265,7 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .pattern-text .lcd{font-size:14px}
 .pattern-lab{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .strip{display:grid;grid-template-columns:3.4em repeat(16,minmax(0,1fr));gap:3px;align-items:center}
-.strip-beat{grid-column:span 4;font:600 12px/1.2 var(--font-mono);color:var(--ink-2)}
+.strip-beat{grid-column:span 4;font:600 14px/1.2 var(--font-mono);color:var(--ink-2)}
 .strip-name{font-size:var(--t-cap);font-weight:600;line-height:1.2}
 .strip-cell{height:22px;border:1.5px solid var(--line-strong);border-radius:4px;background:var(--surface-1)}
 .strip-cell.beatstart{margin-left:4px}

@@ -4,6 +4,33 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.29
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23. **Written for:** OS 2.5.1. No button sequence changed.
+
+Fixes from a ninth independent review of the overhaul.
+
+**Safety first on the smallest phone** (plan 5.2, decision 24): the safety box now comes right after "You will make", before "Before you start" (it came after it). In 2026.10.14.28, on a first visit at 360×740, the Start bar covered the box’s last lines: in Chapter 3 the whole "Never hold SHIFT + ERASE as you switch on." line, in Chapters 4 and 6 part of the line naming the action that can’t be undone. Now every line of the box ends at 493–602 px, above the bar at 667 px; what needs a scroll there is the end of "Before you start" and the Parts heading (52–104 px below the bar’s top edge; decision 24 said 56–108 px, from before .28’s 4 px tighter spacing). At 390×844 and on laptops nothing moves off screen: the Parts heading stays where it was.
+
+**Decisions corrected:** decision 24 says where the box sits and why, and that it closes once a step is ticked or skipped; decision 20 gives the drawing’s smallest printed labels, about 6 px (it said 7–8 px).
+
+**Small text:** three more texts are 14 px (were 12 px): the "Beat 1–4" labels over Chapter 1’s target rhythm (they wrap to two lines at 360 px), and the shortcut keycaps on desktop ("/" in the search field, "→", "Enter", "←" and "T" under the step card).
+
+**Action bar on the smallest phones:** below 390 px the bar’s buttons sit 4 px apart (were 8) and the main button has 12 px side padding (was 16), so "Done · Checkpoint" is no longer shortened to "Done · Checkp…" at 360 px.
+
+**Content** (listed below): Chapter 1 "Set the grid to 16, quantized" says what the display showed before MAIN; Chapter 3 "Write down the sample number" checks your paper, not "a number" on the display; Chapter 4 "Copy A1’s notes onto A4" no longer repeats the next step’s Check (it now checks that A4 keeps its own sound: the copy takes notes only).
+
+**Tests:** at 360×740 every line of the safety box is above the action bar, and the box comes before "Before you start", in every chapter that has one.
+
+**Step by step** ("was" gives the old text):
+
+- **Chapter 1** (1 step):
+  - “Set the grid to 16, quantized”: Check: “The display showed 16, not 16T; the MAIN icon is lit again.” (was “In TIMING the display shows 16, not 16T.”).
+- **Chapter 3** (1 step):
+  - “Write down the sample number”: Check: “Your paper shows FIRST and its sample number.” (was “The display shows a number.”).
+- **Chapter 4** (1 step):
+  - “Copy A1’s notes onto A4”: Check: “Tap A4: it still plays its own sound, not the kick.” (was “Wherever A1 lights, A4 now lights too.”).
+
 ## 2026.10.14.28
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23 (doubling a pattern with RECORD armed and SHIFT + + copies its notes, play and record; auto-chop fills the pads from the bottom left, functions). **Written for:** OS 2.5.1. No button sequence changed.

@@ -534,6 +534,15 @@ def test_start_screen_on_one_screen_and_list_banner(run):
         assert parts_on_screen(ch), f'{ch}: the Parts heading is on the first screen at 360×740'
     for ch in chapters:
         assert parts_on_screen(ch, closed=True), f'{ch}: with the safety box closed, the Parts heading fits at 360×740'
+    # The warnings come before "Before you start" (decision 24): every line of the box is on the first screen.
+    for ch in chapters:
+        run.go(f'./{ch}.html')
+        if not page.locator('.player-safety summary').count():
+            continue
+        bar = page.locator('#player-actions').bounding_box()['y']
+        last = page.locator('.player-safety .inside > ul > li').last.bounding_box()
+        assert last['y'] + last['height'] <= bar, f'{ch}: the safety notes are on the first screen at 360×740'
+        assert page.evaluate("() => Boolean(document.querySelector('.player-safety').compareDocumentPosition(document.querySelector('main > .needs')) & Node.DOCUMENT_POSITION_FOLLOWING)"), ch
     # Beside the rail (which lists every part): the safety notes and the Parts heading on a laptop's first screen.
     for size in ({'width': 1024, 'height': 768}, {'width': 1280, 'height': 720}):
         page.set_viewport_size(size)
