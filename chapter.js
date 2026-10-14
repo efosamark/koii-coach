@@ -122,8 +122,8 @@ if(!(state&&state.v===1&&Array.isArray(state.done))){
   // Ticks carried over from the old keys name the steps as they were then: split them like any older record. A record
   // that starts empty starts at the current level, so ticking a step's first part never ticks its other parts.
   if(window.CoachProgress){if(state.done.length)CoachProgress.migrateRecord(slug,state);else if(CoachProgress.level(slug))state.m=CoachProgress.level(slug);}
-  // The old keys stay (plan 7.7: nothing deletes a legacy key before the P8 clean-up, so an older copy of the site still
-  // finds them). From now on this record wins over them everywhere; Reset all progress clears both.
+  // The old keys stay for now, so an older copy of the site still finds them; progress.js removes them 8 weeks after
+  // this browser first ran it (plan 8.6). From now on this record wins over them everywhere; Reset all progress clears both.
   save();
 }
 const done=new Set(state.done.filter(x=>typeof x==='string'));

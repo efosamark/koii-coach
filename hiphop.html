@@ -77,6 +77,7 @@
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. chapter.js numbers the steps and saves ticks by id. No nested lists inside a step. -->
       <details open>
         <summary><h2 class="part-title">Part 1 · Start a fresh project and rebuild your beat</h2></summary>
+        <p><b>Goal:</b> open empty project 8 at 90 BPM and rebuild the Chapter 1 drums: kicks and hats written on the grid, the snare played live.</p>
         <ol>
           <li data-step="choose-fresh-project">
             <h3 class="step-title">Open empty project 8</h3>
@@ -155,10 +156,13 @@
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Kick on 1, the “and” of 2, 3 and the “and” of 4; snare on 2 and 4; hats on every eighth note.</p></details><details class="step-more"><summary>Not working?</summary><p>Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> (undo) while the umbrella is lit and record the snare again. Or remove a stray note with a brief <kbd class="key">ERASE</kbd> + its pad at its position, then write <kbd class="key pad">pad 2</kbd> at <samp class="lcd">1.2.1</samp> and <samp class="lcd">1.4.1</samp> with <kbd class="key">RECORD</kbd> held, as in Chapter 1 · First beat.</p></details></div>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> project 8 plays the Chapter 1 drums: the kick pattern, the snare on 2 and 4, and steady hats.</p>
+        <p><b>If it doesn’t:</b> a stray or missing snare? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit and record it again, or write pad 2 at <samp class="lcd">1.2.1</samp> and <samp class="lcd">1.4.1</samp> with <kbd class="key">RECORD</kbd> held. Pads played sounds before you loaded any? See <a href="#s-check-fresh-project">Check that project 8 is empty</a>.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started#7.1-make-a-beat-from-scratch">get started</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.1-sound">sound mode</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">live record</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 2 · Add the bass and get ready for the vocal</h2></summary>
+        <p><b>Goal:</b> add two bass pulses on <kbd class="key pad">B1</kbd>, name the scene VERSE, and commit a copy named HOOK for the vocal.</p>
         <ol start="15">
           <li data-step="load-bass-sound">
             <h3 class="step-title">B1: load a bass</h3>
@@ -212,10 +216,13 @@
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>No bass? Tap <kbd class="key">B</kbd> and check that <kbd class="key pad">pad 1</kbd> lights at <samp class="lcd">1.1.1</samp> and <samp class="lcd">1.3.1</samp>, and that <kbd class="key pad">pad 1</kbd> makes a sound in SOUND. The scene number did not change? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once more and read the number again.</p></details></div>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> HOOK sounds exactly like VERSE: the drums plus two bass pulses per bar.</p>
+        <p><b>If it doesn’t:</b> no bass? Tap <kbd class="key">B</kbd> and check that pad 1 lights at <samp class="lcd">1.1.1</samp> and <samp class="lcd">1.3.1</samp>. The scene number did not change? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once more and read the number again.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">pattern length</a> · <a href="https://teenage.engineering/guides/ep-133/functions#10.4.2-timing-correct">timing correct</a> · <a href="https://teenage.engineering/guides/ep-133/workflow#6.1-commit">commit</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 3 · Choose your source and the vocal phrase</h2></summary>
+        <p><b>Goal:</b> set up one source (USB, a line cable or the built-in mic), choose a short PHRASE and an ANSWER word, and open SAMPLE on group <kbd class="key">C</kbd>.</p>
         <ol start="24">
           <li data-step="choose-source">
             <h3 class="step-title">Turn down, then set up one source</h3>
@@ -244,8 +251,8 @@
           </li>
           <li data-step="set-input">
             <h3 class="step-title">Choose the input and level</h3>
-            <p class="step-do">Press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to choose the input. Check your display. Play the song and turn <kbd class="key knob">X</kbd> (input level) up until it is strong but not harsh.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official list names them <samp class="lcd">mic</samp>, <samp class="lcd">in</samp> (line input) and <samp class="lcd">usb</samp>, each with mono and stereo versions where offered. Mono is fine for a voice and allows samples up to 40 seconds on OS 2.5.</p></details></div>
+            <p class="step-do">Press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows your input: <samp class="lcd">usb</samp>, <samp class="lcd">in</samp> or <samp class="lcd">mic</samp>. Play the song; turn <kbd class="key knob">X</kbd> up until it’s strong, not harsh.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official list: <samp class="lcd">mic</samp>; line in mono and stereo (<samp class="lcd">in</samp>); resample mono and stereo (<samp class="lcd">rsp</samp>); line in left or right only (<samp class="lcd">L.IN</samp>, <samp class="lcd">R.IN</samp>); USB mono and stereo (<samp class="lcd">usb</samp>). <samp class="lcd">in</samp> is the 3.5 mm input jack. <kbd class="key knob">X</kbd> sets the input level. Mono is fine for a voice and allows samples up to 40 seconds on OS 2.5.</p></details></div>
           </li>
           <li data-step="set-threshold">
             <h3 class="step-title">Set the threshold low</h3>
@@ -258,10 +265,13 @@
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Check the input on the display, that the cable is in the K.O. II's input, that the source volume is up and, on a turntable, that LINE is set. USB: make the K.O. II the phone's sound output. Still silent? System setting <samp class="lcd">511</samp> (USB input: sampler + live monitoring) turns monitoring on: with the K.O. II already on, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, type <kbd class="key">5</kbd>, <kbd class="key">1</kbd>, <kbd class="key">1</kbd>, press <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd> (<samp class="lcd">510</samp> is the default). Never hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> while switching the K.O. II on: that formats the drive, and the factory sounds cannot be recovered. Mic: you may only hear yourself on playback.</p></details></div>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> your source plays, the input level is set, and the PHRASE and ANSWER are on your paper.</p>
+        <p><b>If it doesn’t:</b> check the input on the display, that the cable is in the K.O. II’s input and that the source volume is up. Still silent? See Not working? in <a href="#s-check-source-heard">Checkpoint: hear your source</a>.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/hardware-overview">inputs and outputs</a> · <a href="https://teenage.engineering/guides/ep-133/functions#10.1-sample">sample</a> · <a href="https://teenage.engineering/guides/ep-133/how-to#12.11-record-a-sample-using-usb-audio">record a sample using USB audio</a> · <a href="https://teenage.engineering/guides/ep-133/system">system settings</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 4 · Record the phrase once and trim it</h2></summary>
+        <p><b>Goal:</b> record the PHRASE once on <kbd class="key pad">C1</kbd>, copy it to <kbd class="key pad">C2</kbd>, and trim <kbd class="key pad">C1</kbd> to the whole phrase and <kbd class="key pad">C2</kbd> to the ANSWER.</p>
         <ol start="32">
           <li data-step="sample-main-phrase">
             <h3 class="step-title">Start the song before the PHRASE</h3>
@@ -337,10 +347,13 @@
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>A word is clipped? Back on the trim page, turn <kbd class="key knob">X</kbd> down or <kbd class="key knob">Y</kbd> up. The pad plays a different sound? You pressed <kbd class="key">−</kbd> / <kbd class="key">+</kbd> in SOUND instead of sound edit, which changes the pad's sample: press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> back until it plays your phrase again. Harsh or crackly? Record <kbd class="key pad">pad 1</kbd> again with a lower <kbd class="key knob">X</kbd> in SAMPLE, then copy it to <kbd class="key pad">pad 2</kbd> again.</p></details></div>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> <kbd class="key pad">C1</kbd> plays the whole phrase, first word to last; <kbd class="key pad">C2</kbd> plays only the ANSWER word.</p>
+        <p><b>If it doesn’t:</b> a word is clipped? On the trim page, turn <kbd class="key knob">X</kbd> down or <kbd class="key knob">Y</kbd> up. The pad plays a different sound? You pressed <kbd class="key">−</kbd> / <kbd class="key">+</kbd> in <kbd class="key">SOUND</kbd> instead of sound edit: press them back until your phrase returns.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions#10.1-sample">sample</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.5-copy-paste">copy sounds</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.2.2-trim">trim</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.2.1-sound-mode">play mode</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 5 · Put the phrase and answer into HOOK</h2></summary>
+        <p><b>Goal:</b> in HOOK, place the PHRASE at <samp class="lcd">1.1.1</samp> and the ANSWER at <samp class="lcd">2.3.1</samp>.</p>
         <ol start="46">
           <li data-step="place-phrase">
             <h3 class="step-title">C1: place the PHRASE at 1.1.1</h3>
@@ -382,10 +395,13 @@
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The sampled backing music keeps its own rhythm and will not follow 90 BPM; if it fights the drums, choose a phrase with less music behind it.</p></details><details class="step-more"><summary>Not working?</summary><p>No vocal? Check that you are in HOOK and that C was selected while you wrote. An extra note? Go to it and remove it with a brief <kbd class="key">ERASE</kbd> + its pad.</p></details></div>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> HOOK plays the drums with the whole phrase in bar 1 and the answer in bar 2.</p>
+        <p><b>If it doesn’t:</b> the phrase starts late? Trim its start, as in <a href="#s-check-phrase-timing">Check the phrase timing</a>. It runs into the answer? Choose a shorter phrase rather than cutting a word in half.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.2-step-sequence">step sequence</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.5-copy-paste">navigating bars</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 6 · Make the bass fit the voice</h2></summary>
+        <p><b>Goal:</b> make room for the words: retune or swap the bass, or drop it in HOOK, and keep the hats below the voice.</p>
         <ol start="53">
           <li data-step="tune-bass-to-voice">
             <h3 class="step-title">Listen to the bass with the words</h3>
@@ -435,10 +451,13 @@
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>VERSE lost its bass? You cleared it in the wrong scene: press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit, or write <kbd class="key pad">pad 1</kbd> again at <samp class="lcd">1.1.1</samp> and <samp class="lcd">1.3.1</samp> in VERSE's group <kbd class="key">B</kbd>. Words buried? Lower the hats and the bass in SOUND rather than raising the vocal.</p></details></div>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> in HOOK every word is clear; VERSE still plays drums and bass, with no vocal.</p>
+        <p><b>If it doesn’t:</b> VERSE lost its bass? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit, or write pad 1 again at <samp class="lcd">1.1.1</samp> and <samp class="lcd">1.3.1</samp> in VERSE’s group <kbd class="key">B</kbd>. Words buried? Lower the hats and the bass in <kbd class="key">SOUND</kbd> rather than raising the vocal.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes#8.1-sound">sound mode</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">erase and undo</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 7 · Make the intro and the break</h2></summary>
+        <p><b>Goal:</b> copy VERSE as INTRO without the bass, then INTRO as BREAK: your kicks with two hats per bar.</p>
         <ol start="62">
           <li data-step="make-intro-scene-v2" data-note="INTRO">
             <h3 class="step-title">Copy VERSE as INTRO</h3>
@@ -487,10 +506,13 @@
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>It should feel empty: that makes the return feel bigger.</p></details><details class="step-more"><summary>Not working?</summary><p>Hold <kbd class="key">MAIN</kbd> and check the number is BREAK. If INTRO lost its snare or hats, you cleared them there: select INTRO and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit, or write them again (snare at <samp class="lcd">1.2.1</samp> and <samp class="lcd">1.4.1</samp>, hats on every .1 and .3).</p></details></div>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> INTRO is drums only; BREAK is your kick rhythm with two hats per bar; VERSE and HOOK are unchanged.</p>
+        <p><b>If it doesn’t:</b> hold <kbd class="key">MAIN</kbd> and check the scene number. INTRO lost its snare or hats? You cleared them there: select INTRO and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">erase a pad's notes (TRK)</a> · <a href="https://teenage.engineering/guides/ep-133/workflow#6.1-commit">commit</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 8 · Add the twist and the ending</h2></summary>
+        <p><b>Goal:</b> copy HOOK as RETURN with a short word twice near the end of bar 2, and INTRO as END with one kick per bar.</p>
         <ol start="71">
           <li data-step="make-return-scene" data-note="RETURN">
             <h3 class="step-title">Copy HOOK as RETURN</h3>
@@ -560,10 +582,13 @@
             <p class="step-note">Stop.</p>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> RETURN is HOOK plus the short word twice; HOOK has no extra word; END has one kick per bar with snare and hats.</p>
+        <p><b>If it doesn’t:</b> the word also plays in HOOK? See Not working? in <a href="#s-check-twist-and-end">Checkpoint: play RETURN and HOOK</a>. The two hits cut each other off? Shorten <kbd class="key pad">D1</kbd> a little more on the trim page.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.5-copy-paste">copy sounds</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.2.4-time">time page and reverse</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">what's new in OS 2.5</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 9 · Set the section lengths and build the song</h2></summary>
+        <p><b>Goal:</b> set each section’s length with group <kbd class="key">C</kbd>, then build the song list: INTRO, VERSE, HOOK, BREAK, RETURN and END.</p>
         <ol start="85">
           <li data-step="read-song-map">
             <h3 class="step-title">Read the song map</h3>
@@ -620,10 +645,13 @@
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Much shorter? A scene's C is still two bars, or a position is missing. Much longer? A pattern is longer than planned: check C's length in that scene. It keeps looping? Song loop is on: system setting <samp class="lcd">420</samp> turns it off.</p></details></div>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> the song plays INTRO, VERSE, HOOK, BREAK, RETURN and END, about 2:51, then stops.</p>
+        <p><b>If it doesn’t:</b> much shorter? A scene’s <kbd class="key">C</kbd> is still two bars, or a position is missing. It keeps looping? Song loop is on: system setting 420 turns it off.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">duplicate pattern length</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.3.1-song-mode">song mode</a> · <a href="https://teenage.engineering/guides/ep-133/workflow">song positions</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 10 · Finish, perform and keep your work</h2></summary>
+        <p><b>Goal:</b> play the song through and balance it, optionally perform the scene changes, then record it and back up the project.</p>
         <ol start="96">
           <li data-step="final-listen-balance">
             <h3 class="step-title">Play the song from the beginning</h3>
@@ -699,6 +727,8 @@
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A short drum intro, the groove, the hook with your phrase and answer, a bare break, the return with the twist and a short ending.</p></details><details class="step-more"><summary>Not working?</summary><p>Find the one scene that sounds wrong, hold <kbd class="key">MAIN</kbd> to select it, fix it there, then play the song again.</p></details></div>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> you have a recording of the finished song, your scene numbers on paper and a backup of the project.</p>
+        <p><b>If it doesn’t:</b> find the one scene that sounds wrong, hold <kbd class="key">MAIN</kbd> to select it, fix it there, then play the song again.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/effects">effects</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.4-fader">fader automation</a> · <a href="https://teenage.engineering/guides/ep-133/system">system settings 410–412</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">USB audio (OS 2.5)</a></p>
       </details>
     </section>

@@ -181,3 +181,45 @@ def test_split_batches_apply_in_order_once(run):
     seed({'v': 1, 'done': ['pad-shift-layer'], 'last': 'pad-shift-layer', 'n': 1, 'm': 2})
     run.go('./index.html')
     assert run.get('koii-coach-ch-perform')['done'] == ['pad-shift-layer'], 'Nothing runs twice'
+
+
+def test_clean_up_after_eight_weeks(run, tmp_path):
+    """Plan 8.6: for 8 weeks from the first visit with this storage (meta.since), 01/02 moves are written back into
+    koii-coach-v2 and the old checklist keys stay. After that the write-back stops and a chapter's old keys are removed
+    once its record exists; koii-coach-v2 keeps its other fields, and a progress file with old keys still loads."""
+    page = run.page
+    old_keys = {'koii-hiphop-vocal-checklist-v2': [0, 1], 'koii-tech-house-checklist-v1': [0]}
+    run.seed({'koii-coach-v2': v2(step=5, stepId='beat-hats-quieter', firmware='2', done=['groups-and-scenes']),
+              'koii-coach-prefs': {'v': 1, 'setup': 'ready'}, **old_keys})
+    run.go('./hiphop.html')
+    assert run.get('koii-coach-meta')['since'] and run.get('koii-hiphop-vocal-checklist-v2') == [0, 1], 'In the window the old key stays beside the new record'
+    assert run.get('koii-coach-ch-hiphop')['done'][:2] == ['note-original-scene', 'copy-to-work-scene']
+
+    # Nine weeks later.
+    page.evaluate("() => { const m = JSON.parse(localStorage.getItem('koii-coach-meta')); m.since = new Date(Date.now() - 63 * 864e5).toISOString(); localStorage.setItem('koii-coach-meta', JSON.stringify(m)); }")
+    run.go('./index.html')
+    assert run.get('koii-hiphop-vocal-checklist-v2') is None, 'A migrated old key is removed'
+    assert run.get('koii-tech-house-checklist-v1') == [0], 'An old key whose chapter has no record yet stays'
+    run.go('./tech-house.html')
+    run.go('./index.html')
+    assert run.get('koii-coach-ch-tech-house') and run.get('koii-tech-house-checklist-v1') is None, 'Once its chapter has migrated it, it goes too'
+    run.go('./first-beat.html')
+    page.wait_for_function("() => (document.activeElement && document.activeElement.closest('li[data-step]') || {dataset: {}}).dataset.step === 'beat-hats-quieter'")
+    page.locator('#player-next').click()
+    old = run.get('koii-coach-v2')
+    assert (old['step'], old['firmware'], old['done']) == (5, '2', ['groups-and-scenes']), f'No more write-back; the other fields stay ({old})'
+    run.go('./first-beat.html')
+    rec = run.get('koii-coach-ch-first-beat')
+    assert rec['cur'] == 'beat-placement-move' and 'beat-hats-quieter' in rec['done'], f'Not derived again from the old position ({rec})'
+
+    # A progress file saved before the clean-up still loads, old keys and all.
+    file = {'app': 'koii-coach', 'version': 1, 'exported': '2026-10-14T12:00:00Z',
+            'data': {'koii-hiphop-vocal-checklist-v2': json.dumps([0, 1, 2]), 'koii-coach-prefs': json.dumps({'v': 1, 'setup': 'ready'})}}
+    path = tmp_path / 'old-progress.json'
+    path.write_text(json.dumps(file), encoding='utf-8')
+    run.go('./settings.html')
+    page.once('dialog', lambda d: d.accept())
+    page.locator('#import-file').set_input_files(str(path))
+    page.locator('#toast', has_text='Progress loaded').wait_for()
+    run.go('./hiphop.html')
+    assert run.get('koii-coach-ch-hiphop')['done'][:3] == ['note-original-scene', 'copy-to-work-scene', 'group-a-two-bars'], 'The old file’s ticks arrive'

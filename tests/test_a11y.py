@@ -8,6 +8,8 @@
   control in the step is never hidden under it (WCAG 2.4.11).
 - Forced colours (Windows contrast themes): a lit key, a hit in the Rhythm lab, a ticked step and the meter keep a
   visible state. Screenshots go to the artifacts folder.
+- Without JavaScript every page still reads: every step of every chapter is there to open, nothing scrolls sideways,
+  and the Rhythm lab shows the recipe to copy.
 Run after a build, like test_smoke.py:  python -m pytest tests/test_a11y.py
 """
 import hashlib
@@ -188,3 +190,31 @@ def test_forced_colours_keep_every_state(run):
     hit = page.evaluate("() => { const b = document.querySelector('#beat button.on'); const s = getComputedStyle(b); return [s.backgroundColor, s.color]; }")
     assert hit[0] != hit[1], 'A hit in the lab is not invisible'
     page.screenshot(path=run.artifacts / 'forced-colours-lab.png')
+
+
+NO_JS_PAGES = ['index.html', 'setup.html', 'first-beat.html', 'song.html', 'sampling.html', 'perform.html', 'hiphop.html', 'tech-house.html',
+               'thodorakis-house.html', 'learn.html', 'controls.html', 'lab.html', 'help.html', 'glossary.html', 'cheat-sheet.html', 'safety.html',
+               'settings.html', '404.html']
+
+
+def test_every_page_reads_without_javascript(browser, site_url):
+    context = browser.new_context(java_script_enabled=False, viewport={'width': 390, 'height': 844})
+    page = context.new_page()
+    found = []
+    for href in NO_JS_PAGES:
+        page.goto(urljoin(site_url, href))
+        r = page.evaluate("""() => {
+          document.querySelectorAll('details').forEach(d => { d.open = true; });
+          const shown = e => e.getClientRects().length > 0;
+          const steps = [...document.querySelectorAll('li[data-step]')];
+          return {text: (document.querySelector('main') || document.body).innerText.trim().length, steps: steps.length,
+                  hidden: steps.filter(li => !shown(li) || !shown(li.querySelector('.step-do'))).map(li => li.dataset.step),
+                  wide: document.documentElement.scrollWidth > innerWidth + 1,
+                  lab: document.querySelectorAll('#lab-positions samp').length};
+        }""")
+        if r['text'] < 300 or r['hidden'] or r['wide']:
+            found.append(f"{href}: {r['text']} characters, hidden steps {r['hidden'][:5]}, sideways scroll {r['wide']}")
+        if href == 'lab.html' and r['lab'] < 16:
+            found.append('lab.html: the recipe positions are missing')
+    context.close()
+    assert found == [], 'Pages that do not read without JavaScript:\n' + '\n'.join(found)

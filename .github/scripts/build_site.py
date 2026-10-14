@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Copy only the app files into a site folder and check it before anything is published.
+"""Copy only the app files into a site folder, shrink its CSS and JavaScript (minify.py), and check it before anything
+is published.
 
 Usage: python3 .github/scripts/build_site.py _site
 
@@ -10,13 +11,17 @@ Fails (exit 1) when:
 - sw.js precaches a file that is not in the site (one 404 stops the offline install),
 - a page, script, stylesheet, font or SVG in the site is not precached by sw.js (it would not work offline),
 - VERSION in sw.js, version in site.js and the newest CHANGELOG.md heading differ,
-- a link to one step (page.html#s-<id>) names a step that is not on that page,
+- a link to one step (page.html#s-<id>, or #s-<id> on the same page) names a step that is not on that page,
 - a page loads shell.js without site.js and progress.js before it (progress and migrations would not run there),
+- a page with its stylesheets and scripts weighs more than its budget, gzipped (plan 7.8): 60 KB for Home and the tool
+  pages, 80 KB for a chapter page (the plan's 60 KB needs the player split; today they weigh 66-76 KB),
 - a page's visible text names a chapter by its number before the renumber ("chapter 07", "07 / Sample…", "section 04",
   "CHAPTER 09") or by an old name ("Start here", "Tech House"): the course is Chapter 0-7 and parts are "Part 4".
 Standard library only, so it runs anywhere Python 3.8+ does.
 """
-import json, pathlib, re, shutil, sys
+import gzip, json, pathlib, re, shutil, sys
+
+import minify
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 # App files only. README, CHANGELOG, tests/ and .github/ are never published.
@@ -59,6 +64,10 @@ def build(out):
                 dst = out / src.relative_to(ROOT)
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(src, dst)
+                # Published CSS and JS lose their comments and indentation (minify.py); sw.js stays as written.
+                if dst.suffix in ('.css', '.js') and dst.name != 'sw.js':
+                    text = src.read_text(encoding='utf-8')
+                    dst.write_text(minify.css(text) if dst.suffix == '.css' else minify.js(text), encoding='utf-8')
     return sorted(p.relative_to(out).as_posix() for p in out.rglob('*') if p.is_file())
 
 
@@ -167,6 +176,10 @@ def main():
         for page, sid in re.findall(r'\./([a-z-]+\.html)#s-([a-z0-9-]+)', src):
             if page in step_ids and sid not in step_ids[page]:
                 errors.append(f'{name} links to {page}#s-{sid}, but {page} has no step "{sid}"')
+        if name.endswith('.html'):
+            for sid in re.findall(r'href="#s-([a-z0-9-]+)"', src):
+                if sid not in step_ids[name]:
+                    errors.append(f'{name} links to #s-{sid}, but it has no step "{sid}"')
     for name in [f for f in files if f.endswith('.html')]:
         # Steps are numbered across parts: each part's <ol start> follows on from the part before (readers without JS).
         n = 0
@@ -190,9 +203,20 @@ def main():
                     continue
                 errors.append(f'{name} names {what}: "…{text[max(0, m.start() - 30):m.end() + 20].strip()}…"')
 
+    # Page weight: the page plus the stylesheets and scripts it loads, gzipped (the font and icons are shared and cached).
+    gz = lambda f: len(gzip.compress((out / f).read_bytes(), 9))
+    weights = {}
+    for name in [f for f in files if f.endswith('.html')]:
+        src = (out / name).read_text(encoding='utf-8')
+        deps = re.findall(r'<script src="([^"]+)"', src) + re.findall(r'<link rel="stylesheet" href="([^"]+)"', src)
+        weights[name] = gz(name) + sum(gz(d) for d in deps if d in have)
+        budget = 80 if 'data-chapter=' in src.split('<main', 1)[0] else 60
+        if weights[name] > budget * 1024:
+            errors.append(f'{name} weighs {weights[name] / 1024:.1f} KB gzipped with its CSS and JS (budget {budget} KB)')
+
     print(f'Site folder {out.name}/ has {len(files)} files:')
     for name in files:
-        print(f'  {name}  ({(out / name).stat().st_size} bytes)')
+        print(f'  {name}  ({(out / name).stat().st_size} bytes' + (f', {weights[name] / 1024:.1f} KB gzipped with CSS and JS)' if name in weights else ')'))
     for w in warnings:
         print(f'::warning::{w}')
     for e in errors:

@@ -4,7 +4,7 @@ How to add, change or split a step in K.O. II Coach, and release it. The chapter
 
 ## 1. Before you change an instruction
 
-- **The official guide is the source.** Re-read the matching page of the [official EP-133 guide](https://teenage.engineering/guides/ep-133) and, for anything it does not cover, the [What's new](https://teenage.engineering/guides/ep-133/whats-new) and [downloads](https://teenage.engineering/downloads/ep-133) pages. Where the guide is silent, say so in the step ("check your display") instead of guessing.
+- **The official guide is the source.** Re-read the matching page of the [official EP-133 guide](https://teenage.engineering/guides/ep-133) and, for anything it does not cover, the [What's new](https://teenage.engineering/guides/ep-133/whats-new) and [downloads](https://teenage.engineering/downloads/ep-133) pages. Where the guide is silent, look for owner reports (the Elektronauts EP-133 threads, owner-written cheat sheets), link them, and label them as owners' reports, never as the guide's. If nothing answers it, say so in the step and give the safe way to find out ("watch the TIME icon as you turn X") instead of guessing.
 - **Never change a button sequence without trying it on the unit** (see section 8). A rewording that keeps every key, pad and display value in the same order is a text change; anything else is an instruction change.
 - **Keep every link and every saved tick working.** A step's `data-step` id is part of its address (`sampling.html#s-record-kick`) and of every learner's saved progress. Never rename or reuse an id. Never change the shape of an existing `koii-coach…` storage key: add fields, never remove or repurpose one.
 

@@ -56,6 +56,7 @@
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. chapter.js numbers the steps and saves ticks by id. No nested ol inside a step. -->
       <details id="make-the-intro" open>
         <summary><h2 class="part-title">Part 1 · Make the intro</h2></summary>
+        <p><b>Goal:</b> copy BEAT as INTRO and remove its bass, then make one more copy, MELODY, to build the melody in.</p>
         <ol>
           <li data-step="song-find-beat">
             <h3 class="step-title">Go home, and stop playback</h3>
@@ -108,9 +109,12 @@
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> INTRO plays drums only, BEAT still plays drums and bass, and MELODY plays drums and bass.</p>
+        <p><b>If it doesn’t:</b> BEAT lost its bass? You erased in BEAT: press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once while the umbrella is lit, or write <kbd class="key pad">B1</kbd> again at <samp class="lcd">1.1.1</samp> and <samp class="lcd">1.3.1</samp>. See help <a href="./help.html#which-scene-am-i-in">“Which scene am I in?”</a>.</p>
       </details>
       <details id="set-up-the-melody">
         <summary><h2 class="part-title">Part 2 · Set up the melody</h2></summary>
+        <p><b>Goal:</b> in MELODY, load a melodic sound on <kbd class="key pad">C1</kbd>, set it behind the drums and make group <kbd class="key">C</kbd>’s pattern two bars long.</p>
         <ol start="9">
           <li data-step="song-melody-sound">
             <h3 class="step-title">MELODY: select C1</h3>
@@ -138,9 +142,12 @@
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> <kbd class="key pad">C1</kbd> plays a melodic sound that sits behind the drums, and <kbd class="key">C</kbd>’s pattern is two bars (<samp class="lcd">Ln.2</samp>).</p>
+        <p><b>If it doesn’t:</b> each group has its own length: tap <kbd class="key">C</kbd> first, then repeat <a href="#s-song-melody-two-bars">Give the melody two bars</a>.</p>
       </details>
       <details id="place-the-melody">
         <summary><h2 class="part-title">Part 3 · Place the melody</h2></summary>
+        <p><b>Goal:</b> place four melody notes at <samp class="lcd">1.1.1</samp>, <samp class="lcd">1.2.3</samp>, <samp class="lcd">2.1.1</samp> and <samp class="lcd">2.3.1</samp>, then tune them to fit the bass.</p>
         <ol start="13">
           <li data-step="song-melody-note-1">
             <h3 class="step-title">Place melody note 1</h3>
@@ -186,9 +193,12 @@
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> drums, bass and a four-note melody that repeats every two bars.</p>
+        <p><b>If it doesn’t:</b> only <samp class="lcd">1.x.x</samp> positions? <kbd class="key">C</kbd> is still one bar: repeat <a href="#s-song-melody-two-bars">Give the melody two bars</a>. No bass? You are in a copy of INTRO: hold <kbd class="key">MAIN</kbd> and compare the number with MELODY.</p>
       </details>
       <details id="make-the-breakdown">
         <summary><h2 class="part-title">Part 4 · Make the breakdown</h2></summary>
+        <p><b>Goal:</b> copy MELODY as BREAK and clear its kick and bass, so the song can drop down and come back.</p>
         <ol start="19">
           <li data-step="song-copy-break" data-note="BREAK">
             <h3 class="step-title">Make a copy for the breakdown</h3>
@@ -214,9 +224,12 @@
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> INTRO: drums only. BEAT: drums and bass. MELODY: drums, bass and melody. BREAK: melody, snare and hats.</p>
+        <p><b>If it doesn’t:</b> fix a wrong scene in that scene now, checking its number before you erase anything. See help <a href="./help.html#i-erased-or-changed-the-wrong-thing">“I erased or changed the wrong thing”</a>.</p>
       </details>
       <details id="build-the-song-list">
         <summary><h2 class="part-title">Part 5 · Build the song list</h2></summary>
+        <p><b>Goal:</b> turn your four scenes into a song list of 10 positions, 16 bars in all.</p>
         <h3 class="map-title">Your song map</h3>
         <table class="map"><thead><tr><th scope="col">Section</th><th scope="col">Scene</th><th scope="col">Song positions</th><th scope="col">Bars</th><th scope="col">What you hear</th></tr></thead><tbody><tr><th scope="row">Intro</th><td data-label="Scene">INTRO</td><td data-label="Song positions">1–2</td><td data-label="Bars">2</td><td data-label="What you hear">Drums only: kick, snare and hats</td></tr><tr><th scope="row">Main groove</th><td data-label="Scene">BEAT</td><td data-label="Song positions">3–4</td><td data-label="Bars">2</td><td data-label="What you hear">Your Chapter 1 · First beat: drums and bass</td></tr><tr><th scope="row">Melody</th><td data-label="Scene">MELODY</td><td data-label="Song positions">5–6</td><td data-label="Bars">4</td><td data-label="What you hear">Drums, bass and the two-bar C melody</td></tr><tr><th scope="row">Breakdown</th><td data-label="Scene">BREAK</td><td data-label="Song positions">7</td><td data-label="Bars">2</td><td data-label="What you hear">Melody, snare and hats; kick and bass removed</td></tr><tr><th scope="row">Melody return</th><td data-label="Scene">MELODY</td><td data-label="Song positions">8–9</td><td data-label="Bars">4</td><td data-label="What you hear">Kick and bass come back under the melody</td></tr><tr><th scope="row">Ending</th><td data-label="Scene">BREAK</td><td data-label="Song positions">10</td><td data-label="Bars">2</td><td data-label="What you hear">The melody without kick and bass, then the song stops</td></tr></tbody></table>
         <p><b>Total: 16 bars.</b> At 90 BPM in 4/4 that is about 43 seconds.</p>
@@ -265,9 +278,12 @@
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> stepping through the list with <kbd class="key">−</kbd> / <kbd class="key">+</kbd> shows exactly 10 positions, matching the song map.</p>
+        <p><b>If it doesn’t:</b> an extra position? Select it and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd>. A wrong scene? Select the position and hold <kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd>. See help <a href="./help.html#the-song-is-too-short-or-has-extra-positions">“The song is too short or has extra positions”</a>.</p>
       </details>
       <details id="play-the-song">
         <summary><h2 class="part-title">Part 6 · Play the whole song</h2></summary>
+        <p><b>Goal:</b> play the song from the list, add a little reverb, and make one change of your own.</p>
         <ol start="28">
           <li data-step="song-play" data-os="2.0">
             <h3 class="step-title">Play the whole song</h3>
@@ -308,6 +324,8 @@
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/workflow">Workflow</a></p>
           </li>
         </ol>
+        <p class="checkpoint"><b>Checkpoint:</b> INTRO, BEAT, MELODY, BREAK, MELODY, BREAK in that order: about 43 seconds, then it stops.</p>
+        <p><b>If it doesn’t:</b> much shorter, or a section missing? A position is missing or holds the wrong scene. It keeps looping? Song loop is on: system setting 420 turns it off.</p>
       </details>
     </section>
     <section class="card">

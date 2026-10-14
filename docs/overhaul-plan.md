@@ -1229,7 +1229,7 @@ Performance is not the problem today: 45 KB gzipped and a 19ms re-render. The bu
 | Mono font | ≤18 KB |
 | Icon sprite | ≤6 KB; device.svg ≤12 KB |
 | Search index | ≤50 KB gz |
-| Per page, excluding the font and search index | ≤60 KB gz |
+| Per page, excluding the font and search index | ≤60 KB gz (as built in 2026.10.14.19: Home and tools 33–42 KB; chapter pages 66–76 KB, checked at ≤80 KB until the player is split) |
 | Precache total | ≤600 KB gz, about 40 files (plus the N−1 hashed carry-over) |
 | Done · Next → next step painted | ≤100ms at 4× CPU throttle |
 | Layout shift on a control-map or sheet tap | CLS 0 |

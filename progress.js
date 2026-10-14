@@ -3,8 +3,8 @@
    A plain script (no modules): load it after site.js and before shell.js, on every page:
      <script src="site.js"></script><script src="progress.js"></script><script src="shell.js"></script>
    It runs its migrations as the page loads, before shell.js counts progress and before the deferred chapter.js reads
-   a chapter's record. Spec: docs/overhaul-plan.md 5.1 and 7.7. Rules: the shape of an existing key never changes,
-   migrations only add, an existing koii-coach-ch-* record wins, and no code here deletes a legacy key.
+   a chapter's record. Spec: docs/overhaul-plan.md 5.1, 7.7 and 8.6. Rules: the shape of an existing key never changes,
+   migrations only add, an existing koii-coach-ch-* record wins, and a legacy key is deleted only by the clean-up below.
 
    The keys:
      koii-coach-v2         the old single-page app's record, {schema:4, step, stepId, note, song, songId, view, done,
@@ -14,7 +14,7 @@
      koii-coach-ch-<slug>  a chapter's ticks, {v:1, done:[ids], last, n, cur?, at?, derivedFrom?, skip?, m?} (chapter.js
                            owns it; m is the last split migration applied to it, below)
      koii-coach-prefs      settings, {v:1, setup, wake, modes, keys, text, hand}: Reset and loading a file keep it
-     koii-coach-meta       {v:1, lastChapter, appAt, setupReason, notices:[{chapter, text}]}
+     koii-coach-meta       {v:1, lastChapter, appAt, setupReason, notices:[{chapter, text}], since}
      koii-coach-notes      {v:1, values:{'<project>/<NAME>': '<number>'}}: scene and sample numbers typed in a chapter
                            (chapter.js); in the progress file, and cleared with Reset all progress
 
@@ -24,6 +24,13 @@
    from, so it is derived again only when koii-coach-v2 moved since (an older copy of the site still writes it).
    The other way round, every save of those two records writes the position back into koii-coach-v2 (mirror), so
    reverting to a release with the old app finds the learner where they are now.
+
+   The clean-up (plan 8.6: at least 8 weeks after the release that made 01 and 02 chapter pages). meta.since is when
+   this browser first ran this file. From 8 weeks after it, the positions are no longer written back into
+   koii-coach-v2, and a chapter's old checklist keys (LEGACY) are removed once its koii-coach-ch-* record exists.
+   koii-coach-v2 itself stays: it still holds the OS choice, the Learn lessons tried, the 01 note and the Rhythm lab.
+   A progress file saved before that still loads: chapter.js migrates the old keys it brings, and the next page load
+   removes them.
 
    window.CoachProgress:
      v2()                    koii-coach-v2 read and brought up to schema 4 (a fresh one when there is none)
@@ -40,8 +47,10 @@
      exportFile(), readFile(object), applyFile(keys), resetAll(), restore(snapshot)   for Settings */
 (()=>{
 const V2='koii-coach-v2',PREFS='koii-coach-prefs',META='koii-coach-meta',CH='koii-coach-ch-';
-// Old checklist keys of chapters 09-11; chapter.js migrates them. Export and Reset cover them as well.
-const LEGACY=['koii-hiphop-checklist-v1','koii-hiphop-vocal-checklist-v2','koii-tech-house-checklist-v1','koii-thodorakis-checklist-v1','koii-thodorakis-voice-checklist-v1','koii-thodorakis-club-checklist-v1'];
+// Old checklist keys of Chapters 5-7, by chapter; chapter.js migrates them. Export and Reset cover them as well.
+const LEGACY_OF={hiphop:['koii-hiphop-checklist-v1','koii-hiphop-vocal-checklist-v2'],'tech-house':['koii-tech-house-checklist-v1'],
+  'vocal-house':['koii-thodorakis-checklist-v1','koii-thodorakis-voice-checklist-v1','koii-thodorakis-club-checklist-v1']};
+const LEGACY=Object.values(LEGACY_OF).flat();
 const ours=k=>typeof k==='string'&&(k.startsWith('koii-coach')||LEGACY.includes(k));
 
 // Frozen history: the 01 and 02 steps in the order the old app had them. koii-coach-v2's step and song are
@@ -129,6 +138,9 @@ function derive(slug){
 // in rec.derivedFrom, so the next page load does not derive it again from its own write.
 function mirror(slug,rec){
   if(!ORDER[slug]||!rec||!Array.isArray(rec.done))return;
+  // After the clean-up the record only notes the position koii-coach-v2 holds, so it is derived again only if an
+  // older copy of the site moves it.
+  if(cleaned()){const s=v2(),[pk,fk]=POS[slug];rec.derivedFrom=tagOf(slug,s[pk],s[fk]);return;}
   const order=ORDER[slug],spa=SPA[slug],done=new Set(rec.done),fin=spa.every(id=>done.has(id));
   let pos=0,k=typeof rec.cur==='string'?order.indexOf(rec.cur):-1;
   if(k>=0){while(k>=0&&!spa.includes(order[k]))k--;pos=k>=0?spa.indexOf(order[k]):0;}
@@ -250,7 +262,23 @@ function migrateAll(){
   (site&&Array.isArray(site.chapters)?site.chapters:[]).forEach(c=>{const r=obj(CH+c.slug);if(r&&migrateRecord(c.slug,r))write(CH+c.slug,r);});
 }
 
-function run(){derive('first-beat');derive('song');migrateAll();return migrateSetup();}
+// ---------- The clean-up (plan 8.6), 8 weeks after this browser first ran this file ----------
+const WINDOW=56*864e5;
+function since(){
+  const t=when(meta().since);if(t)return t;
+  patch(META,{since:new Date().toISOString()});return Date.now();
+}
+let start=0;
+const cleaned=()=>Date.now()-(start||(start=since()))>=WINDOW;
+function cleanup(){
+  if(!cleaned())return;
+  Object.keys(LEGACY_OF).forEach(slug=>{
+    const r=obj(CH+slug);
+    if(r&&r.v===1&&Array.isArray(r.done))LEGACY_OF[slug].forEach(k=>{try{if(localStorage.getItem(k)!==null)localStorage.removeItem(k);}catch(e){}});
+  });
+}
+
+function run(){start=0;derive('first-beat');derive('song');migrateAll();cleanup();return migrateSetup();}
 const migratedSetup=run();
 
 window.CoachProgress={v2,writeV2,prefs,meta,patch,chapters,continueTarget,v2Progress,firstRun,migratedSetup,mirror,order:slug=>(ORDER[slug]||[]).slice(),migrateRecord,level,
