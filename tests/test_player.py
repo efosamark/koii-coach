@@ -122,6 +122,27 @@ def test_plain_words_on_every_page():
     assert not found, 'Words the plan rules out:\n' + '\n'.join(found)
 
 
+VOICE = re.compile(
+    r'teaching (text|recipe)|\bour (teaching )?recipe\b|\bthe recipe\b|hardware (steps|instructions)|checked against|'
+    r'checked on \d|creative suggestions|manufacturer presets|(this|the) (page|app|coach|browser) (cannot|can’t|can not) '
+    r'(see|check|capture|operate)|the official guide says|official guide (says|describes|is silent)|where the guide|'
+    r'\b(we|our|us)\b', re.I)
+
+
+def test_voice():
+    """CONTRIBUTING §3 "Voice": pages talk about the music and the K.O. II, not about how the course was made."""
+    found = []
+    for page in sorted(ROOT.glob('*.html')):
+        html = re.sub(r'<script.*?</script>|<style.*?</style>|<!--.*?-->', '', page.read_text(encoding='utf-8'), flags=re.S)
+        text = re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', html)))
+        found += [f'{page.name}: …{text[max(0, m.start() - 40):m.end() + 30].strip()}…' for m in VOICE.finditer(text)]
+    for script in sorted(ROOT.glob('*.js')):
+        source = re.sub(r'/\*.*?\*/|^\s*//.*$', '', script.read_text(encoding='utf-8'), flags=re.S | re.M)
+        for literal in re.findall(r"'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`", source):
+            found += [f'{script.name}: {literal[:80]}' for m in VOICE.finditer(literal) if m.group(0).lower() not in ('us',)]
+    assert not found, 'Process notes on a page (CONTRIBUTING §3 "Voice"):\n' + '\n'.join(found)
+
+
 # Chapters rewritten to the glance budget (plan 5.3, P7). Each step: a title of at most 48 characters; Do at most 26
 # words in at most 3 sentences (a risk step: Before you press, its consequence and Do together at most 40); Check at
 # most 15 words; undo

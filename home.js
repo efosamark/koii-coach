@@ -37,7 +37,7 @@ function continueCard(all){
     `<p class="continue-count"><span class="meter" aria-hidden="true"><span class="meter-fill" style="width:${Math.round(100*x/Math.max(1,n))}%"></span></span><span>${started?`${x} of ${n} done`:`${n} steps`}</span></p>`+
     `<ul class="chips" aria-label="About this chapter">${about(p).split(' · ').filter(Boolean).map(s=>`<li>${esc(s)}</li>`).join('')}</ul>`+
     `<a class="btn primary lg" id="resume" href="${esc(p.href)}">${started?'Continue':'Start Chapter '+esc(c.num)}${icon('next')}</a>`+
-    (P.migratedSetup&&x?`<p class="meta">We carried your progress over: ${x} of ${n} in Chapter ${esc(c.num)}. Chapter 0 stays in the course list as optional set-up checks.</p>`:'')+'</section>';
+    (P.migratedSetup&&x?`<p class="meta">Your progress was carried over: ${x} of ${n} in Chapter ${esc(c.num)}. Chapter 0 stays in the list as optional set-up checks.</p>`:'')+'</section>';
 }
 // The part and the step Continue opens at, from the chapter's page. Without it (offline before the first full visit)
 // the card keeps its count and the button.
@@ -85,7 +85,7 @@ function render(){
   rows(all);
 }
 render();
-const line=[site.version&&`Course version ${site.version}`,site.guideChecked&&`checked against the official guide on ${site.guideChecked}`,site.firmware&&`written for ${site.firmware}`].filter(Boolean).join(' · ');
+const line=[site.version&&`Version ${site.version}`,site.firmware&&`written for ${site.firmware}`].filter(Boolean).join(' · ');
 const info=$('#course-info');if(info&&line)info.textContent=line+'.';
 // Back from a chapter (the back/forward cache keeps the old page): show the progress made since.
 addEventListener('pageshow',e=>{if(e.persisted)location.reload();});

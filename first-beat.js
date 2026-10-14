@@ -2,7 +2,7 @@
 /* The practice helpers of 01 First beat (first-beat.html), on top of chapter.js and player.js:
    - the target rhythm: each figure.pattern[data-rows="N"] gets the first N rows of the recipe (kick, snare, hat, bass)
      drawn as a read-only grid (hidden from screen readers: the figure's text list says the same) and a
-     "Hear this recipe" button that plays those rows at 90 BPM (audio.js). Playback stops when the step changes.
+     "Hear it" button that plays those rows at 90 BPM (audio.js). Playback stops when the step changes.
    - the placement helper: on a step with data-place="<pad> <position> <position> …" the player shows one position at a
      time (#placement says "1.2.3 · A1") and "Placed · next position" (#note-next) moves on. Positions in data-placed
      were written in an earlier step and start ticked. It never runs on into the next instrument; the last position
@@ -26,7 +26,7 @@ const figures=[...document.querySelectorAll('figure.pattern[data-rows]')].map(fi
     ROWS.slice(0,rows).map(([name],i)=>`<span class="strip-name">${name}</span>`+grid[i].map((on,c)=>`<span class="strip-cell${on?' on':''}${c%4===0?' beatstart':''}" data-c="${c}"></span>`).join('')).join('');
   const tools=document.createElement('div');
   tools.className='strip-tools';
-  tools.innerHTML=`<button class="btn hear-btn" type="button">${icon('play')}<span>Hear this recipe</span></button><span class="meta strip-status" role="status"></span>`+
+  tools.innerHTML=`<button class="btn hear-btn" type="button">${icon('play')}<span>Hear it</span></button><span class="meta strip-status" role="status"></span>`+
     '<p class="meta strip-tip">No sound? Turn your phone volume up. On iPhone, also switch off Silent mode or use headphones. The practice sounds are made by your browser, not your K.O. II’s samples.</p>';
   const cap=fig.querySelector('figcaption');
   if(cap)cap.after(strip);else fig.prepend(strip);
@@ -36,7 +36,7 @@ const figures=[...document.querySelectorAll('figure.pattern[data-rows]')].map(fi
   const play=window.CoachAudio?CoachAudio.player({
     grid:()=>grid,bpm:()=>90,volume:()=>.18,
     onStep:c=>cells.forEach(x=>x.classList.toggle('now',Number(x.dataset.c)===c)),
-    onState:(t,on,failed)=>{status.textContent=t==='Stopped'?'':t;btn.innerHTML=icon(on?'stop':'play')+`<span>${on?'Stop':'Hear this recipe'}</span>`;if(failed)say('Audio could not start. The written positions still work.');}
+    onState:(t,on,failed)=>{status.textContent=t==='Stopped'?'':t;btn.innerHTML=icon(on?'stop':'play')+`<span>${on?'Stop':'Hear it'}</span>`;if(failed)say('Audio could not start. The written positions still work.');}
   }):null;
   if(play)btn.addEventListener('click',play.toggle);else btn.hidden=true;
   return{fig,play};

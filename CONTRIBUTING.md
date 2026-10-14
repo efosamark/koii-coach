@@ -68,6 +68,17 @@ Words are counted as a reader would: punctuation alone is not a word, and a chor
 
 Never write "just", "simply", "easy" or "make sure" (plan 6.7): say what to check instead ("check that playback is stopped"), and "right before" for timing. Quotes from the guide keep their own words. `tests/test_player.py` checks every page.
 
+**Voice.** Every page talks to the learner about the music and the K.O. II, never about how the course was made:
+
+- No process notes on a page: not "original teaching text", "our recipe", "hardware instructions follow the official guide", "checked against …", "creative suggestions, not manufacturer presets", "this page cannot see your device". The date and OS a page was checked for belong in CHANGELOG.md; the page says "Written for OS 2.5.1" once, where the OS matters.
+- State a fact plainly and let the step's Source link carry where it comes from. Not "The official guide says “hold main and one of the pads (1-9)…”", but "Hold MAIN and a pad from 1–9 to choose a project." Quote the guide only where its exact words matter, as in a warning ("factory sounds cannot be recovered").
+- An owner report stays labelled and linked, in few words: "Owners report one level of undo ([Elektronauts](…))."
+- No "we", "our" or "us". "This chapter uses 90 BPM", not "our recipe uses 90 BPM".
+- One idea per sentence. No chains of semicolons, no aside in brackets when a full stop will do, and nothing the screen already shows (the chips give the time, project and OS).
+- Headings name the thing: "Sources", not "Button instructions and sources".
+
+`tests/test_player.py::test_voice` rejects the process phrases above on every page.
+
 When a step is over budget:
 
 1. Move reasons to **Why** and fixes to **Not working?** ("If it doesn't: …" becomes the start of Not working?).

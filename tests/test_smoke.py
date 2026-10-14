@@ -139,7 +139,7 @@ def run_target(browser, artifacts_dir, name, url, results):
         assert store(page, 'koii-coach-v2')['note'] == 2, 'The helper position is saved as koii-coach-v2.note'
         result['checks'].append('Placement helper: the step\'s own positions, one at a time, saved')
 
-        # "Hear this recipe" plays the target rhythm, and moving to the next step stops it.
+        # "Hear it" plays the target rhythm, and moving to the next step stops it.
         page.locator('li[data-step="beat-kicks"] .hear-btn').click()
         page.wait_for_function("() => window.__coachAudioContexts.some(c => c.state === 'running') && window.__coachAudioStarts > 0")
         page.locator('#player-next').click()
@@ -147,7 +147,7 @@ def run_target(browser, artifacts_dir, name, url, results):
         stopped = page.evaluate('() => window.__coachAudioStarts')
         page.wait_for_timeout(400)
         assert page.evaluate('() => window.__coachAudioStarts') == stopped, 'Done · Next stops the practice sound'
-        result['checks'].append('Web Audio: "Hear this recipe" starts; the next step stops scheduling new sounds')
+        result['checks'].append('Web Audio: "Hear it" starts; the next step stops scheduling new sounds')
 
         # With progress, "/" shows Continue, and Continue opens 01 at the step to continue at.
         page.goto(url, wait_until='networkidle')

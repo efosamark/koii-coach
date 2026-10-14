@@ -35,7 +35,7 @@ function versionNote(){
     '2.5':`OS 2.5.x is the latest release and the one this course is written for. It has the OS 2.0 features (${OS20}) plus the OS 2.5 additions: ${OS25}.`,
     '2':`OS 2.0.x has ${OS20}, but none of the OS 2.5 additions: ${OS25}. This course is written for OS 2.5.x, so <b>update first</b>: ${upd} shows how.`,
     older:`An OS older than 2.0 lacks ${OS20}, and all of the OS 2.5 additions. This course is written for OS 2.5.x, so <b>update first</b>: ${upd} shows how.`,
-    unknown:`This app can’t detect your OS, and the official guide doesn’t say how to read the version on the device. The guide recommends keeping the K.O. II up to date with the official <a href="https://teenage.engineering/apps/update" target="_blank" rel="noopener noreferrer">update utility${icon('external')}${NEWTAB}</a>, and ${upd} walks you through it. Then choose OS 2.5.x here.`
+    unknown:`The coach can’t read the OS on your K.O. II. Keep it up to date with the official <a href="https://teenage.engineering/apps/update" target="_blank" rel="noopener noreferrer">update utility${icon('external')}${NEWTAB}</a>, and ${upd} walks you through it. Then choose OS 2.5.x here.`
   }[v]||'';
   const n=$('#version-note');
   n.className='notice '+(v==='2'||v==='older'?'caution':'info');
@@ -114,7 +114,9 @@ $('#reset').addEventListener('click',()=>{
 });
 
 // ---------- Version and sources ----------
-const line=[site.version&&`Course version ${site.version}`,site.guideChecked&&`checked against the official guide on ${site.guideChecked}`,site.firmware&&`written for ${site.firmware}`].filter(Boolean).join(' · ');
+const line=[site.version&&`Version ${site.version}`,site.firmware&&`written for ${site.firmware}`].filter(Boolean).join(' · ');
 if(line)$('#course-info').textContent=line+'.';
-if(site.guideChecked)$('#guide-checked').textContent=`Original teaching text based on the official guide, checked ${site.guideChecked}. Rhythm, melody and arrangement choices are creative suggestions, not manufacturer presets.`;
+// "13 October 2026" from site.guideChecked (2026-10-13).
+const day=d=>{const m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(d||'');return m?`${+m[3]} ${['January','February','March','April','May','June','July','August','September','October','November','December'][m[2]-1]} ${m[1]}`:d;};
+if(site.guideChecked)$('#guide-checked').textContent=`Based on teenage engineering’s EP-133 guide, last checked on ${day(site.guideChecked)}.`;
 })();

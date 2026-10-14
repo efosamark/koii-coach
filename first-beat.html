@@ -37,11 +37,10 @@
     <header class="page-head">
       <p class="eyebrow">CHAPTER 1 / ABOUT 30–50 MINUTES</p>
       <h1>First beat</h1>
-      <p class="subtitle">Your first beat</p>
     </header>
-    <p class="promise">Build your first beat: drums and a bass at 90 BPM, kept as two scenes.</p>
-    <p>90 BPM, one bar, kick + snare + hats, bass and two sections. Hardware instructions follow the official guide; rhythm and mix choices are our teaching recipe.</p>
-    <p class="makes"><b>You will make:</b> a one-bar drum and bass loop at 90 BPM, kept as DRUMS and BEAT.</p>
+    <p class="promise">Program a kick, a snare and hats, add a bass, and switch between two scenes live.</p>
+    <p>No finger drumming needed: you place every note on the grid, one step at a time.</p>
+    <p class="makes"><b>You will make:</b> a one-bar drum and bass loop at 90 BPM, kept as two scenes, DRUMS and BEAT.</p>
     <section class="needs" aria-labelledby="needs-title">
       <h2 id="needs-title">Before you start</h2>
       <ul class="needs-list">
@@ -52,9 +51,9 @@
     </section>
     <section class="card">
       <h2>What you need</h2>
-      <p><b>Your K.O. II, set up.</b> New K.O. II, or not updated yet? Do <a href="./setup.html">Chapter 0 · Set up your K.O. II</a> first: it updates the unit, backs it up and chooses the empty project this chapter uses.</p>
-      <p><b>Your project:</b> empty project 6. Every note you hear is one you placed.</p>
-      <p><b>Paper and pencil:</b> you write down two scene numbers, DRUMS and BEAT. Chapter 2 needs them.</p>
+      <p><b>Your K.O. II, set up.</b> New, or not updated yet? Start with <a href="./setup.html">Chapter 0 · Set up your K.O. II</a>.</p>
+      <p><b>Empty project 6.</b> Every note you hear is one you placed.</p>
+      <p><b>Paper and a pencil,</b> for two scene numbers, DRUMS and BEAT. Chapter 2 uses them.</p>
     </section>
     <section class="card reference padplan">
       <h2>Your pad plan</h2>
@@ -75,13 +74,13 @@
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. chapter.js numbers the steps and saves ticks by id. No nested ol inside a step. -->
       <details id="load-your-kit" open>
         <summary><h2 class="part-title">Part 1 · Load your kit</h2></summary>
-        <p><b>Goal:</b> open empty project 6 at 90 BPM with a 16-step grid, and load a kick, a snare and a closed hat on <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd>.</p>
+        <p><b>Goal:</b> project 6 at 90 BPM on a 16-step grid, with a kick, a snare and a closed hat on <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd>.</p>
         <ol>
           <li data-step="beat-empty-project">
             <h3 class="step-title">Go home, and stop playback</h3>
             <p class="step-do">Press <span class="nobr"><kbd class="key">MAIN</kbd>.</span> If the K.O. II is playing, press <kbd class="key">PLAY</kbd> to stop it.</p>
             <p class="step-check"><span class="sr">Check: </span>Nothing plays, and the display shows the current step.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>On a new K.O. II, projects 1–5 hold factory demos and projects 6–9 are completely empty, so working in project 6 keeps the demos safe and every note you hear later is one you placed. We will make a one-bar, 90 BPM drum loop, then add bass and a second section; no finger-drumming skill required.</p></details><details class="step-more"><summary>Not working?</summary><p>Not on OS 2.5.1 yet, or music on the unit you care about? Do Chapter 0 · Set up your K.O. II first (update and backup).</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>On a new K.O. II, projects 1–5 hold factory demos and projects 6–9 are empty. Project 6 keeps the demos safe.</p></details><details class="step-more"><summary>Not working?</summary><p>Not on OS 2.5.1 yet, or music on the unit you care about? Do Chapter 0 · Set up your K.O. II first (update and backup).</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
           <li data-step="beat-open-project-6">
@@ -89,7 +88,7 @@
             <p class="step-do">Hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> then press <kbd class="key pad">pad 6</kbd> and keep both held while you watch the display; release both once it changes.</p>
             <p class="step-check"><span class="sr">Check: </span>The display changes to show <samp class="lcd">P 6</samp>.</p>
             <p class="step-note">When it changes, it shows <samp class="lcd">P 6</samp>: P and the project number.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says “hold main and one of the pads (1-9) to select an empty project”.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>MAIN with a pad from 1–9 held opens that project.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
           <li data-step="beat-check-empty">
@@ -97,7 +96,7 @@
             <p class="step-do">Now tap <span class="nobr"><kbd class="key">A</kbd>,</span> then <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd>, then press <span class="nobr"><kbd class="key">PLAY</kbd>.</span></p>
             <p class="step-check"><span class="sr">Check: </span>The pads make no sound and <kbd class="key">PLAY</kbd> gives silence.</p>
             <p class="step-note">Press <kbd class="key">PLAY</kbd> again to stop.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Project 6 has no sounds or notes yet.</p></details><details class="step-more"><summary>Not working?</summary><p>Pads still play sounds? You picked a scene, not a project: holding MAIN and typing a number also selects a scene. Try again and keep pad 6 held longer while watching the display. Already used project 6 for something else? Use another empty project and write its number down, but later chapters plan 7 for Chapter 3, 8 for Chapter 5 and 9 for Chapter 6: see help “<a href="./help.html#my-project-is-not-empty">My project is not empty</a>”. See help: “<a href="./help.html#my-project-is-not-empty">My project is not empty</a>”.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Project 6 has no sounds or notes yet.</p></details><details class="step-more"><summary>Not working?</summary><p>Pads still play sounds? You picked a scene, not a project: holding MAIN and typing a number also selects a scene. Try again and keep pad 6 held longer while watching the display. Project 6 already in use? Pick another empty project and write its number down. Chapters 3, 5 and 6 use 7, 8 and 9. See help “<a href="./help.html#my-project-is-not-empty">My project is not empty</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
           <li data-step="beat-tempo-grid">
@@ -112,7 +111,7 @@
             <p class="step-do">Press <kbd class="key">TIMING</kbd> and turn <kbd class="key knob">X</kbd> until it shows <span class="nobr"><samp class="lcd">16</samp>,</span> the default 1/16 grid (not <span class="nobr"><samp class="lcd">16T</samp>).</span> Press <kbd class="key">−</kbd> to choose quantize. Press <span class="nobr"><kbd class="key">MAIN</kbd>.</span></p>
             <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">16</samp>, not <samp class="lcd">16T</samp>; the MAIN icon is lit again.</p>
             <p class="step-note">Leave <kbd class="key knob">Y</kbd> (swing) at no swing.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The recipe uses ordinary 4/4 and one-bar patterns with 16 steps per bar, four per beat. Quantize snaps live playing to the grid, which matters in the optional live practice at the end; interval and swing apply when you record, not to notes already written.</p></details><details class="step-more"><summary>Not working?</summary><p>If you turned Y before, turn it back to no swing. If you changed the time signature before, MAIN + TEMPO opens it; this recipe needs 4/4. Keep the default one-bar pattern length.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Chapter 1 uses 4/4 with 16 steps per bar, four per beat. Quantize snaps live playing to that grid as you record.</p></details><details class="step-more"><summary>Not working?</summary><p>Swing on? Turn Y back to no swing. Time signature changed? MAIN + TEMPO opens it: set 4/4. Keep the pattern one bar long.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">Functions</a></p>
           </li>
           <li data-step="beat-load-kick">
@@ -125,7 +124,7 @@
             <h3 class="step-title">Hear the kick</h3>
             <p class="step-do">Tap <kbd class="key pad">A1</kbd> to hear it (audition).</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> makes a low drum sound.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Pick a short, low thump, not a long bass note. Factory kicks are stored at 1–99.</p></details><details class="step-more"><summary>Not working?</summary><p>001 is our starting choice, not a guaranteed named sample. If your library differs, use − / + within 1–99 and choose the first short, clean kick you hear. Silent? See help: “<a href="./help.html#a-pad-is-silent">A pad is silent</a>”.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Pick a short, low thump, not a long bass note. Factory kicks are stored at 1–99.</p></details><details class="step-more"><summary>Not working?</summary><p>Your library may differ: use − / + within 1–99 and choose the first short, clean kick you hear. Silent? See help: “<a href="./help.html#a-pad-is-silent">A pad is silent</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="beat-load-snare">
@@ -195,8 +194,8 @@
             <p class="step-do">Press <kbd class="key">PLAY</kbd> on the K.O. II and listen to a few loops. Press <kbd class="key">PLAY</kbd> again to stop before editing.</p>
             <p class="step-check"><span class="sr">Check: </span>All three rows match the target rhythm above.</p>
             <figure class="pattern" data-rows="3"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp><br>Hat (A3): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.1.3</samp> <samp class="lcd">1.2.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.3.3</samp> <samp class="lcd">1.4.1</samp> <samp class="lcd">1.4.3</samp></p><p class="pattern-lab"><a href="./lab.html#recipe-3">Practise this away from the device</a> in the Rhythm lab.</p></figure>
-            <p class="step-note">“Hear this recipe” gives a rough reference. Kick at <span class="nobr"><samp class="lcd">1.1.1</samp>,</span> <span class="nobr"><samp class="lcd">1.2.3</samp>,</span> <samp class="lcd">1.3.1</samp> and <span class="nobr"><samp class="lcd">1.4.3</samp>;</span> snare at <samp class="lcd">1.2.1</samp> and <span class="nobr"><samp class="lcd">1.4.1</samp>;</span> hats on every .1 and .3. That is a complete drum beat.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The web sounds are synthesised examples, not your factory samples. Compare the rhythm, not the exact sound.</p></details><details class="step-more"><summary>Not working?</summary><p>Taps that do not repeat were not written: see help “<a href="./help.html#my-taps-do-not-repeat">My taps do not repeat</a>”. Extra notes? Press SHIFT + B (undo) while the umbrella is lit, or see help “<a href="./help.html#the-beat-has-extra-hits">The beat has extra hits</a>”.</p></details></div>
+            <p class="step-note">“Hear it” plays a rough reference. Kick at <span class="nobr"><samp class="lcd">1.1.1</samp>,</span> <span class="nobr"><samp class="lcd">1.2.3</samp>,</span> <samp class="lcd">1.3.1</samp> and <span class="nobr"><samp class="lcd">1.4.3</samp>;</span> snare at <samp class="lcd">1.2.1</samp> and <span class="nobr"><samp class="lcd">1.4.1</samp>;</span> hats on every .1 and .3. That is a complete drum beat.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The sounds here stand in for your samples: compare the rhythm, not the tone.</p></details><details class="step-more"><summary>Not working?</summary><p>Taps that do not repeat were not written: see help “<a href="./help.html#my-taps-do-not-repeat">My taps do not repeat</a>”. Extra notes? Press SHIFT + B (undo) while the umbrella is lit, or see help “<a href="./help.html#the-beat-has-extra-hits">The beat has extra hits</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
         </ol>
@@ -331,7 +330,7 @@
       </details>
       <details id="record-live">
         <summary><h2 class="part-title">Part 6 · Record live and wrap up</h2></summary>
-        <p><b>Goal:</b> optionally record a live snare into a practice copy and keep it or undo it, with BEAT left clean, then look back at the moves you learned.</p>
+        <p><b>Goal:</b> try live recording in a practice copy, keeping BEAT clean, then look back at what you learned.</p>
         <ol start="31">
           <li data-step="beat-live-practice" data-optional>
             <h3 class="step-title">Optional: make a practice copy</h3>
@@ -403,7 +402,7 @@
             <h3 class="step-title">Try one move in a fresh copy</h3>
             <p class="step-do">In a fresh copy of BEAT <span class="nobr">(<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>),</span> move one kick or add one hat. Rebuild your change in the <a href="./lab.html">Rhythm lab</a> and listen.</p>
             <p class="step-note">Then mark this chapter complete.</p>
-            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>To keep your work outside the device, back it up with the official EP sample tool on a computer. This coach cannot capture hardware audio. See help: “<a href="./help.html#how-do-i-export-or-back-up">How do I export or back up?</a>”.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>To keep a copy off the device, back it up with the EP sample tool on a computer. See help: “<a href="./help.html#how-do-i-export-or-back-up">How do I export or back up?</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
         </ol>
@@ -412,8 +411,8 @@
       </details>
     </section>
     <section class="card">
-      <h2>Button instructions and sources</h2>
-      <p>Original teaching text. Hardware steps follow teenage engineering’s online guide, checked on 13 October 2026 for OS 2.5.1. Each step names the guide page it relies on. Rhythm, melody and mix choices are creative suggestions, not manufacturer presets. The app cannot see your hardware, so always trust your display over this page.</p>
+      <h2>Sources</h2>
+      <p>Written for OS 2.5.1. Each step links the page of teenage engineering’s EP-133 guide it follows. If your display ever disagrees with a step, trust the display.</p>
       <div class="row">
         <button class="btn" id="print" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-print"></use></svg>Print all steps</button>
         <button class="btn danger" id="reset" type="button" hidden><svg class="icon" aria-hidden="true"><use href="icons.svg#i-undo"></use></svg>Reset this chapter’s checklist</button>
