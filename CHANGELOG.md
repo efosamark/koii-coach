@@ -4,6 +4,17 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.9
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.
+
+Chapter 7 · Vocal house, rewritten for a glance, like Chapters 3 to 6 (79 steps became 106). Your ticks and links carry over.
+
+- Each step has a title, at most three moves and one short Check; reasons and fixes are under "Why" and "Not working?".
+- Choosing the project is three steps: choose, back up a project you reuse, open it. Clearing old patterns is its own step, after the one that listens, so the amber "Clears notes" tag sits only on the step that clears, and emptying D1 to D5 in a reused project 7 is a step of its own.
+- Changed wording: "Is one of projects 6–9 still empty …" (was "one of them", whose list moved to Why); "go back to step 3" and, in the Part 1 recap, "after step 7" and "repeat step 3 before step 7" (were steps 1 and 4, before the split); "Only when you hear the reused project's own old music, and only after you have backed it up." now stands before the press, and "In project 7, that is your Chapter 3 voice kit or the bounced beat." is a note (both were one sentence with the press); "Wrong project? Press SHIFT + B at once while the umbrella is lit." with "Or restore your backup." as a note (was "Erased in the wrong project? …, or restore your backup."); "The Chapter 3 recordings stay in the sound library." (was "The 07 recordings", an old chapter number); "Load the vocals onto D1 to D5 by number, as for audio files above." (was "as in the step above"); "Write the number beside V1." (was "Write it"); and the asides in brackets after "will be", "tap its pad", "the source", "a metronome clicks" and "USB audio output" became their own sentences or notes.
+- Chapter 0: "Go back to its part (Part 3 update, Part 4 backup, Part 5 project)." (was "its section (03 update, 04 backup, 05 project)"). The site check now also catches a zero-padded old number after "the" or "(".
+
 ## 2026.10.14.8
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.

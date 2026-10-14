@@ -37,6 +37,7 @@ BARE = [
     (re.compile(r'CHAPTER\s+\d\d\b'), 'a two-digit chapter number'),
     (re.compile(r'(?<![\d.])\b' + OLD_NUM + r'\s*/\s*[A-Z]'), 'an old "NN / Name" chapter or part number'),
     (re.compile(r'\b[Ss]ections?\s+\d\d\b'), 'a numbered "section" (use "Part 4")'),
+    (re.compile(r'(?:\b[Tt]he |\()0\d\b(?![.:\d])'), 'a zero-padded old number ("the 07 recordings", "(03 update")'),
     (re.compile(r'\b(?:Start here|Tech House|House with your own vocal samples)\b'), 'an old chapter name'),
 ]
 ALLOW_OLD_NAME = {'thodorakis-house.html': ['House with your own vocal samples']}   # its subtitle
