@@ -235,7 +235,9 @@ partsBox.setAttribute('aria-labelledby','player-parts-title');
 const isSafety=e=>e.matches('.notice.danger')||(e.matches('.notice.caution')&&/^\s*Safety/i.test(e.textContent));
 // One screen (plan 5.2): with a p.promise and section.needs on the page, the long preamble (the intro, "What you need",
 // other notices) folds into "About this chapter in full" under the parts. List mode and print show it as written.
-const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!==pageHead&&!e.classList.contains('pl-own')&&!isSafety(e)&&!e.matches('.promise,.needs,.makes,.reference,.safety-short')):[];
+// With a short safety list (ul.safety-short), the safety notices in full join it there too.
+const shortSafety=main.querySelector(':scope > .safety-short');
+const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!==pageHead&&!e.classList.contains('pl-own')&&(shortSafety||!isSafety(e))&&!e.matches('.promise,.needs,.makes,.reference,.safety-short')):[];
 (()=>{
   const time=eyebrow?clean(eyebrow.textContent.split('/').slice(1).join('/')).toLowerCase():'';
   // Text nodes joined with spaces, so "<b>Your project</b><br>Project 6" reads "Your project Project 6".
@@ -245,20 +247,22 @@ const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!=
   // The OS chip turns to caution, with the way to update, when the OS chosen in Settings is older than the chapter's.
   const need=os?parseFloat(os[1]):0,old=Boolean(need&&fwNum&&fwNum<need);
   const osText=os?'OS '+esc(os[1])+(os[2]?'+':''):'';
-  chips.innerHTML=[time?esc(time.charAt(0).toUpperCase()+time.slice(1)):'',proj?'Project '+proj[1]:'',
-    os&&!old?osText:'',esc(plural(steps.length,'step','steps')+' in '+plural(parts.length,'part','parts')),
+  // "About 2–3 hours" in the eyebrow is "2–3 h" on its chip (plan 5.2).
+  const short=time.replace(/^about\s+/,'').replace(/\s*hours?$/,' h').replace(/\s*minutes?$/,' min');
+  chips.innerHTML=[short?esc(short):'',proj?'Project '+proj[1]:'',
+    os&&!old?osText:'',
     info&&info.formerly?'Formerly '+esc(info.formerly):''].filter(Boolean).map(t=>`<li>${t}</li>`).join('')+
     (old?`<li class="warn">${icon('warning')}<span>Needs ${osText} · <a href="./setup.html#s-update-open-utility">Update first</a></span></li>`:'');
   const intro=pageHead&&pageHead.nextElementSibling&&pageHead.nextElementSibling.tagName==='P'?pageHead.nextElementSibling:pageHead;
   if(intro)intro.after(chips);else main.prepend(chips);
   const dangers=preSteps().filter(isSafety),hard=steps.filter(li=>/^(delete|overwrite|erase-scene)$/.test(li.dataset.risk||'')).length;
   if(dangers.length){
-    safety.innerHTML=`<summary>${icon('warning')}<span>${hard?esc(plural(hard,'action','actions'))+' in this chapter cannot be undone':'Safety: read this before you start'}</span></summary><div class="inside"></div>`;
-    // The page's short list first (ul.safety-short), then the notices in full, one tap further (plan 5.2).
-    const short=main.querySelector(':scope > .safety-short'),box=safety.lastElementChild;
-    if(short){box.append(copy(short));const full=el('details','safety-full','<summary>The full safety notes</summary>');dangers.forEach(d=>full.append(copy(d)));box.append(full);}
-    else dangers.forEach(d=>box.append(copy(d)));
-    box.insertAdjacentHTML('beforeend','<p class="meta"><a href="./safety.html">Safety and erasing</a> lists every action that erases something, and its undo.</p>');
+    safety.innerHTML=`<summary>${icon('warning')}<span>${hard?esc(plural(hard,'action','actions'))+' here can’t be undone':'Safety: read this first'}</span></summary><div class="inside"></div>`;
+    // The page's short list (ul.safety-short, plan 5.2: a few lines), with the notices in full under "About this
+    // chapter in full"; without one, the notices themselves.
+    const box=safety.lastElementChild;
+    if(shortSafety){const l=copy(shortSafety);l.insertAdjacentHTML('beforeend','<li class="safety-more">More below the parts, and in <a href="./safety.html">Safety and erasing</a>.</li>');box.append(l);}
+    else{dangers.forEach(d=>box.append(copy(d)));box.insertAdjacentHTML('beforeend','<p class="meta"><a href="./safety.html">Safety and erasing</a> lists every action that erases something.</p>');}
     dangers[0].before(safety);
   }
   partsBox.innerHTML='<h2 id="player-parts-title">Parts</h2><ol class="pp-list"></ol>';
@@ -328,6 +332,7 @@ function loadTools(then){
   document.head.append(s);
 }
 if(Shell){const later=()=>(window.requestIdleCallback||(f=>setTimeout(f,200)))(()=>loadTools(),{timeout:2000});if(document.readyState==='complete')later();else addEventListener('load',later,{once:true});}
+if(Shell)Shell.addShortcut('t','Tools, in a chapter',()=>toolsBtn.click());
 // "This step doesn't match my K.O. II": one link, moved to the end of the step on screen and filled in for it
 // (the fields of .github/ISSUE_TEMPLATE/wrong-instruction.yml).
 const reportEl=el('p','step-report pl-own',`<a id="player-report" href="#" target="_blank" rel="noopener noreferrer">This step doesn’t match my K.O. II<span class="sr"> (opens in a new tab)</span></a>`);

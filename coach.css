@@ -988,8 +988,8 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .pd-actions{flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-4)}
 .pd-actions .btn .icon{width:20px;height:20px}
 /* Start screen: chips, the safety summary (copies of the page's danger notices), the parts */
-.player-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:0 0 var(--sp-5);padding:0;list-style:none}
-.player-chips li{max-width:none;margin:0;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono)}
+.player-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-1);margin:0 0 var(--sp-3);padding:0;list-style:none}
+.player-chips li{max-width:none;margin:0;padding:var(--sp-1) var(--sp-2);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono)}
 /* The chapter needs a newer OS than the one chosen in Settings: a caution chip with the way to update. */
 .player-chips li.warn{display:inline-flex;align-items:center;gap:var(--sp-2);border-color:var(--caution-line);background:var(--caution-surface);color:var(--caution-ink)}
 .player-chips li.warn .icon{width:18px;height:18px}
@@ -998,10 +998,10 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
    JavaScript show the full preamble as written. */
 main > .promise,main > .needs{display:none}
 html[data-player="start"] main > .promise{display:block;margin:0 0 var(--sp-3)}
-html[data-player="start"] main > .needs{display:block;margin:var(--sp-4) 0}
+html[data-player="start"] main > .needs{display:block;margin:var(--sp-3) 0}
 .needs > h2{margin:0 0 var(--sp-2);font-size:var(--t-check);line-height:var(--t-check-lh)}
 .needs-list{margin:0;padding:0;list-style:none}
-.needs-list li{display:flex;align-items:flex-start;gap:var(--sp-3);max-width:none;margin:0;padding:6px 0;border-top:1px solid var(--line)}
+.needs-list li{display:flex;align-items:flex-start;gap:var(--sp-3);max-width:none;margin:0;padding:2px 0;border-top:1px solid var(--line)}
 .needs-list li:first-child{border-top:0}
 .needs-list .icon{flex:none;width:22px;height:22px;margin-top:2px;color:var(--ink-2)}
 .player-more{margin:var(--sp-4) 0;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1)}
@@ -1013,18 +1013,18 @@ html[data-player="start"] main > .needs{display:block;margin:var(--sp-4) 0}
 .player-reference > summary .icon{color:var(--ink-2)}
 .player-reference .ref-part > h2{margin-top:var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
 .player-reference .inside > :last-child{margin-bottom:0}
-.player-safety{margin:var(--sp-4) 0;border:1px solid var(--danger);border-left-width:6px;border-radius:var(--r-control);background:var(--danger-surface)}
+.player-safety{margin:var(--sp-3) 0;border:1px solid var(--danger);border-left-width:6px;border-radius:var(--r-control);background:var(--danger-surface)}
 .player-safety > summary{padding:var(--sp-2) var(--sp-4);color:var(--danger)}
 .player-safety > summary .icon{width:22px;height:22px}
 .player-safety > .inside{padding:0 var(--sp-4) var(--sp-3)}
 .player-safety .notice{margin:var(--sp-2) 0}
 /* The short safety list shows only in the start screen's safety box; the page itself keeps the full notices. */
 main > .safety-short{display:none}
-.player-safety .safety-short{margin:0 0 var(--sp-2);padding-left:1.25em}
-.player-safety .safety-short li{margin:0 0 var(--sp-1)}
-.safety-full{margin:var(--sp-2) 0}
-.safety-full > summary{min-height:44px;display:flex;align-items:center;font-weight:600}
-.player-parts{margin:var(--sp-5) 0}
+.player-safety .safety-short{margin:0 0 var(--sp-2);padding-left:1.25em;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.player-safety .safety-short li{margin:0}
+.player-safety .meta{margin:0}
+.player-safety .safety-more{list-style:none;margin-left:-1.25em;color:var(--ink-2)}
+.player-parts{margin:var(--sp-4) 0}
 .pp-list{margin:0;padding:0;overflow:hidden;list-style:none;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
 .pp-list li{max-width:none;margin:0;border-top:1px solid var(--line)}
 .pp-list li:first-child{border-top:0}
@@ -1038,6 +1038,18 @@ main > .safety-short{display:none}
   html[data-player="start"] main.reading > *{grid-column:1;min-width:0}
   html[data-player="start"] main.reading > .player-parts{grid-column:2;grid-row:1/span var(--start-rows,6);align-self:start;position:sticky;top:calc(var(--sticky-top) + var(--sp-4));margin-top:var(--sp-2)}
 }
+/* PadGrid (plan 6.4): a group's 12 pads as on the unit (7 8 9 / 4 5 6 / 1 2 3 / . 0 ENTER), the used ones filled; the
+   legend under it says the same in words, so the grid itself is hidden from screen readers. */
+.padgrids{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-4) var(--sp-3);margin:var(--sp-3) 0}
+@media (min-width:600px){.padgrids{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.padgrid{margin:0;min-width:0}
+.padgrid figcaption{margin:0 0 var(--sp-1);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.pads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;max-width:120px}
+.pads span{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border:1px solid var(--line-strong);border-radius:5px;color:var(--ink-2);font:600 12px/1 var(--font-mono)}
+.pads .on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.pads .enter{font-size:7px;letter-spacing:-.02em}
+.pad-legend{max-width:none;margin:var(--sp-1) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+@media (forced-colors:active){.pads .on{forced-color-adjust:none;background:CanvasText;color:Canvas}}
 /* All steps: "You're on Part 3, step 31 of 61 · Continue", under the chapter's title. */
 .list-resume{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--sp-2) var(--sp-4);max-width:none;margin:0 0 var(--sp-4);padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4);border:1px solid var(--line);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-1);font-weight:600}
 .list-resume[hidden]{display:none}
@@ -1325,6 +1337,15 @@ html.pl-kbd .tools-panel:focus-visible{outline:3px solid var(--focus);outline-of
 @media (min-width:600px){
   .sheet.tools-sheet{width:min(480px,calc(100vw - 48px));height:100vh;height:100dvh;margin:0 0 0 auto;border-radius:var(--r-card) 0 0 var(--r-card);box-shadow:-16px 0 48px rgb(0 0 0/.24)}
   .sheet.tools-sheet[open]{animation-name:sheet-in-right}
+}
+/* From 1024px with no right panel (toolsheet.js sets .tools-docked), the sheet docks on the right and the page makes
+   room for it, so it never covers the step card (plan 5.7). */
+@media (min-width:1024px){
+  html.tools-docked{--dock-w:min(440px,40vw)}
+  html.tools-docked body{padding-right:var(--dock-w)}
+  html.tools-docked .appbar{margin-right:calc(-1 * var(--dock-w))}
+  html.tools-docked .sheet.tools-sheet{width:var(--dock-w);height:calc(100dvh - var(--appbar-h));margin:var(--appbar-h) 0 0 auto;border-left:1px solid var(--line);border-radius:0;box-shadow:none}
+  html.tools-docked .sheet.tools-sheet::backdrop{background:rgb(0 0 0/.08)}
 }
 /* From 1200px, beside a step, Tools takes the right panel's place (plan 5.7) instead of covering the step card. */
 @media (min-width:1200px){

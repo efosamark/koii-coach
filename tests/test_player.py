@@ -98,6 +98,19 @@ def test_every_step_says_what_to_check(name):
     assert not missing, f'{name}: steps without a Check: ' + ', '.join(missing)
 
 
+def test_pad_plans():
+    """Plan 5.2 and 6.4: Chapters 1–7 and the cheat sheet show each group's pads as a mini 3×4 grid, as on the unit,
+    with a legend in words (the grid itself is hidden from screen readers)."""
+    for name, n in [(c, 4) for c in CHAPTERS if c != 'setup'] + [('cheat-sheet', 28)]:
+        page = (ROOT / f'{name}.html').read_text(encoding='utf-8')
+        grids = re.findall(r'<figure class="padgrid">(.*?)</figure>', page, re.S)
+        assert len(grids) == n, f'{name}: {len(grids)} pad grids'
+        for g in grids:
+            pads = re.findall(r'<span[^>]*>([^<]+)</span>', re.search(r'<div class="pads" aria-hidden="true">(.*?)</div>', g, re.S).group(1))
+            assert pads == ['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'ENTER'], f'{name}: {pads}'
+            assert re.search(r'<p class="pad-legend">.+</p>', g), f'{name}: every grid has its legend'
+
+
 def test_plain_words_on_every_page():
     """Plan 6.7: never "just", "simply" or "easy" (and CONTRIBUTING: never "make sure"). Quotes keep their words."""
     found = []
@@ -460,6 +473,15 @@ def test_device_panel_landscape_and_desktop(run):
     sheet.wait_for(state='visible')
     card = page.locator('li.is-current').bounding_box()
     assert sheet.bounding_box()['x'] >= card['x'] + card['width'], 'The Tools sheet sits beside the card, not over it'
+    # 1024–1199px has no right panel: the sheet docks and the page makes room for it.
+    page.keyboard.press('Escape')
+    sheet.wait_for(state='hidden')
+    page.set_viewport_size({'width': 1100, 'height': 900})
+    run.go('./first-beat.html#s-beat-load-kick')
+    page.keyboard.press('t')
+    sheet.wait_for(state='visible')
+    card = page.locator('li.is-current').bounding_box()
+    assert sheet.bounding_box()['x'] >= card['x'] + card['width'] - 1, 'At 1100px the docked sheet does not cover the card'
 
 
 @pytest.mark.browser
@@ -477,12 +499,15 @@ def test_start_screen_on_one_screen_and_list_banner(run):
         more = page.locator('.player-more')
         more.locator('summary').click()
         assert more.locator('.inside p').first.is_visible()
-    # The parts start in the first screen, or within one and a half while the safety notes are open on a first visit.
-    run.go('./first-beat.html')
-    assert page.locator('.player-parts').bounding_box()['y'] < 844
+    # One screen: on a first visit the Parts heading is above the action bar in every chapter, with the safety notes
+    # open (a short list; the notes in full wait in "About this chapter in full").
+    for ch in ('setup', 'first-beat', 'song', 'sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house'):
+        run.go(f'./{ch}.html')
+        bar = page.locator('#player-actions .pa-row').bounding_box()['y']
+        assert page.locator('#player-parts-title').bounding_box()['y'] + 24 < bar, f'{ch}: the parts start in the first screen'
     run.go('./sampling.html')
     assert page.locator('.player-safety').get_attribute('open') is not None and page.locator('.player-safety .safety-short li').count() == 3
-    assert page.locator('.player-parts').bounding_box()['y'] < 844 * 1.6
+    assert page.locator('.player-more .inside .notice.danger').count() == 1, 'The safety notice in full is under "About this chapter in full"'
     # All steps with progress: the banner is in the first screen, and Continue goes to the step.
     run.go('./sampling.html#all')
     page.evaluate("() => { CoachChapter.setDone('open-empty-project', true); CoachChapter.setDone('choose-mic-source', true); }")

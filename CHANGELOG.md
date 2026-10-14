@@ -4,6 +4,102 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.26
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23; the pad layout of the new pad plans is the control map’s (taken from teenage engineering’s top-view photo, decision 20). **Written for:** OS 2.5.1. No button sequence changed; one press dropped in 2026.10.14.25 is back (below).
+
+Fixes from a sixth independent review of the overhaul.
+
+**Back as it was:** Chapter 0, "Check project 6 is empty": "Tap A, then A1, A2 and A3 again, then tap B, C and D and try a few pads in each." In 2026.10.14.25 the pad renaming dropped its "Tap A" ("Tap A1, A2 and A3 again…"), which the changelog wrongly called the same presses; after choosing a project nothing shows that group A is still selected. Also missing from that entry: Chapter 0’s step title "Tap A, then A1, A2 and A3" (was "Tap A, then pads 1, 2 and 3").
+
+**The start screen fits one screen** (plan 5.2). On a first visit at 390×844 the Parts heading now sits above the action bar in every chapter (526–749 px; at 360×740, 526–825 px), with the safety notes open:
+- "You will make", the promise and "Before you start" are shorter (two lines, one-line rows; listed below), and the OS row joins the project row in Chapters 3 and 6.
+- The chips are the plan’s: "2–3 h" (was "About 2–3 hours", which the eyebrow above already says), the project, the OS and "Formerly"; the chip with the chapter’s step and part count ("… steps in … parts") is gone (the parts list counts each part’s steps).
+- The safety box: "1 action here can’t be undone" (was "… in this chapter cannot be undone"; "Safety: read this first", was "Safety: read this before you start"), two short points (Chapters 0, 3, 4, 6 and 7), and "More below the parts, and in Safety and erasing." The notices in full are under "About this chapter in full" (they were behind "The full safety notes"). Chapter 5, with no short list, shows its notice in the box as before; the line under it reads "Safety and erasing lists every action that erases something." (was "… erases something, and its undo.").
+
+**Pad plans** (plan 5.2, 6.4 PadGrid): Chapters 1–7 show each group’s 12 pads as a mini grid laid out as on the unit (7 8 9 / 4 5 6 / 1 2 3 / . 0 ENTER), the used pads filled, with the roles in words under each grid ("A1 kick · A2 snare · A3 hat"). They sit in "Reference for this chapter" ("Your pad plan", a new card in Chapters 1, 2, 4, 5 and 6; in Chapter 3’s "Your pad plan" and Chapter 7’s "Sound roles") and on the cheat sheet ("Pad plan" in each chapter). Chapter 3’s group C says where its slices go as the chapter does: "slices fill the pads from the bottom left".
+
+**Tools from 1024 px:** with no right panel (1024–1199 px, or a view without one), the Tools sheet docks on the right and the page makes room for it instead of covering the step card (plan 5.7). **T** opens Tools as soon as the page has loaded, also before the sheet’s script has (player.js registers it now).
+
+**Offline:** a release’s offline copy only ever stores files of that release; a page of another release can no longer leave its scripts there under this release’s name (plan 7.6).
+
+**Content:**
+- Checks you can see or hear, the last of their kind: Chapter 0 "Step through the beat" ("The last number goes up by one with each press.", was "You are stepping through the beat."), and the steps listed below in Chapters 2, 3, 6 and 7, using the course’s icon table (SYSTEM, MAIN) and display readings (`Ln.4`).
+- Do lines that are actions: Chapter 6 "A5 and A6: a rim and a shaker", "A7: a tom", "Optional: pick each next scene early"; Chapter 7 "Voice test" and "Optional: shape the duck".
+
+**Docs:** the README explains the `?v=` release tags and the previous release’s offline copy; CONTRIBUTING’s Releasing section too.
+
+**Tests:** every chapter’s Parts heading above the action bar on a first visit at 390×844; the full safety notice under "About this chapter in full"; the pad plans (12 pads in the unit’s order, a legend) on seven chapters and the cheat sheet; Tools docked beside the card at 1100 px.
+
+**Step by step** ("was" gives the old text):
+
+- **Chapter 0** (2 steps):
+  - “Step through the beat”: Check: “The last number goes up by one with each press.” (was “You are stepping through the beat.”).
+  - “Check every group is silent”: Do: “Tap A, then A1, A2 and A3 again, then tap B, C and D and try a few pads in each.” (was “Tap A1, A2 and A3 again, then tap B, C and D and try a few pads in each.”).
+- **Chapter 2** (1 step):
+  - “Make a copy for the breakdown”: Check: “Holding MAIN shows a new number. Press PLAY: it sounds like MELODY. Stop.” (was “You are in BREAK, and PLAY sounds exactly like MELODY. Stop.”).
+- **Chapter 3** (2 steps):
+  - “Set the grid to 16 steps”: Check: “The display showed 16, not 16T; the MAIN icon is lit again.” (was “This is the same 90 BPM, 16-step setup as Chapter 1.”).
+  - “Set the rate back to hi (502)”: Check: “The SYSTEM icon goes out.” (was “You are back on 502.”).
+- **Chapter 6** (6 steps):
+  - “A5 and A6: a rim and a shaker”: Do: “Load A5 and A6 the same way: a dry rim or woodblock click on A5, a soft shaker on A6 (both 300–399, percussion).” (was “A5: a dry rim or woodblock click (try 300–399, percussion). A6: a soft shaker (300–399).”).
+  - “A7: a tom”: Do: “Load A7 the same way: a short tom or percussion hit (300–399).” (was “A7: a short tom or percussion hit (300–399).”).
+  - “Turn the rim down”: Check: “Tapping A5 gives a tiny, quiet click.” (was “A5 is now a tiny, quiet click.”).
+  - “Make C four bars long”: Check: “The display shows Ln.4: C’s pattern is four bars long, still empty.” (was “C is now four bars long and still empty.”).
+  - “Optional: pick each next scene early”: Do: “While a scene plays, hold MAIN and press − / + before its pattern ends to pick the next scene.” (was “Scene changes now wait for the end of the pattern, so you can pick the next scene early with hold MAIN + − / +.”).
+  - “Optional: instant scene changes again (410)”: Check: “The SYSTEM icon goes out.” (was “Scene changes are instant again.”).
+- **Chapter 7** (4 steps):
+  - “Optional: shape the duck”: Do: “Turn X to set how long the duck lasts and Y its shape, then press MAIN.” (was “X sets how long the duck lasts, Y its shape. Press MAIN.”).
+  - “INTRO: clear the bass and vocals”: Check: “Press PLAY: INTRO plays drums only, no bass or vocals. Stop.” (was “INTRO is now drums only: no bass, no vocals.”).
+  - “Voice test”: Do: “Voice test: play the track again and listen to the D1 hook.” (was “Voice test: the D1 hook should be clear and stick in your head.”).
+  - “Record one full pass”: Check: “Your app plays back the full 4-minute track.” (was “You have a recording of the full 4-minute track.”).
+
+**Outside the steps** ("was" gives the old text; " · " separates list items):
+
+- **Chapter 0**:
+  - Promise: “Get your K.O. II ready: hear it, read its screen, update and back it up.” (was “Get your K.O. II ready: hear it, read its screen, update it and back it up.”)
+  - You will make: “You will have: a K.O. II on OS 2.5.1, backed up, with your course project chosen.” (was “You will have: a K.O. II on OS 2.5.1, backed up on your computer, with an empty project chosen for the course and the factory sounds explored.”)
+  - Before you start: “4 AAA batteries or a USB-C charger” · “Headphones or a speaker” · “A computer with Chrome, a data cable” · “Paper and a pencil” (was “Power: 4 AAA batteries, or USB-C and a 5 V, 1 A charger” · “Headphones or a speaker (the built-in speaker works to start)” · “A computer with Chrome and a USB-C cable that carries data” · “Paper and a pencil for project and scene numbers”)
+  - Safety box: “Never hold SHIFT + ERASE as you switch on.” · “Nothing in Parts 1–7 erases music.” (was “Switch on with your hands off the buttons: SHIFT + ERASE held while switching on formats the drive, and MAIN starts lock mode.” · “SHIFT + ERASE with the K.O. II already on is safe: it opens system settings.” · “Nothing in Parts 1–7 erases music.”)
+- **Chapter 1**:
+  - You will make: “a one-bar drum and bass loop at 90 BPM, kept as DRUMS and BEAT.” (was “a one-bar drum and bass loop at 90 BPM, kept as two scenes, DRUMS and BEAT, and a tiny performance with them.”)
+  - Before you start: “Your K.O. II, set up (Chapter 0)” · “Empty project 6” · “Paper and a pencil” (was “Your K.O. II, set up in Chapter 0” · “Empty project 6” · “Paper and a pencil for two scene numbers”)
+- **Chapter 2**:
+  - Promise: “Turn your beat into a 16-bar song with an intro, a melody and a breakdown.” (was “Turn your beat into a 16-bar song: an intro, a melody, a breakdown and a song list.”)
+  - You will make: “a 16-bar song, about 43 seconds, from four scenes in a song list.” (was “a 16-bar song, about 43 seconds at 90 BPM, from four scenes in a 10-position song list.”)
+  - Before you start: “Your Chapter 1 beat, in project 6” · “BEAT’s number on your paper” · “OS 2.0 or newer” (was “Your beat from Chapter 1, in project 6” · “BEAT’s scene number on your paper, and a pencil” · “OS 2.0 or newer for the song list”)
+- **Chapter 3**:
+  - Promise: “Record your own sounds, chop them and resample a beat.” (was “Record your own sounds, build a kit from them, chop a recording and resample a beat.”)
+  - You will make: “a drum kit from your voice, chopped slices and a bounced beat.” (was “a drum kit from your own voice, a reversed snare, a recording chopped into slices and your whole beat bounced onto one pad, in project 7.”)
+  - Before you start: “Empty project 7, OS 2.5 or newer” · “Headphones or a speaker” · “Optional: a phone and a cable” (was “OS 2.5 or newer” · “Empty project 7, and Chapters 1 and 2 done” · “Headphones or a speaker” · “For Part 3, optional: a phone with a 3.5 mm or USB-C cable”)
+  - Safety box: “Never hold SHIFT + ERASE as you switch on.” · “Held, ERASE + SOUND deletes a sample.” (was “Press SHIFT + ERASE only with the K.O. II already on: held while switching on, it formats the drive.” · “Held, ERASE + SOUND deletes a sample and SHIFT + SOUND on the trim page crops one. Neither can be undone.” · “Back up first, and work in empty project 7.”)
+- **Chapter 4**:
+  - Promise: “Play the K.O. II live: feel, scales, rolls, effects and scene changes.” (was “Play the K.O. II live: feel, a bassline in a scale, rolls, effects and scene changes.”)
+  - You will make: “a live performance of your own beat, and a recording of it.” (was “a live performance of your own beat: played with feel, with a bassline in a scale, rolled hats, effects and live scene changes, and a recording of it.”)
+  - Before you start: “Project 6 from Chapters 1–2” · “Headphones or speakers” · “Paper and a pencil” · “Part 9: a USB-C or 3.5 mm cable” (was “Project 6 with your scenes and song list from Chapters 1–2” · “Headphones or speakers” · “Paper and a pencil for scene numbers” · “For Part 9: a USB-C cable, or a 3.5 mm cable to a recorder”)
+  - Safety box: “Work only in practice copies.” · “Never use ERASE + SOUND: it deletes a sample.” (was “Work only in practice copies: every part starts by making one.” · “Never use ERASE + SOUND: it deletes a sample from the device.” · “Press SHIFT + ERASE only with the K.O. II already on: held while switching on, it formats the drive.”)
+- **Chapter 5**:
+  - You will make: “a 64-bar hip-hop beat around a phrase you sampled, in project 8.” (was “a 64-bar old-school hip-hop beat with a sung phrase you sampled, six scenes and a six-position song list, in project 8.”)
+  - Before you start: “Empty project 8” · “Headphones or speakers” · “A phone and a cable, or the mic” · “Paper and a pencil” (was “Empty project 8” · “Headphones or speakers on the K.O. II’s output” · “One source: a phone over USB-C or 3.5 mm, or the built-in mic” · “Paper and a pencil for scene numbers”)
+- **Chapter 6**:
+  - Promise: “Build a tech-house track at 128 BPM with two drops and a breakdown.” (was “Build a 3½-minute tech-house track at 128 BPM, with two drops and a breakdown.”)
+  - You will make: “a 3½-minute tech-house track: 28 song positions, 112 bars.” (was “a tech-house track at 128 BPM, about 3:30 long, with two drops, a breakdown and a build: 28 song positions, 112 bars.”)
+  - Before you start: “Empty project 9, OS 2.0 or newer” · “Headphones or a speaker” · “Your voice, or a phone and a cable” · “Paper and a pen” (was “OS 2.0 or newer (OS 2.5 for a few optional steps)” · “Empty project 9” · “Headphones or a speaker” · “For the vocal hook: your voice, a phone over USB-C, or a line cable” · “Paper and a pen for scene numbers”)
+  - Safety box: “Stop playback before you edit notes.” · “Never use ERASE + SOUND: it deletes a sample.” (was “Stop playback before every position-by-position edit.” · “Never use ERASE + SOUND: it deletes the sample from the device.” · “SHIFT + B undoes a cleared note or pad while the umbrella icon is lit.”)
+- **Chapter 7**:
+  - Promise: “Build a 4-minute house track around five vocal samples of your own.” (was “Build a 4-minute house track at 128 BPM around five vocal samples of your own.”)
+  - You will make: “a 4-minute house track at 128 BPM: 32 song positions, 128 bars.” (was “a 4-minute house track at 128 BPM built around five vocal samples of your own: 32 song positions, 128 bars.”)
+  - Before you start: “OS 2.5.1” · “Headphones or speakers” · “Five short vocal sounds” · “Paper and a pencil” (was “OS 2.5.1” · “Headphones or speakers” · “Five short vocal sounds: your voice, a phone or audio files” · “Paper and a pencil for project, scene and sample numbers”)
+  - Safety box: “Never use ERASE + SOUND: it deletes a sample.” · “SHIFT + B undoes a cleared note.” (was “Never use ERASE + SOUND: held until SND blinks, it deletes the sample from the device.” · “SHIFT + B undoes a cleared note or pad while the umbrella icon is lit.”)
+- **Pad plans**, new text: the cards’ heading "Your pad plan" (Chapters 1, 2, 4, 5 and 6) and the cheat sheet’s "Pad plan" (Chapters 1–7). Chapter 3’s group headings are now "A · your drum kit", "B · resampled bounces", "C · chopped slices", "D · raw recordings" (were "Group A · your drum kit" and so on), on the page and the cheat sheet; its group C legend adds "slices fill the pads from the bottom left". Each grid’s caption and legend, as on the page and the cheat sheet:
+  - Chapter 1: A · drums: “A1 kick · A2 snare · A3 hat”; B · bass: “B1 bass”; C · not used yet: “Empty in Chapter 1”; D · not used yet: “Empty in Chapter 1”.
+  - Chapter 2: A · drums: “A1 kick · A2 snare · A3 hat”; B · bass: “B1 bass”; C · melody: “C1 melody”; D · not used yet: “Empty in Chapter 2”.
+  - Chapter 3: A · your drum kit: “A1 kick, A2 snare, A3 hat (Part 2), A4 reversed snare (Part 5)”; B · resampled bounces: “B1 your beat on one pad, B2 the same with a filter sweep (Part 7)”; C · chopped slices: “Your spoken count, cut into four slices (Part 6); slices fill the pads from the bottom left”; D · raw recordings: “D1 first sample (Part 1), D2 count and D3 phone (Part 3), D4 and D5 the quality test (Part 4)”.
+  - Chapter 4: A · drums: “A1 kick · A2 snare · A3 hat · A4 a click layer”; B · bass: “B1 bass”; C · melody: “C1 melody · C2 the arpeggio sound”; D · not used: “Empty in Chapter 4”.
+  - Chapter 5: A · drums: “A1 kick · A2 snare · A3 hats”; B · bass: “B1 bass”; C · vocal: “C1 the phrase · C2 the answer word”; D · twist: “D1 the repeated word”.
+  - Chapter 6: A · drums: “A1 kick · A2 clap · A3 closed hat · A4 open hat · A5 rim · A6 shaker · A7 tom”; B · bass: “B1 bass · B2 the answer note”; C · vocal hook and synth stab: “C1 vocal hook · C2 synth stab”; D · optional riser: “D1 riser”.
+  - Chapter 7: A · drums: “A1 kick · A2 clap · A3 closed hat · A4 open hat”; B · bass: “B1 bass”; C · stays empty: “Empty in Chapter 7”; D · your vocals: “D1 V1 hook · D2 V2 answer · D3 V3 chop · D4 V4 texture · D5 V5 phrase”.
+
 ## 2026.10.14.25
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23 (its Play and record, Functions and What’s new pages, re-read from saved copies on 14 October 2026). **Written for:** OS 2.5.1. No button sequence changed: the copy steps below now name keys that were already pressed, and pads now carry their group.

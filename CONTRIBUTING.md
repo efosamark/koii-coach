@@ -109,6 +109,7 @@ Never delete a legacy list (`LEGACY` in chapter.js, `SPA` and `V2_FIRST` in prog
 1. Set the same new version in `VERSION` (`sw.js`), `version` (`site.js`) and a new `## version` heading at the top of `CHANGELOG.md`: today's date, with `.2`, `.3` for more releases that day. The build check fails if they differ.
 2. In the changelog entry, give the guide date you checked against and the OS it described, say what a learner will notice, and list **every changed wording**, old and new, so a reviewer can check it against the guide.
 3. A new page, script, stylesheet or font must go into `ASSETS` in `sw.js`, or offline install breaks and the build check fails.
+4. You do not tag files yourself: the build adds `?v=<version>` to every page's scripts and stylesheet, so a page never mixes two releases, and `sw.js` keeps the previous release's offline copy for one release so a page left open across the update still finds its own files. A script loaded later (search.js, toolsheet.js) gets the tag from `site.js`'s `version`.
 
 ## 7. Checking your change
 

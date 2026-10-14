@@ -1,6 +1,6 @@
 'use strict';
 // Bump VERSION on every release (same value as version in site.js and the newest CHANGELOG.md heading).
-const VERSION='2026.10.14.25',CACHE='koii-coach-'+VERSION,TIMEOUT=1500;
+const VERSION='2026.10.14.26',CACHE='koii-coach-'+VERSION,TIMEOUT=1500;
 // Every page, script, stylesheet, font and icon. CI (.github/scripts/build_site.py) fails if one is missing or a page is left out.
 const ASSETS=['./','./index.html','./404.html',
   './setup.html','./first-beat.html','./song.html','./sampling.html','./perform.html','./hiphop.html','./tech-house.html','./thodorakis-house.html',
@@ -42,7 +42,10 @@ self.addEventListener('fetch',e=>{const req=e.request,u=new URL(req.url);if(req.
 });
 function network(e,req){
   let saved=Promise.resolve();
-  const net=fetch(req).then(r=>{if(r.status===200&&r.type==='basic'&&!r.redirected){const copy=r.clone();saved=caches.open(CACHE).then(c=>c.put(key(req),copy));}return r;});
+  // Only this release's files go into this release's copy: a page of another release (a newer one loaded before this
+  // worker hands over, or an older one) must not leave its scripts here under this release's names.
+  const v=new URL(req.url).searchParams.get('v'),ours=!v||v===VERSION;
+  const net=fetch(req).then(r=>{if(ours&&r.status===200&&r.type==='basic'&&!r.redirected){const copy=r.clone();saved=caches.open(CACHE).then(c=>c.put(key(req),copy));}return r;});
   e.waitUntil(net.then(()=>saved,()=>{}).catch(()=>{}));
   return new Promise(resolve=>{let done=false;const use=r=>{if(r&&!done){done=true;resolve(r);}};
     const timer=setTimeout(()=>cached(req).then(use,()=>{}),TIMEOUT);

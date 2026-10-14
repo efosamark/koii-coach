@@ -52,7 +52,10 @@ document.body.append(sheet);
 const panel=k=>sheet.querySelector('#tools-panel-'+k),tabBtn=k=>sheet.querySelector('#tools-tab-'+k);
 let opener=null,tab='step',want=null;
 const modal=Shell.modal(sheet,null,()=>{});
-sheet.addEventListener('close',()=>{if(opener&&opener.offsetParent)opener.focus();opener=null;});
+sheet.addEventListener('close',()=>{document.documentElement.classList.remove('tools-docked');if(opener&&opener.offsetParent)opener.focus();opener=null;});
+// From 1024px wide, with no right panel beside the step (1024–1199px, or a view without one), the sheet docks on the
+// right and the page makes room for it, so it never covers the step card (plan 5.7).
+const dockable=matchMedia('(min-width:1024px)');
 
 // Search: what you type goes to the site search, which opens over this sheet.
 const field=sheet.querySelector('#tools-search');
@@ -235,12 +238,11 @@ function open(from,o){
   opener=from||document.activeElement;
   want=o.topic||o.term?{topic:o.topic,term:o.term}:null;
   filled.step=false;   // "For this step" follows the step on screen
-  if(!sheet.open)modal.open();
+  if(!sheet.open){document.documentElement.classList.toggle('tools-docked',dockable.matches&&!document.documentElement.classList.contains('has-device'));modal.open();}
   show(o.tab||'step');
   if(!want){const t=tabBtn(tab);t.focus();}
 }
-window.CoachTools={open};
-Shell.addShortcut('t','Tools, in a chapter',()=>open(document.getElementById('player-tools-btn')));
+window.CoachTools={open};   // T opens it too: player.js registers the shortcut, so it works before this file has loaded
 // The view changed: refresh the Tools button (player.js shows it when CoachTools exists).
 document.addEventListener('coach:view',()=>{if(sheet.open&&tab==='step')fill('step');});
 

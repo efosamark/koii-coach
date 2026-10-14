@@ -46,7 +46,7 @@ Your progress is saved only in this browser on this device: the ticked steps and
 
 ## Offline and home screen
 
-After the first complete visit, every page of the coach works without internet, and Home's footer says so ("Offline ready"). An address that isn't part of the coach shows a "Page not found" page with the course and the tools, online and offline. The service worker (`sw.js`) asks the network first so you get the latest lessons. If the network is offline, or has not answered within 1.5 seconds, the saved copy opens instead. Links to the official guide and other websites still need internet.
+After the first complete visit, every page of the coach works without internet, and Home's footer says so ("Offline ready"). An address that isn't part of the coach shows a "Page not found" page with the course and the tools, online and offline. The service worker (`sw.js`) asks the network first so you get the latest lessons. If the network is offline, or has not answered within 1.5 seconds, the saved copy opens instead. Links to the official guide and other websites still need internet. Every page asks for its scripts and stylesheet with the release in the address (`player.js?v=2026.10.14.26`, added by the build), and the service worker answers those from that release's saved copy. It keeps the previous release's copy for one more release, so a page left open across an update still gets its own release's files; a "Coach updated · Reload" notice offers the new one.
 
 You can add the coach to your phone's home screen from the browser's share or menu button. It has proper icons for iPhone and Android.
 
@@ -114,7 +114,7 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 
 **Changing a step** (its markup, the glance budget, risky presses, splitting a step without losing anyone's ticks, trying it on the unit): see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-**Releasing a content change:** change `VERSION` in `sw.js` and `version` in `site.js` to today's date (add `.2`, `.3` and so on for another release on the same day), and add an entry to `CHANGELOG.md` with the same version as its heading; the build check fails if the three differ. Note the guide date and firmware version you checked against. A new page, script or stylesheet must also be added to `ASSETS` in `sw.js`, or the build check fails.
+**Releasing a content change:** change `VERSION` in `sw.js` and `version` in `site.js` to today's date (add `.2`, `.3` and so on for another release on the same day), and add an entry to `CHANGELOG.md` with the same version as its heading; the build check fails if the three differ. The build tags every page's scripts and stylesheet with that version (`?v=…`); you never write the tag by hand. Note the guide date and firmware version you checked against. A new page, script or stylesheet must also be added to `ASSETS` in `sw.js`, or the build check fails.
 
 **Keeping tools up to date:** every action in the workflow is pinned to a full commit SHA, with the version in a comment. Dependabot (`.github/dependabot.yml`) opens a monthly pull request to update them. pytest and Playwright are pinned in `requirements-dev.txt`; update them by hand.
 
