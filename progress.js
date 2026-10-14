@@ -206,7 +206,8 @@ function restore(snap){
 // When a long step is split, its first part keeps the old id (so links and ticks still find it) and the other parts get
 // new ids. A learner who had ticked the old step has every part ticked. Each batch is applied to a record once: the
 // record's m holds the last batch applied, and a record made after a batch starts at that batch (chapter.js), so a
-// tick on the first part later never ticks the rest. Frozen history: add batches, never edit one that shipped.
+// tick on the first part later never ticks the rest. A chapter's batches are applied in v order, whatever their order
+// here. Frozen history: add batches with the next v, never edit one that shipped.
 const MIGRATIONS={
   // 2026.10.14.12: rewritten to the step budget
   song:[{v:1,split:{'song-find-beat':['song-find-beat','song-select-beat','song-check-beat'],'song-intro-remove-bass':['song-intro-remove-bass','song-intro-erase-bass'],'song-melody-sound':['song-melody-sound','song-melody-load'],'song-list-open':['song-list-open','song-position-1'],'song-list-first-half':['song-list-first-half','song-list-3-6'],'song-reverb':['song-reverb','song-reverb-a','song-reverb-c'],'song-recap':['song-recap','song-recap-change']}}],
@@ -230,7 +231,7 @@ function migrateRecord(slug,rec){
   const list=MIGRATIONS[slug];
   if(!list||!rec||!Array.isArray(rec.done))return false;
   const from=int(rec.m)?rec.m:0;let changed=false;
-  list.filter(b=>b.v>from).forEach(b=>{
+  list.filter(b=>b.v>from).sort((a,b)=>a.v-b.v).forEach(b=>{   // in v order, so m ends at the newest and a later split of a part applies after the split that made it
     Object.keys(b.split||{}).forEach(old=>{
       if(!rec.done.includes(old))return;
       const add=b.split[old].filter(id=>!rec.done.includes(id));

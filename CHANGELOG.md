@@ -4,6 +4,13 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.17
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No instruction changed.
+
+- New `CONTRIBUTING.md`: the step markup, the glance budget, risky presses, adding and splitting steps without losing anyone's ticks, releasing, and trying a change on the unit.
+- Saved progress: when a chapter has more than one batch of split steps, they are now applied oldest first, whatever their order in `progress.js`. Every chapter has one batch so far, so nothing changes for anyone today; a second batch listed first would have been applied again on the next visit and could re-tick a part you had unticked.
+
 ## 2026.10.14.16
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No instruction changed.

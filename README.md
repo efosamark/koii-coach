@@ -107,6 +107,8 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 2. **Protect `main`:** in Settings > Rules > Rulesets (or Settings > Branches), add a rule for `main` that requires the **test** status check to pass. No workflow pushes to `main` any more, so this won't block automation.
 3. Optional: create a `wrong-instruction` label so reports from the form are tagged automatically. You can also set the repository's website to the app URL.
 
+**Changing a step** (its markup, the glance budget, risky presses, splitting a step without losing anyone's ticks, trying it on the unit): see [CONTRIBUTING.md](CONTRIBUTING.md).
+
 **Releasing a content change:** change `VERSION` in `sw.js` and `version` in `site.js` to today's date (add `.2`, `.3` and so on for another release on the same day), and add an entry to `CHANGELOG.md` with the same version as its heading; the build check fails if the three differ. Note the guide date and firmware version you checked against. A new page, script or stylesheet must also be added to `ASSETS` in `sw.js`, or the build check fails.
 
 **Keeping tools up to date:** every action in the workflow is pinned to a full commit SHA, with the version in a comment. Dependabot (`.github/dependabot.yml`) opens a monthly pull request to update them. pytest and Playwright are pinned in `requirements-dev.txt`; update them by hand.
@@ -133,6 +135,7 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 | `requirements-dev.txt` | Test tools and their pinned versions. Never published. |
 | `.github/` | Test-and-deploy workflow, site build and live-check scripts, issue form, Dependabot settings. |
 | `CHANGELOG.md` | What changed in each release, and which guide version it was checked against. |
+| `CONTRIBUTING.md` | How to add, change or split a step and release it. |
 | `docs/overhaul-plan.md` | The plan for the UI and UX overhaul. |
 
 ## License
