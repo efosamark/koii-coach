@@ -4,6 +4,15 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.15
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No instruction changed.
+
+- **A phone on its side** (at most 480px high): the left 40% of the screen shows the step's keys on the control map, lit and numbered in press order, with the list of presses below; the step fills the rest, with its moves at 20/28. On 641 of the 647 steps every move and Done · Next fit without scrolling; the other six have a long "Before you press" warning and need a short scroll. A skip offer for optional steps moves below the step there.
+- **Desktop** (from 1200px): the same keys panel sits on the right of the step, and tapping a key explains it in a box under the map.
+- The lit keys, here and in Tools › For this step, now come from the Do lines only. Before, the keys in a "Before you press" warning were lit too, so "Never hold SHIFT + SOUND on the trim page" showed SHIFT and SOUND as the first presses.
+- The control map is a schematic, not the exact layout of the K.O. II; a drawing checked against the unit comes later.
+
 ## 2026.10.14.14
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No instruction changed.

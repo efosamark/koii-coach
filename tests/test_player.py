@@ -332,3 +332,40 @@ def test_rhythm_lab(run):
     page.set_viewport_size({'width': 1024, 'height': 800})
     page.wait_for_function("() => document.querySelector('#beat').classList.contains('wide')")
     assert not page.locator('#lab-tabs').is_visible() and visible().count() == 64
+
+
+@pytest.mark.browser
+def test_device_panel_landscape_and_desktop(run):
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    page.set_viewport_size({'width': 844, 'height': 390})
+    run.go('./first-beat.html#s-beat-bass-trim')
+    panel = page.locator('#player-device')
+    panel.locator('.control.hot').first.wait_for()
+    assert panel.is_visible() and panel.bounding_box()['x'] == 0, 'A short landscape screen puts the keys on the left'
+    order = page.evaluate("() => [...document.querySelectorAll('#player-device .press-order kbd')].map(k => k.textContent)")
+    assert order[:3] == ['B1', 'SHIFT', 'SOUND'], f'Only the Do line\'s keys, in press order, not the Before you press warning ({order})'
+    # Every Do line of every step in Chapter 1 ends above the action bar.
+    over = page.evaluate("""async () => {
+      const out = [];
+      for (const id of CoachChapter.ids()) {
+        location.hash = '#s-' + id;
+        await new Promise(r => setTimeout(r, 60));
+        const li = document.querySelector('li.is-current'); window.scrollTo(0, 0);
+        const dos = li.querySelectorAll(':scope > .step-do'), last = dos[dos.length - 1];
+        const bar = document.querySelector('#player-actions .pa-row').getBoundingClientRect().top;
+        if (last && last.getBoundingClientRect().bottom > bar) out.push(id);
+      }
+      return out;
+    }""")
+    assert over == [], f'Steps whose Do runs under Done · Next at 844×390: {over}'
+    # The list view has no panel.
+    run.go('./first-beat.html#all')
+    assert not panel.is_visible()
+    # Desktop: the panel is on the right, and a tapped key is explained.
+    page.set_viewport_size({'width': 1280, 'height': 900})
+    run.go('./first-beat.html#s-beat-load-kick')
+    panel.locator('.control.hot').first.wait_for()
+    assert panel.bounding_box()['x'] > 900
+    panel.locator('.control[data-key="SOUND"]').click()
+    assert 'SOUND' in panel.locator('.map-info').text_content()

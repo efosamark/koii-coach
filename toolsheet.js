@@ -2,7 +2,7 @@
 /* The Tools sheet of the chapter pages (docs/overhaul-plan.md 4.6, 5.7): one tap from every step (the player's Tools
    button, or T on a keyboard). Load it after player.js:
      <script src="toolsheet.js" defer></script>
-   It opens on "For this step": the keys of the step on screen lit on the control map, numbered in press order; the
+   It opens on "For this step": the keys of the step's Do lines lit on the control map, numbered in press order; the
    troubleshooting topics the step links to, already open; the glossary words in the step; and the moves of the
    chapters you have finished. A step without topics or words falls back to the troubleshooting groups. The other tabs
    hold the whole control map, Troubleshooting, the Glossary and the Cheat sheet, and the field at the top opens the
@@ -20,6 +20,11 @@
    A pad named with its group (B1) lights the group button and the pad printed with that number, as the course defines
    it ("tap B, then pad 1 (B1)"); the pads are named by the numbers printed on them, which the official guide also uses
    ("hold MAIN and select pads 1 - 9 to change project"). The map is a schematic, not the exact layout.
+
+   Beside the step card (aside#player-device, docs/overhaul-plan.md 5.5): on a short landscape screen (at most 480px
+   high, at least 600px wide) the left 40% shows the step's keys lit and numbered in press order, with the press-order
+   list; from 1200px wide the same panel sits on the right, and tapping a control there explains it in a fixed-height
+   box. It shows in the step view only; html.has-device makes room for it (coach.css).
 
    window.CoachTools.open(opener, {tab: 'step'|'map'|'fixes'|'words'|'cheat', topic: <help id>, term: <term id>}) */
 (()=>{
@@ -102,12 +107,13 @@ function termRe(name){
 
 // ---------- A step's keys, topics and words ----------
 const step=()=>window.CoachPlayer&&CoachPlayer.current();
-// The controls named by the keycaps of a step's Before you press and Do lines, in the order they appear.
+// The controls named by the keycaps of a step's Do lines, in the order they appear. Before you press is left out: it
+// guards the press and often names keys not to press ("Never hold SHIFT + SOUND on the trim page").
 function keysOf(li){
   const out=[],marked=li.querySelector(':scope > :is(.step-do,.step-body)');
   // A step without a Do line (stage 1) is one text: its keys outside the check and the extras count.
-  const caps=marked?li.querySelectorAll(':scope > .preflight kbd.key, :scope > .step-do kbd.key, :scope > .step-body kbd.key'):
-    [...li.querySelectorAll('kbd.key')].filter(k=>!k.closest('.step-check,.step-more,.step-note,.step-head,.pl-own'));
+  const caps=marked?li.querySelectorAll(':scope > .step-do kbd.key, :scope > .step-body kbd.key'):
+    [...li.querySelectorAll('kbd.key')].filter(k=>!k.closest('.preflight,.step-check,.step-more,.step-note,.step-head,.pl-own'));
   caps.forEach(k=>{
     const t=clean(k.textContent),u=t.toUpperCase();let key=null;
     if(/^(MAIN|SOUND|TEMPO|TIMING|SAMPLE|KEYS|FX|SHIFT|ERASE|RECORD|PLAY|ENTER|FADER|X|Y|A|B|C|D)$/.test(u))key=u;
@@ -157,6 +163,8 @@ async function fill(k){
   filled[k]=true;
   after(k);
 }
+const keysHTML=(d,keys,interactive)=>mapHTML(d,keys,interactive)+
+  `<ol class="press-order">${keys.map((k,i)=>`<li><span class="po-n" aria-hidden="true">${i+1}</span><kbd class="key">${esc(k.label)}</kbd></li>`).join('')}</ol>`;
 function stepPanel(d){
   const li=step();
   if(!li)return`<p>Open a step to see its keys, fixes and words here.</p>`+(d.groups?'<h3 class="sub">Troubleshooting</h3>'+groupsHTML(d,4):failed('Troubleshooting','./help.html'));
@@ -165,9 +173,7 @@ function stepPanel(d){
   const text=stepText(li),words=(d.terms||[]).filter(t=>t.re&&!/^term-(step|pad)$/.test(t.id)&&t.re.test(text)).sort((a,b)=>b.beginner-a.beginner).slice(0,8);
   const title=li.querySelector(':scope > .step-title'),name=title?clean([...title.childNodes].filter(n=>!(n.nodeType===1&&n.classList.contains('pl-own'))).map(n=>n.textContent).join('')):'';
   let h=`<p class="tools-eyebrow">For step ${C.steps().indexOf(li)+1}${name?': '+esc(name):''}</p>`;
-  if(keys.length&&d.device){
-    h+=`<h3 class="sub">Keys in press order</h3>${mapHTML(d,keys,false)}<ol class="press-order">${keys.map((k,i)=>`<li><span class="po-n" aria-hidden="true">${i+1}</span><kbd class="key">${esc(k.label)}</kbd></li>`).join('')}</ol>`;
-  }
+  if(keys.length&&d.device)h+=`<h3 class="sub">Keys in press order</h3>${keysHTML(d,keys,false)}`;
   if(topics.length)h+='<h3 class="sub">Fixes for this step</h3>'+topics.map(t=>topicHTML(t,true,4)).join('');
   if(words.length)h+=`<h3 class="sub">Words in this step</h3><dl class="gloss tools-gloss">${words.map(termHTML).join('')}</dl>`;
   const mine=done(),moves=(d.cheat||[]).filter(s=>mine.includes(s.dataset.chapter)&&s.querySelector('.moves'));
@@ -197,18 +203,20 @@ function after(k){
   const f=target.querySelector('summary')||target;if(!f.matches('summary'))f.tabIndex=-1;
   f.focus({preventScroll:true});
 }
-sheet.addEventListener('click',e=>{
-  const b=e.target.closest('.tools-panel .control[aria-pressed]');
+// Tapping a control on an interactive map (the Map tab, the desktop device panel) explains it.
+function explain(e){
+  const b=e.target.closest(':is(.tools-panel,.player-device) .control[aria-pressed]');
   if(b){
-    const box=b.closest('.tools-panel');
+    const box=b.closest('.tools-panel,.player-device');
     box.querySelectorAll('.control[aria-pressed="true"]').forEach(x=>x.setAttribute('aria-pressed','false'));
     b.setAttribute('aria-pressed','true');
     load().then(d=>{
       const info=box.querySelector('.map-info'),c=d.controls&&d.controls.get(b.dataset.key);
-      info.innerHTML=c?`<h3>${esc(clean(c.querySelector('dt').textContent))}</h3>${strip(c.querySelector('dd')).innerHTML}`:`<p>${esc(b.getAttribute('aria-label')||clean(b.textContent))}: one of the pads. What it does depends on the mode; <a href="./controls.html">Control map</a> explains each one.</p>`;
+      if(info)info.innerHTML=c?`<h3>${esc(clean(c.querySelector('dt').textContent))}</h3>${strip(c.querySelector('dd')).innerHTML}`:`<p>${esc(b.getAttribute('aria-label')||clean(b.textContent))}: one of the pads. What it does depends on the mode; <a href="./controls.html">Control map</a> explains each one.</p>`;
     });
   }
-});
+}
+sheet.addEventListener('click',explain);
 sheet.addEventListener('change',e=>{
   if(!e.target.matches('[data-only-done]'))return;
   onlyDone=e.target.checked;
@@ -229,6 +237,31 @@ window.CoachTools={open};
 Shell.addShortcut('t','Tools, in a chapter',()=>open(document.getElementById('player-tools-btn')));
 // The view changed: refresh the Tools button (player.js shows it when CoachTools exists).
 document.addEventListener('coach:view',()=>{if(sheet.open&&tab==='step')fill('step');});
+
+// ---------- The device panel beside the step card ----------
+const side=matchMedia('(max-height:480px) and (orientation:landscape) and (min-width:600px), (min-width:1200px)'),wide=matchMedia('(min-width:1200px)');
+const dev=el('aside','player-device pl-own');
+dev.id='player-device';dev.setAttribute('aria-labelledby','player-device-title');dev.hidden=true;
+document.body.append(dev);
+dev.addEventListener('click',explain);
+let devFor='';
+async function device(){
+  const li=step(),on=Boolean(side.matches&&document.documentElement.dataset.player==='step'&&li);
+  dev.hidden=!on;document.documentElement.classList.toggle('has-device',on);
+  if(!on){devFor='';return;}
+  const key=li.dataset.step+(wide.matches?':wide':':short');
+  if(key===devFor)return;
+  devFor=key;
+  const d=await load();
+  if(step()!==li||devFor!==key)return;
+  const keys=keysOf(li);
+  dev.innerHTML=`<h2 class="device-title" id="player-device-title">Keys for this step</h2>`+
+    (keys.length&&d.device?keysHTML(d,keys,wide.matches)+(wide.matches?'<div class="map-info card info" aria-live="polite"><p class="meta">Tap a control to see what it does.</p></div>':''):
+      d.device?'<p class="meta">No keys to press in this step.</p>':failed('The control map','./controls.html'));
+}
+document.addEventListener('coach:view',device);
+[side,wide].forEach(m=>{const f=()=>{devFor='';device();};if(m.addEventListener)m.addEventListener('change',f);else if(m.addListener)m.addListener(f);});
+device();
 
 // ---------- Inside the steps: help links open the sheet; beginner words get a dotted underline ----------
 const steps=C.steps();

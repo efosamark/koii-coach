@@ -1027,6 +1027,46 @@ html[data-hand="left"] .pa-more{right:auto;left:var(--gutter)}
   .pa-hint .key{font-size:12px}
   html[data-player] .toast{bottom:calc(var(--bar-h) + var(--sp-6))}
 }
+/* The device panel (toolsheet.js, plan 5.5): the step's keys lit and numbered beside the card, in the step view only.
+   A short landscape screen gives it the left 40% (controls and pads side by side) and sets Do at 20/28; from 1200px it
+   is a column on the right with a fixed-height box that explains a tapped control. */
+.player-device{display:none}
+.device-title{margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.player-device .press-order{margin:var(--sp-2) 0 0}
+.player-device .control{overflow-wrap:normal;letter-spacing:0}
+:is(.tools-panel,.player-device) span.control{display:flex;align-items:center;justify-content:center;text-align:center}
+@media (max-height:480px) and (orientation:landscape) and (min-width:600px){
+  html.has-device{--t-do:1.25rem;--t-do-lh:1.75rem}
+  html.has-device[data-text="larger"]{--t-do:1.375rem;--t-do-lh:1.875rem}
+  html.has-device body{padding-left:40%}
+  /* Every Do line and Done · Next fit beside the panel: a tighter card, Before you press at body size, and the skip
+     box of an optional run after the step instead of above its Do. */
+  html.has-device[data-player="step"] .steps ol > li.is-current{display:flex;flex-direction:column;padding:var(--sp-3) var(--sp-4) var(--sp-4)}
+  html.has-device li.is-current > .step-head{margin-bottom:var(--sp-1)}
+  html.has-device li.is-current > .step-title{margin-bottom:var(--sp-1)}
+  html.has-device li.is-current > .preflight{margin-bottom:var(--sp-2);padding:var(--sp-2) var(--sp-3);font-size:var(--t-body);line-height:var(--t-body-lh)}
+  html.has-device li.is-current > .skip-box{order:1;margin:var(--sp-3) 0 0}
+  html.has-device li.is-current > .preflight::before{display:inline;margin:0 .5em 0 0}
+  html.has-device[data-player="step"] main{padding-top:var(--sp-2)}
+  html.has-device .player-actions{left:40%}
+  html.has-device .player-device{display:block;position:fixed;top:0;bottom:0;left:0;z-index:26;width:40%;overflow-y:auto;padding:var(--sp-2) var(--sp-3) var(--sp-3);border-right:1px solid var(--line);background:var(--surface-2)}
+  html.has-device .player-device .device{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:var(--sp-2);align-items:start;padding:var(--sp-2)}
+  html.has-device .player-device .pads{margin-top:0}
+  html.has-device .player-device .control{min-height:30px;padding:1px 2px;font-size:10px}
+  html.has-device .player-device .control.sym{font-size:16px}
+  html.has-device .player-device .press-order{gap:var(--sp-1) var(--sp-3)}
+  html.has-device .player-device .press-order .key{font-size:13px}
+}
+@media (min-width:1200px){
+  :root{--device-w:320px}
+  html.has-device body{padding-right:var(--device-w)}
+  html.has-device .appbar{margin-right:calc(-1 * var(--device-w))}
+  html.has-device .player-device{display:block;position:fixed;top:var(--appbar-h);right:0;bottom:0;z-index:20;width:var(--device-w);overflow-y:auto;overscroll-behavior:contain;padding:var(--sp-4);border-left:1px solid var(--line);background:var(--surface-1)}
+  html.has-device .player-device .control{padding:2px 3px;font-size:12px}
+  html.has-device .player-device .control.sym{font-size:18px}
+  html.has-device .player-device .map-info{height:168px;margin:var(--sp-3) 0 0;overflow-y:auto}
+  html.has-device .player-device .map-info h3{margin:0 0 var(--sp-1);font-size:var(--t-body);line-height:var(--t-body-lh)}
+}
 /* "This chapter" (the menu's tab, the desktop rail) and the ⋮ sheet: progress, the switch, every part with its steps
    as 48px rows (done, skipped, on screen, where you continue), then the extras */
 .chapter-pane,.actions-sheet .sheet-body{padding-top:var(--sp-3)}
@@ -1168,14 +1208,14 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 html.pl-kbd .tools-panel:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .tools-panel h3.sub,.tools-panel h4.sub{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
 .tools-eyebrow{margin:0 0 var(--sp-2);font-weight:600}
-.tools-panel .device{padding:var(--sp-3)}
-.tools-panel .device .display{display:none}
-.tools-panel .control{position:relative;min-height:36px;padding:2px 6px;box-shadow:0 2px 0 var(--line-strong)}
-.tools-panel .control.hot{box-shadow:0 2px 0 var(--key-edge)}
-.tools-panel .controls,.tools-panel .pads{gap:6px}
-.tools-panel .pads{margin-top:var(--sp-2)}
-.tools-panel .control .order{position:absolute;top:-8px;right:-6px;display:grid;place-items:center;min-width:22px;height:22px;padding:0 4px;border:2px solid var(--surface-1);border-radius:999px;background:var(--ink);color:var(--surface-1);font:600 12px/1 var(--font-mono)}
-.tools-panel .control[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
+.tools-panel .device,.player-device .device{padding:var(--sp-3)}
+.tools-panel .device .display,.player-device .device .display{display:none}
+.tools-panel .control,.player-device .control{position:relative;min-height:36px;padding:2px 6px;box-shadow:0 2px 0 var(--line-strong)}
+.tools-panel .control.hot,.player-device .control.hot{box-shadow:0 2px 0 var(--key-edge)}
+.tools-panel .controls,.tools-panel .pads,.player-device .controls,.player-device .pads{gap:6px}
+.tools-panel .pads,.player-device .pads{margin-top:var(--sp-2)}
+.tools-panel .control .order,.player-device .control .order{position:absolute;top:-8px;right:-6px;display:grid;place-items:center;min-width:22px;height:22px;padding:0 4px;border:2px solid var(--surface-1);border-radius:999px;background:var(--ink);color:var(--surface-1);font:600 12px/1 var(--font-mono)}
+.tools-panel .control[aria-pressed="true"],.player-device .control[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
 .press-order{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-4);margin:var(--sp-3) 0;padding:0;max-width:none;list-style:none}
 .press-order li{display:inline-flex;align-items:center;gap:var(--sp-1);margin:0}
 .po-n{font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2)}
