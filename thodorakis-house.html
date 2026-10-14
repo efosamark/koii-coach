@@ -53,7 +53,7 @@
       <li>Never use <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">SOUND</kbd></kbd>: it deletes a sample.</li>
       <li><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> undoes a cleared note while the umbrella icon is lit.</li>
     </ul>
-    <div class="notice caution"><b>Moves you’ll use all chapter.</b> Stop playback before you edit. <b>Move:</b> in MAIN, − / + moves one step and SHIFT + − / + one bar. With RECORD armed, SHIFT + + doubles the pattern instead. Keep off the pads: SHIFT + pad + − / + nudges that pad’s note. <b>Write a note:</b> hold RECORD, tap the pad, release. <b>Remove one note:</b> go to it and briefly press ERASE + that pad. <b>Remove all of one pad’s notes in this pattern:</b> hold ERASE + that pad until TRK blinks. <b>Undo:</b> SHIFT + B while the umbrella icon is lit.</div>
+    <div class="notice caution"><b>Moves you’ll use all chapter.</b> Stop playback before you edit. <b>Move:</b> in MAIN, − / + moves one step and SHIFT + − / + one bar, with RECORD off. <b>Write a note:</b> hold RECORD, tap the pad, release. <b>Remove one note:</b> go to it and briefly press ERASE + that pad. <b>Remove all of one pad’s notes in this pattern:</b> hold ERASE + that pad until TRK blinks. <b>Undo:</b> SHIFT + B while the umbrella icon is lit.</div>
     <div class="notice danger"><b>Never</b> use ERASE + SOUND: held until SND blinks, it deletes the sample from the device.</div>
     <section class="card">
       <h2>What you need</h2>
@@ -163,12 +163,12 @@
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> <kbd class="key">PLAY</kbd> plays nothing, <kbd class="key">TEMPO</kbd> shows 128 and <kbd class="key">TIMING</kbd> shows 16.</p>
-        <p><b>If it doesn’t:</b> <kbd class="key">PLAY</kbd> still plays music after step 7? <kbd class="key">MAIN</kbd> + a number can also switch scenes. Hold <kbd class="key">MAIN</kbd> first, then hold the project’s pad until the display shows P and its number, and repeat steps 3 and 7. Erased the wrong project? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once while the umbrella is lit, or restore your backup. Not sure which project to give up? See help <a href="./help.html#my-project-is-not-empty">“My project is not empty”</a>.</p>
+        <p><b>If it doesn’t:</b> <kbd class="key">PLAY</kbd> still plays music after step 7? <kbd class="key">MAIN</kbd> + the pad switched scene, not project. Hold <kbd class="key">MAIN</kbd> first, then the project’s pad until the display shows P and its number, and repeat steps 3 and 7. Erased the wrong project? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once while the umbrella is lit, or restore your backup. Not sure which project to give up? See help <a href="./help.html#my-project-is-not-empty">“My project is not empty”</a>.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started (step 1: empty project)</a> · <a href="https://teenage.engineering/guides/ep-133/functions">Functions (timing)</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">Play and record (erase pattern)</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 2 · Get your five vocals onto D1–D5</h2></summary>
-        <p><b>Goal:</b> V1 to V5 on pads D1 to D5, with each sample’s number on your paper. For sampling in depth, see <a href="./sampling.html">Chapter 3 · Sample, chop &amp; resample</a>.</p>
+        <p><b>Goal:</b> your five vocals on pads D1 to D5, sampled as in <a href="./sampling.html">Chapter 3 · Sample, chop &amp; resample</a>.</p>
         <ol start="12">
           <li data-step="plan-five-vocals" data-kind="info">
             <h3 class="step-title">Plan your five vocals</h3>
@@ -262,13 +262,13 @@
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The number on the display is the sample on that pad. With it you can always put a vocal back: select the pad, hold <kbd class="key">SOUND</kbd>, type the number and release.</p></details></div>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> in <kbd class="key">MAIN</kbd> with <kbd class="key">D</kbd> selected, pads <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> play V1 to V5, and five sample numbers are on your paper.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> play V1 to V5, and their numbers are on your paper.</p>
         <p><b>If it doesn’t:</b> recording never starts? Lower <kbd class="key knob">Y</kbd> (threshold), raise <kbd class="key knob">X</kbd> and check the source on the display. A pad is silent? Record it again, or load the sample by number. No vocals yet? Load five factory melodic sounds (500–599) onto <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> as stand-ins, and swap your vocals in later by number.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">Functions (sampling, sample tool)</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">How to (record a sample using USB audio)</a> · <a href="https://teenage.engineering/guides/ep-133/get-started">Get started (the sample number)</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record (copy and paste a sound)</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">What’s new (USB audio, 40 s mono)</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 3 · Trim the vocals and make them play in full</h2></summary>
-        <p><b>Goal:</b> each vocal starts right on its first sound, ends cleanly and always plays to the end.</p>
+        <p><b>Goal:</b> each vocal starts on its first sound and plays to the end.</p>
         <p class="notice danger">A brief press of SHIFT + SOUND opens sound edit, which is safe. Never <b>hold</b> SHIFT + SOUND on the trim page: that crops the file on disk, for good. Ordinary trimming can always be changed back.</p>
         <ol start="28">
           <li data-step="trim-v1-start">
@@ -321,8 +321,8 @@
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>You balance against the drums in Part 9.</p></details></div>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> in <kbd class="key">MAIN</kbd>, one short tap on each of <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> plays the whole vocal, starting on its first sound with no silence in front.</p>
-        <p><b>If it doesn’t:</b> starts late? Turn trim <kbd class="key knob">X</kbd> a little further. Stops early? Check oneshot on the sound page, then trim <kbd class="key knob">Y</kbd>. Higher or lower than before? You turned Y in plain <kbd class="key">SOUND</kbd>: turn it back. Cropped one by mistake? Record it again.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> one short tap on each D pad plays the whole vocal, with no silence in front.</p>
+        <p><b>If it doesn’t:</b> stops early? Check oneshot on the sound page, then trim <kbd class="key knob">Y</kbd>. Starts late? Turn trim <kbd class="key knob">X</kbd> a little further. Higher or lower than before? You turned Y in plain <kbd class="key">SOUND</kbd>: turn it back.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes (sound edit: sound, trim and time pages)</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">What’s new (crop, reverse)</a> · <a href="https://teenage.engineering/guides/ep-133/buttons-and-combos">Buttons and combos (slower knobs with SHIFT)</a></p>
       </details>
       <details>
@@ -367,7 +367,7 @@
             <p class="step-check"><span class="sr">Check: </span>You hear kick, clap, closed hat, open hat and bass.</p>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> you hear kick, clap, closed hat, open hat and bass, all factory sounds, while <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> still play your vocals.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> kick, clap, two hats and bass play, and <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> still play your vocals.</p>
         <p><b>If it doesn’t:</b> a vocal plays on an A or B pad? You loaded it with <kbd class="key">D</kbd> selected. Tap the right group, select the pad and load the factory number again. Your vocal is safe: put it back on its D pad by number.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes (sound: choosing sounds and the number ranges)</a></p>
       </details>
@@ -573,13 +573,13 @@
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Commit keeps DROP A and moves you into a copy.</p></details></div>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> you want to nod along: steady kick, bouncing bass, a clear hook with a little space around it. DROP A and DROP B are on your paper.</p>
-        <p><b>If it doesn’t:</b> words unclear? Lower the hats and the texture before you raise the hook. Muddy? Less reverb on D, none on B. A level moves by itself every loop? You recorded a fader move: press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit, or erase it with <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">FADER</kbd></kbd> + pad. Same number after <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>? Hold <kbd class="key">MAIN</kbd> and select the copy, the new number, before you edit.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> a steady kick, a bouncing bass and a clear hook, with DROP A and DROP B on your paper.</p>
+        <p><b>If it doesn’t:</b> words unclear or muddy? Lower the hats and the texture, and use less reverb on D, none on B. Same number after <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>? Hold <kbd class="key">MAIN</kbd> and select the copy, the new number, before you edit. A level moves by itself every loop? You recorded a fader move: press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit, or erase it with <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">FADER</kbd></kbd> + pad.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/effects">Effects (fx level, reverb)</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Modes (sound volume, scenes, commit)</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record (fader)</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 10 · Grow it: DROP B and PEAK</h2></summary>
-        <p><b>Goal:</b> two bigger versions of the drop. From here on, copy the newest scene with SHIFT + MAIN, then change a few things. Hold MAIN to check the number before every edit.</p>
+        <p><b>Goal:</b> two bigger versions of the drop, each a copy of the scene before.</p>
         <ol start="71">
           <li data-step="make-drop-b-v2">
             <h3 class="step-title">D5: the second phrase in DROP B</h3>
@@ -609,7 +609,7 @@
       <details>
         <summary><h2 class="part-title">Part 11 · Strip it down: GROOVE and INTRO</h2></summary>
         <p><b>Goal:</b> two lighter scenes, made by clearing whole pads.</p>
-        <p class="notice caution">With playback stopped, hold ERASE + a pad until TRK blinks: every note of that pad in this scene’s pattern is gone. The sample stays. Hold MAIN first to check you are in the right scene. SHIFT + B undoes while the umbrella is lit.</p>
+        <p class="notice caution">With playback stopped, hold ERASE + a pad until TRK blinks: every note of that pad in this scene is gone. The sample stays. Hold MAIN first to check you are in the right scene. SHIFT + B undoes while the umbrella is lit.</p>
         <ol start="75">
           <li data-step="commit-groove" data-note="GROOVE">
             <h3 class="step-title">Commit, and name the copy GROOVE</h3>
@@ -643,7 +643,7 @@
             <p class="step-check"><span class="sr">Check: </span>INTRO: drums only. GROOVE: drums, bass, hook, answer. PEAK: everything.</p>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> INTRO plays drums only. GROOVE plays drums, bass, hook and answer. PEAK still plays everything.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> INTRO plays drums only, GROOVE drums, bass, hook and answer, and PEAK everything.</p>
         <p><b>If it doesn’t:</b> PEAK or GROOVE lost notes? You cleared in the wrong scene: press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit, or write them again from “Your scenes” below. <samp class="lcd">TRK</samp> never appeared, or only one note went? Stop playback first, and hold until <samp class="lcd">TRK</samp> blinks.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record (erase and undo)</a></p>
       </details>
@@ -715,8 +715,8 @@
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The roll leads the ear into the drop.</p></details></div>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> BREAK has hats, hook and texture but no kick. BUILD adds an even kick on every beat and a clap roll at the very end.</p>
-        <p><b>If it doesn’t:</b> a kick missing or doubled? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit and record again. Nothing recorded? Tap <kbd class="key">RECORD</kbd> before <kbd class="key">PLAY</kbd>. BREAK has a kick too? You recorded before committing: in BREAK, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks. Claps on the beats, not between? <kbd class="key">TIMING</kbd> was still 4: set 16, erase them and write them again. More live playing: <a href="./perform.html">Chapter 4 · Play &amp; perform</a>.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> BREAK has no kick, and BUILD brings it back on every beat, with a clap roll at the end.</p>
+        <p><b>If it doesn’t:</b> a kick missing or doubled? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit and record again. Claps on the beats, not between? <kbd class="key">TIMING</kbd> was still 4: set 16, erase them and write them again. BREAK has a kick too? You recorded before committing: in BREAK, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record (live record with count-in)</a> · <a href="https://teenage.engineering/guides/ep-133/functions">Functions (note interval, quantize)</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">How to (metronome)</a></p>
       </details>
       <details>
@@ -785,12 +785,12 @@
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> INTRO, GROOVE, DROP A, DROP B, BREAK, BUILD, PEAK, GROOVE, INTRO, then it stops after about 4:00.</p>
-        <p><b>If it doesn’t:</b> too short or too long? A position is missing or extra, or a pattern isn’t four bars. Extra position? Select it and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> to cut it. Wrong scene on a position? Select it and hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd>. Positions missing? Add them at the end with <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd>, then re-check every position from the gap onwards. Keeps looping? Song loop is on: press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, type 4, 2, 0, press <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd>.</p>
+        <p><b>If it doesn’t:</b> too short or too long? Compare each position with the song map. <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> cuts an extra one, and <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a missing one at the end: then re-check every position from the gap onwards. Wrong scene on a position? Select it and hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd>. Keeps looping? Song loop is on: press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, type 4, 2, 0, press <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd>.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes (song mode)</a> · <a href="https://teenage.engineering/guides/ep-133/workflow">Workflow (song position length)</a> · <a href="https://teenage.engineering/guides/ep-133/system">System (song loop 420)</a></p>
       </details>
       <details>
         <summary><h2 class="part-title">Part 14 · Quality gate before you share it</h2></summary>
-        <p><b>Goal:</b> check the track like a DJ would, record it, back it up and know the rules before you share it.</p>
+        <p><b>Goal:</b> test the track, record it and back it up before you share it.</p>
         <ol start="101">
           <li data-step="dance-test" data-os="2.0">
             <h3 class="step-title">Dance test</h3>
@@ -836,14 +836,14 @@
             <ul class="step-moves"><li>Load a sample by number: <kbd class="key">SOUND</kbd>, tap the pad, hold <kbd class="key">SOUND</kbd>, type the number, release.</li><li>Trim: briefly <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to the trim page; <kbd class="key knob">X</kbd> start, <kbd class="key knob">Y</kbd> length.</li><li>Play to the end: on the sound page, turn <kbd class="key knob">X</kbd> to <samp class="lcd">oneshot</samp>.</li><li>Reverb on a group: tap it, <kbd class="key">FX</kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to reverb, raise the fader.</li><li>Grow and strip: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>, then hold <kbd class="key">ERASE</kbd> + the pad until <samp class="lcd">TRK</samp> blinks to clear one sound.</li><li>Play it in: tap <kbd class="key">RECORD</kbd>, press <kbd class="key">PLAY</kbd>, play after the count-in.</li><li>Song list: hold <kbd class="key">MAIN</kbd> and press <kbd class="key">ENTER</kbd>; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a position, <kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd> picks its scene.</li></ul>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> you have a recording of the full 4-minute track, a backup and your paper list.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> you have a recording of the full track, a backup and your paper list.</p>
         <p><b>If it doesn’t:</b> the computer gets no audio? In your recording app, choose the K.O. II as the input. Some USB cables only charge: try one that carries data.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/whats-new">What’s new (USB audio)</a> · <a href="https://teenage.engineering/guides/ep-133/hardware-overview">Hardware overview (USB-C and outputs)</a> · <a href="https://teenage.engineering/guides/ep-133/functions">Functions (sample tool)</a></p>
       </details>
     </section>
     <section class="card">
       <h2>Your scenes</h2>
-      <p>Each scene is a SHIFT + MAIN copy of the one above it, with a few changes. Every group pattern is four bars.</p>
+      <p>Each scene starts as a copy of the one above it. Every pattern is four bars.</p>
       <table class="map">
         <thead>
           <tr><th scope="col">Scene</th><th scope="col">Copy of</th><th scope="col">Drums (A)</th><th scope="col">Bass (B)</th><th scope="col">Vocals (D)</th></tr>
@@ -898,7 +898,7 @@
     </section>
     <section class="card">
       <h2>Going further</h2>
-      <p><b>Resample and chop:</b> resample (RSP) records what the K.O. II is playing, your BREAK for example, as one new sample. Auto chop (EQU) slices a vocal into even pieces, but resets the pads of the group you chop into: use an empty group such as C, never D. Both are in <a href="./sampling.html">Chapter 3 · Sample, chop &amp; resample</a>.</p>
+      <p><b>Resample and chop:</b> resample records what the K.O. II is playing, your BREAK for example, as one new sample. Auto chop slices a vocal into even pieces, but resets the pads of the group you chop into, so use empty group C, never D. Both are in <a href="./sampling.html">Chapter 3 · Sample, chop &amp; resample</a>.</p>
       <p><b>Play it live:</b> scene switching, punch-in FX and KEYS with scale and arpeggio, in <a href="./perform.html">Chapter 4 · Play &amp; perform</a>.</p>
       <p><b>Per-pad copy and paste:</b> hold a pad and press SHIFT + C to copy its notes, then hold another pad and press SHIFT + D to paste them.</p>
     </section>
