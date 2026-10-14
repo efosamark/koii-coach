@@ -4,6 +4,16 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.7
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.
+
+Chapter 5 · Full hip-hop beat, rewritten for a glance, like Chapters 3 and 4 (61 steps became 109). Your ticks and links carry over.
+
+- Each step has a title, at most three moves and one short Check; reasons and fixes are under "Why" and "Not working?".
+- Where a step copied a scene and then cleared a pad in it, the copy is now its own step, so only the clear asks "Yes, I have checked" first. Playing live with scene changes on the bar is four optional steps, ending with setting 410 again.
+- Changed wording: "Hold RECORD and tap pad 3 at every .1 and .3: 1.1.1, … and 1.4.3." (was "write pad 3 (hold RECORD, tap pad 3) at 1.1.1, … and 1.4.3: every .1 and .3"); "you hear it through the K.O. II" (was "you should hear it"); five Checks now start with what you hear, without "You should hear" ("The whole phrase, first word to last, then only the ANSWER word."; "Drums and bass under the phrase in bar 1, the answer in bar 2."; "Drums, bass (unless you dropped it), phrase and answer, every word clear."; "Your kick rhythm with two hats per bar, and no snare, bass or vocal."; "INTRO, VERSE, HOOK, BREAK, RETURN and END, about 2:51, then it stops." (was "about 2 minutes 51 seconds, and then it stops by itself")); "Wrong pad? Press SHIFT + B at once, while the umbrella is lit." (was "Cleared the wrong pad? …"); jumping to bar 2 and then to 2.3.1 are two steps, with "The display shows 2.1.1." as the first one's Check; "C goes from 2 to 4 bars: check the display." with the guide's words under Why (the same sentence, turned round); "(USB audio out)" became the note "That is USB audio out."; two steps that began "Then" now start with the action ("Go to 1.1.1 …", "Tap C, press FX …"), and "that is C's reverb send" moved to Why; the list of sections in the finished song moved to Why; and a fix that began "If it doesn't:" now starts with a capital letter.
+
 ## 2026.10.14.6
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.
