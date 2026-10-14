@@ -26,7 +26,7 @@
               Keep it in step with that line. */
 window.COACH_SITE={
   name:'K.O. II Coach',
-  version:'2026.10.14.7',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
+  version:'2026.10.14.8',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
   repo:'https://github.com/efosamark/koii-coach',
   report:'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml',
   chapters:[
@@ -36,7 +36,7 @@ window.COACH_SITE={
     {num:'3',formerly:'07',title:'Sample, chop & resample',short:'Sample',href:'./sampling.html',slug:'sampling',steps:88,minutes:[120,180],made:'a drum kit from your own voice, a reversed snare, a recording chopped into slices and your whole beat bounced onto one pad, in project 7'},
     {num:'4',formerly:'08',title:'Play & perform',short:'Perform',href:'./perform.html',slug:'perform',steps:110,minutes:[120,180],made:'a live performance of your own beat: played with feel, with a bassline in a scale, rolled hats, effects and live scene changes, and a recording of it'},
     {num:'5',formerly:'09',title:'Full hip-hop beat',short:'Hip-hop',href:'./hiphop.html',slug:'hiphop',legacy:'koii-hiphop-vocal-checklist-v2',steps:109,minutes:[120,180],made:'a 64-bar old-school hip-hop beat with a sung phrase you sampled, six scenes and a six-position song list, in project 8'},
-    {num:'6',formerly:'10',title:'Tech house',short:'Tech house',href:'./tech-house.html',slug:'tech-house',legacy:'koii-tech-house-checklist-v1',steps:61,minutes:[120,180],made:'a tech-house track at 128 BPM, about 3:30 long, with two drops, a breakdown and a build: 28 song positions, 112 bars'},
+    {num:'6',formerly:'10',title:'Tech house',short:'Tech house',href:'./tech-house.html',slug:'tech-house',legacy:'koii-tech-house-checklist-v1',steps:108,minutes:[120,180],made:'a tech-house track at 128 BPM, about 3:30 long, with two drops, a breakdown and a build: 28 song positions, 112 bars'},
     {num:'7',formerly:'11',title:'Vocal house',oldTitle:'House with your own vocal samples',short:'Vocal house',href:'./thodorakis-house.html',slug:'vocal-house',legacy:'koii-thodorakis-club-checklist-v1',steps:79,minutes:[120,180],made:'a 4-minute house track at 128 BPM built around five vocal samples of your own: 32 song positions, 128 bars'}
   ],
   // Tools are never numbered. icon is a symbol in icons.svg (without the "i-" prefix).
