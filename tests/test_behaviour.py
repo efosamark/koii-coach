@@ -1,8 +1,10 @@
 """Player and shell behaviour the plan lists in 8.1 that the other files do not cover:
 
-- the screen wake lock is asked for on the first Done · Next and let go with the sun button (stubbed API);
+- the screen wake lock is asked for on the first Done · Next, let go with the sun button, and after 15 idle minutes
+  let go with a "Keep on" toast (stubbed API, fake clock);
 - a delete or overwrite step keeps its press folded until "Yes, I have checked";
-- letter shortcuts never fire in a text field, an open dialog, a grid or a radiogroup;
+- letter shortcuts never fire in a link, a button, a disclosure, a text field, an open dialog, a grid or a radiogroup,
+  and do from the step's title;
 - #done with steps left lists them and does not tick the recap; with every chapter done, the course is complete
   (chapter screen and Home);
 - with storage blocked, the chapter says so as an alert and suggests installing or exporting;
@@ -73,6 +75,16 @@ def test_wake_lock_on_first_done_and_off_with_the_sun(run):
     page.wait_for_function("() => document.getElementById('wake-toggle').getAttribute('aria-pressed') === 'true'")
     sun.click()
     page.wait_for_function('() => window.__wake.released === 1')
+    # 15 minutes without a tap: it lets go and offers to keep the screen on (plan 5.3).
+    page.clock.install()
+    run.go('./setup.html#s-power-batteries')
+    page.locator('#player-next').click()
+    page.wait_for_function('() => window.__wake.requests === 1')   # a new page: the stub counts from 0 again
+    page.clock.run_for('15:05')
+    toast = page.locator('#toast', has_text='Screen can sleep again')
+    toast.wait_for(state='visible')
+    toast.get_by_role('button', name='Keep on').click()
+    page.wait_for_function('() => window.__wake.requests === 2')
 
 
 def test_irreversible_step_stays_folded_until_checked(run):
@@ -111,9 +123,17 @@ def test_shortcuts_never_fire_in_excluded_contexts(run):
     page.keyboard.press('?')
     page.wait_for_timeout(200)
     assert page.evaluate("() => !document.querySelector('dialog[open]')"), '? in a radiogroup is not a shortcut'
-    page.locator('body').click(position={'x': 5, 'y': 300})
-    page.keyboard.press('?')
-    page.wait_for_function("() => Boolean(document.querySelector('dialog[open]'))")
+    # Links, buttons and disclosures keep their keys (plan: shortcuts fire only from the page, main or the step title).
+    run.go('./first-beat.html#s-beat-kicks')
+    for sel in ('#player-back', 'li.is-current a[href]', 'li.is-current summary'):
+        page.locator(sel).first.focus()
+        for key in ('t', 'm'):
+            page.keyboard.press(key)
+            page.wait_for_timeout(150)
+            assert page.evaluate("() => !document.querySelector('dialog[open]')") and not sheet.is_visible(), f'{key} on {sel} is not a shortcut'
+    page.locator('li.is-current > .step-title').focus()
+    page.keyboard.press('t')
+    sheet.wait_for(state='visible')
 
 
 def test_done_with_steps_left_and_the_course_complete(run):

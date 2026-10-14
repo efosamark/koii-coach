@@ -29,11 +29,12 @@
      glossary word        ./glossary.html#term-<word>  (the definition is shown in the result as well)
      control              ./controls.html#control-<name>
      safety entry         ./safety.html#<id>
+     cheat-sheet move     ./cheat-sheet.html#<chapter section id>
 
    Matching (docs/overhaul-plan.md 4.7): whole words, with a prefix match on the last one while it is being typed
    ("hat" finds "hats" and "hi-hat", never "that"); case and accents folded; plurals and -ing/-ed folded; a few synonyms;
    filler words like "the" and "my" ignored. Ranking: the query as the title, then title words, then key names (ERASE
-   written as a button in the text), then the body. Results are grouped (Steps, Help, Learn, Words), the group with the
+   written as a button in the text), then the body. Results are grouped (Steps, Help, Learn, Words, Cheat sheet), the group with the
    best match first (Words second at most), so Enter opens the best link. Arrow keys move real focus through the field and the results. */
 (()=>{
 const site=window.COACH_SITE;
@@ -285,7 +286,7 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
     return`<li><a class="search-hit" href="${esc(d.href)}"><span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span>${d.body?`<span class="search-hit-snip">${snippet(d.body,m)}</span>`:''}</a></li>`;
   }
   function render(){
-    // The group holding the best match comes first (ties keep the order Steps, Help, Learn, Words).
+    // The group holding the best match comes first (ties keep the order Steps, Help, Learn, Words, Cheat sheet).
     const best=k=>found[k].length?found[k][0].s:0;
     const q=clean(input.value),alts=parse(q),kinds=GROUPS.filter(([k])=>type==='all'||k===type).sort((a,b)=>best(b[0])-best(a[0]));
     // A glossary word has no link and runs to several lines, so on a phone it would push every step below the fold:
@@ -322,7 +323,7 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
   let previewing=null;
   function preview(d,from){
     previewing={d,top:body.scrollTop,from:from&&from.getAttribute('data-preview')};
-    const tag={erase:'<span class="tag caution">Clears notes</span>',delete:'<span class="tag danger">Deletes · no undo</span>',overwrite:'<span class="tag danger">Overwrites · no undo</span>'}[d.risk]||'';
+    const tag={erase:'<span class="tag caution">Clears notes</span>',delete:'<span class="tag danger">Deletes · no undo</span>',overwrite:'<span class="tag danger">Overwrites · no undo</span>','erase-scene':'<span class="tag danger">Erases the scene · no undo</span>'}[d.risk]||'';
     list.innerHTML=`<div class="search-preview"><button class="btn ghost" type="button" data-back><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-back"></use></svg>Back to results</button>`+
       `<p class="search-hit-crumb">${esc(d.crumb.join(' · '))}</p><h2 class="preview-title" id="site-preview-title" tabindex="-1">${esc(d.title)}</h2>${tag?`<p>${tag}</p>`:''}`+
       `<div class="preview-body">${d.html}</div><p class="row"><a class="btn" href="${esc(d.href)}">${d.part?'Go to this part':'Go to this step'}<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-next"></use></svg></a></p>`+

@@ -68,7 +68,7 @@ def test_risky_steps_check_before_the_press_and_undo_after(name):
         assert 'preflight' in s['parts'], f"{name}/{s['id']}: a risky step has Before you press ({s['parts']})"
         assert 'step-undo' in s['parts'] or 'step-noundo' in s['parts'], f"{name}/{s['id']}: a risky step has its undo or No undo"
         assert 'step-check' in s['parts'], f"{name}/{s['id']}: a risky step says what to check after the press"
-        if s['risk'] in ('delete', 'overwrite'):
+        if s['risk'] in ('delete', 'overwrite', 'erase-scene'):
             assert 'step-noundo' in s['parts'], f"{name}/{s['id']}: an irreversible step says No undo"
 
 

@@ -17,7 +17,8 @@
        p.step-check  what you should hear or see (its own block, with an ear or an eye)
        p.step-note   more about the step, at body size; p.step-source names the official guide page
      li[data-risk="erase"]              recoverable clear: amber "Clears notes" tag, no gate
-     li[data-risk="delete"|"overwrite"] no undo: red tag, and the rest of the step stays folded until
+     li[data-risk="delete"|"overwrite"|"erase-scene"]  no undo: red tag ("Deletes", "Overwrites", "Erases the scene"),
+                                        and the rest of the step stays folded until
                                         "Yes, I have checked" is pressed (per visit, never saved)
                                         (each risk tag links to its entry on safety.html)
      li[data-setting="401"]             neutral "System setting 401" tag
@@ -150,7 +151,7 @@ function answer(P,a){
 }
 
 // ---------- Inside each step: the head (number and tags), the check's sense, the gate, the skip box ----------
-const RISK={erase:['caution','Clears notes','recoverable'],delete:['danger','Deletes · no undo','delete-sample'],overwrite:['danger','Overwrites · no undo','crop-sample']};
+const RISK={erase:['caution','Clears notes','recoverable'],delete:['danger','Deletes · no undo','delete-sample'],overwrite:['danger','Overwrites · no undo','crop-sample'],'erase-scene':['danger','Erases the scene · no undo','erase-scene']};
 const gates=new Map(),heads=new Map();
 steps.forEach(li=>{
   const risk=RISK[li.dataset.risk]||null,setting=clean(li.dataset.setting),os=/^\d+(\.\d+){0,2}$/.test(li.dataset.os||'')?li.dataset.os:'';
@@ -242,7 +243,7 @@ partsBox.setAttribute('aria-labelledby','player-parts-title');
     (old?`<li class="warn">${icon('warning')}<span>Needs ${osText} · <a href="./setup.html#s-update-open-utility">Update first</a></span></li>`:'');
   const intro=pageHead&&pageHead.nextElementSibling&&pageHead.nextElementSibling.tagName==='P'?pageHead.nextElementSibling:pageHead;
   if(intro)intro.after(chips);else main.prepend(chips);
-  const dangers=preSteps().filter(e=>e.matches('.notice.danger')),hard=steps.filter(li=>/^(delete|overwrite)$/.test(li.dataset.risk||'')).length;
+  const dangers=preSteps().filter(e=>e.matches('.notice.danger')),hard=steps.filter(li=>/^(delete|overwrite|erase-scene)$/.test(li.dataset.risk||'')).length;
   if(dangers.length){
     safety.innerHTML=`<summary>${icon('warning')}<span>${hard?esc(plural(hard,'action','actions'))+' in this chapter cannot be undone':'Safety: read this before you start'}</span></summary><div class="inside"></div>`;
     dangers.forEach(d=>safety.lastElementChild.append(copy(d)));

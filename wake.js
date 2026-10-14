@@ -10,7 +10,8 @@
      held()       true while this page holds the screen
      supported()  true when the browser has the Screen Wake Lock API (secure pages only: https or localhost)
 
-   The hold ends on pagehide and after 15 minutes without a poke() (toast "Screen can sleep again"). Browsers drop it
+   The hold ends on pagehide and after 15 minutes without a poke() (toast "Screen can sleep again" with Keep on, which
+   holds it again). Browsers drop it
    whenever the page is hidden, so it is asked for again when the page becomes visible.
    koii-coach-prefs.wake decides what poke() may do: "auto" (the default) holds the screen, "off" never starts a hold.
    The button still works when it is off, because pressing it is the learner's own choice for this page. Switching it
@@ -32,12 +33,15 @@ let lock=null,      // the WakeLockSentinel while the screen is held
 
 const sync=()=>{if(btn)btn.setAttribute('aria-pressed',lock?'true':'false');};
 
-// A short message in the page's toast; a page without one gets its own the first time it is needed.
-function say(text){
+// A short message in the page's toast; a page without one gets its own the first time it is needed. With act, the
+// toast carries a button ([label, what it does]) and stays 10 seconds.
+function say(text,act){
   let el=document.getElementById('toast');
   if(!el){el=document.createElement('div');el.id='toast';el.className='toast hidden';el.setAttribute('role','status');document.body.append(el);}
   el.textContent=text;el.classList.remove('hidden');
-  clearTimeout(say.timer);say.timer=setTimeout(()=>el.classList.add('hidden'),5000);
+  if(act){const b=document.createElement('button');b.type='button';b.className='btn';b.textContent=act[0];
+    b.addEventListener('click',()=>{clearTimeout(say.timer);el.classList.add('hidden');act[1]();});el.append(b);}
+  clearTimeout(say.timer);say.timer=setTimeout(()=>el.classList.add('hidden'),act?10000:5000);
 }
 
 // Ask the browser for the lock. Resolves true when this page holds it afterwards; a refusal is quiet.
@@ -58,7 +62,7 @@ function stop(announce){
   const s=lock;lock=null;
   if(s)s.release().catch(()=>{});
   sync();
-  if(announce&&s)say('Screen can sleep again');
+  if(announce&&s)say('Screen can sleep again',['Keep on',()=>{quiet=false;manual=true;hold();}]);   // plan 5.3
 }
 // Hold the screen and (re)start the idle timer.
 function hold(){

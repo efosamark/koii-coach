@@ -237,3 +237,53 @@ def test_a_finished_chapter_stays_finished_with_its_new_recap(run):
     run.page.evaluate("() => CoachChapter.setDone('keep-samples', true)")
     run.go('./index.html')
     assert run.get('koii-coach-ch-sampling')['done'] == ['keep-samples']
+
+
+def test_existing_learners_skip_the_setup_question(run):
+    """Plan 5.1: anyone with progress outside Chapter 0 is set to setup='ready' once (reason recorded); ticks in
+    Chapter 0 alone are not enough."""
+    run.seed({'koii-coach-ch-sampling': {'v': 1, 'done': ['open-empty-project'], 'last': 'open-empty-project', 'n': 1}})
+    run.go('./index.html')
+    assert run.get('koii-coach-prefs')['setup'] == 'ready' and run.get('koii-coach-meta')['setupReason'] == 'existing-progress'
+    run.seed({'koii-coach-ch-setup': {'v': 1, 'done': ['power-batteries'], 'last': 'power-batteries', 'n': 1}})
+    run.go('./index.html')
+    assert (run.get('koii-coach-prefs') or {}).get('setup') is None, 'Chapter 0 ticks alone keep the question'
+
+
+def test_continue_falls_back_to_the_last_chapter(run):
+    """Records saved before "at" existed: Continue opens meta.lastChapter."""
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}, 'koii-coach-meta': {'v': 1, 'lastChapter': 'perform'},
+              'koii-coach-ch-sampling': {'v': 1, 'done': ['open-empty-project'], 'last': 'open-empty-project', 'n': 1},
+              'koii-coach-ch-perform': {'v': 1, 'done': ['live-copy'], 'last': 'live-copy', 'n': 1, 'm': 3}})
+    run.go('./index.html')
+    assert run.page.locator('#resume').get_attribute('href').startswith('./perform.html')
+
+
+def test_old_checklists_carry_over_or_say_why_not(run):
+    """The old checklist keys of Chapters 5-7 (list positions) become ticks; ticks on steps that no longer exist are
+    dropped with a notice, as are ticks from the oldest key, which cannot be carried over."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}, 'koii-thodorakis-club-checklist-v1': [1, 2]})
+    run.go('./thodorakis-house.html#all')
+    done = run.get('koii-coach-ch-vocal-house')['done']
+    assert {'set-tempo-128', 'set-timing-16'} <= set(done), done
+    assert not page.locator('#progress-note').is_visible(), 'Nothing was lost, so no notice'
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}, 'koii-thodorakis-club-checklist-v1': [0, 1]})
+    run.go('./thodorakis-house.html#all')
+    assert 'rewritten since you last ticked' in page.locator('#progress-note').text_content(), 'A tick on a step that changed is reported'
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}, 'koii-thodorakis-checklist-v1': [0, 1, 2]})
+    run.go('./thodorakis-house.html#all')
+    assert 'could not be carried over' in page.locator('#progress-note').text_content()
+
+
+def test_schema_3_and_unknown_firmware(run):
+    """koii-coach-v2 schema 3 kept positions by id but allowed firmware 'unknown'; any other unknown value reads as
+    OS 2.5, the course's default."""
+    run.seed({'koii-coach-v2': v2(schema=3, step=99, stepId='beat-kicks', firmware='unknown')})
+    run.go('./settings.html')
+    old = run.page.evaluate('() => CoachProgress.v2()')
+    assert old['stepId'] == 'beat-kicks' and old['firmware'] == '2.5', old
+    assert run.get('koii-coach-ch-first-beat')['cur'] == 'beat-kicks', 'The place is found by its id, not its number'
+    run.seed({'koii-coach-v2': v2(firmware='banana')})
+    run.go('./settings.html')
+    assert run.page.evaluate('() => CoachProgress.v2().firmware') == '2.5'

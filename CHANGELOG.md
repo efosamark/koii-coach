@@ -4,6 +4,34 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.22
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.19. **Written for:** OS 2.5.1. No button sequence changed.
+
+Fixes from a second independent review of the overhaul.
+
+**Wordings changed:**
+
+- Chapter 4, "Delete the empty TRASH scene", Before you press: "Hold MAIN first: the number must still be TRASH." (was "…must be still TRASH.").
+- Chapter 4, "Clear TRASH", No undo: "No undo: treat the cleared scene as gone for good." (was "No undo: this course does not rely on undo for a cleared or deleted scene."). "Clear TRASH" and "Delete the empty TRASH scene" (ERASE + MAIN) now carry the red tag "Erases the scene · no undo" (was "Deletes · no undo", the tag for deleting a sample); they still stay folded until "Yes, I have checked", and their safety link opens the scene entry.
+- Chapter 4, checkpoint of Part 4 (punch-in FX and fader moves): "FX + pad 1 makes the beat stutter." (was "FX + 1 …").
+- Chapter 4, "Choose it as your app’s input", Not working?: the owners' tools are named and linked: "…by “EP-133” in its name on a Mac ([ep-series-sysex](https://github.com/kmorrill/ep-series-sysex)) and “EP133” on Linux ([sound-arranger](https://github.com/geokkjer/sound-arranger))."
+- Chapter 4, "Try a direct jump to a scene", Why: "owners show" now links the [owner's report](https://www.elektronauts.com/t/ep-133-tips-and-tricks/204124/152).
+- Chapter 5, "Checkpoint: hear your source", Not working?: "Mic: this check is for a cable; with the mic, check that the MIC icon (“lit when the microphone is in use”) is on, and record a test word to hear it." (was "Mic: you may only hear yourself on playback."; the guide's display page describes the MIC icon).
+- Chapter 2, checkpoint of Part 5 (build the song list), If it doesn’t: "hold SHIFT + − / +" is now one chord keycap (it read as SHIFT, then − / +).
+- Chapter 2, "Set position 1 to INTRO" and "Add positions 3–6": the "Needs OS 2.0 or newer" badge for readers without JavaScript was missing (the step player already showed the tag).
+- Every checkpoint and "If it doesn’t" paragraph shows its buttons as keycaps (about 50 paragraphs in Chapters 0, 1, 2, 4, 6 and 7; the words did not change). Where a "+" joins two buttons pressed together (ERASE + A2, ERASE + FADER + pad, MAIN + a number), it stays a plain "+", not the + button.
+- Straight apostrophes in page text are now curly (“K.O. II’s”, “C’s”, “D1’s”, “Reset this chapter’s checklist” and others in Chapters 3, 4, 5 and the cheat sheet).
+
+Also:
+
+- **Screen wake:** after 15 minutes without a tap, the "Screen can sleep again" notice has a **Keep on** button that holds the screen on again (plan 5.3); the notice stays 10 seconds.
+- **Letter shortcuts** no longer fire while a link, a button or a Why / Not working? disclosure has focus (plan 4.9), only from the page, the main area or the step's title.
+- **Offline copy:** the first save shows its progress on the page as soon as it starts.
+- **Search** shows the "Erases the scene" tag on those steps.
+- **Build checks:** every step with `data-os` must carry its "Needs OS x or newer" badge for readers without JavaScript, and what `sw.js` saves for offline use must stay under 600 KB gzipped (plan 7.8; 282 KB today).
+- **Tests:** existing learners skip the set-up question (ticks in Chapter 0 alone do not), Continue falls back to the last chapter for old records, old checklists of Chapters 5–7 carry over or say why not, schema 3 and an unknown firmware value, the Keep on button (fake clock), and shortcuts in links, buttons and disclosures.
+
 ## 2026.10.14.21
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.19; the wordings below reuse what the steps, the guide's pictures and the sources named in 2026.10.14.18–.19 already say. **Written for:** OS 2.5.1. No button sequence changed: new lines name a check before a press, its undo, or what to listen for.

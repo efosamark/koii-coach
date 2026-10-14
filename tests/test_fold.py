@@ -30,7 +30,7 @@ MEASURE = """async ([portrait, inset]) => {
     const li = document.querySelector('li.is-current');
     const dos = [...li.querySelectorAll(':scope > .step-do')].filter(d => d.offsetParent);
     const check = li.querySelector(':scope > .step-check');
-    const risk = /^(erase|delete|overwrite)$/.test(li.dataset.risk || '');
+    const risk = /^(erase|delete|overwrite|erase-scene)$/.test(li.dataset.risk || '');
     const last = dos[dos.length - 1];
     const target = portrait && !risk && check && check.offsetParent ? check : last;
     const bar = document.querySelector('#player-actions .pa-row').getBoundingClientRect().top - inset;

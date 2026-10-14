@@ -46,7 +46,7 @@ Step numbers ("go back to step 3") change whenever a step before them is split. 
 | Attribute | Use |
 |---|---|
 | `data-risk="erase"` | The step clears notes that undo can bring back. An amber "Clears notes" tag; no gate. |
-| `data-risk="delete"` or `"overwrite"` | Nothing can bring it back. A red tag, and the step stays folded until "Yes, I have checked". Add or update its entry on `safety.html`. |
+| `data-risk="delete"`, `"overwrite"` or `"erase-scene"` | Nothing can bring it back: deleting a sample, cropping or overwriting a file, erasing a scene (ERASE + MAIN). A red tag, and the step stays folded until "Yes, I have checked". Add or update its entry on `safety.html`. |
 | `data-optional` | The main path works without it. A run of optional steps in one part can be skipped together. Do not mark a step optional because it only applies to some learners (a reused project, an audio file): say the condition in its title instead. |
 | `data-setting="411"` | The step sets a system setting; shows a "System setting 411" tag. |
 | `data-os="2.0"` | Needs that OS or newer; the badge follows the OS chosen in Settings. Add `<p class="badge os-badge">Needs OS 2.0 or newer</p>` under the title as the fallback text. |

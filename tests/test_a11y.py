@@ -2,7 +2,8 @@
 
 - axe-core (tests/vendor, MPL-2.0, test-only and sha256-pinned) on every kind of page and sheet, at phone and desktop
   width, in light and dark: no serious or critical WCAG 2.2 A/AA violation.
-- Keyboard: from a step's title, Tab reaches Done · Next through the step's own controls and the action bar only;
+- Keyboard: from a step's title, Tab reaches Done · Next through the step's own controls, the part's note and the
+  action bar only (test_behaviour.py checks the exact count);
   a whole part of Chapter 0 can be done with the keyboard alone, its checkpoint included.
 - At 320×256 (400% zoom on a small laptop) the fixed chrome takes at most a quarter of the height, and a focused
   control in the step is never hidden under it (WCAG 2.4.11).

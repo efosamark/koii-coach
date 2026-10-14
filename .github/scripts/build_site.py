@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Copy only the app files into a site folder, shrink its CSS and JavaScript (minify.py), tag each page's scripts and
-stylesheet with the release (src="player.js?v=2026.10.14.19", so a page never runs with files from another release
+stylesheet with the release (src="player.js?v=<release>", so a page never runs with files from another release
 that GitHub Pages' 10-minute HTTP cache still holds; sw.js ignores the query), and check it before anything is published.
 
 Usage: python3 .github/scripts/build_site.py _site
@@ -13,11 +13,13 @@ Fails (exit 1) when:
 - a page, script, stylesheet, font or SVG in the site is not precached by sw.js (it would not work offline),
 - VERSION in sw.js, version in site.js and the newest CHANGELOG.md heading differ,
 - a link to one step (page.html#s-<id>, or #s-<id> on the same page) names a step that is not on that page,
+- a step with data-os has no "Needs OS x or newer" fallback badge,
 - a page loads shell.js without site.js and progress.js before it (progress and migrations would not run there),
 - a page with its stylesheets and scripts weighs more than its budget, gzipped (plan 7.8): 60 KB for Home and the tool
   pages, 80 KB for a chapter page (docs/overhaul-plan.md decision 19; today they weigh 66-76 KB),
 - another budget of plan 7.8 and decision 19 is broken: a page's HTML over 35 KB gzipped, the CSS over 17 KB, all the
-  JavaScript over 68 KB or one page's over 48 KB (gzipped), the icon sprite over 6 KB or the font over 18 KB,
+  JavaScript over 68 KB or one page's over 48 KB (gzipped), the icon sprite over 6 KB, the font over 18 KB, or what
+  sw.js saves for offline use over 600 KB gzipped,
 - a page's visible text names a chapter by its number before the renumber ("chapter 07", "07 / Sample…", "section 04",
   "CHAPTER 09") or by an old name ("Start here", "Tech House"): the course is Chapter 0-7 and parts are "Part 4".
 Standard library only, so it runs anywhere Python 3.8+ does.
@@ -191,6 +193,11 @@ def main():
                 if sid not in step_ids[name]:
                     errors.append(f'{name} links to #s-{sid}, but it has no step "{sid}"')
     for name in [f for f in files if f.endswith('.html')]:
+        # A step that needs a newer OS says so without JavaScript too (CONTRIBUTING, data-os).
+        for m in re.finditer(r'<li data-step="([^"]+)"[^>]*data-os="([^"]+)"[^>]*>(.*?)</li>', (out / name).read_text(encoding='utf-8'), re.S):
+            if f'<p class="badge os-badge">Needs OS {m.group(2)} or newer</p>' not in m.group(3):
+                errors.append(f'{name}: step {m.group(1)} has data-os="{m.group(2)}" but no "Needs OS {m.group(2)} or newer" badge for readers without JavaScript')
+    for name in [f for f in files if f.endswith('.html')]:
         # Steps are numbered across parts: each part's <ol start> follows on from the part before (readers without JS).
         n = 0
         for m in re.finditer(r'<ol(?: start="(\d+)")?>(.*?)</ol>', (out / name).read_text(encoding='utf-8'), re.S):
@@ -230,6 +237,11 @@ def main():
                               [(f, (out / f).stat().st_size, 18) for f in files if f.endswith('.woff2')]):
         if size > limit * 1024:
             errors.append(f'{what} weighs {size / 1024:.1f} KB (budget {limit} KB)')
+    # Everything the service worker saves for offline use (plan 7.8: 600 KB gzipped).
+    m = re.search(r'ASSETS\s*=\s*\[(.*?)\]', (out / 'sw.js').read_text(encoding='utf-8'), re.S) if 'sw.js' in have else None
+    saved = sum(gz(p) for p in (local_path(a) for a in re.findall(r"'([^']+)'", m.group(1) if m else '')) if p in have)
+    if saved > 600 * 1024:
+        errors.append(f'the offline copy weighs {saved / 1024:.0f} KB gzipped (budget 600 KB)')
     for name in [f for f in files if f.endswith('.html')]:
         src = (out / name).read_text(encoding='utf-8')
         if gz(name) > 35 * 1024:

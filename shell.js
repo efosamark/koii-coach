@@ -287,8 +287,9 @@ document.addEventListener('keydown',e=>{
   const typing=t&&(t.isContentEditable||/^(?:TEXTAREA|SELECT)$/.test(t.tagName)||t.tagName==='INPUT'&&!/^(?:checkbox|radio|button|submit|reset|range|color|file)$/.test(t.type));
   if(key==='k'&&(e.ctrlKey||e.metaKey)&&!document.querySelector('dialog[open]')){e.preventDefault();openSearch();return;}
   if(e.ctrlKey||e.metaKey||typing||!keysOn()||document.querySelector('dialog[open]'))return;
-  // Widgets that use letters or arrows themselves: tabs, radio groups (native radios too), grids, lists, dialogs.
-  if(t&&t.closest&&(t.closest('[role="tablist"],[role="radiogroup"],[role="grid"],[role="listbox"],[role="dialog"]')||t.matches('input[type="radio"]')))return;
+  // Plan 4.9: never inside a link, button or disclosure (Enter there is theirs), nor in widgets that use letters or
+  // arrows themselves: tabs, radio groups (native radios too), grids, lists, dialogs.
+  if(t&&t.closest&&(t.closest('a[href],button,summary,[role="tablist"],[role="radiogroup"],[role="grid"],[role="listbox"],[role="dialog"]')||t.matches('input[type="radio"]')))return;
   const s=shortcuts.find(x=>x.run&&x.key===(e.key==='?'?'?':key));
   if(!s)return;
   e.preventDefault();s.run();
@@ -380,6 +381,7 @@ function register(){
     const w=reg.installing||reg.waiting;
     if(w)w.addEventListener('statechange',()=>{if(w.state==='redundant'&&!reg.active){failed=true;offline();}});
     if(reg.active)reg.update().catch(()=>{});
+    else offline();   // the first save has started: show its progress where the page says what is offline
   },()=>{failed=true;offline();});
 }
 // A new release took over this open page (its service worker activated): this page and what it loads next could
