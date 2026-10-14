@@ -2,7 +2,7 @@
 // Bump VERSION on every release (same value as courseInfo.version in course.js and the newest CHANGELOG.md heading).
 const VERSION='2026.10.14',CACHE='koii-coach-'+VERSION,TIMEOUT=3000;
 // Every page, script, stylesheet, font and icon. CI (.github/scripts/build_site.py) fails if one is missing or a page is left out.
-const ASSETS=['./','./index.html','./course.js','./coach.css','./site.js','./shell.js','./search.js','./chapter.js','./wake.js','./setup.html','./sampling.html','./perform.html','./hiphop.html','./tech-house.html','./thodorakis-house.html','./manifest.webmanifest','./icon.svg','./icons.svg','./fonts/IBMPlexMono-SemiBold.woff2','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
+const ASSETS=['./','./index.html','./course.js','./coach.css','./site.js','./shell.js','./search.js','./chapter.js','./player.js','./wake.js','./setup.html','./sampling.html','./perform.html','./hiphop.html','./tech-house.html','./thodorakis-house.html','./manifest.webmanifest','./icon.svg','./icons.svg','./fonts/IBMPlexMono-SemiBold.woff2','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
 // Install only succeeds when every asset is cached, so navigator.serviceWorker.ready means "works offline".
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS.map(u=>new Request(u,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('koii-coach-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));

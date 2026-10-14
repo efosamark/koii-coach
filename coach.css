@@ -841,3 +841,181 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .steps li:focus-visible{position:relative;z-index:0;outline:none}
 .steps li:focus-visible::before{content:"";position:absolute;z-index:-1;pointer-events:none;inset:calc(var(--sp-2) * -1) calc(var(--reach,var(--sp-2)) * -1) calc(var(--sp-2) * -1) calc(-2.25em - var(--reach,var(--sp-2)));border-radius:var(--r-control);outline:3px solid var(--focus);outline-offset:2px}
 @media print{.steps li:focus-visible::before{display:none}}
+/* ---------- Step player (player.js) ---------- */
+/* The chapter pages' player. player.js sets <html data-player="start|step|check|done"> while it shows one of its views
+   and hides the rest of the page with the hidden attribute; without data-player (All steps, print, no JavaScript) the
+   page is the list above. Hooks: #player-bar, #player-actions (#player-back, #player-steps-btn, #player-next,
+   #player-go, .pa-more), #player-steps (the Steps sheet), #player-check, #player-done, .player-modes, .player-chips,
+   .player-safety, .player-parts, .part-about; inside a step: .step-head (.step-num and tags), .preflight, .gate,
+   .step-do, .step-check[data-sense="hear|see"], li.is-current, li.is-checkpoint, li[data-risk]. Orange stays for
+   keycaps: in the player the keys of the step on screen are hot, except inside its check. */
+:root{
+  --bar-h:72px;   /* the action bar, without the safe area; a 48px row on short viewports */
+  --i-ear:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 9.5a5.5 5.5 0 0 1 11 0c0 3.5-3 4.5-3.5 7a3.5 3.5 0 0 1-6.5 1.5'/%3E%3Cpath d='M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.5-1.5 2-2.5 3'/%3E%3C/svg%3E");
+  --i-eye:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+}
+@media (max-height:480px){:root{--bar-h:48px}}
+/* A step in both modes: the tag row (the step number shows in the player only), Before you press, the check. */
+.step-head{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);margin:0 0 var(--sp-2)}
+.step-head.bare,.step-num{display:none}
+.steps li > .preflight{margin:0 0 var(--sp-3);padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-left-width:4px;border-radius:var(--r-control);background:var(--caution-surface);color:var(--ink)}
+.steps li > .preflight::before{content:"Before you press";display:block;margin-bottom:var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--caution-ink)}
+.steps li > .step-do{margin:0 0 var(--sp-2)}
+.steps li > .step-check{position:relative;margin:var(--sp-3) 0 var(--sp-2);padding:var(--sp-2) var(--sp-3) var(--sp-2) calc(var(--sp-3) + 30px);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-2)}
+.steps li > .step-check::before{content:"";position:absolute;left:var(--sp-3);top:calc(var(--sp-2) + 3px);width:22px;height:22px;background:var(--done-ink);-webkit-mask:var(--i-eye) center/contain no-repeat;mask:var(--i-eye) center/contain no-repeat}
+.steps li > .step-check[data-sense="hear"]::before{-webkit-mask-image:var(--i-ear);mask-image:var(--i-ear)}
+/* The gate of a delete or overwrite step (player only): "Yes, I have checked", then a small "Checked" chip. */
+.gate{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-3)}
+.gate-note{flex-basis:100%;max-width:none;margin:0;padding:var(--sp-3) var(--sp-4);border:1px solid var(--danger);border-left-width:4px;border-radius:var(--r-control);background:var(--danger-surface)}
+.gate .gate-btn{border-color:var(--danger)}
+.gate-hint{margin:0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.gate-ok{min-height:32px}
+.gate-ok .icon{width:16px;height:16px;stroke-width:2.5}
+/* Where you are, under the app bar: part, step in part, the chapter meter. Two lines on a phone, one from 600px. */
+.player-bar{position:sticky;top:var(--sticky-top);z-index:5;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 var(--sp-3);margin:0 0 var(--sp-3);padding:var(--sp-2) var(--sp-3) calc(var(--sp-2) + 4px);overflow:hidden;border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-1);box-shadow:var(--e2)}
+.player-bar p{max-width:none;margin:0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.pb-part{grid-column:1/-1;overflow:hidden;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+.pb-pos,.pb-count{font-family:var(--font-mono);font-weight:600;color:var(--ink-2);white-space:nowrap}
+.pb-count{text-align:right}
+.player-bar .meter{position:absolute;left:0;right:0;bottom:0;min-width:0;height:4px;border-radius:0}
+@media (min-width:600px){
+  .player-bar{grid-template-columns:minmax(0,max-content) max-content 1fr;padding-inline:var(--sp-4)}
+  .pb-part{grid-column:auto}
+  .pb-pos::before{content:"·";margin:0 var(--sp-2);color:var(--ink-2)}
+}
+/* The views: room for the fixed action bar, and nothing hidden under it or the bars. */
+html[data-player]{scroll-padding-top:calc(var(--sticky-top) + 72px);scroll-padding-bottom:calc(var(--bar-h) + env(safe-area-inset-bottom,0px) + var(--sp-4))}
+html[data-player] body{padding-bottom:calc(var(--bar-h) + env(safe-area-inset-bottom,0px))}
+html[data-player] main{padding-bottom:var(--sp-5)}
+html[data-player] .toast{bottom:calc(var(--bar-h) + var(--sp-4) + env(safe-area-inset-bottom,0px))}
+/* The step card: the real <li>, with its part's box, title and notes put away. Do lines at --t-do, a stage-1 step's
+   whole text at --t-check. The tick sits in the card's top right corner; its label stays for screen readers. */
+html[data-player="step"] .steps > details{margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+html[data-player="step"] .steps ol{margin:0;padding:0;list-style:none}
+html[data-player="step"] .steps ol > li.is-current{position:relative;max-width:none;margin:0;padding:var(--sp-4) var(--sp-4) var(--sp-5);border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1);font-size:var(--t-check);line-height:1.5}
+@media (min-width:600px){html[data-player="step"] .steps ol > li.is-current{padding:var(--sp-5) var(--sp-6) var(--sp-6)}}
+html[data-player="step"] .steps ol > li.is-current::before,html[data-player="step"] .steps ol > li.is-current::after,html[data-player="step"] li.is-current > .here-tag{display:none}
+html[data-player="step"] .steps ol > li.is-current:focus{outline:none}
+html[data-player="step"].pl-kbd .steps ol > li.is-current:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+html[data-player="step"] .steps ol > li.is-current:is([data-risk="delete"],[data-risk="overwrite"]){border-left:4px solid var(--danger)}
+html[data-player="step"] .steps ol > li.is-current.is-checkpoint{border-left:4px solid var(--here)}
+html[data-player="step"] li.is-current > .step-head{display:flex;min-height:48px;margin:0 0 var(--sp-3);padding-right:56px}
+html[data-player="step"] li.is-current .step-num{display:inline-flex;align-items:center;justify-content:center;min-width:2.5em;height:32px;padding:0 var(--sp-2);border-radius:var(--r-chip);background:var(--surface-3);color:var(--ink);font:600 var(--t-cap)/1 var(--font-mono)}
+html[data-player="step"] li.is-current > .check{position:absolute;top:var(--sp-3);right:var(--sp-3);justify-content:center;min-width:48px;margin:0}
+html[data-player="step"] li.is-current > .check span{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+@media (min-width:600px){html[data-player="step"] li.is-current > .check{top:var(--sp-4);right:var(--sp-4)}}
+html[data-player="step"] li.is-current > .step-do{margin:0 0 var(--sp-3);font-size:var(--t-do);line-height:var(--t-do-lh)}
+html[data-player="step"] li.is-current > .step-check{margin:var(--sp-4) 0 0;font-size:var(--t-check);line-height:var(--t-check-lh)}
+html[data-player="step"] li.is-current > .preflight{font-size:var(--t-check);line-height:var(--t-check-lh)}
+html[data-player="step"] li.is-current .key{background:var(--key);border-color:var(--key-edge);color:var(--on-key);box-shadow:0 2px 0 var(--key-edge)}
+html[data-player="step"] li.is-current .key.hold::before{color:inherit}
+html[data-player="step"] li.is-current .step-check .key{background:var(--surface-1);border-color:var(--line-strong);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
+@keyframes pl-in{from{opacity:0;transform:translateX(12px)}}
+html[data-player="step"] .steps ol > li.is-current.pl-in{animation:pl-in var(--dur-swap) var(--ease)}
+@media (prefers-reduced-motion:reduce){html[data-player] .pl-in{animation:none!important}}
+/* About this part: copies of the part's goal and notes, under the card */
+.part-about{margin:var(--sp-4) 0 0;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1)}
+.part-about > summary .tag{margin-left:auto}
+.part-about .inside > :last-child{margin-bottom:0}
+/* Checkpoint card and chapter complete */
+.player-card{margin:0 0 var(--sp-4);padding:var(--sp-5);border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
+@media (min-width:600px){.player-card{padding:var(--sp-6)}}
+.player-card:focus,.player-card h2:focus{outline:none}
+html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.player-card > :last-child{margin-bottom:0}
+.pl-eyebrow{margin:0 0 var(--sp-3);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--done-ink)}
+.player-check{border-left:4px solid var(--here)}
+.pc-q{max-width:var(--measure);margin:0 0 var(--sp-4);font-size:var(--t-do);line-height:var(--t-do-lh)}
+.pc-fix{margin-top:var(--sp-4);padding:var(--sp-3) var(--sp-4);border-radius:var(--r-control);background:var(--surface-2)}
+.pc-fix > :last-child{margin-bottom:0}
+.pd-title{font-size:var(--t-h1);line-height:var(--t-h1-lh)}
+.pd-open{margin:0 0 var(--sp-4);padding:0;list-style:none}
+.pd-open li{max-width:none;margin:0}
+.pd-open a{display:grid;grid-template-columns:2.5ch minmax(0,1fr);align-items:center;gap:var(--sp-3);min-height:48px;padding:var(--sp-2) var(--sp-3);border-radius:var(--r-control);color:var(--ink);text-decoration:none}
+.pd-open a:hover{background:var(--surface-2)}
+.pd-n,.pp-n,.ps-n,.ps-pn{font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2);text-align:right}
+.pd-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+/* Start screen: chips, the safety summary (copies of the page's danger notices), the parts */
+.player-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:0 0 var(--sp-5);padding:0;list-style:none}
+.player-chips li{max-width:none;margin:0;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono)}
+.player-safety{margin:var(--sp-4) 0;border:1px solid var(--danger);border-left-width:6px;border-radius:var(--r-control);background:var(--danger-surface)}
+.player-safety > summary{padding:var(--sp-2) var(--sp-4);color:var(--danger)}
+.player-safety > summary .icon{width:22px;height:22px}
+.player-safety > .inside{padding:0 var(--sp-4) var(--sp-3)}
+.player-safety .notice{margin:var(--sp-2) 0}
+.player-parts{margin:var(--sp-5) 0}
+.pp-list{margin:0;padding:0;overflow:hidden;list-style:none;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
+.pp-list li{max-width:none;margin:0;border-top:1px solid var(--line)}
+.pp-list li:first-child{border-top:0}
+.pp-list a{display:grid;grid-template-columns:2ch minmax(0,1fr) auto;align-items:center;gap:var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-4);color:var(--ink);font-weight:600;line-height:1.3;text-decoration:none}
+.pp-list a:hover{background:var(--surface-2)}
+.pp-list a:hover .pp-t,.ps-step:hover .ps-t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.pp-list .tally,.ps-part .tally{margin-left:0}
+/* Player | All steps: two 44px choices, the chosen one outlined in ink as well as filled */
+.player-modes{display:inline-flex;gap:2px;margin:var(--sp-2) 0 var(--sp-3);padding:3px;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2)}
+.player-modes button{min-height:44px;padding:0 var(--sp-4);border:0;border-radius:9px;background:transparent;color:var(--ink);font-weight:600}
+.player-modes button:hover{background:var(--surface-3)}
+.player-modes button[aria-pressed="true"]{background:var(--surface-1);box-shadow:inset 0 0 0 1.5px var(--ink)}
+/* Action bar: Back, Steps and the one primary. Fixed under the thumb on phones and tablets (72px plus the safe area,
+   a single 48px row on short viewports), docked under the card on desktop. */
+.player-actions{position:fixed;left:0;right:0;bottom:0;z-index:25;padding:var(--sp-2) var(--gutter) calc(var(--sp-2) + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--surface-1);box-shadow:0 -8px 24px rgb(0 0 0/.08)}
+.pa-row{display:flex;align-items:stretch;gap:var(--sp-2);max-width:46rem;margin:0 auto}
+.pa-btn{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:none;width:56px;min-height:56px;padding:0;border:1.5px solid transparent;border-radius:var(--r-control);background:transparent;color:var(--ink);font:600 var(--t-cap)/1.1 var(--font-ui)}
+.pa-btn:hover{background:var(--surface-2)}
+.pa-btn:active{transform:translateY(1px)}
+.pa-main{flex:1 1 auto;min-width:0;min-height:56px;padding-inline:var(--sp-4)}
+.pa-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn.primary.pa-main[aria-disabled="true"]{background:transparent;color:var(--ink-2);cursor:pointer}
+.pa-hint{display:none}
+.pa-more{position:absolute;right:var(--gutter);bottom:calc(100% + var(--sp-2));display:inline-flex;align-items:center;gap:var(--sp-1);min-height:44px;padding:0 var(--sp-4) 0 var(--sp-3);border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);box-shadow:var(--e2);font:600 var(--t-cap)/1 var(--font-ui)}
+.pa-more .icon{width:18px;height:18px}
+@media (max-height:480px){
+  .player-bar{position:static}
+  .player-actions{padding:0 var(--gutter) env(safe-area-inset-bottom,0px)}
+  .pa-btn{flex-direction:row;gap:var(--sp-2);width:auto;min-height:48px;padding:0 var(--sp-3)}
+  .pa-main{min-height:48px}
+}
+@media (min-width:1024px){
+  html[data-player] body{padding-bottom:0}
+  .player-actions{position:sticky;left:auto;right:auto;max-width:calc(46rem + 2 * var(--gutter));margin:0 auto;padding:0 var(--gutter) var(--sp-4);border:0;background:none;box-shadow:none}
+  .pa-row{max-width:none;padding:var(--sp-2);border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e2)}
+  .pa-hint{display:block;max-width:none;margin:var(--sp-2) 0 0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh);text-align:center}
+  .pa-hint .key{font-size:12px}
+  html[data-player] .toast{bottom:calc(var(--bar-h) + var(--sp-6))}
+}
+/* Steps sheet: progress, the switch, every part with its steps as 48px rows (done, current), then the extras */
+.player-sheet .sheet-body{padding-top:var(--sp-3)}
+.ps-progress{display:grid;gap:var(--sp-2);margin:0 var(--sp-2) var(--sp-2)}
+.ps-count{margin:0;font-weight:600}
+.player-sheet .player-modes{margin-inline:var(--sp-2)}
+.ps-part{border-top:1px solid var(--line)}
+.ps-part > summary{gap:var(--sp-2);padding:var(--sp-2)}
+.ps-pn{flex:none;min-width:2ch}
+.ps-pt{flex:1 1 auto;min-width:0;line-height:1.3}
+.ps-steps{margin:0 0 var(--sp-2);padding:0;list-style:none}
+.ps-steps li{max-width:none;margin:0}
+.ps-step{display:grid;grid-template-columns:18px 2.5ch minmax(0,1fr);align-items:center;gap:var(--sp-1) var(--sp-3);min-height:48px;padding:var(--sp-1) var(--sp-3);border-radius:var(--r-control);color:var(--ink);line-height:1.3;text-decoration:none}
+.ps-step:hover{background:var(--surface-3)}
+.ps-mark{width:18px;height:18px;border:2px solid var(--line-strong);border-radius:999px}
+.ps-step.done .ps-mark{border-color:var(--done-ink);background:var(--done-fill) var(--i-tick) center/14px no-repeat}
+.ps-step[aria-current="step"]{background:var(--surface-3);box-shadow:inset 3px 0 0 var(--here);font-weight:600}
+.ps-step[aria-current="step"]:not(.done) .ps-mark{border-color:var(--ink);background:var(--ink);box-shadow:inset 0 0 0 3px var(--surface-3)}
+.ps-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ps-step .you-here{grid-column:3}
+.ps-links{margin:var(--sp-3) 0;padding:var(--sp-3) 0 0;border-top:1px solid var(--line);list-style:none}
+.ps-links li{max-width:none;margin:0}
+.ps-links a,.ps-links button{display:flex;align-items:center;gap:var(--sp-3);width:100%;min-height:48px;padding:var(--sp-2) var(--sp-3);border:0;border-radius:var(--r-control);background:transparent;color:var(--ink);font-weight:600;text-align:left;text-decoration:none}
+.ps-links a:hover,.ps-links button:hover{background:var(--surface-3)}
+.ps-links .icon{color:var(--ink-2)}
+.player-sheet .btn.danger{margin:0 var(--sp-2)}
+@media (forced-colors:active){
+  html[data-player="step"] li.is-current .key{outline:2px solid Highlight;outline-offset:1px}
+  html[data-player="step"] li.is-current .step-check .key{outline:0}
+  html[data-player="step"] .steps ol > li.is-current{border:2px solid CanvasText}
+  .steps li > .step-check::before{forced-color-adjust:none;background:CanvasText}
+  .ps-step[aria-current="step"],.player-modes button[aria-pressed="true"]{outline:3px solid Highlight;outline-offset:-3px}
+  .ps-mark{forced-color-adjust:none;border-color:CanvasText;background:Canvas}
+  .ps-step.done .ps-mark{background:CanvasText}
+  .player-actions,.player-bar{border:2px solid CanvasText}
+}
+@media print{.player-actions,.player-bar,.player-modes,.player-sheet,.part-about,.player-chips,.player-safety,.player-parts,.player-card,.gate,.step-num{display:none!important}}

@@ -7,7 +7,28 @@
    ever added. 'koii-coach-meta' gets lastChapter (shared with the app: its other fields are kept).
    A link such as sampling.html#s-<step id> opens that step; wake.js (optional) keeps the screen on while ticking.
    How it all looks is up to coach.css and the shell (shell.js); this file only fills in the progress bar and its
-   meter, the tick rows, the section tallies and the "You are here" mark on the step to continue at. */
+   meter, the tick rows, the section tallies and the "You are here" mark on the step to continue at.
+
+   cur is the step to continue at. A tick or an untick sets it to the step after the last tick that is not ticked yet
+   (as before); the step player (player.js) also sets it with Done · Next and Back. Opening a step from a link, the
+   search or the Steps list never moves it.
+
+   window.CoachChapter is what player.js builds on, so the ticks, the progress bar and the player always agree:
+     slug                  the chapter's <body data-chapter>
+     steps(), ids()        every step <li> (and its data-step id) in page order
+     isDone(id), count(), total()
+     setDone(id, on)       ticks or unticks a step exactly as its checkbox does (saves, updates the bar and the shell)
+     current()             the id of the step to continue at, or null
+     setCurrent(id)        moves cur there (saved; the "You are here" mark follows)
+     resumeId()            where to open a chapter that has progress: current(), else the first step not ticked yet
+     hasProgress()         true once a step on this page is ticked
+     onChange(fn)          fn({type:'tick'|'current'|'reset', id}) after every change made here
+     go(id)                list mode: opens the step's section, scrolls to it and focuses it
+     say(text)             a message in the page's toast
+     saved()               false while the browser refuses to save
+     route(fn)             fn(location.hash) runs for the first route and on every hashchange; it returns true when it
+                           handled the hash, false to let the list handle it (#s-<id> and section anchors, as below)
+     routed()              true once the first route has run */
 (()=>{
 // Step ids in the order the pages had when ticks were still saved by list position.
 // Used once to migrate those ticks. Frozen history: do not edit when steps change.
@@ -91,9 +112,10 @@ const done=new Set(state.done.filter(x=>typeof x==='string'));
 if(typeof state.last!=='string')state.last=null;
 const count=()=>steps.filter(li=>done.has(li.dataset.step)).length;
 // The app's Home card reads these. cur is null when there is nothing to continue at; at is set by ticks only.
-const store=ticked=>{
+// keep: leave a cur that is still a step of this page as it is (the player may have put it there).
+const store=(ticked,keep)=>{
   state.done=[...done];state.n=count();
-  const t=target();state.cur=t>=0?ids[t]:null;
+  if(!(keep&&typeof state.cur==='string'&&ids.includes(state.cur))){const t=target();state.cur=t>=0?ids[t]:null;}
   if(ticked)state.at=new Date().toISOString();
   save();
   if(ticked)remember();
@@ -106,7 +128,7 @@ function remember(){
   meta.lastChapter=slug;
   try{localStorage.setItem('koii-coach-meta',JSON.stringify(meta));}catch(e){}
 }
-if(state.n!==count()||!('cur' in state))store();   // also adds cur to a record saved before it existed
+if(state.n!==count()||!('cur' in state))store(false,true);   // also adds cur to a record saved before it existed
 remember();
 
 // The step after the one ticked most recently (or after the furthest ticked step) that is not ticked yet.
@@ -117,6 +139,8 @@ function target(){
   for(let j=i+1;j<ids.length;j++)if(ids[j]&&!done.has(ids[j]))return j;
   return -1;
 }
+// The step to continue at: cur while it is a step of this page, else the step after the last tick (-1: none).
+function here(){const i=ids.indexOf(state.cur);return i>=0?i:target();}
 function go(j){
   const li=steps[j],d=li.closest('details');
   if(d)d.open=true;
@@ -124,16 +148,27 @@ function go(j){
   li.tabIndex=-1;li.focus({preventScroll:true});
 }
 
+// Listeners added with CoachChapter.onChange (player.js), told after every change made here.
+const listeners=[];
+function emit(type,id){listeners.forEach(fn=>{try{fn({type,id});}catch(e){console.error(e);}});}
+// Tick or untick one step: the checkbox and CoachChapter.setDone both come here. Returns false when nothing changed.
+const boxes={};
+function tick(id,on){
+  if(!id||!ids.includes(id)||on===done.has(id))return false;
+  if(on){done.add(id);state.last=id;}
+  else{done.delete(id);if(state.last===id)state.last=[...done].pop()||null;}
+  if(boxes[id])boxes[id].checked=on;
+  store(true);update();emit('tick',id);
+  return true;
+}
 // Checkboxes: the visible label text is the accessible name.
 steps.forEach((li,i)=>{
   const id=li.dataset.step;if(!id)return;
   const label=document.createElement('label'),box=document.createElement('input'),text=document.createElement('span');
   label.className='check';box.type='checkbox';box.checked=done.has(id);text.textContent='I tried step '+(i+1);
-  label.append(box,text);li.append(label);
+  label.append(box,text);li.append(label);boxes[id]=box;
   box.addEventListener('change',()=>{
-    if(box.checked){done.add(id);state.last=id;}
-    else{done.delete(id);if(state.last===id)state.last=[...done].pop()||null;}
-    store(true);update();
+    tick(id,box.checked);
     if(window.CoachWake)CoachWake.poke();   // someone is working at the unit: keep the screen awake
   });
 });
@@ -154,7 +189,7 @@ function mark(li,here){
   if(!tag){tag=document.createElement('span');tag.className='tag here-tag';tag.textContent='You are here';li.prepend(tag);}
 }
 function update(){
-  const count=steps.filter(li=>done.has(li.dataset.step)).length,t=target(),btn=$('resume');
+  const count=steps.filter(li=>done.has(li.dataset.step)).length,t=here(),btn=$('resume');
   $('progress-count').textContent=count===steps.length?'All '+steps.length+' steps done':count+' of '+steps.length+' done';
   const fill=document.querySelector('#progress .meter-fill');
   if(fill)fill.style.width=(steps.length?Math.round(100*count/steps.length):0)+'%';
@@ -171,7 +206,7 @@ function update(){
   p.className='notice '+(saved?'info':'caution');   // a note about rewritten steps is information; ticks that cannot be saved need care
 }
 
-$('resume').addEventListener('click',()=>{const t=target();if(t>=0)go(t);});
+$('resume').addEventListener('click',()=>{const t=here();if(t>=0)go(t);});
 const openAll=()=>document.querySelectorAll('details').forEach(d=>d.open=true);
 addEventListener('beforeprint',openAll);
 $('print').addEventListener('click',()=>{openAll();print();});
@@ -181,6 +216,7 @@ $('reset').addEventListener('click',()=>{
   document.querySelectorAll('.check input').forEach(b=>b.checked=false);
   update();
   if(window.CoachShell)CoachShell.refresh();   // no change event fires here, so tell the shell's course list itself
+  emit('reset',null);
 });
 ['progress','reset','print'].forEach(id=>$(id).hidden=false);
 update();
@@ -190,7 +226,7 @@ const bar=$('progress'),measure=()=>document.documentElement.style.setProperty('
 measure();
 if(window.ResizeObserver)new ResizeObserver(measure).observe(bar);
 // Reopen the section where the learner left off (without scrolling away from the top of the page).
-const t=target();
+const t=here();
 if(t>=0){const d=steps[t].closest('details');if(d)d.open=true;}
 // A link to one step (for example sampling.html#s-open-empty-project) opens its section, scrolls the step in below the
 // sticky bars, focuses it and marks it for two seconds (coach.css draws the mark; reduced motion gets none).
@@ -221,7 +257,48 @@ const openHash=()=>{
   let el=null;try{el=location.hash.length>1?document.getElementById(decodeURIComponent(location.hash.slice(1))):null;}catch(e){}
   const d=el&&el.closest('details');if(d){d.open=true;el.scrollIntoView({block:'start'});}
 };
-openHash();addEventListener('hashchange',openHash);
+// The step player (player.js, loaded after this file) may take the routes over with CoachChapter.route(fn). The first
+// route waits for DOMContentLoaded, which comes after every deferred script, so the player is there by then.
+let router=null,routed=false;
+function route(){
+  if(router){try{if(router(location.hash))return;}catch(e){console.error(e);}}
+  openHash();
+}
+const firstRoute=()=>{if(routed)return;routed=true;route();};
+if(document.readyState==='complete')firstRoute();
+else{document.addEventListener('DOMContentLoaded',firstRoute,{once:true});addEventListener('load',firstRoute,{once:true});}
+addEventListener('hashchange',route);
+
+window.CoachChapter={
+  slug,
+  steps:()=>steps.slice(),
+  ids:()=>ids.slice(),
+  isDone:id=>done.has(id),
+  count,
+  total:()=>steps.length,
+  setDone(id,on){
+    const changed=tick(id,Boolean(on));
+    if(changed&&window.CoachShell)CoachShell.refresh();   // no change event fires, so tell the shell's course list
+    return changed;
+  },
+  current(){const i=here();return i>=0?ids[i]:null;},
+  setCurrent(id){
+    if(!id||!ids.includes(id)||state.cur===id)return;
+    state.cur=id;save();update();emit('current',id);
+  },
+  resumeId(){
+    const i=here();if(i>=0)return ids[i];
+    if(!count())return null;
+    return ids.find(id=>id&&!done.has(id))||null;
+  },
+  hasProgress:()=>count()>0,
+  onChange(fn){if(typeof fn==='function')listeners.push(fn);},
+  go(id){const j=ids.indexOf(id);if(j>=0)go(j);},
+  say,
+  saved:()=>saved,
+  route(fn){router=typeof fn==='function'?fn:null;},
+  routed:()=>routed   // true once the first route has run (a router added later should then route the page itself)
+};
 
 if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 })();

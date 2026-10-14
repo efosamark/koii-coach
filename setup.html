@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="coach.css">
   <script src="wake.js" defer></script>
   <script src="chapter.js" defer></script>
+  <script src="player.js" defer></script>
 </head>
 <body data-chapter="setup">
   <a class="skip" href="#main">Skip to content</a>
@@ -56,26 +57,49 @@
         <summary>01 / Power on and hear it</summary>
         <p><b>Goal:</b> switch the K.O. II on, hear its sounds and know where the sound comes out.</p>
         <ol start="1">
-          <li data-step="power-batteries">Lift off the top lid to reach the battery compartment and insert 4 fresh AAA batteries, matching the + and − marks. Put the lid back. Using USB power instead? Connect a USB-C cable from a good charger (5 V, at least 1 A) and skip the batteries.</li>
-          <li data-step="power-switch-on">Take your hands off every button. Slide the orange power switch at the top right. The screen lights up straight away. Check: icons and numbers appear on the display.</li>
-          <li data-step="power-battery-icon">On batteries, find the battery icon on the display: it is lit while the K.O. II runs on batteries and blinks when they are low. If it blinks, fit fresh batteries or switch to USB-C power before the update in section 03.</li>
-          <li data-step="listen-speaker">Tap pads 1, 2 and 3. A new K.O. II comes with sounds in projects 1–5, so you should hear them from the built-in speaker. Silent? You may be in one of the empty projects: hold MAIN, then hold pad 1 as well, release both and tap again. Also check that the fader is not all the way down: by default it sets the level of the selected group.</li>
-          <li data-step="listen-headphones">Optional: turn your headphones or speaker down first, then plug them into the 3.5 mm stereo output on the top side of the K.O. II. The input is a 3.5 mm socket on the top side too, so make sure you chose the output. Tap pads and raise your volume slowly. Check: the pads sound clearly through your headphones or speaker.</li>
+          <li data-step="power-batteries">
+            <p class="step-do">Lift off the top lid to reach the battery compartment and insert 4 fresh AAA batteries, matching the + and − marks. Put the lid back. Using USB power instead? Connect a USB-C cable from a good charger (5 V, at least 1 A) and skip the batteries.</p>
+          </li>
+          <li data-step="power-switch-on">
+            <p class="step-do">Take your hands off every button. Slide the orange power switch at the top right. The screen lights up straight away.</p>
+            <p class="step-check">Check: icons and numbers appear on the display.</p>
+          </li>
+          <li data-step="power-battery-icon">
+            <p class="step-do">On batteries, find the battery icon on the display: it is lit while the K.O. II runs on batteries and blinks when they are low. If it blinks, fit fresh batteries or switch to USB-C power before the update in section 03.</p>
+          </li>
+          <li data-step="listen-speaker">
+            <p class="step-do">Tap pads 1, 2 and 3. A new K.O. II comes with sounds in projects 1–5, so you should hear them from the built-in speaker. Silent? You may be in one of the empty projects: hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 1</kbd> as well, release both and tap again. Also check that the fader is not all the way down: by default it sets the level of the selected group.</p>
+          </li>
+          <li data-step="listen-headphones" data-optional>
+            <p class="step-do">Optional: turn your headphones or speaker down first, then plug them into the 3.5 mm stereo output on the top side of the K.O. II. The input is a 3.5 mm socket on the top side too, so make sure you chose the output. Tap pads and raise your volume slowly.</p>
+            <p class="step-check">Check: the pads sound clearly through your headphones or speaker.</p>
+          </li>
         </ol>
         <p>Finishing a session? Wait until the floppy icon (saving) is off, then slide the power switch back.</p>
         <p class="checkpoint"><b>Checkpoint:</b> the screen is lit and you hear the pads through the speaker or your headphones.</p>
-        <p><b>If it doesn’t:</b> a dark screen usually means power. Check which way round the batteries are, try fresh ones, or use USB-C power from another charger. BAT on the display as it switches off means the batteries are too low. An error code such as E.10: go to section 08.</p>
+        <p><b>If it doesn’t:</b> a dark screen usually means power. Check which way round the batteries are, try fresh ones, or use USB-C power from another charger. <samp class="lcd">BAT</samp> on the display as it switches off means the batteries are too low. An error code such as <samp class="lcd">E.10</samp>: go to section 08.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/power-on">Power on</a> · <a href="https://teenage.engineering/guides/ep-133/hardware-overview">Hardware overview (inputs and outputs)</a></p>
       </details>
       <details>
         <summary>02 / Read the screen and the button language</summary>
         <p><b>Goal:</b> understand what “hold X + press Y” means, find your way home to MAIN, and read the icons this course checks most.</p>
         <ol start="6">
-          <li data-step="button-language">Learn the four words this course uses. They follow the official guide conventions. Press: tap and release. Hold: press and keep it down. X + Y: hold X, press Y, then release both. Then: one after the other. Many buttons and the X and Y knobs change job with the mode, so always check which mode you are in.</li>
-          <li data-step="screen-main-position">Press MAIN. If something is playing, press PLAY to stop it. Check: the MAIN icon is lit and the display shows a position made of three numbers, such as 1.1.1 (bar, beat, step). The official guide calls MAIN your home screen: press it whenever you feel lost.</li>
-          <li data-step="screen-shift-combo">Press + three times and watch the last number change: you are stepping through the beat. Now your first combination: hold SHIFT, press − until the display shows 1.1.1, then release SHIFT. SHIFT is the gateway to other functions; together with − and + it moves a whole bar at a time.</li>
-          <li data-step="screen-sound-mode">Press SOUND. Check: the SOUND icon lights and the display shows a number, the sample on the selected pad. Press MAIN to go home. Don’t turn X or Y here yet: in SOUND they change the selected pad’s volume and pitch.</li>
-          <li data-step="screen-icons">Press PLAY: the PLAY icon lights while the K.O. II plays. If the project has no notes, it simply plays silence. Press PLAY again to stop. Then read the icon table below. The two you will check most often are the umbrella (undo is possible) and the floppy (saving).</li>
+          <li data-step="button-language">
+            <p class="step-do">Learn the four words this course uses. They follow the official guide conventions. Press: tap and release. Hold: press and keep it down. X + Y: hold X, press Y, then release both. Then: one after the other. Many buttons and the <kbd class="key knob">X</kbd> and <kbd class="key knob">Y</kbd> knobs change job with the mode, so always check which mode you are in.</p>
+          </li>
+          <li data-step="screen-main-position">
+            <p class="step-do">Press <kbd class="key">MAIN</kbd>. If something is playing, press <kbd class="key">PLAY</kbd> to stop it.</p>
+            <p class="step-check">Check: the MAIN icon is lit and the display shows a position made of three numbers, such as <samp class="lcd">1.1.1</samp> (bar, beat, step). The official guide calls MAIN your home screen: press it whenever you feel lost.</p>
+          </li>
+          <li data-step="screen-shift-combo">
+            <p class="step-do">Press <kbd class="key">+</kbd> three times and watch the last number change: you are stepping through the beat. Now your first combination: hold <kbd class="key">SHIFT</kbd>, press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>, then release <kbd class="key">SHIFT</kbd>. <kbd class="key">SHIFT</kbd> is the gateway to other functions; together with <kbd class="key">−</kbd> and <kbd class="key">+</kbd> it moves a whole bar at a time.</p>
+          </li>
+          <li data-step="screen-sound-mode">
+            <p class="step-do">Press <kbd class="key">SOUND</kbd>. Check: the SOUND icon lights and the display shows a number, the sample on the selected pad. Press <kbd class="key">MAIN</kbd> to go home. Don’t turn <kbd class="key knob">X</kbd> or <kbd class="key knob">Y</kbd> here yet: in SOUND they change the selected pad’s volume and pitch.</p>
+          </li>
+          <li data-step="screen-icons">
+            <p class="step-do">Press <kbd class="key">PLAY</kbd>: the PLAY icon lights while the K.O. II plays. If the project has no notes, it simply plays silence. Press <kbd class="key">PLAY</kbd> again to stop. Then read the icon table below. The two you will check most often are the umbrella (undo is possible) and the floppy (saving).</p>
+          </li>
         </ol>
         <table>
           <thead>
@@ -100,8 +124,8 @@
           </tbody>
         </table>
         <p>Meanings come from the official icon map, which shows all 66 icons on the display.</p>
-        <p class="checkpoint"><b>Checkpoint:</b> you can tell MAIN from SOUND by the lit icon, read a position such as 1.1.1, and get back to 1.1.1 with SHIFT + −.</p>
-        <p><b>If it doesn’t:</b> the number doesn’t look like 1.1.1? You are probably in SOUND (a sample number) or TEMPO (the BPM): press MAIN. The position keeps changing by itself? Playback is running: press PLAY.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> you can tell MAIN from SOUND by the lit icon, read a position such as <samp class="lcd">1.1.1</samp>, and get back to <samp class="lcd">1.1.1</samp> with <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd>.</p>
+        <p><b>If it doesn’t:</b> the number doesn’t look like <samp class="lcd">1.1.1</samp>? You are probably in SOUND (a sample number) or TEMPO (the BPM): press <kbd class="key">MAIN</kbd>. The position keeps changing by itself? Playback is running: press <kbd class="key">PLAY</kbd>.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/screen">Screen (icon map)</a> · <a href="https://teenage.engineering/guides/ep-133/guide-conventions">Guide conventions</a> · <a href="https://teenage.engineering/guides/ep-133/buttons-and-combos">Buttons and combos</a></p>
       </details>
       <details>
@@ -109,10 +133,19 @@
         <p><b>Goal:</b> run the newest OS, so every instruction in this course matches your K.O. II. The course is checked against OS 2.5.1, released on 3 July 2026 according to the official downloads page. The official guide doesn’t describe a way to read the OS version on the K.O. II’s own display, so let the official update utility check it for you.</p>
         <p>Already made music on this unit that you care about, or bought it second-hand? Do section 04 (backup) first, then come back here.</p>
         <ol start="11">
-          <li data-step="update-open-utility">On your computer, open Google Chrome and go to <a href="https://teenage.engineering/apps/update">teenage.engineering/apps/update</a>. The utility needs a browser that supports Web MIDI and names Chrome, Microsoft Edge and Brave.</li>
-          <li data-step="update-connect">With the K.O. II switched on, connect it to the computer with a USB-C cable that carries data. If the browser asks whether the page may use your MIDI devices, allow it. Check: the USB MIDI icon on the K.O. II lights, and the utility finds your K.O. II.</li>
-          <li data-step="update-read-result">Read what the utility tells you: either that a newer version is available, or that your K.O. II is up to date. The newest version on the official downloads page is 2.5.1. If a newer one appears later, install that.</li>
-          <li data-step="update-install">If an update is offered, start it and follow the utility’s on-screen instructions. Don’t unplug the cable, close the tab or switch the K.O. II off until the utility says it has finished. Then reload the page and let it check again.</li>
+          <li data-step="update-open-utility">
+            <p class="step-do">On your computer, open Google Chrome and go to <a href="https://teenage.engineering/apps/update">teenage.engineering/apps/update</a>. The utility needs a browser that supports Web MIDI and names Chrome, Microsoft Edge and Brave.</p>
+          </li>
+          <li data-step="update-connect">
+            <p class="step-do">With the K.O. II switched on, connect it to the computer with a USB-C cable that carries data. If the browser asks whether the page may use your MIDI devices, allow it.</p>
+            <p class="step-check">Check: the USB MIDI icon on the K.O. II lights, and the utility finds your K.O. II.</p>
+          </li>
+          <li data-step="update-read-result">
+            <p class="step-do">Read what the utility tells you: either that a newer version is available, or that your K.O. II is up to date. The newest version on the official downloads page is 2.5.1. If a newer one appears later, install that.</p>
+          </li>
+          <li data-step="update-install">
+            <p class="step-do">If an update is offered, start it and follow the utility’s on-screen instructions. Don’t unplug the cable, close the tab or switch the K.O. II off until the utility says it has finished. Then reload the page and let it check again.</p>
+          </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> the update utility says your K.O. II is up to date.</p>
         <p><b>If it doesn’t:</b> the utility doesn’t find the K.O. II? Try another cable (one that carries data) or another USB port, close music software and other browser tabs that use the K.O. II, update your browser, then reload. On Windows, the utility links teenage engineering’s own Windows setup guide. Still stuck: <a href="https://support.teenage.engineering/">teenage engineering support</a>. Can’t update yet? Older OS: update before you go further, because song mode needs OS 2.0 and USB audio needs OS 2.5.</p>
@@ -120,11 +153,18 @@
       </details>
       <details>
         <summary>04 / Back up with the EP sample tool</summary>
-        <p><b>Goal:</b> keep a copy of your projects and sounds on your computer before you change anything. Commit (SHIFT + MAIN), which chapter 01 teaches, only copies a scene inside the K.O. II. It is not a backup.</p>
+        <p><b>Goal:</b> keep a copy of your projects and sounds on your computer before you change anything. Commit (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>), which chapter 01 teaches, only copies a scene inside the K.O. II. It is not a backup.</p>
         <ol start="15">
-          <li data-step="backup-open-tool">Close the update utility tab. Keep the K.O. II on and connected, and open <a href="https://teenage.engineering/apps/ep-sample-tool">teenage.engineering/apps/ep-sample-tool</a> in Chrome (the tool itself suggests Chrome or Brave). Allow MIDI access if the browser asks. Check: the tool shows your K.O. II.</li>
-          <li data-step="backup-save">Use the tool’s backup feature to save a backup of your K.O. II to the computer. Backup and restore arrived with OS 1.2.0, and the official product page says you can also back up and restore single projects. Button names can change between versions of the tool, so follow its own labels. Don’t use its delete or restore features today.</li>
-          <li data-step="backup-check-file">When the tool reports that the backup has finished, look in your browser’s downloads: a new backup file should be there. Copy it to a second place, such as a USB stick or cloud storage. Make a fresh backup after each chapter you care about and before every update or troubleshooting. Restoring a backup can replace what is on the K.O. II, so back up the current state before you ever restore.</li>
+          <li data-step="backup-open-tool">
+            <p class="step-do">Close the update utility tab. Keep the K.O. II on and connected, and open <a href="https://teenage.engineering/apps/ep-sample-tool">teenage.engineering/apps/ep-sample-tool</a> in Chrome (the tool itself suggests Chrome or Brave). Allow MIDI access if the browser asks.</p>
+            <p class="step-check">Check: the tool shows your K.O. II.</p>
+          </li>
+          <li data-step="backup-save">
+            <p class="step-do">Use the tool’s backup feature to save a backup of your K.O. II to the computer. Backup and restore arrived with OS 1.2.0, and the official product page says you can also back up and restore single projects. Button names can change between versions of the tool, so follow its own labels. Don’t use its delete or restore features today.</p>
+          </li>
+          <li data-step="backup-check-file">
+            <p class="step-do">When the tool reports that the backup has finished, look in your browser’s downloads: a new backup file should be there. Copy it to a second place, such as a USB stick or cloud storage. Make a fresh backup after each chapter you care about and before every update or troubleshooting. Restoring a backup can replace what is on the K.O. II, so back up the current state before you ever restore.</p>
+          </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> a new backup file is on your computer and in one more safe place.</p>
         <p><b>If it doesn’t:</b> the tool doesn’t see the K.O. II? Close the update utility and any music software, unplug and reconnect the cable, reload the page and allow MIDI. The backup stops halfway? Try a better cable and run it again; OS 2.5 fixed a crash with unstable USB connections, which is one more reason to update first.</p>
@@ -134,12 +174,20 @@
         <summary>05 / Choose your empty project</summary>
         <p><b>Goal:</b> pick an empty project for the course. A project is one composition: think of it as a song. The K.O. II holds 9 projects. Each has 4 groups (A–D) of 12 pads, up to 99 patterns per group and up to 99 scenes. Fresh out of the box, projects 1–5 come with sounds and projects 6–9 are completely empty.</p>
         <ol start="18">
-          <li data-step="project-factory-sounds">Press MAIN and stop playback if needed. Hold MAIN, then hold pad 1 as well, then release both. Tap A (a short tap selects group A) and tap pads 1, 2 and 3. Check: you hear sounds, because project 1 is one of the factory projects.</li>
-          <li data-step="project-empty-six">Hold MAIN, then hold pad 6 as well, then release both. Tap A and pads 1, 2 and 3 again, then tap B, C and D and try a few pads in each. Check: silence everywhere. The official guide: “press a few pads in an empty project and you will notice that the pads do not have any sounds.”</li>
-          <li data-step="project-write-down">Press PLAY: nothing plays. Press PLAY again to stop. Write PROJECT 6 = COURSE on your paper: chapters 01 and 02 build your beat and song here, and 08 plays with them. Later chapters each start in a project of their own: 7 for 07, 8 for 09 and 9 for 10, so keep 7 and 8 empty. Until chapter 10, use project 9 as a scratch project for trying things (next section). A new unit has only these four empty projects, so chapter 11 shows you how to back up and reuse one. Leave the factory projects 1–5 as they are.</li>
+          <li data-step="project-factory-sounds">
+            <p class="step-do">Press <kbd class="key">MAIN</kbd> and stop playback if needed. Hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 1</kbd> as well, then release both. Tap <kbd class="key">A</kbd> (a short tap selects group <kbd class="key">A</kbd>) and tap pads 1, 2 and 3.</p>
+            <p class="step-check">Check: you hear sounds, because project 1 is one of the factory projects.</p>
+          </li>
+          <li data-step="project-empty-six">
+            <p class="step-do">Hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 6</kbd> as well, then release both. Tap <kbd class="key">A</kbd> and pads 1, 2 and 3 again, then tap <kbd class="key">B</kbd>, <kbd class="key">C</kbd> and <kbd class="key">D</kbd> and try a few pads in each.</p>
+            <p class="step-check">Check: silence everywhere. The official guide: “press a few pads in an empty project and you will notice that the pads do not have any sounds.”</p>
+          </li>
+          <li data-step="project-write-down">
+            <p class="step-do">Press <kbd class="key">PLAY</kbd>: nothing plays. Press <kbd class="key">PLAY</kbd> again to stop. Write PROJECT 6 = COURSE on your paper: chapters 01 and 02 build your beat and song here, and 08 plays with them. Later chapters each start in a project of their own: 7 for 07, 8 for 09 and 9 for 10, so keep 7 and 8 empty. Until chapter 10, use project 9 as a scratch project for trying things (next section). A new unit has only these four empty projects, so chapter 11 shows you how to back up and reuse one. Leave the factory projects 1–5 as they are.</p>
+          </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> in project 1 the pads make sounds. In project 6 every pad is silent and PLAY plays nothing. PROJECT 6 is on your paper.</p>
-        <p><b>If it doesn’t:</b> the pads still sound after MAIN + pad 6? On OS 2.0 and newer, MAIN + a number can also switch scenes, so you may have changed scene instead of project. Try again: hold MAIN first, then hold pad 6 as well before you release both, and check your display. Second-hand unit with music in 6–9? Back it up (section 04) and choose any project whose pads are all silent; step 1 of chapter 01 also has a fallback.</p>
+        <p><b>If it doesn’t:</b> the pads still sound after <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key pad">pad 6</kbd></kbd>? On OS 2.0 and newer, <kbd class="key">MAIN</kbd> + a number can also switch scenes, so you may have changed scene instead of project. Try again: hold <kbd class="key">MAIN</kbd> first, then hold <kbd class="key pad">pad 6</kbd> as well before you release both, and check your display. Second-hand unit with music in 6–9? Back it up (section 04) and choose any project whose pads are all silent; step 1 of chapter 01 also has a fallback.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started (step 1)</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Modes (main: change project)</a> · <a href="https://teenage.engineering/guides/ep-133/workflow">Workflow (projects, groups, scenes)</a></p>
       </details>
       <details>
@@ -160,12 +208,20 @@
         </table>
         <p>Out of the box the K.O. II comes loaded with over 300 samples. It has 999 sample slots and 128 MB of memory; your own recordings go into the next free slot.</p>
         <ol start="21">
-          <li data-step="library-scratch-project">Hold MAIN, then hold pad 9 as well, then release both. Tap a few pads: silent, so you are in project 9. Press SOUND, tap A, then tap pad 1.</li>
-          <li data-step="library-browse-kicks">Press + and tap pad 1. Repeat a few times. Check: the display shows the sample number and pad 1 plays a different sound each time; numbers 1–99 are kicks. Hold SHIFT and press + to jump ten numbers at a time, then step with − and + alone.</li>
-          <li data-step="library-jump-categories">Jump straight to a category: hold SOUND, type 1, 0, 0 on the pads, release SOUND and tap pad 1. You hear a snare. Do the same with 2, 0, 0 (hi-hats), 3, 0, 0 (percussion), 4, 0, 0 (bass) and 5, 0, 0 (melodic sounds), and use − and + to hear a few neighbours each time.</li>
-          <li data-step="library-mini-kit">Mini project: still in SOUND with group A, tap pad 1 and browse to your favourite kick, tap pad 2 and choose a snare, tap pad 3 and choose a hi-hat. Write the three numbers on your paper. Press MAIN and tap 1, 2, 3, 2 like a beat. Chapter 01 starts from samples 001, 100 and 200; you can swap in your favourites there.</li>
+          <li data-step="library-scratch-project">
+            <p class="step-do">Hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 9</kbd> as well, then release both. Tap a few pads: silent, so you are in project 9. Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">A</kbd>, then tap <kbd class="key pad">pad 1</kbd>.</p>
+          </li>
+          <li data-step="library-browse-kicks">
+            <p class="step-do">Press <kbd class="key">+</kbd> and tap <kbd class="key pad">pad 1</kbd>. Repeat a few times. Check: the display shows the sample number and pad 1 plays a different sound each time; numbers 1–99 are kicks. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd> to jump ten numbers at a time, then step with <kbd class="key">−</kbd> and <kbd class="key">+</kbd> alone.</p>
+          </li>
+          <li data-step="library-jump-categories">
+            <p class="step-do">Jump straight to a category: hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> on the pads, release <kbd class="key">SOUND</kbd> and tap <kbd class="key pad">pad 1</kbd>. You hear a snare. Do the same with <kbd class="key">2</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (hi-hats), <kbd class="key">3</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (percussion), <kbd class="key">4</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (bass) and <kbd class="key">5</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (melodic sounds), and use <kbd class="key">−</kbd> and <kbd class="key">+</kbd> to hear a few neighbours each time.</p>
+          </li>
+          <li data-step="library-mini-kit">
+            <p class="step-do">Mini project: still in SOUND with group <kbd class="key">A</kbd>, tap <kbd class="key pad">pad 1</kbd> and browse to your favourite kick, tap <kbd class="key pad">pad 2</kbd> and choose a snare, tap <kbd class="key pad">pad 3</kbd> and choose a hi-hat. Write the three numbers on your paper. Press <kbd class="key">MAIN</kbd> and tap 1, 2, 3, 2 like a beat. Chapter 01 starts from samples 001, 100 and 200; you can swap in your favourites there.</p>
+          </li>
         </ol>
-        <p class="notice danger">Careful in SOUND: holding ERASE + SOUND until SND blinks permanently removes the selected sample from the K.O. II. You don’t need it here.</p>
+        <p class="notice danger">Careful in SOUND: holding <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">SOUND</kbd></kbd> until <samp class="lcd">SND</samp> blinks permanently removes the selected sample from the K.O. II. You don’t need it here.</p>
         <p>Tip: in SOUND, hold a pad to see its sample’s name, if it has one. The guide says a sample only has a name if it was imported or renamed with the EP sample tool.</p>
         <p class="checkpoint"><b>Checkpoint:</b> each number range plays the kind of sound in the table, and three favourite numbers are on your paper.</p>
         <p><b>If it doesn’t:</b> no sound? Check that the SOUND icon is lit and that you tap the pad you are browsing; in MAIN, check the fader isn’t all the way down. Many numbers silent, or sounds that don’t match the table? The library may have been changed or erased: see section 08.</p>
@@ -174,13 +230,24 @@
       <details>
         <summary>07 / System settings worth knowing</summary>
         <p><b>Goal:</b> open system settings, change one setting with the menu, change it back with a number code, and leave safely.</p>
-        <p class="notice caution">SHIFT + ERASE while the K.O. II is on opens system settings: safe. Held while you switch on, the same two buttons format the drive (section 08).</p>
+        <p class="notice caution"><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> while the K.O. II is on opens system settings: safe. Held while you switch on, the same two buttons format the drive (section 08).</p>
         <ol start="25">
-          <li data-step="settings-open">In project 9, press SHIFT + ERASE. Check: the SYSTEM icon lights and the display shows a short settings word. The setting groups are called mid, syn, pad, seq and smp.</li>
-          <li data-step="settings-menu-metronome">Use the menu, as in the official how-to. Press + or − until the display shows seq, then press ENTER (one of the pads). Press + or − until it shows met and press ENTER. Press + or − until it shows on and press ENTER. This is setting 400: the metronome clicks while playing as well as while recording.</li>
-          <li data-step="settings-hear-click">Press MAIN to leave: the SYSTEM icon goes out. Press TEMPO and turn Y up a little: that is the metronome volume (X would change the tempo). Press PLAY: you hear a click on every beat and the metronome icon blinks in time. Press PLAY to stop.</li>
-          <li data-step="settings-code-401">Now the fast way, with a number: press SHIFT + ERASE, type 4, 0, 1 on the pads and press ENTER, then press MAIN. Press PLAY: no click now, because 401 (the default) clicks only while you record. Press PLAY to stop.</li>
-          <li data-step="settings-course-picks">Optional: set any course pick from the table below the same way: SHIFT + ERASE, the three digits, ENTER, then MAIN. Change one setting at a time and check it before the next.</li>
+          <li data-step="settings-open">
+            <p class="step-do">In project 9, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>.</p>
+            <p class="step-check">Check: the SYSTEM icon lights and the display shows a short settings word. The setting groups are called <samp class="lcd">mid</samp>, <samp class="lcd">syn</samp>, <samp class="lcd">pad</samp>, <samp class="lcd">seq</samp> and <samp class="lcd">smp</samp>.</p>
+          </li>
+          <li data-step="settings-menu-metronome" data-setting="400">
+            <p class="step-do">Use the menu, as in the official how-to. Press <kbd class="key">+</kbd> or <kbd class="key">−</kbd> until the display shows <samp class="lcd">seq</samp>, then press <kbd class="key">ENTER</kbd> (one of the pads). Press <kbd class="key">+</kbd> or <kbd class="key">−</kbd> until it shows <samp class="lcd">met</samp> and press <kbd class="key">ENTER</kbd>. Press <kbd class="key">+</kbd> or <kbd class="key">−</kbd> until it shows <samp class="lcd">on</samp> and press <kbd class="key">ENTER</kbd>. This is setting <samp class="lcd">400</samp>: the metronome clicks while playing as well as while recording.</p>
+          </li>
+          <li data-step="settings-hear-click">
+            <p class="step-do">Press <kbd class="key">MAIN</kbd> to leave: the SYSTEM icon goes out. Press <kbd class="key">TEMPO</kbd> and turn <kbd class="key knob">Y</kbd> up a little: that is the metronome volume (<kbd class="key knob">X</kbd> would change the tempo). Press <kbd class="key">PLAY</kbd>: you hear a click on every beat and the metronome icon blinks in time. Press <kbd class="key">PLAY</kbd> to stop.</p>
+          </li>
+          <li data-step="settings-code-401" data-setting="401">
+            <p class="step-do">Now the fast way, with a number: press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, type <kbd class="key">4</kbd>, <kbd class="key">0</kbd>, <kbd class="key">1</kbd> on the pads and press <kbd class="key">ENTER</kbd>, then press <kbd class="key">MAIN</kbd>. Press <kbd class="key">PLAY</kbd>: no click now, because <samp class="lcd">401</samp> (the default) clicks only while you record. Press <kbd class="key">PLAY</kbd> to stop.</p>
+          </li>
+          <li data-step="settings-course-picks" data-optional>
+            <p class="step-do">Optional: set any course pick from the table below the same way: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, the three digits, <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd>. Change one setting at a time and check it before the next.</p>
+          </li>
         </ol>
         <table>
           <thead>
@@ -200,19 +267,25 @@
           </tbody>
         </table>
         <p>“Default” is shown only where the official guide marks one.</p>
-        <p class="checkpoint"><b>Checkpoint:</b> with 400 you heard a click while playing; with 401 you didn’t; after MAIN the SYSTEM icon is off.</p>
-        <p><b>If it doesn’t:</b> no click with 400? In TEMPO turn Y higher, and check that you chose on (not rec or cnt). Lost in the menu? SHIFT + ENTER goes back one level, and MAIN leaves. Typed the wrong code? Open settings and type the right one. None of the codes in the table erases music.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> with <samp class="lcd">400</samp> you heard a click while playing; with <samp class="lcd">401</samp> you didn’t; after MAIN the SYSTEM icon is off.</p>
+        <p><b>If it doesn’t:</b> no click with <samp class="lcd">400</samp>? In TEMPO turn <kbd class="key knob">Y</kbd> higher, and check that you chose <samp class="lcd">on</samp> (not <samp class="lcd">rec</samp> or <samp class="lcd">cnt</samp>). Lost in the menu? <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ENTER</kbd></kbd> goes back one level, and <kbd class="key">MAIN</kbd> leaves. Typed the wrong code? Open settings and type the right one. None of the codes in the table erases music.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/system">System (settings codes)</a> · <a href="https://teenage.engineering/guides/ep-133/how-to">How to (velocity and metronome)</a></p>
       </details>
       <details>
         <summary>08 / If something is wrong: empty library, error codes and the format</summary>
         <p><b>Goal:</b> know what to do if sounds are missing or the display shows an error, and why a new K.O. II never needs a format.</p>
         <ol start="30">
-          <li data-step="trouble-empty-library">If section 06 played every category, your library is complete: tick this and move on. If projects 1–5 are silent and most sample numbers play nothing, the library has probably been erased, for example by a previous owner’s format. You can still follow the course with your own sounds: in chapter 07, section 02 <a href="./sampling.html#make-your-own-kit">“Build a drum kit from your voice”</a> records a kick, a snare and a hi-hat with the built-in mic onto A1, A2 and A3. The official EP sample tool page also says the tool can “restore factory sounds”; if you try that, back up first, because restoring can replace what is on the K.O. II.</li>
-          <li data-step="trouble-error-codes">If the display shows an error code when you switch on, look it up. E.01, E.02 and E.03 (sram, flash and codec errors) mean the unit needs repair: contact teenage engineering support and don’t format. E.05, E.10, E.11 and E.12 are file-system errors, and the official fix is the format in the warning box below. Update the OS first if you can: teenage engineering says its updates keep fixing bugs that may cause these errors.</li>
-          <li data-step="trouble-never-format">For anything else, such as silence, wrong sounds, a messy project or a mistake, never format. Use undo (SHIFT + B while the umbrella is lit), choose another empty project, or restore your backup with the EP sample tool.</li>
+          <li data-step="trouble-empty-library">
+            <p class="step-do">If section 06 played every category, your library is complete: tick this and move on. If projects 1–5 are silent and most sample numbers play nothing, the library has probably been erased, for example by a previous owner’s format. You can still follow the course with your own sounds: in chapter 07, section 02 <a href="./sampling.html#make-your-own-kit">“Build a drum kit from your voice”</a> records a kick, a snare and a hi-hat with the built-in mic onto <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd>. The official EP sample tool page also says the tool can “restore factory sounds”; if you try that, back up first, because restoring can replace what is on the K.O. II.</p>
+          </li>
+          <li data-step="trouble-error-codes">
+            <p class="step-do">If the display shows an error code when you switch on, look it up. <samp class="lcd">E.01</samp>, <samp class="lcd">E.02</samp> and <samp class="lcd">E.03</samp> (sram, flash and codec errors) mean the unit needs repair: contact teenage engineering support and don’t format. <samp class="lcd">E.05</samp>, <samp class="lcd">E.10</samp>, <samp class="lcd">E.11</samp> and <samp class="lcd">E.12</samp> are file-system errors, and the official fix is the format in the warning box below. Update the OS first if you can: teenage engineering says its updates keep fixing bugs that may cause these errors.</p>
+          </li>
+          <li data-step="trouble-never-format">
+            <p class="step-do">For anything else, such as silence, wrong sounds, a messy project or a mistake, never format. Use undo (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit), choose another empty project, or restore your backup with the EP sample tool.</p>
+          </li>
         </ol>
-        <div class="notice danger"><b>Warning: SHIFT + ERASE held while you switch on formats the drive.</b> The official guide says: “this will remove all your work as well as all factory sounds. once removed factory sounds can not be recovered!” Use it only as the official fix for errors E.05, E.10, E.11 and E.12; a new K.O. II never needs it. Before any format, back up with the EP sample tool if the K.O. II still connects. So you recognise it: the guide says that with the K.O. II off, holding SHIFT + ERASE while switching on shows FMT for about 10 seconds, and then the K.O. II starts up with all content removed.</div>
+        <div class="notice danger"><b>Warning: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> held while you switch on formats the drive.</b> The official guide says: “this will remove all your work as well as all factory sounds. once removed factory sounds can not be recovered!” Use it only as the official fix for errors <samp class="lcd">E.05</samp>, <samp class="lcd">E.10</samp>, <samp class="lcd">E.11</samp> and <samp class="lcd">E.12</samp>; a new K.O. II never needs it. Before any format, back up with the EP sample tool if the K.O. II still connects. So you recognise it: the guide says that with the K.O. II off, holding <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> while switching on shows <samp class="lcd">FMT</samp> for about 10 seconds, and then the K.O. II starts up with all content removed.</div>
         <p class="checkpoint"><b>Checkpoint:</b> you know which errors need a repair, which need a format, and that a new K.O. II needs neither.</p>
         <p><b>If it doesn’t:</b> an error that isn’t listed here, or a format that doesn’t help? Contact <a href="https://support.teenage.engineering/">teenage engineering support</a>.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/system">System (error codes)</a> · <a href="https://teenage.engineering/guides/ep-133/erase-drive">Erase drive</a></p>
@@ -221,10 +294,18 @@
         <summary>09 / Checklist: ready for chapter 01</summary>
         <p><b>Goal:</b> tick each item only when it is true for your K.O. II.</p>
         <ol start="33">
-          <li data-step="ready-updated">Updated: the update utility says your K.O. II is up to date (OS 2.5.1 or newer).</li>
-          <li data-step="ready-backed-up">Backed up: your backup file is on your computer and in a second place.</li>
-          <li data-step="ready-empty-project">Empty project chosen: hold MAIN, then hold pad 6 as well, and release both. Tap a few pads in A, B, C and D: all silent. Press PLAY: silence; press PLAY to stop. PROJECT 6 = COURSE is on your paper.</li>
-          <li data-step="ready-open-first-beat">Ready: leave the K.O. II on in project 6, keep paper and pencil nearby, and open <a href="./index.html#first">01 / First beat</a>.</li>
+          <li data-step="ready-updated">
+            <p class="step-do">Updated: the update utility says your K.O. II is up to date (OS 2.5.1 or newer).</p>
+          </li>
+          <li data-step="ready-backed-up">
+            <p class="step-do">Backed up: your backup file is on your computer and in a second place.</p>
+          </li>
+          <li data-step="ready-empty-project">
+            <p class="step-do">Empty project chosen: hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 6</kbd> as well, and release both. Tap a few pads in A, B, C and D: all silent. Press <kbd class="key">PLAY</kbd>: silence; press <kbd class="key">PLAY</kbd> to stop. PROJECT 6 = COURSE is on your paper.</p>
+          </li>
+          <li data-step="ready-open-first-beat">
+            <p class="step-do">Ready: leave the K.O. II on in project 6, keep paper and pencil nearby, and open <a href="./index.html#first">01 / First beat</a>.</p>
+          </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> all four items are ticked. You are ready for your first beat.</p>
         <p><b>If it doesn’t:</b> one item isn’t true yet? Go back to its section (03 update, 04 backup, 05 project). Each section works on its own.</p>

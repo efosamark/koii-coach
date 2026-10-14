@@ -294,9 +294,15 @@ def run_target(browser, artifacts_dir, name, url, results):
         result['checks'].append('Phone width: no horizontal scrolling on Home or in any view; Steps list jumps; Next scrolls the new step into view')
 
         # --- Chapter pages, 390 px phone ---
+        # Each page opens in the step player (player.js): a fresh visit shows the start screen, which hides the steps.
+        # The list checks therefore run at <file>.html#all (All steps), the player checks at <file>.html#s-<first id>.
         for file, slug, num, prev, nxt in CHAPTERS:
             r = page.goto(absolute('./' + file), wait_until='networkidle')
             assert r and r.ok, f'{file} returned HTTP {r.status if r else None}'
+            assert page.evaluate("() => document.documentElement.dataset.player") == 'start', f'{file}: a fresh visit opens the start screen'
+            assert_match(page.locator('#player-next').text_content(), r'Start Part 1', message=f'{file}: the start screen offers Start Part 1')
+            no_overflow(page, f'{file} start screen at 390 px')
+            page.goto(absolute('./' + file + '#all'), wait_until='networkidle')
             assert page.evaluate('() => document.body.dataset.chapter') == slug
             assert_match(page.locator('header .eyebrow').text_content(), '^CHAPTER ' + num + ' /', message=f'{file} header says CHAPTER {num}')
             assert page.locator('.steps ol>li[data-step]').count() > 0, f'{file} has steps'
@@ -321,6 +327,28 @@ def run_target(browser, artifacts_dir, name, url, results):
             assert_match(page.locator('#progress-count').text_content(), r'^1 of \d+ done\Z')  # \Z: JS's $ does not allow a trailing newline
             page.locator('.steps ol>li .check input').first.uncheck()
 
+            # The player: one step at a time. Done · Next ticks the step and shows the next one, Back returns, the
+            # action bar is on screen and nothing scrolls sideways.
+            first_id, second_id = (page.locator('.steps ol>li[data-step]').nth(i).get_attribute('data-step') for i in (0, 1))
+            page.goto('about:blank')
+            page.goto(absolute(f'./{file}#s-{first_id}'), wait_until='networkidle')
+            first_li, second_li = page.locator(f'.steps li[data-step="{first_id}"]'), page.locator(f'.steps li[data-step="{second_id}"]')
+            assert first_li.is_visible() and second_li.is_hidden(), f'{file}#s-{first_id} shows that step alone'
+            assert page.evaluate('() => document.activeElement && document.activeElement.dataset.step') == first_id, f'{file}: the step is focused'
+            bar = page.locator('#player-actions').bounding_box()
+            assert page.locator('#player-actions').is_visible() and bar and bar['y'] + bar['height'] <= 844 + 1, f'{file}: action bar on screen ({bar})'
+            no_overflow(page, f'{file} player at 390 px')
+            if page.locator('.gate-btn:visible').count():  # a step that cannot be undone asks first
+                page.locator('.gate-btn:visible').click()
+            page.locator('#player-next').click()
+            assert page.evaluate('k => JSON.parse(localStorage.getItem(k))', 'koii-coach-ch-' + slug)['done'] == [first_id], f'{file}: Done · Next ticks the step'
+            assert second_li.is_visible() and first_li.is_hidden(), f'{file}: Done · Next shows step 2'
+            assert page.evaluate('location.hash') == '#s-' + second_id, f'{file}: the address follows the step'
+            page.locator('#player-back').click()
+            assert first_li.is_visible() and second_li.is_hidden(), f'{file}: Back returns to step 1'
+            assert_match(page.locator('#player-next').text_content(), r'^\s*Next\s*$', message=f'{file}: a ticked step reads Next')
+            first_li.locator('.check input').uncheck()
+
             # Previous and next chapter links land on the right page (and the right view of the main app).
             for href in [h for h in (prev, nxt) if h]:
                 page.goto(absolute('./' + file), wait_until='networkidle')
@@ -332,16 +360,36 @@ def run_target(browser, artifacts_dir, name, url, results):
                     assert current_view(page) == fragment, f'{file} → {href} opens the {fragment} view'
                 else:
                     assert page.locator('header .eyebrow').count() > 0, f'{file} → {href} opens a chapter page'
-        result['checks'].append('Chapter pages 00 and 07-11: load cleanly, report link, prev/next, ticks survive reload, no horizontal scrolling')
+        result['checks'].append('Chapter pages 00 and 07-11: start screen, list at #all (ticks survive reload), player at #s-<first id> '
+                                '(Done · Next ticks and moves on, Back returns, action bar on screen), report link, prev/next, no horizontal scrolling')
 
-        # A #s-<step id> link opens that step's section and focuses the step, below the sticky bars.
+        # A #s-<step id> link opens that step in the player and focuses it, below the sticky bars; in All steps it opens
+        # the step's section in the list instead.
+        page.goto('about:blank')
+        page.goto(absolute('./perform.html#s-sc-open'), wait_until='networkidle')
+        page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'sc-open'")
+        box = page.evaluate("""() => {const r = document.activeElement.getBoundingClientRect(), s = document.querySelector('#player-bar').getBoundingClientRect();
+            return {top: r.top, bar: s.bottom, h: innerHeight};}""")
+        assert box['bar'] <= box['top'] < box['h'], f'perform.html#s-sc-open shows the step below the bars ({box})'
+        page.goto(absolute('./perform.html#all'), wait_until='networkidle')
+        page.evaluate("() => { location.hash = '#s-sc-open'; }")  # a step link followed from the list opens the player
+        page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'sc-open' && document.documentElement.dataset.player === 'step'")
+        # The Steps sheet's switch saves All steps for this chapter (read-modify-write: other settings stay).
+        page.evaluate("() => localStorage.setItem('koii-coach-prefs', JSON.stringify(Object.assign(JSON.parse(localStorage.getItem('koii-coach-prefs') || '{}'), {v: 1, wake: 'auto'})))")
+        page.locator('#player-steps-btn').click()
+        page.locator('#player-steps [data-mode="all"]').click()
+        page.wait_for_function("() => location.hash === '#all' && !document.documentElement.dataset.player")
+        prefs = page.evaluate("() => JSON.parse(localStorage.getItem('koii-coach-prefs') || 'null')")
+        assert prefs and prefs.get('modes', {}).get('perform') == 'all' and prefs.get('wake') == 'auto', f'All steps is saved per chapter, other settings kept ({prefs})'
         page.goto('about:blank')
         page.goto(absolute('./perform.html#s-sc-open'), wait_until='networkidle')
         page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'sc-open'")
         box = page.evaluate("""() => {const r = document.activeElement.getBoundingClientRect(), s = document.querySelector('#progress').getBoundingClientRect();
-            return {top: r.top, bar: s.bottom, h: innerHeight};}""")
-        assert box['bar'] <= box['top'] < box['h'], f'perform.html#s-sc-open shows the step below the bars ({box})'
-        result['checks'].append('A #s-<step id> link opens and focuses that step')
+            return {top: r.top, bar: s.bottom, h: innerHeight, player: document.documentElement.dataset.player || ''};}""")
+        assert box['player'] == '' and box['bar'] <= box['top'] < box['h'], f'In All steps, #s-sc-open shows the step in the list below the bars ({box})'
+        page.locator('main .player-modes [data-mode="player"]').click()
+        assert page.evaluate("() => document.documentElement.dataset.player") in ('start', 'step'), 'The Player switch leaves the list'
+        result['checks'].append('A #s-<step id> link opens and focuses that step (player, and the list in All steps); the mode is saved per chapter')
 
         # Site search (the app bar's overlay) finds a chapter step for "sidechain" and opens it.
         page.goto(url, wait_until='networkidle')
@@ -356,7 +404,7 @@ def run_target(browser, artifacts_dir, name, url, results):
         result['checks'].append('Search finds a chapter step ("sidechain") and opens it')
 
         # After ticks in a chapter, Home's Continue opens that chapter at the next step to do.
-        page.goto(absolute('./sampling.html'), wait_until='networkidle')
+        page.goto(absolute('./sampling.html#all'), wait_until='networkidle')
         page.evaluate("() => document.querySelectorAll('.steps details').forEach(d => { d.open = true; })")
         for i in (0, 1):
             page.locator('.steps ol>li .check input').nth(i).check()
