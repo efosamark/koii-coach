@@ -207,7 +207,7 @@ parts.forEach(P=>{
 });
 groups.forEach((run,li)=>{
   const n=run.length,box=el('div','skip-box pl-own',
-    `<p>${n===1?'This step is optional.':`This step and the next ${n===2?'one are':(n-1)+' are'} optional.`} Skipped steps don’t count towards the chapter, and you can still do them later.</p>`+
+    `<p>You can skip ${n===1?'this step':n===2?'this step and the next':'these '+n+' steps'}: ${n===1?'it won’t':'they won’t'} hold up the chapter, and you can come back later.</p>`+
     `<button class="btn" type="button" data-skip>${n===1?'Skip this step':'Skip these '+n+' steps'}</button>`);
   box.hidden=true;
   (li.querySelector(':scope > .step-title')||heads.get(li)).after(box);
