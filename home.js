@@ -3,7 +3,7 @@
    course in guided order, the device projects and the tools. This file adds where the learner is:
    - a first run (judged by what has been done, never by which keys exist: CoachProgress.firstRun()) keeps the welcome;
      "It's set up" stores koii-coach-prefs.setup = 'ready'.
-   - everyone else gets "Welcome back" and one Continue card (#resume) that opens the exact step: Chapter 00 while
+   - everyone else gets "Welcome back" and one Continue card (#resume) that opens the exact step: Chapter 0 while
      set-up is not 'ready'; else the unfinished chapter that moved last (its record's "at"); else meta.lastChapter;
      else the first one with progress; else the next one not started (CoachProgress.continueTarget). The card names
      the part and the step it opens at, read from the chapter's own page (precached; without it the card still works).
@@ -37,7 +37,7 @@ function continueCard(all){
     `<p class="continue-count"><span class="meter" aria-hidden="true"><span class="meter-fill" style="width:${Math.round(100*x/Math.max(1,n))}%"></span></span><span>${started?`${x} of ${n} done`:`${n} steps`}</span></p>`+
     `<ul class="chips" aria-label="About this chapter">${about(p).split(' · ').filter(Boolean).map(s=>`<li>${esc(s)}</li>`).join('')}</ul>`+
     `<a class="btn primary lg" id="resume" href="${esc(p.href)}">${started?'Continue':'Start Chapter '+esc(c.num)}${icon('next')}</a>`+
-    (P.migratedSetup&&x?`<p class="meta">We carried your progress over: ${x} of ${n} in Chapter ${esc(c.num)}. Chapter 00 stays in the course list as optional set-up checks.</p>`:'')+'</section>';
+    (P.migratedSetup&&x?`<p class="meta">We carried your progress over: ${x} of ${n} in Chapter ${esc(c.num)}. Chapter 0 stays in the course list as optional set-up checks.</p>`:'')+'</section>';
 }
 // The part and the step Continue opens at, from the chapter's page. Without it (offline before the first full visit)
 // the card keeps its count and the button.
@@ -48,7 +48,7 @@ async function where(p){
     const dom=new DOMParser().parseFromString(await res.text(),'text/html');
     const li=dom.querySelector(`.steps li[data-step="${CSS.escape(p.cur)}"]`),d=li&&li.closest('details'),s=d&&d.querySelector('summary');
     if(!li||!s)return;
-    const m=/^(\d+)\s*\/\s*(.*)$/.exec(s.textContent.replace(/\s+/g,' ').trim()),list=[...d.querySelectorAll('ol > li[data-step]')],t=li.querySelector('.step-title');
+    const m=/^(?:Part\s+)?(\d+)\s*[\/·]\s*(.*)$/.exec(s.textContent.replace(/\s+/g,' ').trim()),list=[...d.querySelectorAll('ol > li[data-step]')],t=li.querySelector('.step-title');
     const part=$('#continue-part'),step=$('#continue-step');
     if(m){part.textContent=`Part ${+m[1]} · ${m[2]}`;part.hidden=false;}
     step.textContent=`Step ${list.indexOf(li)+1} of ${list.length}`+(t?' · '+t.textContent.replace(/\s+/g,' ').trim():'');step.hidden=false;

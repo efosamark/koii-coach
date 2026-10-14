@@ -13,8 +13,8 @@ body:
     id: page
     attributes:
       label: Page or chapter
-      description: Which part of the coach? For example "00 Start here", "02 Make it a song", "10 Tech House" or "Troubleshooting".
-      placeholder: 02 Make it a song
+      description: Which part of the coach? For example "Chapter 0 · Set up your K.O. II", "Chapter 2 · Make it a song", "Chapter 6 · Tech house" or "Troubleshooting".
+      placeholder: Chapter 2 · Make it a song
     validations:
       required: true
   - type: input

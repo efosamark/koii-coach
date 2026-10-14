@@ -160,7 +160,7 @@ function continueTarget(all){
 }
 // First run is defined by what the learner has done, never by which keys exist (plan 5.1).
 const firstRun=()=>!prefs().setup&&!v2Progress()&&!v2().done.length&&!chapters().some(p=>p.x>0);
-// Learners who already have progress are never sent back to Chapter 00. Ticks in 00 alone do not count.
+// Learners who already have progress are never sent back to Chapter 0. Ticks in Chapter 0 alone do not count.
 function migrateSetup(){
   if(prefs().setup||!(v2Progress()||chapters().some(p=>p.c.slug!=='setup'&&p.x>0)))return false;
   patch(PREFS,{setup:'ready'});patch(META,{setupReason:'existing-progress'});

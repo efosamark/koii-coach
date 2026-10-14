@@ -4,6 +4,28 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.4
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: only chapter and part numbers and three chapter names.
+
+The course is numbered in teaching order (phase P6 of the overhaul).
+
+| Was | Now |
+|---|---|
+| 00 Start here | Chapter 0 · Set up your K.O. II |
+| 01 First beat | Chapter 1 · First beat |
+| 02 Make it a song | Chapter 2 · Make it a song |
+| 07 Sample, chop & resample | Chapter 3 · Sample, chop & resample |
+| 08 Play & perform | Chapter 4 · Play & perform |
+| 09 Full hip-hop beat | Chapter 5 · Full hip-hop beat |
+| 10 Tech House | Chapter 6 · Tech house |
+| 11 House with your own vocal samples | Chapter 7 · Vocal house |
+
+- Every page, link and cross-reference uses the new numbers: "Chapter 3", "Part 4" (parts were "section 04" in the text and "04 / Title" in the list), "Step 4 of 8". A chapter's name is the same in the menu, its heading and its page title; the old taglines ("Your first beat", "A full 128 BPM track", "House with your own vocal samples") are subtitles.
+- **Nothing moves:** the files, links, step addresses and saved progress are unchanged, so bookmarks and old links still open the same chapter and step.
+- Chapters 3 to 7 show "Formerly 07" (and so on) on their start screen, and search finds a chapter by its old number or name ("07", "start here"). These stay for at least three months.
+- The site build now fails if a page names a chapter by its old number or name, or a part as "section 04".
+
 ## 2026.10.14.3
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: the steps below were reordered, and the few sentences that are new are listed with the official sources they rest on. If your unit does something else, [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).

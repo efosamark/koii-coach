@@ -9,7 +9,9 @@ Fails (exit 1) when:
 - a page links to a local file that is not in the site, or a stylesheet's url() does (a missing font fails silently),
 - sw.js precaches a file that is not in the site (one 404 stops the offline install),
 - a page, script, stylesheet, font or SVG in the site is not precached by sw.js (it would not work offline),
-- VERSION in sw.js, version in site.js and the newest CHANGELOG.md heading differ.
+- VERSION in sw.js, version in site.js and the newest CHANGELOG.md heading differ,
+- a page's visible text names a chapter by its number before the renumber ("chapter 07", "07 / Sample…", "section 04",
+  "CHAPTER 09") or by an old name ("Start here", "Tech House"): the course is Chapter 0-7 and parts are "Part 4".
 Standard library only, so it runs anywhere Python 3.8+ does.
 """
 import json, pathlib, re, shutil, sys
@@ -24,6 +26,24 @@ PRECACHED = ('.html', '.js', '.css', '.woff2', '.svg')  # every one of these in 
 SKIP_LINK = re.compile(r'^(?:[a-z][a-z0-9+.-]*:|//|#)', re.I)  # http:, mailto:, data:, //host, #anchor
 
 errors, warnings = [], []
+
+# Bare-number lint (plan 4.2, P6). Old chapter numbers are 00 01 02 07 08 09 10 11; the "Formerly 07" chip and search
+# alias are added by scripts, never written in a page.
+OLD_NUM = r'(?:00|01|02|07|08|09|10|11)'
+BARE = [
+    (re.compile(r'\b[Cc]hapters?\s+' + OLD_NUM + r'\b'), 'a chapter by its old number'),
+    (re.compile(r'CHAPTER\s+\d\d\b'), 'a two-digit chapter number'),
+    (re.compile(r'(?<![\d.])\b' + OLD_NUM + r'\s*/\s*[A-Z]'), 'an old "NN / Name" chapter or part number'),
+    (re.compile(r'\b[Ss]ections?\s+\d\d\b'), 'a numbered "section" (use "Part 4")'),
+    (re.compile(r'\b(?:Start here|Tech House|House with your own vocal samples)\b'), 'an old chapter name'),
+]
+ALLOW_OLD_NAME = {'thodorakis-house.html': ['House with your own vocal samples']}   # its subtitle
+
+
+def visible_text(page):
+    t = re.sub(r'<(script|style)\b.*?</\1>', ' ', page, flags=re.S | re.I)
+    t = re.sub(r'<[^>]+>', ' ', t)
+    return re.sub(r'\s+', ' ', t.replace('&amp;', '&').replace('&nbsp;', ' '))
 
 
 def build(out):
@@ -137,6 +157,14 @@ def main():
     if None not in versions.values() and len(set(versions.values())) > 1:
         errors.append('release versions differ: ' + ', '.join(f'{w} is {v}' for w, v in versions.items())
                       + '. Set all three to the same value (see README, "Releasing a content change").')
+
+    for name in [f for f in files if f.endswith('.html')]:
+        text = visible_text((out / name).read_text(encoding='utf-8'))
+        for rule, what in BARE:
+            for m in rule.finditer(text):
+                if m.group(0) in ALLOW_OLD_NAME.get(name, []):
+                    continue
+                errors.append(f'{name} names {what}: "…{text[max(0, m.start() - 30):m.end() + 20].strip()}…"')
 
     print(f'Site folder {out.name}/ has {len(files)} files:')
     for name in files:

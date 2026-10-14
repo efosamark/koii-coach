@@ -1,5 +1,5 @@
 'use strict';
-/* The step player for every chapter page (00, 01, 02 and 07-11): a start screen, one step at a time with a fixed action
+/* The step player for every chapter page (Chapters 0-7): a start screen, one step at a time with a fixed action
    bar, a checkpoint card after each part and a chapter-complete screen. Load it straight after chapter.js:
      <script src="player.js" defer></script>
    It reads the page's own markup and never re-renders it: other steps, parts and page sections are only hidden
@@ -8,7 +8,7 @@
    JavaScript nothing here runs and the page reads top to bottom as before. Spec: docs/overhaul-plan.md 4.5, 5.2-5.13.
 
    Markup it reads (section.steps > details, one per part):
-     summary "NN / Part title" (an h2.part-title inside); p with <b>Goal:</b> and other notes; p.checkpoint; the p
+     summary "Part 2 · Build a drum kit" (an h2.part-title inside; "02 / Build a drum kit" is read too); p with <b>Goal:</b> and other notes; p.checkpoint; the p
      starting <b>If it doesn't:</b>; ol > li[data-step]: the step. Inside a step, when the chapter has been marked up:
        h3.step-title the step's name (other steps are named by their first line)
        p.preflight   the check that keeps a risky press safe ("Before you press", shown first in a caution box)
@@ -42,6 +42,8 @@
    Opening a step from the menu, a link or search marks nothing and leaves cur where it is; a "Back to step N" pill
    then leads back to the step to continue at. A part's checkpoint answer (Yes / Not quite) is kept for the learner
    in koii-coach-meta.checkpoints[<slug>][<part id>] = 'yes' | 'not-yet'; it never changes a tick.
+
+   The start screen's chips include "Formerly 07" for a chapter renumbered in 2026.10.14.4 (site.js formerly).
 
    What it adds (all marked .pl-own): the app bar's two-line title and 4px meter (CoachShell.setTitle, setMeter); the
    menu's "This chapter" part and the desktop rail's chapter contents (CoachShell.registerChapter: progress, Player |
@@ -89,7 +91,7 @@ function firstBold(e){
 const parts=partEls.map((d,i)=>{
   const sum=d.querySelector(':scope > summary');
   const head=sum?clean([...sum.childNodes].filter(n=>!(n.nodeType===1&&n.classList.contains('tally'))).map(n=>n.textContent).join('')):'';
-  const m=/^(\d+)\s*\/\s*(.*)$/.exec(head),kids=[...d.children].filter(e=>e!==sum);
+  const m=/^(?:Part\s+)?(\d+)\s*[\/·]\s*(.*)$/.exec(head),kids=[...d.children].filter(e=>e!==sum);
   const checkpoint=kids.find(e=>e.classList.contains('checkpoint'))||null;
   const ifnot=kids.find(e=>e.tagName==='P'&&/^If it doesn['’]t\b/i.test(firstBold(e)))||null;
   const notes=kids.filter(e=>e.tagName!=='OL'&&e!==checkpoint&&e!==ifnot);
@@ -228,7 +230,8 @@ partsBox.setAttribute('aria-labelledby','player-parts-title');
   const need=os?parseFloat(os[1]):0,old=Boolean(need&&fwNum&&fwNum<need);
   const osText=os?'OS '+esc(os[1])+(os[2]?'+':''):'';
   chips.innerHTML=[time?esc(time.charAt(0).toUpperCase()+time.slice(1)):'',proj?'Project '+proj[1]:'',
-    os&&!old?osText:'',esc(plural(steps.length,'step','steps')+' in '+plural(parts.length,'part','parts'))].filter(Boolean).map(t=>`<li>${t}</li>`).join('')+
+    os&&!old?osText:'',esc(plural(steps.length,'step','steps')+' in '+plural(parts.length,'part','parts')),
+    info&&info.formerly?'Formerly '+esc(info.formerly):''].filter(Boolean).map(t=>`<li>${t}</li>`).join('')+
     (old?`<li class="warn">${icon('warning')}<span>Needs ${osText} · <a href="./setup.html#s-update-open-utility">Update first</a></span></li>`:'');
   const intro=pageHead&&pageHead.nextElementSibling&&pageHead.nextElementSibling.tagName==='P'?pageHead.nextElementSibling:pageHead;
   if(intro)intro.after(chips);else main.prepend(chips);
@@ -289,7 +292,7 @@ reportEl.hidden=true;
 function reportUrl(li){
   const P=partOf(li),title=li.querySelector(':scope > .step-title'),src=li.querySelector(':scope > .step-source a, :scope > .step-do a[href*="/guides/"]');
   const said=['.preflight','.step-do','.step-undo','.step-check'].map(q=>[...li.querySelectorAll(':scope > '+q)]).flat().map(e=>clean(e.textContent)).join(' ')||gist(li);
-  const q={title:'[Wrong instruction] '+chNum+' '+chName+', step '+num(li),page:chNum+' '+chName,
+  const q={title:'[Wrong instruction] Chapter '+chNum+' · '+chName+', step '+num(li),page:'Chapter '+chNum+' · '+chName,
     step:'Step '+num(li)+' / '+(title?gist(li):'Part '+P.n+' · '+P.title)+' ['+li.dataset.step+']','app-says':said.slice(0,1500),
     firmware:{'2.5':'2.5.x','2':'2.0.x',older:'older than 2.0',unknown:'not sure'}[fw]||'',guide:src?src.href:''};
   return ((site&&site.report)||'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml')+Object.entries(q).filter(([,v])=>v).map(([k,v])=>'&'+k+'='+encodeURIComponent(v)).join('');
@@ -515,7 +518,7 @@ function showDone(opt){
     (all?`<section class="pd-course"><h3>Course complete</h3><p>All ${course.length} chapters are done. What you made:</p><ul class="made-list">`+
       course.map(p=>`<li><span class="num">${esc(p.c.num)}</span> <a href="${esc(p.c.href)}">${esc(p.c.title)}</a>${p.c.made?`<span class="sub meta">${esc(p.c.made.charAt(0).toUpperCase()+p.c.made.slice(1))}.</span>`:''}</li>`).join('')+
       `</ul><p><a href="./cheat-sheet.html">The cheat sheet</a> keeps every move and reference table in one place.</p></section>`:'')+
-    (slug!=='setup'&&complete?`<div class="notice tip"><b>Back up now.</b> Save a copy of your work with the official EP sample tool, as in <a href="./setup.html#s-backup-open-tool">00 / Start here, part 04</a>.</div>`:'')+
+    (slug!=='setup'&&complete?`<div class="notice tip"><b>Back up now.</b> Save a copy of your work with the official EP sample tool, as in <a href="./setup.html#s-backup-open-tool">Chapter 0 · Set up your K.O. II, Part 4</a>.</div>`:'')+
     `<div class="row pd-actions">${complete?`<a class="btn" href="#all" data-review>${icon('list')}Review steps</a>`:''}${nextLink?'<a class="btn" href="./index.html">Back to the course</a>':''}`+
     (complete?`<button class="btn ghost" type="button" data-act="restart">${icon('undo')}Restart this chapter</button>`:'')+'</div>';
   render();

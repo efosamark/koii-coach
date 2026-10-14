@@ -3,7 +3,7 @@
    "Needs OS x+" badges from it), keeping the screen on (koii-coach-prefs.wake: wake.js reads it on every poke(), so
    switching to Off pokes once to let go of a hold), keyboard shortcuts (koii-coach-prefs.keys: false switches the
    shell's letter shortcuts off), whether the unit is set up (koii-coach-prefs.setup 'ready' | 'new': Home's Continue
-   opens Chapter 00 until it is 'ready'), the progress file, Reset all progress and Reset settings. Loading a file and
+   opens Chapter 0 until it is 'ready'), the progress file, Reset all progress and Reset settings. Loading a file and
    Reset all progress touch progress only: koii-coach-prefs and the OS choice stay. Reset settings clears
    koii-coach-prefs (progress.js sets setup again on the next page load for a learner with progress, as it does for
    every existing learner). Both resets can be undone for 10 seconds. */
@@ -27,7 +27,7 @@ const refresh=()=>{if(window.CoachShell)CoachShell.refresh();};
 // ---------- OS version ----------
 const fw=$('#firmware');
 function versionNote(){
-  const v=fw.value,upd='<a href="./setup.html">00 Start here</a>',
+  const v=fw.value,upd='<a href="./setup.html">Chapter 0 · Set up your K.O. II</a>',
     OS20='song mode, resampling, hands-free sampling and sidechain',
     OS25='USB audio, sample reverse, a choice of recording sample rates, mono samples up to 40 seconds, equal-length auto chop, an arpeggiator in KEYS, and key and scale selection (hold KEYS, turn X for key and Y for scale)';
   const t={
@@ -52,7 +52,7 @@ $$('input[name="wake"]').forEach(r=>{
 });
 if(!('wakeLock' in navigator))$('#wake-note').append(' This browser can’t keep the screen on, so give your device a longer screen timeout instead.');
 
-// ---------- Keyboard shortcuts and Chapter 00 ----------
+// ---------- Keyboard shortcuts and Chapter 0 ----------
 function choices(){
   const pr=P.prefs();
   $$('input[name="keys"]').forEach(r=>{r.checked=r.value===(pr.keys===false?'off':'on');});

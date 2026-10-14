@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Chapter 01: First beat / K.O. II Coach</title>
-  <meta name="description" content="Chapter 01 of K.O. II Coach, an unofficial EP-133 course: build a one-bar drum and bass loop at 90 BPM in an empty project, one step at a time, then turn it into a tiny performance.">
+  <title>Chapter 1: First beat / K.O. II Coach</title>
+  <meta name="description" content="Chapter 1 of K.O. II Coach, an unofficial EP-133 course: build a one-bar drum and bass loop at 90 BPM in an empty project, one step at a time, then turn it into a tiny performance.">
   <meta name="theme-color" content="#FFFEF8" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#161E19" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
@@ -13,8 +13,8 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="K.O. II Coach">
-  <meta property="og:title" content="Chapter 01: First beat / K.O. II Coach">
-  <meta property="og:description" content="Chapter 01 of K.O. II Coach, an unofficial EP-133 course: build a one-bar drum and bass loop at 90 BPM in an empty project, one step at a time, then turn it into a tiny performance.">
+  <meta property="og:title" content="Chapter 1: First beat / K.O. II Coach">
+  <meta property="og:description" content="Chapter 1 of K.O. II Coach, an unofficial EP-133 course: build a one-bar drum and bass loop at 90 BPM in an empty project, one step at a time, then turn it into a tiny performance.">
   <meta property="og:url" content="https://efosamark.github.io/koii-coach/first-beat.html">
   <meta property="og:image" content="https://efosamark.github.io/koii-coach/icons/icon-512.png">
   <meta name="twitter:card" content="summary">
@@ -36,16 +36,17 @@
   <script src="shell.js"></script>
   <main id="main" class="page reading" tabindex="-1">
     <header class="page-head">
-      <p class="eyebrow">CHAPTER 01 / ABOUT 30–50 MINUTES</p>
-      <h1>Your first beat</h1>
+      <p class="eyebrow">CHAPTER 1 / ABOUT 30–50 MINUTES</p>
+      <h1>First beat</h1>
+      <p class="subtitle">Your first beat</p>
     </header>
     <p>90 BPM, one bar, kick + snare + hats, bass and two sections. Hardware instructions follow the official guide; rhythm and mix choices are our teaching recipe.</p>
     <p class="makes"><b>You will make:</b> a one-bar drum and bass loop at 90 BPM, kept as two scenes, DRUMS and BEAT, and a tiny performance with them.</p>
     <section class="card">
       <h2>What you need</h2>
-      <p><b>Your K.O. II, set up.</b> New K.O. II, or not updated yet? Do <a href="./setup.html">00 / Start here</a> first: it updates the unit, backs it up and chooses the empty project this chapter uses.</p>
+      <p><b>Your K.O. II, set up.</b> New K.O. II, or not updated yet? Do <a href="./setup.html">Chapter 0 · Set up your K.O. II</a> first: it updates the unit, backs it up and chooses the empty project this chapter uses.</p>
       <p><b>Your project:</b> empty project 6. Every note you hear is one you placed.</p>
-      <p><b>Paper and pencil:</b> you write down two scene numbers, DRUMS and BEAT. Chapter 02 needs them.</p>
+      <p><b>Paper and pencil:</b> you write down two scene numbers, DRUMS and BEAT. Chapter 2 needs them.</p>
     </section>
     <div id="progress" class="status-bar" hidden>
       <p id="progress-count" role="status"></p>
@@ -56,13 +57,13 @@
     <section id="first-beat" class="steps" aria-label="Steps">
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. chapter.js numbers the steps and saves ticks by id. No nested ol inside a step. -->
       <details id="load-your-kit" open>
-        <summary><h2 class="part-title">01 / Load your kit</h2></summary>
+        <summary><h2 class="part-title">Part 1 · Load your kit</h2></summary>
         <ol start="1">
           <li data-step="beat-empty-project">
             <h3 class="step-title">Start in an empty project</h3>
             <p class="step-do">Press <span class="nobr"><kbd class="key">MAIN</kbd>.</span> If the K.O. II is playing, press <kbd class="key">PLAY</kbd> to stop it. Hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> then press <kbd class="key pad">pad 6</kbd> and keep both held while you watch the display; release both once it changes. The official guide says “hold main and one of the pads (1-9) to select an empty project”. Now tap <span class="nobr"><kbd class="key">A</kbd>,</span> tap pads 1, 2 and 3, then press <span class="nobr"><kbd class="key">PLAY</kbd>.</span></p>
             <p class="step-check"><span class="sr">Check: </span>The pads make no sound and <kbd class="key">PLAY</kbd> gives silence: project 6 has no sounds or notes yet. Press <kbd class="key">PLAY</kbd> again to stop. Owners report the display briefly shows <span class="nobr"><samp class="lcd">P 6</samp>;</span> the official guide does not describe it, so trust the silent pads.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>On a new K.O. II, projects 1–5 hold factory demos and projects 6–9 are completely empty. Working in project 6 keeps the demos safe, and every note you hear later is one you placed. We will make a one-bar, 90 BPM drum loop, then add bass and a second section. No finger-drumming skill required.</p></details><details class="step-more"><summary>Not working?</summary><p>Pads still play sounds? You picked a scene, not a project: holding MAIN and typing a number also selects a scene. Try again and keep pad 6 held longer while watching the display. Already used project 6 for something else? Use another empty project and write its number down, but later chapters plan 7 for 07, 8 for 09 and 9 for 10: see help “<a href="./help.html#my-project-is-not-empty">My project is not empty</a>”. Not on OS 2.5.1 yet, or music on the unit you care about? Do 00 Start here first (update and backup). See help: “<a href="./help.html#my-project-is-not-empty">My project is not empty</a>”.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>On a new K.O. II, projects 1–5 hold factory demos and projects 6–9 are completely empty. Working in project 6 keeps the demos safe, and every note you hear later is one you placed. We will make a one-bar, 90 BPM drum loop, then add bass and a second section. No finger-drumming skill required.</p></details><details class="step-more"><summary>Not working?</summary><p>Pads still play sounds? You picked a scene, not a project: holding MAIN and typing a number also selects a scene. Try again and keep pad 6 held longer while watching the display. Already used project 6 for something else? Use another empty project and write its number down, but later chapters plan 7 for Chapter 3, 8 for Chapter 5 and 9 for Chapter 6: see help “<a href="./help.html#my-project-is-not-empty">My project is not empty</a>”. Not on OS 2.5.1 yet, or music on the unit you care about? Do Chapter 0 · Set up your K.O. II first (update and backup). See help: “<a href="./help.html#my-project-is-not-empty">My project is not empty</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
           <li data-step="beat-tempo-grid">
@@ -103,7 +104,7 @@
         </ol>
       </details>
       <details id="place-the-drums">
-        <summary><h2 class="part-title">02 / Place the drums</h2></summary>
+        <summary><h2 class="part-title">Part 2 · Place the drums</h2></summary>
         <ol start="7">
           <li data-step="beat-placement-move" data-place="A1 1.1.1">
             <h3 class="step-title">Learn the placement move once</h3>
@@ -148,7 +149,7 @@
         </ol>
       </details>
       <details id="keep-the-drums">
-        <summary><h2 class="part-title">03 / Balance and keep the drums</h2></summary>
+        <summary><h2 class="part-title">Part 3 · Balance and keep the drums</h2></summary>
         <ol start="12">
           <li data-step="beat-balance">
             <h3 class="step-title">Tweak the balance, one sound at a time</h3>
@@ -167,7 +168,7 @@
         </ol>
       </details>
       <details id="add-a-bass">
-        <summary><h2 class="part-title">04 / Add a bass</h2></summary>
+        <summary><h2 class="part-title">Part 4 · Add a bass</h2></summary>
         <ol start="14">
           <li data-step="beat-bass-sound">
             <h3 class="step-title">Choose one bass sound</h3>
@@ -195,7 +196,7 @@
         </ol>
       </details>
       <details id="perform-your-loop">
-        <summary><h2 class="part-title">05 / Perform your loop</h2></summary>
+        <summary><h2 class="part-title">Part 5 · Perform your loop</h2></summary>
         <ol start="17">
           <li data-step="beat-reverb" data-optional>
             <h3 class="step-title">Optional: a little room, not a wash</h3>
@@ -214,13 +215,13 @@
             <h3 class="step-title">Turn the loop into a tiny performance</h3>
             <p class="step-do">Stop. Hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> read this scene’s number and write it down as BEAT (drums + bass). Release, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once so BEAT stays safe. Now hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to select DRUMS, release and press <span class="nobr"><kbd class="key">PLAY</kbd>.</span> Let it loop four times, switch to BEAT (hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> <kbd class="key">−</kbd> / <span class="nobr"><kbd class="key">+</kbd>)</span> for eight loops, then back to DRUMS for four. Press <kbd class="key">PLAY</kbd> to end.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear drums only, then drums + bass, then drums only again.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A hand-made intro, main section and outro. You count the loops yourself; chapter 02 teaches song mode, which plays scenes in order automatically.</p></details><details class="step-more"><summary>Not working?</summary><p>By default a new scene starts the moment you pick it. To make scene changes wait for the end of the bar, do the optional step before this one. See help: “<a href="./help.html#scene-changes-land-at-the-wrong-moment">Scene changes land at the wrong moment</a>”.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A hand-made intro, main section and outro. You count the loops yourself; Chapter 2 teaches song mode, which plays scenes in order automatically.</p></details><details class="step-more"><summary>Not working?</summary><p>By default a new scene starts the moment you pick it. To make scene changes wait for the end of the bar, do the optional step before this one. See help: “<a href="./help.html#scene-changes-land-at-the-wrong-moment">Scene changes land at the wrong moment</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
         </ol>
       </details>
       <details id="record-live">
-        <summary><h2 class="part-title">06 / Record live and wrap up</h2></summary>
+        <summary><h2 class="part-title">Part 6 · Record live and wrap up</h2></summary>
         <ol start="20">
           <li data-step="beat-live-practice" data-optional>
             <h3 class="step-title">Optional: play along before recording</h3>
@@ -265,8 +266,8 @@
   </main>
   <footer class="page reading site-foot">
     <nav class="chapters" aria-label="Chapters">
-      <a class="prev" href="./setup.html" rel="prev"><span>Previous chapter</span>00 / Start here</a>
-      <a class="next" href="./song.html" rel="next"><span>Next chapter</span>02 / Make it a song</a>
+      <a class="prev" href="./setup.html" rel="prev"><span>Previous chapter</span>Chapter 0 · Set up your K.O. II</a>
+      <a class="next" href="./song.html" rel="next"><span>Next chapter</span>Chapter 2 · Make it a song</a>
     </nav>
     <p><a class="back-link" href="./index.html"><svg class="icon" aria-hidden="true"><use href="icons.svg#i-back"></use></svg>Back to K.O. II Coach</a></p>
     <p><a href="https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml">Report a wrong instruction</a>: tell us the chapter, the step number and what your EP-133 did instead.</p>

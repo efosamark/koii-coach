@@ -67,7 +67,7 @@ def test_place_in_01_carries_over_and_moves_are_written_back(run):
     assert rec['derivedFrom'] == 'beat-hats-quieter'
     assert run.get('koii-coach-prefs')['setup'] == 'ready', 'A learner with progress is never sent back to 00'
     page = run.page
-    assert 'Chapter 01' in page.locator('.continue .eyebrow').text_content()
+    assert 'Chapter 1' in page.locator('.continue .eyebrow').text_content()
     assert page.locator('#resume').get_attribute('href') == './first-beat.html#s-beat-hats-quieter'
     assert page.locator('#course-list li').nth(1).get_attribute('data-state') == 'doing'
 

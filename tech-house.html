@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Chapter 10: Tech House / K.O. II Coach</title>
-  <meta name="description" content="Chapter 10 of K.O. II Coach, an unofficial EP-133 course: build a four-bar 128 BPM tech-house groove with a sidechained bassline and your own vocal hook, make real section changes and arrange 112 bars in song mode on OS 2.5.1.">
+  <title>Chapter 6: Tech house / K.O. II Coach</title>
+  <meta name="description" content="Chapter 6 of K.O. II Coach, an unofficial EP-133 course: build a four-bar 128 BPM tech-house groove with a sidechained bassline and your own vocal hook, make real section changes and arrange 112 bars in song mode on OS 2.5.1.">
   <meta name="theme-color" content="#FFFEF8" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#161E19" media="(prefers-color-scheme: dark)">
   <meta name="color-scheme" content="light dark">
@@ -13,8 +13,8 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="K.O. II Coach">
-  <meta property="og:title" content="Chapter 10: Tech House / K.O. II Coach">
-  <meta property="og:description" content="Chapter 10 of K.O. II Coach, an unofficial EP-133 course: build a four-bar 128 BPM tech-house groove with a sidechained bassline and your own vocal hook, make real section changes and arrange 112 bars in song mode on OS 2.5.1.">
+  <meta property="og:title" content="Chapter 6: Tech house / K.O. II Coach">
+  <meta property="og:description" content="Chapter 6 of K.O. II Coach, an unofficial EP-133 course: build a four-bar 128 BPM tech-house groove with a sidechained bassline and your own vocal hook, make real section changes and arrange 112 bars in song mode on OS 2.5.1.">
   <meta property="og:url" content="https://efosamark.github.io/koii-coach/tech-house.html">
   <meta property="og:image" content="https://efosamark.github.io/koii-coach/icons/icon-512.png">
   <meta name="twitter:card" content="summary">
@@ -33,16 +33,17 @@
   <script src="shell.js"></script>
   <main id="main" class="page reading" tabindex="-1">
     <header class="page-head">
-      <p class="eyebrow">CHAPTER 10 / ABOUT 2–3 HOURS</p>
-      <h1>Tech House / a full 128 BPM track</h1>
+      <p class="eyebrow">CHAPTER 6 / ABOUT 2–3 HOURS</p>
+      <h1>Tech house</h1>
+      <p class="subtitle">A full 128 BPM track</p>
     </header>
     <p>Build a complete tech-house track at 128 BPM: four-on-the-floor drums, a rolling bassline that ducks under the kick, moving percussion, a short vocal hook in your own recording, two different drops, a breakdown, a build and an ending. Song mode then plays it as 112 bars, about 3½ minutes. This is a step-by-step recipe, not a promise of a mastered release: your sound choices and your speaker still matter.</p>
     <p class="makes"><b>You will make:</b> a tech-house track at 128 BPM, about 3:30 long, with two drops, a breakdown and a build: 28 song positions, 112 bars.</p>
     <section class="card">
       <h2>Before you start</h2>
       <p><b>Firmware:</b> written and checked for OS 2.5.1. Song mode and sidechain need OS 2.0 or later; a few optional steps say “OS 2.5”. Older OS: update first (see the <a href="https://teenage.engineering/guides/ep-133/whats-new">official OS notes</a>).</p>
-      <p><b>You need:</b> your K.O. II, headphones or a speaker, and for the vocal hook either your own voice (built-in microphone), a phone or computer connected with a USB-C cable (OS 2.5), or a line cable. No way to record? Load a short sound from 500–599 on C1 instead and skip the two recording steps in section 07. Paper and a pen for scene numbers.</p>
-      <p><b>You should already know</b> the moves from <a href="./first-beat.html">01 First beat</a> (placing notes with RECORD, a brief erase, undo, commit) and <a href="./song.html">02 Make it a song</a> (the song list). <a href="./sampling.html">07 Sample, chop &amp; resample</a> and <a href="./perform.html">08 Play &amp; perform</a> explain sampling and live playing in more depth; this chapter only uses what it needs.</p>
+      <p><b>You need:</b> your K.O. II, headphones or a speaker, and for the vocal hook either your own voice (built-in microphone), a phone or computer connected with a USB-C cable (OS 2.5), or a line cable. No way to record? Load a short sound from 500–599 on C1 instead and skip the two recording steps in Part 7. Paper and a pen for scene numbers.</p>
+      <p><b>You should already know</b> the moves from <a href="./first-beat.html">Chapter 1 · First beat</a> (placing notes with RECORD, a brief erase, undo, commit) and <a href="./song.html">Chapter 2 · Make it a song</a> (the song list). <a href="./sampling.html">Chapter 3 · Sample, chop &amp; resample</a> and <a href="./perform.html">Chapter 4 · Play &amp; perform</a> explain sampling and live playing in more depth; this chapter only uses what it needs.</p>
     </section>
     <div class="notice caution"><b>Safety:</b> stop playback before every position-by-position edit. A <b>brief</b> ERASE + pad removes the one note at the current step. <b>Holding</b> ERASE + pad until TRK blinks clears every note of that pad in this pattern: this chapter uses both, on purpose. SHIFT + B undoes while the umbrella icon is lit.</div>
     <div class="notice danger">Never use ERASE + SOUND here: it deletes the sample from the device.</div>
@@ -65,13 +66,13 @@
     <section id="tech-house" class="steps" aria-label="Steps">
       <!-- Each step is one li with a data-step attribute holding a stable kebab-case id. Never reuse an id for different content. chapter.js numbers the steps and saves ticks by id. No nested lists inside a step. -->
       <details open>
-        <summary><h2 class="part-title">01 / Start in an empty project and set the grid</h2></summary>
+        <summary><h2 class="part-title">Part 1 · Start in an empty project and set the grid</h2></summary>
         <ol start="1">
           <li data-step="choose-empty-project-v3">
-            <p class="step-do">Press <kbd class="key">MAIN</kbd>. If music is playing, press <kbd class="key">PLAY</kbd> to stop it. Hold <kbd class="key">MAIN</kbd>, hold <kbd class="key pad">pad 9</kbd> as well, then release both. The official guide says “hold main and one of the pads (1-9) to select an empty project”, and on a new unit projects 6–9 are empty. This course keeps project 6 for 01 First beat, 02 Make it a song and 08 Play &amp; perform, 7 for 07 Sample, chop &amp; resample and 8 for 09 Full hip-hop beat. Project 9 was your scratch project in <a href="./setup.html">00 Start here</a> and now becomes this track. If 9 already holds work you want to keep, back it up first with the EP sample tool (00 Start here, section 04) and see help <a href="./help.html#my-project-is-not-empty">“My project is not empty”</a> in <a href="./help.html">Troubleshooting</a>. Write the project number on your paper.</p>
+            <p class="step-do">Press <kbd class="key">MAIN</kbd>. If music is playing, press <kbd class="key">PLAY</kbd> to stop it. Hold <kbd class="key">MAIN</kbd>, hold <kbd class="key pad">pad 9</kbd> as well, then release both. The official guide says “hold main and one of the pads (1-9) to select an empty project”, and on a new unit projects 6–9 are empty. This course keeps project 6 for Chapters 1, 2 and 4 (First beat, Make it a song, Play &amp; perform), 7 for Chapter 3 (Sample, chop &amp; resample) and 8 for Chapter 5 (Full hip-hop beat). Project 9 was your scratch project in <a href="./setup.html">Chapter 0 · Set up your K.O. II</a> and now becomes this track. If 9 already holds work you want to keep, back it up first with the EP sample tool (Chapter 0 · Set up your K.O. II, Part 4) and see help <a href="./help.html#my-project-is-not-empty">“My project is not empty”</a> in <a href="./help.html">Troubleshooting</a>. Write the project number on your paper.</p>
           </li>
           <li data-step="check-empty-project">
-            <p class="step-do">Press <kbd class="key">PLAY</kbd>: you should hear nothing. Press <kbd class="key">PLAY</kbd> again to stop. Tap <kbd class="key">A</kbd>, then tap a few pads: in an empty project the pads have no sounds yet. Pads 1, 2 and 3 may still play the kick, snare and hat you picked in the 00 Start here tour; that is fine, because section 02 puts new sounds on them. If music plays, you are not in an empty project. On OS 2.0+ <kbd class="key">MAIN</kbd> + a number can also select a scene, and the guide does not say how the device tells the two apart, so check your display and try step 1 again.</p>
+            <p class="step-do">Press <kbd class="key">PLAY</kbd>: you should hear nothing. Press <kbd class="key">PLAY</kbd> again to stop. Tap <kbd class="key">A</kbd>, then tap a few pads: in an empty project the pads have no sounds yet. Pads 1, 2 and 3 may still play the kick, snare and hat you picked in the tour in Chapter 0; that is fine, because Part 2 puts new sounds on them. If music plays, you are not in an empty project. On OS 2.0+ <kbd class="key">MAIN</kbd> + a number can also select a scene, and the guide does not say how the device tells the two apart, so check your display and try step 1 again.</p>
           </li>
           <li data-step="set-tempo-128">
             <p class="step-do">Press <kbd class="key">TEMPO</kbd>. Turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">128</samp>, or hold <kbd class="key">TEMPO</kbd> and type <kbd class="key">1</kbd>, <kbd class="key">2</kbd>, <kbd class="key">8</kbd> on the pads. Press <kbd class="key">MAIN</kbd>.</p>
@@ -86,7 +87,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started#7.2-sequencing-a-beat-from-scratch">get started</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.4-tempo">tempo</a> · <a href="https://teenage.engineering/guides/ep-133/functions#10.4-timing">timing</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">02 / Choose every sound before writing notes</h2></summary>
+        <summary><h2 class="part-title">Part 2 · Choose every sound before writing notes</h2></summary>
         <ol start="5">
           <li data-step="choose-kick">
             <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">A</kbd>, then tap <kbd class="key pad">pad 1</kbd>. Hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd> on the pads and release: that loads sound 001. Tap <kbd class="key pad">A1</kbd> to hear it. The guide says factory kicks are stored at 1–99: use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to browse until you find a short, punchy kick, solid but without a long boom.</p>
@@ -107,7 +108,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes#8.1-sound">sound mode and sound numbers</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.5-copy-paste">copy sounds</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">03 / Write the four-on-the-floor foundation</h2></summary>
+        <summary><h2 class="part-title">Part 3 · Write the four-on-the-floor foundation</h2></summary>
         <ol start="9">
           <li data-step="write-kicks">
             <p class="step-do">Press <kbd class="key">MAIN</kbd> and make sure playback is stopped. Tap <kbd class="key">A</kbd>. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>. Hold <kbd class="key">RECORD</kbd>, tap <kbd class="key pad">A1</kbd>, release. Use <kbd class="key">+</kbd> to reach <samp class="lcd">1.2.1</samp>, <samp class="lcd">1.3.1</samp> and <samp class="lcd">1.4.1</samp>, writing <kbd class="key pad">A1</kbd> at each.</p>
@@ -133,7 +134,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.2-step-sequence">step sequence</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">pattern length and duplicate</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">04 / Make the percussion move across four bars</h2></summary>
+        <summary><h2 class="part-title">Part 4 · Make the percussion move across four bars</h2></summary>
         <ol start="14">
           <li data-step="add-hat-accents">
             <p class="step-do">Stopped, with <kbd class="key">A</kbd> selected, write <kbd class="key pad">A3</kbd> at <samp class="lcd">2.2.4</samp> and <samp class="lcd">4.2.4</samp>. Shortcut: hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd> to jump a whole bar, or <kbd class="key">−</kbd> to jump back. Only do this with record arm off (armed, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">+</kbd></kbd> doubles the pattern) and without holding a pad (<kbd class="chord"><kbd class="key">SHIFT</kbd> + pad + <kbd class="key">−</kbd> / <kbd class="key">+</kbd></kbd> nudges that note).</p>
@@ -162,7 +163,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">live record with count-in</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">erase and undo</a> · <a href="https://teenage.engineering/guides/ep-133/functions#10.4.2-timing-correct">timing correct</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">05 / Build the rolling bassline</h2></summary>
+        <summary><h2 class="part-title">Part 5 · Build the rolling bassline</h2></summary>
         <ol start="20">
           <li data-step="make-bass-two-bars">
             <p class="step-do">Press <kbd class="key">MAIN</kbd>, stopped. Tap <kbd class="key">B</kbd> (a short tap selects the group; holding <kbd class="key">B</kbd> and pressing <kbd class="key">−</kbd> / <kbd class="key">+</kbd> would switch its pattern). Hold <kbd class="key">RECORD</kbd>, press <kbd class="key">+</kbd> once, then release both. B’s pattern is now two bars long and still empty.</p>
@@ -188,7 +189,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.1-live-record">pattern length and duplicate</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.2.2-trim">trim</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">06 / Make kick and bass breathe</h2></summary>
+        <summary><h2 class="part-title">Part 6 · Make kick and bass breathe</h2></summary>
         <ol start="25">
           <li data-step="check-kick-and-bass">
             <p class="step-do">Press <kbd class="key">PLAY</kbd> and listen to at least four loops. You should pick out the kick on every beat, and the bass should bounce, with <kbd class="key pad">B2</kbd> answering at the end of bar 4. If not, change one thing only: the bass level (<kbd class="key knob">X</kbd> in <kbd class="key">SOUND</kbd>), its length (trim, as in the checkpoint above) or a different bass sound. Stop.</p>
@@ -208,7 +209,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/effects#11.9.1-sidechain">sidechain</a> · <a href="https://teenage.engineering/guides/ep-133/workflow#6.1-commit">commit</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">07 / Record the vocal hook and add the synth answer</h2></summary>
+        <summary><h2 class="part-title">Part 7 · Record the vocal hook and add the synth answer</h2></summary>
         <ol start="29">
           <li data-step="choose-vocal-source">
             <p class="step-do">Tap <kbd class="key">C</kbd>, then press <kbd class="key">SAMPLE</kbd>: the pads blink. Use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to choose the source: the built-in mic for your own voice; <samp class="lcd">usb</samp> (OS 2.5) for sound from a phone or computer connected with a USB-C cable, with K.O. II chosen as its audio output; or line in (<samp class="lcd">in</samp>) for a cable. Make a test sound and turn <kbd class="key knob">X</kbd> (input level) up until it is strong but not distorted. Keep <kbd class="key knob">Y</kbd> (threshold) low so recording starts as soon as you do.</p>
@@ -245,7 +246,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/functions#10.1-sample">sampling and hands-free sampling</a> · <a href="https://teenage.engineering/guides/ep-133/how-to#12.11-record-a-sample-using-usb-audio">sample over USB audio</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.2-sound-edit">sound edit, trim and play mode</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">08 / Make the other sections</h2></summary>
+        <summary><h2 class="part-title">Part 8 · Make the other sections</h2></summary>
         <ol start="38">
           <li data-step="outro-from-groove" data-risk="erase">
             <p class="step-do">Every new section starts as a copy of a finished one. Stopped, hold <kbd class="key">MAIN</kbd> and use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to select GROOVE, then release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once, hold <kbd class="key">MAIN</kbd> and write the new number as <b>OUTRO</b>. Tap <kbd class="key">A</kbd>. Hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A4</kbd></kbd> until <samp class="lcd">TRK</samp> blinks, then release: every open hat in this pattern is gone. Do the same with <kbd class="key pad">A5</kbd> (rim) and <kbd class="key pad">A7</kbd> (tom).</p>
@@ -280,7 +281,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">erase and undo</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.3-main">select scene and commit</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">09 / Add space and a riser</h2></summary>
+        <summary><h2 class="part-title">Part 9 · Add space and a riser</h2></summary>
         <ol start="44">
           <li data-step="add-vocal-reverb">
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to select DROP B, release, and press <kbd class="key">PLAY</kbd>. Tap <kbd class="key">C</kbd>, then press <kbd class="key">FX</kbd> and use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to choose reverb. Raise the fader a little: in <kbd class="key">FX</kbd> it sets group C’s send. Turn <kbd class="key knob">X</kbd> down for a short reverb. Keep the bass dry: do not raise B’s send. Do not hold <kbd class="key">RECORD</kbd> while moving the fader, or you record fader movement. If the words blur, lower the fader before changing anything else. Press <kbd class="key">MAIN</kbd>, then <kbd class="key">PLAY</kbd> to stop.</p>
@@ -302,7 +303,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/effects#11.2-reverb">effects and reverb</a> · <a href="https://teenage.engineering/guides/ep-133/modes#8.2.4-time">time page and reverse</a> · <a href="https://teenage.engineering/guides/ep-133/whats-new">OS 2.5 reverse</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">10 / Build the 112-bar song list</h2></summary>
+        <summary><h2 class="part-title">Part 10 · Build the 112-bar song list</h2></summary>
         <ol start="48">
           <li data-step="check-four-bar-scenes">
             <p class="step-do">A song position lasts as long as its scene’s longest pattern, so every scene must loop every four bars. Spot-check INTRO, BREAK and PEAK: play each and count; it should restart after four bars (16 beats). Groups you never lengthened stay one bar and simply repeat underneath; that is fine.</p>
@@ -343,7 +344,7 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes#8.3.1-song-mode">song mode</a> · <a href="https://teenage.engineering/guides/ep-133/workflow#6.2-song-mode">song position length</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">11 / Speaker mix check</h2></summary>
+        <summary><h2 class="part-title">Part 11 · Speaker mix check</h2></summary>
         <ol start="53">
           <li data-step="list-three-dislikes">
             <p class="step-do">Play the whole song without touching anything. Write down only three things you dislike. Do not try to repair every detail at once.</p>
@@ -363,13 +364,13 @@
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes#8.1-sound">sound level and pitch</a> · <a href="https://teenage.engineering/guides/ep-133/effects#11.9-output">output and master compressor</a></p>
       </details>
       <details>
-        <summary><h2 class="part-title">12 / Record, save and share</h2></summary>
+        <summary><h2 class="part-title">Part 12 · Record, save and share</h2></summary>
         <ol start="57">
           <li data-step="check-drop-transition">
             <p class="step-do">In the song list, use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to select position 9 (DROP B) and press <kbd class="key">PLAY</kbd> to play from there through BREAK and BUILD into DROP A. This is your main payoff. The break should create anticipation; the returning kick, bass and hook should feel bigger without being louder. Stop.</p>
           </li>
           <li data-step="record-full-pass">
-            <p class="step-do">Record one full pass before experimenting again. With OS 2.5, connect the K.O. II to a phone or computer with a USB-C cable, choose K.O. II as the input in a recording app, start recording, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> in the song list. Or record the headphone output with a recorder or audio interface. Optional: hold <kbd class="key">FX</kbd> and press pads at the transitions for punch-in effects (more in <a href="./perform.html">08 Play &amp; perform</a>). Commit makes scene copies; it is not an audio export.</p>
+            <p class="step-do">Record one full pass before experimenting again. With OS 2.5, connect the K.O. II to a phone or computer with a USB-C cable, choose K.O. II as the input in a recording app, start recording, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> in the song list. Or record the headphone output with a recorder or audio interface. Optional: hold <kbd class="key">FX</kbd> and press pads at the transitions for punch-in effects (more in <a href="./perform.html">Chapter 4 · Play &amp; perform</a>). Commit makes scene copies; it is not an audio export.</p>
           </li>
           <li data-step="write-down-scenes">
             <p class="step-do">Write down the project number and the scene numbers of GROOVE, DROP A, DROP B, OUTRO, INTRO, BUILD, BREAK and PEAK. Keep a copy of your samples on a computer with the official EP sample tool. Your ticks on this page are saved only in this browser. For public release of music containing someone else’s record, check and obtain the necessary permissions; do not assume sampling automatically grants rights.</p>
@@ -466,8 +467,8 @@
   </main>
   <footer class="page reading site-foot">
     <nav class="chapters" aria-label="Chapters">
-      <a class="prev" href="./hiphop.html" rel="prev"><span>Previous chapter</span>09 / Full hip-hop beat</a>
-      <a class="next" href="./thodorakis-house.html" rel="next"><span>Next chapter</span>11 / House with your own vocal samples</a>
+      <a class="prev" href="./hiphop.html" rel="prev"><span>Previous chapter</span>Chapter 5 · Full hip-hop beat</a>
+      <a class="next" href="./thodorakis-house.html" rel="next"><span>Next chapter</span>Chapter 7 · Vocal house</a>
     </nav>
     <p><a class="back-link" href="./index.html"><svg class="icon" aria-hidden="true"><use href="icons.svg#i-back"></use></svg>Back to K.O. II Coach</a></p>
     <p><a href="https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml">Report a wrong instruction</a>: tell us the chapter, the step number and what your EP-133 did instead.</p>

@@ -241,7 +241,7 @@ function update(){
 // "Needs OS x+" on the steps that need a newer OS than the one chosen in Settings (the old app's badge, kept as is).
 (()=>{
   const fw=window.CoachProgress?CoachProgress.v2().firmware:'2.5',num={'2.5':2.5,'2':2,older:1}[fw],
-    name={'2.5':'OS 2.5.x','2':'OS 2.0.x',older:'an OS older than 2.0'}[fw],upd='<a href="./setup.html">00 Start here</a> shows how';
+    name={'2.5':'OS 2.5.x','2':'OS 2.0.x',older:'an OS older than 2.0'}[fw],upd='<a href="./setup.html">Chapter 0 · Set up your K.O. II</a> shows how';
   steps.forEach(li=>{
     const os=li.dataset.os;if(!os||!/^\d+(\.\d+)?$/.test(os))return;
     const b=document.createElement(num>=parseFloat(os)?'p':'div'),tag='Needs OS '+os+'+';

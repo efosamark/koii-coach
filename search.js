@@ -16,6 +16,8 @@
    A source that fails to load is skipped, and tried again the next time the overlay opens.
 
    Where a result goes:
+     chapter              the chapter's page (found by its name, its number, and its number and name before the
+                          renumber: "07", "start here")
      chapter step         a read-only preview of the step, here in the overlay, with "Go to this step"
                           (<page>.html#s-<step id>, where the player opens it) as the second action: searching never
                           moves the learner. A middle click or Ctrl-click still opens the step itself.
@@ -109,10 +111,10 @@ const text=n=>clean(n?n.textContent:'');
 async function loadChapter(c){
   try{
     const dom=await fetchDoc(c.href);if(!dom)return null;
-    const book=c.num+' '+c.title,out=[];
+    const book='Chapter '+c.num+' · '+c.title,out=[];
     let n=0;   // step numbers run through the whole chapter, as chapter.js numbers the lists
     dom.querySelectorAll('.steps > details').forEach(d=>{
-      const head=text(d.querySelector('summary')),m=/^(\d+)\s*\/\s*(.*)$/.exec(head),no=m?m[1]:'',name=m?m[2]:head;
+      const head=text(d.querySelector('summary')),m=/^(?:Part\s+)?(\d+)\s*[\/·]\s*(.*)$/.exec(head),no=m?m[1]:'',name=m?m[2]:head;
       const lis=[...d.querySelectorAll('ol>li')],ids=lis.map(li=>li.dataset.step).filter(Boolean);
       const notes=[...d.children].filter(e=>e.tagName!=='SUMMARY'&&e.tagName!=='OL'&&!/^\s*Official guide/.test(e.textContent));
       const intro=notes.map(e=>e.textContent).join(' ');
@@ -162,8 +164,10 @@ async function loadTool([href,read]){
 // ---------- The index ----------
 const parts=new Map();   // a chapter's slug or a tool page -> its documents, once that source has loaded
 let all=[],missing=0,ready=false,building=null,view=null;
+// Each chapter itself, so "07" or "start here" (its number and name before the renumber) still finds it.
+const CHAPTERS=site.chapters.map(c=>doc({type:'step',title:'Chapter '+c.num+' · '+c.title,body:[c.formerly?'Formerly '+c.formerly+', chapter '+c.formerly:'',c.oldTitle||''].join(' '),crumb:['Course'],href:c.href}));
 function assemble(){
-  all=[];
+  all=CHAPTERS.slice();
   site.chapters.forEach(c=>all.push(...(parts.get(c.slug)||[])));
   TOOLS.forEach(t=>all.push(...(parts.get(t[0])||[])));
   missing=site.chapters.length+TOOLS.length-parts.size;
@@ -271,7 +275,7 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
     // A troubleshooting topic opens where it is; a step opens a preview (data-stay keeps the overlay open).
     if(d.topic)return`<li><details class="search-topic" data-href="${esc(d.href)}"><summary class="search-hit"><span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span></summary>`+
       `<div class="inside">${d.html}<p class="meta"><a href="${esc(d.href)}">Open in Troubleshooting</a></p></div></details></li>`;
-    if(d.type==='step')return`<li><a class="search-hit" href="${esc(d.href)}" data-stay data-preview="${all.indexOf(d)}">`+
+    if(d.type==='step'&&d.html)return`<li><a class="search-hit" href="${esc(d.href)}" data-stay data-preview="${all.indexOf(d)}">`+
       `<span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span>${d.body?`<span class="search-hit-snip">${snippet(d.body,m)}</span>`:''}</a></li>`;
     return`<li><a class="search-hit" href="${esc(d.href)}"><span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span>${d.body?`<span class="search-hit-snip">${snippet(d.body,m)}</span>`:''}</a></li>`;
   }

@@ -21,14 +21,14 @@ NOTE = ('Tests exercise the UI, navigation, saved progress, the service worker a
 
 # Chapter pages in guided order: (file, <body data-chapter>, header number, previous link, next link).
 CHAPTERS = [
-    ('setup.html', 'setup', '00', None, './first-beat.html'),
-    ('first-beat.html', 'first-beat', '01', './setup.html', './song.html'),
-    ('song.html', 'song', '02', './first-beat.html', './sampling.html'),
-    ('sampling.html', 'sampling', '07', './song.html', './perform.html'),
-    ('perform.html', 'perform', '08', './sampling.html', './hiphop.html'),
-    ('hiphop.html', 'hiphop', '09', './perform.html', './tech-house.html'),
-    ('tech-house.html', 'tech-house', '10', './hiphop.html', './thodorakis-house.html'),
-    ('thodorakis-house.html', 'vocal-house', '11', './tech-house.html', None),
+    ('setup.html', 'setup', '0', None, './first-beat.html'),
+    ('first-beat.html', 'first-beat', '1', './setup.html', './song.html'),
+    ('song.html', 'song', '2', './first-beat.html', './sampling.html'),
+    ('sampling.html', 'sampling', '3', './song.html', './perform.html'),
+    ('perform.html', 'perform', '4', './sampling.html', './hiphop.html'),
+    ('hiphop.html', 'hiphop', '5', './perform.html', './tech-house.html'),
+    ('tech-house.html', 'tech-house', '6', './hiphop.html', './thodorakis-house.html'),
+    ('thodorakis-house.html', 'vocal-house', '7', './tech-house.html', None),
 ]
 # Tool pages: (file, h1, a selector the page must have).
 TOOLS = [('learn.html', 'Learn', '[data-lesson]'), ('controls.html', 'Control map', '[data-control]'), ('lab.html', 'Rhythm lab', '#beat button'),
@@ -148,7 +148,7 @@ def run_target(browser, artifacts_dir, name, url, results):
         # With progress, "/" shows Continue, and Continue opens 01 at the step to continue at.
         page.goto(url, wait_until='networkidle')
         assert page.locator('.card.start').count() == 0, 'Home drops the welcome card once 01 has progress'
-        assert_match(page.locator('.continue .eyebrow').text_content(), r'Chapter 01')
+        assert_match(page.locator('.continue .eyebrow').text_content(), r'Chapter 1\b')
         cur = store(page, 'koii-coach-ch-first-beat')['cur']
         assert page.locator('#resume').get_attribute('href') == './first-beat.html#s-' + cur, 'Continue links the step to continue at'
         page.locator('#resume').click()
@@ -429,7 +429,7 @@ def run_target(browser, artifacts_dir, name, url, results):
             page.locator('.steps ol>li .check input').nth(i).check()
         next_step = page.locator('.steps ol>li').nth(2).get_attribute('data-step')
         page.goto(url, wait_until='networkidle')
-        assert_match(page.locator('.continue .eyebrow').text_content(), r'Chapter 07')
+        assert_match(page.locator('.continue .eyebrow').text_content(), r'Chapter 3\b')
         assert page.locator('#resume').get_attribute('href') == './sampling.html#s-' + next_step, 'Continue links the next step'
         page.locator('#resume').click()
         page.wait_for_url(absolute('./sampling.html#s-' + next_step))

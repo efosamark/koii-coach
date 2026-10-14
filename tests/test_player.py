@@ -143,7 +143,7 @@ def test_chapter_complete_ticks_the_recap(run):
     page.locator('#player-done').wait_for(state='visible')
     assert 'beat-recap' in run.get('koii-coach-ch-first-beat')['done'], 'Arriving at #done ticks the recap'
     card = page.locator('#player-done')
-    assert 'Chapter 01 done' in card.locator('h2').text_content()
+    assert 'Chapter 1 done' in card.locator('h2').text_content()
     assert card.locator('.pd-made').text_content().startswith('You made:'), 'You made, from the page'
     assert card.locator('.pd-moves li').count() == 6, 'New moves, from the recap'
     assert card.locator('.led-row .led.on').count() == 16
@@ -211,3 +211,22 @@ def test_menu_jump_and_shortcuts(run):
     page.keyboard.press('Control+k')
     page.locator('#site-search-dialog').wait_for(state='visible')
     assert run.get('koii-coach-prefs')['keys'] is False
+
+
+@pytest.mark.browser
+def test_renumbered_course(run):
+    """The course reads Chapter 0-7 in teaching order; a renumbered chapter says what it was, and search still finds it."""
+    page = run.page
+    run.go('./sampling.html#start')
+    assert page.locator('header .eyebrow').text_content().startswith('CHAPTER 3 /')
+    assert 'Formerly 07' in page.locator('.player-chips').text_content(), 'A renumbered chapter shows "Formerly 07"'
+    assert page.locator('h1').text_content() == 'Sample, chop & resample'
+    run.go('./setup.html#start')
+    assert page.locator('h1').text_content() == 'Set up your K.O. II' and 'Formerly' not in page.locator('.player-chips').text_content()
+    page.keyboard.press('/')
+    page.locator('#site-search').fill('07')
+    hit = page.locator('#site-results a.search-hit').first
+    hit.wait_for()
+    assert hit.get_attribute('href') == './sampling.html' and 'Chapter 3' in hit.text_content(), 'Search maps "07" to Chapter 3'
+    page.locator('#site-search').fill('start here')
+    page.locator('#site-results a.search-hit[href="./setup.html"]').first.wait_for()
