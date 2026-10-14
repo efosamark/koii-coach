@@ -15,7 +15,7 @@ Fails (exit 1) when:
 - a link to one step (page.html#s-<id>, or #s-<id> on the same page) names a step that is not on that page,
 - a page loads shell.js without site.js and progress.js before it (progress and migrations would not run there),
 - a page with its stylesheets and scripts weighs more than its budget, gzipped (plan 7.8): 60 KB for Home and the tool
-  pages, 80 KB for a chapter page (the plan's 60 KB needs the player split; today they weigh 66-76 KB),
+  pages, 80 KB for a chapter page (docs/overhaul-plan.md decision 19; today they weigh 66-76 KB),
 - a page's visible text names a chapter by its number before the renumber ("chapter 07", "07 / Sample…", "section 04",
   "CHAPTER 09") or by an old name ("Start here", "Tech House"): the course is Chapter 0-7 and parts are "Part 4".
 Standard library only, so it runs anywhere Python 3.8+ does.

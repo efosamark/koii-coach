@@ -1229,7 +1229,7 @@ Performance is not the problem today: 45 KB gzipped and a 19ms re-render. The bu
 | Mono font | ≤18 KB |
 | Icon sprite | ≤6 KB; device.svg ≤12 KB |
 | Search index | ≤50 KB gz |
-| Per page, excluding the font and search index | ≤60 KB gz (as built in 2026.10.14.19: Home and tools 33–42 KB; chapter pages 66–76 KB, checked at ≤80 KB until the player is split) |
+| Per page, excluding the font and search index | ≤60 KB gz; a chapter page ≤80 KB gz (decision 19). As built: Home and tools 33–42 KB, chapter pages 66–76 KB |
 | Precache total | ≤600 KB gz, about 40 files (plus the N−1 hashed carry-over) |
 | Done · Next → next step painted | ≤100ms at 4× CPU throttle |
 | Layout shift on a control-map or sheet tap | CLS 0 |
@@ -1504,7 +1504,7 @@ The skeleton is proposal C's strangler sequence. The learner-critical work from 
   - v2 schema 2/3/4 fixtures show the same 01/02 position. A move in the old app after P5a gives first-beat.html the same position.
   - Reverting P5b on a test branch restores the exact old position.
   - All 8 chapters and every tool readable without JS.
-  - Every page ≤60 KB gzipped.
+  - Every page ≤60 KB gzipped (a chapter page ≤80 KB, decision 19).
   - The fold test passes for 100% of 01/02 steps at 390×844 and 360×740 (with the inset).
 
 ### P6 · Renumber in teaching order — S, 1–2 days (if decision 1 = yes)
@@ -1633,6 +1633,7 @@ Each has a recommended default. If you say nothing, the default applies.
 | 16 | When to remove the dual-write and legacy keys | **At least 8 weeks after P5b, and not before the P8 cleanup release** |
 | 17 | Store learners' scene and sample numbers | **Yes, in P8** (`koii-coach-notes`), with paper still working. Alternative: paper only |
 | 18 | Working pace | **Plan at 3 focused days a week** (about 32–38 calendar weeks in total). State the real figure, and the calendar windows in §9 are re-derived from it |
+| 19 | Page weight of a chapter page (added in P8, 2026.10.14.19) | **80 KB gzipped for a chapter page, 60 KB for every other page.** Measured with minified CSS and JS: Home and the tools 33–42 KB; chapter pages 66–76 KB (HTML 9–18 KB, CSS 17 KB, JS 41 KB). The JS budget below assumed fewer features than P4–P8 delivered (the player with checkpoints and Get back in, notes, the keys panel and schematic, split migrations). Deferring the Tools sheet to idle, loading the one-time migration data only when needed, splitting the CSS and tighter minification would save about 13 KB and still leave the largest chapters at 61–62 KB. Alternative: a P9 rewrite of the shared scripts to the 25 KB JS budget |
 
 ---
 
