@@ -4,6 +4,17 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.20
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.19 (no lesson text changed). **Written for:** OS 2.5.1.
+
+Updates and addresses (plan 7.6 and 8.1). No lesson, step or saved-progress change.
+
+- **"Coach updated · Reload".** When a new release takes over a page you have open, a notice offers to reload it, so the page and what it loads next come from the same release. It does not appear the first time the coach is saved for offline use.
+- **One release at a time.** Every page now asks for its scripts and stylesheet with the release in the address (`player.js?v=2026.10.14.20`), so a page can no longer run with older copies that GitHub Pages lets browsers keep for 10 minutes after a release. Offline copies are unaffected: the service worker ignores the query.
+- **Unknown addresses.** The "Page not found" page no longer makes five failed requests when the unknown address is several folders deep (the browser fetched its stylesheet and scripts from that folder before the page could point it at the site's root). It still works without JavaScript.
+- **Tests.** `tests/test_urls.py`: every page typed in and offline, a `?query`, a step link and an out-of-date one, the old app's addresses, an unknown address three folders deep (online, with status 404 as on GitHub Pages, and offline) and its links; a new release under an open page (the notice, search in the old page, Reload). `tests/test_search.py`: "turntable", "time-stretch", "sidechain" and "vocal" find steps, "hat" never matches inside "that", search works offline and says so when the pages are not saved. The tests and CI now serve the site with `.github/scripts/serve.py`, which answers unknown addresses with `404.html` as GitHub Pages does.
+
 ## 2026.10.14.19
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2, and for the answers below on 14 October 2026: the guide's pages and pictures, its What's new notes, teenage engineering's factory-sound file, and owners' reports (the Elektronauts EP-133 threads and an [unofficial cheat sheet for OS 2.5](https://ep133.joeyh.org)), each labelled in the step. **Written for:** OS 2.5.1. No button sequence changed; one troubleshooting suggestion is new (marked below).

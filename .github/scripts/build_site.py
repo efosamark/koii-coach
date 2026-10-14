@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Copy only the app files into a site folder, shrink its CSS and JavaScript (minify.py), and check it before anything
-is published.
+"""Copy only the app files into a site folder, shrink its CSS and JavaScript (minify.py), tag each page's scripts and
+stylesheet with the release (src="player.js?v=2026.10.14.19", so a page never runs with files from another release
+that GitHub Pages' 10-minute HTTP cache still holds; sw.js ignores the query), and check it before anything is published.
 
 Usage: python3 .github/scripts/build_site.py _site
 
@@ -33,6 +34,8 @@ PRECACHED = ('.html', '.js', '.css', '.woff2', '.svg')  # every one of these in 
 SKIP_LINK = re.compile(r'^(?:[a-z][a-z0-9+.-]*:|//|#)', re.I)  # http:, mailto:, data:, //host, #anchor
 
 errors, warnings = [], []
+# A page's own scripts and stylesheets (not sw.js, which keeps one address, and not other sites).
+TAGGED = re.compile(r'(<script src="|<link rel="stylesheet" href=")((?:\./)?(?!sw\.js)[a-z0-9-]+\.(?:js|css))"')
 
 # Bare-number lint (plan 4.2, P6). Old chapter numbers are 00 01 02 07 08 09 10 11; the "Formerly 07" chip and search
 # alias are added by scripts, never written in a page.
@@ -68,6 +71,11 @@ def build(out):
                 if dst.suffix in ('.css', '.js') and dst.name != 'sw.js':
                     text = src.read_text(encoding='utf-8')
                     dst.write_text(minify.css(text) if dst.suffix == '.css' else minify.js(text), encoding='utf-8')
+    m = re.search(r"""\bversion\s*:\s*['"]([^'"]+)['"]""", (ROOT / 'site.js').read_text(encoding='utf-8'))
+    if m:
+        for page in out.glob('*.html'):
+            src = page.read_text(encoding='utf-8')
+            page.write_text(TAGGED.sub(lambda x: f'{x.group(1)}{x.group(2)}?v={m.group(1)}"', src), encoding='utf-8')
     return sorted(p.relative_to(out).as_posix() for p in out.rglob('*') if p.is_file())
 
 
@@ -192,7 +200,7 @@ def main():
             n += count
     for name in [f for f in files if f.endswith('.html')]:
         src = (out / name).read_text(encoding='utf-8')
-        order = re.findall(r'<script src="(site|progress|shell)\.js"></script>', src)
+        order = re.findall(r'<script src="(site|progress|shell)\.js(?:\?[^"]*)?"></script>', src)
         if 'shell' in order and order[:3] != ['site', 'progress', 'shell']:
             errors.append(f'{name} must load site.js, progress.js and shell.js in that order (it has {order})')
     for name in [f for f in files if f.endswith('.html')]:
@@ -208,7 +216,7 @@ def main():
     weights = {}
     for name in [f for f in files if f.endswith('.html')]:
         src = (out / name).read_text(encoding='utf-8')
-        deps = re.findall(r'<script src="([^"]+)"', src) + re.findall(r'<link rel="stylesheet" href="([^"]+)"', src)
+        deps = [local_path(d) for d in re.findall(r'<script src="([^"]+)"', src) + re.findall(r'<link rel="stylesheet" href="([^"]+)"', src)]
         weights[name] = gz(name) + sum(gz(d) for d in deps if d in have)
         budget = 80 if 'data-chapter=' in src.split('<main', 1)[0] else 60
         if weights[name] > budget * 1024:

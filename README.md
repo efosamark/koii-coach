@@ -77,6 +77,7 @@ Every push to `main`, every pull request into `main` and every manual run start 
 
 5. `tests/test_fold.py` measures every step of every chapter in the step player: at 390×844 and 360×740 (less a 34 px safe area) the Do lines and the Check, or for a risky step Before you press through the last Do line, sit above Done · Next; at 844×390, with the phone on its side, every Do line does; with Larger text, at least nine steps in ten.
 6. `tests/test_a11y.py` runs axe-core (a pinned copy in `tests/vendor/`, MPL-2.0, used only by the tests) on every kind of page and sheet, at phone and desktop width, in light and dark, and fails on any serious or critical WCAG 2.2 A/AA problem. It also completes a whole part of Chapter 0 with the keyboard alone, checks the Tab stops from a step to Done · Next, the fixed bars at 320×256 (400% zoom), that lit keys, hits and ticks stay visible in forced colours (screenshots in `artifacts/`), and that every page still reads with JavaScript off.
+7. `tests/test_urls.py` opens every page typed in and offline, a page with a `?query`, step links (current and out of date), the old app's addresses and an unknown address three folders deep (status 404 with the site's own page, online and offline, and its links work), and deploys a new release under an open page to check the "Coach updated · Reload" notice. `tests/test_search.py` checks that search finds steps for "turntable", "time-stretch", "sidechain" and "vocal", never matches "hat" inside "that", works offline and says so when the pages are not saved.
 
 **Not tested automatically:** real EP-133 hardware, how the sounds sound, Safari on iPhone, offline use on a real phone, saving the progress file (loading one is tested), and the live site (the workflow leaves `LIVE_URL` empty; set it to test a deployed copy as well).
 
@@ -89,7 +90,7 @@ python -m venv .venv
 .venv\Scripts\python -m pytest --browser-channel chrome
 ```
 
-`--browser-channel chrome` uses the Google Chrome you already have. To use Playwright's own Chromium instead, run `.venv\Scripts\python -m playwright install chromium` once and leave the option out. On macOS or Linux, use `python3` and `.venv/bin/python`. The test serves `_site/` itself; set `LOCAL_URL` to test a copy that is already being served. Rebuild `_site/` after you change a file.
+`--browser-channel chrome` uses the Google Chrome you already have. To use Playwright's own Chromium instead, run `.venv\Scripts\python -m playwright install chromium` once and leave the option out. On macOS or Linux, use `python3` and `.venv/bin/python`. The test serves `_site/` itself, as GitHub Pages would (`.github/scripts/serve.py`: an unknown address gets `404.html`); set `LOCAL_URL` to test a copy that is already being served. Rebuild `_site/` after you change a file.
 
 Screenshots, traces and `artifacts/results.json` are written to `artifacts/`. In GitHub Actions they are attached to each run as the `coach-browser-evidence` artifact, and a short result appears in the run summary. Results are no longer committed to the repository.
 
@@ -134,9 +135,9 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 | `chapter.js`, `player.js`, `toolsheet.js` | Ticks, progress and resume for every chapter page, the step player on top of them, and the Tools sheet (the step's keys, fixes and words; the map, troubleshooting, glossary and cheat sheet). |
 | `sw.js` | Offline support (service worker). |
 | `manifest.webmanifest`, `icon.svg`, `icons/` | Home-screen app name and icons. |
-| `tests/test_smoke.py`, `tests/test_progress.py`, `tests/test_player.py`, `tests/test_fold.py`, `tests/test_a11y.py`, `tests/conftest.py`, `tests/support.py`, `pytest.ini` | Browser tests (pytest and Playwright for Python); `tests/vendor/` holds the pinned axe-core they use. |
+| `tests/test_smoke.py`, `tests/test_progress.py`, `tests/test_player.py`, `tests/test_fold.py`, `tests/test_a11y.py`, `tests/test_urls.py`, `tests/test_search.py`, `tests/conftest.py`, `tests/support.py`, `pytest.ini` | Browser tests (pytest and Playwright for Python); `tests/vendor/` holds the pinned axe-core they use. |
 | `requirements-dev.txt` | Test tools and their pinned versions. Never published. |
-| `.github/` | Test-and-deploy workflow, site build (`build_site.py`, `minify.py`) and live-check scripts, issue form, Dependabot settings. |
+| `.github/` | Test-and-deploy workflow, site build (`build_site.py`, `minify.py`), test server (`serve.py`) and live-check scripts, issue form, Dependabot settings. |
 | `CHANGELOG.md` | What changed in each release, and which guide version it was checked against. |
 | `CONTRIBUTING.md` | How to add, change or split a step and release it. |
 | `docs/overhaul-plan.md` | The plan for the UI and UX overhaul. |

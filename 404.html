@@ -3,7 +3,9 @@
 <head>
   <!-- GitHub Pages serves this page for an unknown address at any depth (/koii-coach/a/b/c), so every link has to
        resolve from the site's root: a <base> made before anything else loads. On github.io the root is the project's
-       folder (/koii-coach/); anywhere else (a local copy) it is /. -->
+       folder (/koii-coach/); anywhere else (a local copy) it is /. The stylesheet and scripts are written in after the
+       <base> exists: as plain tags, the browser's preload scanner would fetch them from the unknown folder first
+       (/koii-coach/a/b/coach.css), five wasted 404s. -->
   <script>(function(){var s=location.pathname.split('/')[1]||'',b=document.createElement('base');b.href=/\.github\.io$/.test(location.hostname)&&s&&!/\.html?$/.test(s)?'/'+s+'/':'/';document.head.appendChild(b);})();</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -16,14 +18,12 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="robots" content="noindex">
-  <link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="coach.css">
+  <script>document.write('<link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="coach.css">');</script>
+  <noscript><link rel="stylesheet" href="coach.css"></noscript>
 </head>
 <body>
   <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
-  <script src="site.js"></script>
-  <script src="progress.js"></script>
-  <script src="shell.js"></script>
+  <script>document.write('<script src="site.js"><\/script><script src="progress.js"><\/script><script src="shell.js"><\/script>');</script>
   <main id="main" class="page reading" tabindex="-1">
     <header class="page-head">
       <p class="eyebrow">K.O. II Coach</p>

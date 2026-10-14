@@ -227,7 +227,8 @@ function loadSearch(){
   if(loading)return;
   loading=true;
   const s=document.createElement('script');
-  s.src='./search.js';
+  const v=(window.COACH_SITE||{}).version;
+  s.src='./search.js'+(v?'?v='+encodeURIComponent(v):'');   // the same release as this page (plan 7.6; build_site.py tags the rest)
   s.onload=()=>{
     if(!window.CoachSearch)return s.onerror();
     window.CoachSearch.mount(field.closest('dialog'),early);
@@ -377,10 +378,21 @@ function register(){
     if(reg.active)reg.update().catch(()=>{});
   },()=>{failed=true;offline();});
 }
+// A new release took over this open page (its service worker activated): this page and what it loads next could
+// come from different releases, so offer a reload. Not on the first install, when there was no worker before.
+let hadWorker=Boolean(navigator.serviceWorker&&navigator.serviceWorker.controller);
+function updated(){
+  if(!hadWorker){hadWorker=true;return;}
+  let el=document.getElementById('toast');
+  if(!el){el=document.createElement('div');el.id='toast';el.className='toast hidden';el.setAttribute('role','status');document.body.append(el);}
+  el.innerHTML='<span>Coach updated</span><button class="btn" type="button" data-reload>Reload</button>';
+  el.classList.remove('hidden');el.hidden=false;
+  el.querySelector('[data-reload]').addEventListener('click',()=>location.reload());
+}
 if(navigator.serviceWorker&&secure){
   if(document.readyState==='complete')register();else addEventListener('load',register,{once:true});
   navigator.serviceWorker.ready.then(offline,()=>{});
-  navigator.serviceWorker.addEventListener('controllerchange',offline);
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{offline();updated();});
 }
 document.addEventListener('click',e=>{
   if(!e.target.closest||!e.target.closest('[data-retry]'))return;

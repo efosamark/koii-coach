@@ -36,9 +36,9 @@ jobs:
           python3 -m venv .venv
           .venv/bin/pip install --quiet -r requirements-dev.txt
           .venv/bin/python -m playwright install --with-deps chromium
-      - name: Serve the site folder on localhost
+      - name: Serve the site folder on localhost (unknown addresses get 404.html, as on GitHub Pages)
         run: |
-          python3 -m http.server 8080 --bind 127.0.0.1 --directory _site > /tmp/coach-server.log 2>&1 &
+          python3 .github/scripts/serve.py _site 8080 > /tmp/coach-server.log 2>&1 &
           for i in $(seq 1 30); do
             if curl -fsS http://127.0.0.1:8080/ > /dev/null; then break; fi
             sleep 1
