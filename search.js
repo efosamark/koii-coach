@@ -34,7 +34,7 @@
    Matching (docs/overhaul-plan.md 4.7): whole words, with a prefix match on the last one while it is being typed
    ("hat" finds "hats" and "hi-hat", never "that"); case and accents folded; plurals and -ing/-ed folded; a few synonyms;
    filler words like "the" and "my" ignored. Ranking: the query as the title, then title words, then key names (ERASE
-   written as a button in the text), then the body. Results are grouped (Steps, Help, Learn, Words, Cheat sheet), the group with the
+   written as a button in the text), then the body. Results are grouped (Steps, Troubleshooting, Learn, Glossary, Cheat sheet), the group with the
    best match first (Words second at most), so Enter opens the best link. Arrow keys move real focus through the field and the results. */
 (()=>{
 const site=window.COACH_SITE;
@@ -247,7 +247,7 @@ function snippet(body,m){
   if(to<body.length&&body.lastIndexOf(' ',to)>from)to=body.lastIndexOf(' ',to);
   return(from?'… ':'')+marked(body.slice(from,to),m)+(to<body.length?' …':'');
 }
-const GROUPS=[['step','Steps','steps'],['help','Help','help topics'],['learn','Learn','lessons'],['word','Words','words'],['cheat','Cheat sheet','moves']];
+const GROUPS=[['step','Steps','steps'],['help','Troubleshooting','troubleshooting topics'],['learn','Learn','lessons'],['word','Glossary','words'],['cheat','Cheat sheet','moves']];   // headings as in plan 4.7
 const TRY=['silent pad','undo','chop','sidechain','song list'];
 const CAP={step:5,help:4,learn:4,word:3,cheat:3},PAGE=30;   // rows per group under All (a glossary entry is several lines long), and per page of one group
 const NEEDS=`<p class="search-note"><b>Search needs the offline copy.</b> Open the course once while online so every page is saved, then try again. ${HELP} has its own search.</p>`;
@@ -286,7 +286,7 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
     return`<li><a class="search-hit" href="${esc(d.href)}"><span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span>${d.body?`<span class="search-hit-snip">${snippet(d.body,m)}</span>`:''}</a></li>`;
   }
   function render(){
-    // The group holding the best match comes first (ties keep the order Steps, Help, Learn, Words, Cheat sheet).
+    // The group holding the best match comes first (ties keep the order Steps, Troubleshooting, Learn, Glossary, Cheat sheet).
     const best=k=>found[k].length?found[k][0].s:0;
     const q=clean(input.value),alts=parse(q),kinds=GROUPS.filter(([k])=>type==='all'||k===type).sort((a,b)=>best(b[0])-best(a[0]));
     // A glossary word has no link and runs to several lines, so on a phone it would push every step below the fold:

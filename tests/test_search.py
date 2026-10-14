@@ -2,6 +2,7 @@
 
 - "turntable", "time-stretch", "sidechain" and "vocal" each find a chapter step;
 - "hat" matches hat, hats and hi-hat, never the "hat" inside "that" or "what"; cheat-sheet moves are found too;
+- the filter chips and group headings use the plan's names (Fixes, Troubleshooting, Glossary);
 - it works offline once the service worker has saved the site, and says so when the pages are not saved yet;
 - a step result opens a preview, so searching never moves the learner (test_smoke.py follows one through).
 Run after a build:  python -m pytest tests/test_search.py
@@ -64,6 +65,11 @@ def test_words_find_chapter_steps(run):
     assert marks, 'The matches are marked'
     inside = [m for m in marks if m.split('|')[0].isalpha()]
     assert inside == [], f'"hat" matched inside a word: {inside[:5]}'
+    # The plan's names: chips All · Steps · Fixes · Learn · Words (5.8), groups headed Troubleshooting and Glossary (4.7).
+    assert page.locator('#site-search-dialog [data-type]').all_text_contents()[:5] == ['All', 'Steps', 'Fixes', 'Learn', 'Words']
+    run.search('silent')
+    page.locator('#site-group-help').wait_for()
+    assert page.locator('#site-group-help').text_content().startswith('Troubleshooting')
     # Cheat-sheet moves are found too (plan 4.7), under their chapter.
     run.search('hands-free')
     page.locator('#site-results a.search-hit[href^="./cheat-sheet.html#"]').first.wait_for()

@@ -4,6 +4,46 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.24
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23 (the guide’s icon map, through the course’s copy of it in Chapter 0, and its Functions and Effects pages). **Written for:** OS 2.5.1. No button sequence changed.
+
+Fixes from a fourth independent review of the overhaul.
+
+- **Checks that now say what you see or hear.** Thirteen Checks added in 2026.10.14.23 stated a setting or an intention instead of something you can see or hear. They now name a display reading or icon from the guide’s icon map (MAIN, SYSTEM, New pattern), the sample number SOUND shows, or what you hear. One said the wrong thing: after SHIFT + MAIN you are in the copy, so the display shows a new number, not BEAT’s.
+- **Chapter 6, "Clear the kick, clap and tom"** names its press: "Hold ERASE + A1 until TRK blinks", so the Tools sheet and keys panel light ERASE too. Same presses as before.
+- **Chapter 6, "A4: open hats instead of closed":** "At both, also briefly press…" (was "There, …"), and the Check covers both positions.
+- **Chapter 5, "Turn down, then set up one source"** is a normal step again, with a Check: connecting USB or a cable happens on the K.O. II.
+- **Search** uses the plan’s names: the filter chips read "Fixes" (was "Help") and "Words", and the groups are headed "Troubleshooting" (was "Help") and "Glossary" (was "Words").
+- **Tests:** `test_search.py` checks the chip and group names.
+
+**Step by step** ("was" gives the old text):
+
+- **Chapter 0** (1 step):
+  - “Turn the metronome on (400)”: Check: “The display showed on, not rec or cnt, when you pressed ENTER.” (was “Your choice is on, not rec or cnt.”).
+- **Chapter 1** (1 step):
+  - “Optional: make a practice copy”: Check: “Holding MAIN shows a new number, not BEAT’s.” (was “Holding MAIN, the display shows BEAT’s scene number.”).
+- **Chapter 3** (2 steps):
+  - “D2: start hands-free sampling”: Check: “Nothing records yet: the K.O. II waits for your voice.” (was “The K.O. II now holds D2 for you; your hands are free.”).
+  - “Set the lo recording rate (500)”: Check: “The SYSTEM icon goes out.” (was “You are on 500: new recordings use the lo rate.”).
+- **Chapter 4** (6 steps):
+  - “Set quantize on the 16 grid”: Check: “The display showed 16; the MAIN icon is lit again.” (was “Recorded hits now snap to the 16-step grid.”).
+  - “Switch to free time”: Check: “The MAIN icon is lit again.” (was “Recorded hits now keep your exact timing.”).
+  - “Set a fast roll (32)”: Check: “The display showed 32; the MAIN icon is lit again.” (was “Note repeat now runs at 32 per bar.”).
+  - “Open timing correct”: Check: “The display changes to timing correct; no note moves yet.” (was “Timing correct is open; no notes have moved yet.”).
+  - “A1: make the kick the trigger”: Check: “MELODY plays on unchanged: nothing dips until you choose groups.” (was “A1 is now the sidechain trigger; MELODY plays on.”).
+  - “Choose B and C to dip”: Check: “The drums play on undipped; X and Y set the dip next.” (was “Groups B and C are now set to dip on every kick.”).
+- **Chapter 5** (1 step):
+  - “Turn down, then set up one source”: no longer an info step (connecting USB or a cable is on the K.O. II); Check added: “USB lights the USB MIDI icon; a cable or the mic shows nothing yet.”.
+- **Chapter 6** (5 steps):
+  - “A4: open hats instead of closed”: Do: “Write A4 (open hat) at 2.4.3 and 4.4.3. At both, also briefly press ERASE + A3, so the open hat replaces the closed hat.” (was “Write A4 (open hat) at 2.4.3 and 4.4.3. There, also briefly press ERASE + A3, so the open hat replaces the closed hat.”); Check: “At 2.4.3 and 4.4.3 A4 lights and A3 does not.” (was “At 2.4.3 A4 lights and A3 does not.”).
+  - “The stand-up test”: Check: “You hear a groove your body wants to move to.” (was “Your body wants to move: the groove works.”).
+  - “DROP B: select C2”: Check: “The display shows C2’s sample number.” (was “C2 is now the selected pad in SOUND.”).
+  - “Clear the kick, clap and tom”: Do: “Tap A. Hold ERASE + A1 until TRK blinks, then do the same with A2 and A7.” (was “Tap A and clear A1 (kick), A2 (clap) and A7 (tom) with the same TRK hold.”).
+  - “Optional: a fresh D pattern in BUILD”: Check: “The New pattern icon lights as D gets an empty pattern.” (was “D has a fresh, empty pattern in BUILD only.”).
+- **Chapter 7** (1 step):
+  - “Quantize on, swing alone”: Check: “The MAIN icon is lit again.” (was “Notes you record now snap to the 16-step grid.”).
+
 ## 2026.10.14.23
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.19; for this release its How to, System, What’s new, Modes, Play and record and Effects pages were re-read on 14 October 2026 (the facts used are named below). **Written for:** OS 2.5.1.

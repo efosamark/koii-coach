@@ -210,7 +210,7 @@ function refreshChapter(){
 // matching, loads and takes over the frame. If it cannot load, the overlay says so and points to Troubleshooting.
 let finder=null,field=null,loading=false,early=false;
 function searchFrame(){
-  const d=document.createElement('dialog'),types=[['all','All'],['step','Steps'],['help','Help'],['learn','Learn'],['word','Words'],['cheat','Cheat sheet']];
+  const d=document.createElement('dialog'),types=[['all','All'],['step','Steps'],['help','Fixes'],['learn','Learn'],['word','Words'],['cheat','Cheat sheet']];   // the chips of plan 5.8
   d.className='sheet search-sheet';d.id='site-search-dialog';d.setAttribute('aria-label','Search');
   d.innerHTML=`<div class="sheet-box"><div class="search-head"><div class="search-field">${icon('search')}`+
     `<input id="site-search" type="search" placeholder="Search steps, help and words" aria-label="Search steps, help and words" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" maxlength="120" autofocus></div>`+
