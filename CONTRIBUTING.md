@@ -16,6 +16,7 @@ Each chapter page has `section.steps`, one `<details>` per part (its `summary` h
 <li data-step="record-kick" data-risk="erase">
   <h3 class="step-title">A1: record a kick</h3>
   <p class="preflight">Before the press: what must be true, or what not to press.</p>
+  <p class="step-consequence">What the press clears or deletes ("Clears every note of A1 in BREAK.").</p>
   <p class="step-do">The moves, at most three sentences.</p>
   <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
   <p class="step-check"><span class="sr">Check: </span>What you hear or see.</p>
@@ -25,7 +26,7 @@ Each chapter page has `section.steps`, one `<details>` per part (its `summary` h
 </li>
 ```
 
-Only `h3.step-title` and one `p.step-do` are required. Use `p.step-noundo` instead of `p.step-undo` when there is no undo.
+Every step needs `h3.step-title`, one or more `p.step-do` and exactly one `p.step-check`: what the learner sees or hears afterwards, as a fact ("The display shows `1.1.1`.", "A2 plays the snare."), never an instruction and never "You should". Only a step with nothing to check on the K.O. II (reading, writing on paper, opening a web page) leaves it out, marked `data-kind="info"`. A risk step also needs `p.preflight`, `p.step-consequence` and `p.step-undo`, or `p.step-noundo` when there is no undo. `tests/test_player.py` checks all of this.
 
 **Inline markup**
 
@@ -51,6 +52,7 @@ Step numbers ("go back to step 3") change whenever a step before them is split. 
 | `data-setting="411"` | The step sets a system setting; shows a "System setting 411" tag. |
 | `data-os="2.0"` | Needs that OS or newer; the badge follows the OS chosen in Settings. Add `<p class="badge os-badge">Needs OS 2.0 or newer</p>` under the title as the fallback text. |
 | `data-kind="recap"` | The chapter's recap; ticked by itself on the chapter-complete screen. Its `ul.step-moves` lists the moves learned. |
+| `data-kind="info"` | Nothing to check on the K.O. II: the step is reading, writing on paper, or work on a phone or computer with no visible result. It has no Check (and never `data-risk`). |
 | `data-note="DRUMS"` | The step asks you to write a scene number down; it gets an optional field, kept per project. Several names: `"V1\|V2\|V3"`. Add `data-note-kind="sample"` for sample numbers. |
 | `data-place="A1 1.1.1 1.2.3"` | Chapter 1 only: the placement helper's positions. |
 
@@ -59,10 +61,12 @@ Step numbers ("go back to step 3") change whenever a step before them is split. 
 Every step must be readable at arm's length, with the phone propped beside the K.O. II. `tests/test_player.py::test_glance_budget` checks every chapter:
 
 - title at most **48 characters**;
-- **Do** at most **26 words** in at most **3 sentences**; a risk step may use **40 words** for Before you press and Do together;
+- **Do** at most **26 words** in at most **3 sentences**; a risk step may use **40 words** for Before you press, its consequence and Do together;
 - **Check** at most **15 words**; **undo** at most **12**.
 
 Words are counted as a reader would: punctuation alone is not a word, and a chord such as SHIFT + B counts as two words, not three. Notes, Why and Not working? are not counted, but keep them short: a note is still on screen.
+
+Never write "just", "simply", "easy" or "make sure" (plan 6.7): say what to check instead ("check that playback is stopped"), and "right before" for timing. Quotes from the guide keep their own words. `tests/test_player.py` checks every page.
 
 When a step is over budget:
 
@@ -72,7 +76,7 @@ When a step is over budget:
 
 ## 4. Risky presses
 
-A press that clears, deletes or overwrites gets, in this order: **Before you press** (what must be true first: the right scene, a backup, playback stopped), the **Do** line with the press, then the **undo** straight after. The step test checks that order in every chapter.
+A press that clears, deletes or overwrites gets, in this order: **Before you press** (what must be true first: the right scene, a backup, playback stopped), its **consequence** (`p.step-consequence`, what exactly goes: "Clears every note of A1 and B1 in this pattern."), the **Do** line with the press, then the **undo** straight after. The step test checks that order in every chapter.
 
 When a step copies a scene and then clears something in it, make the copy its own step without `data-risk`, so the tag sits only on the step that clears.
 

@@ -2,7 +2,8 @@
 
 - the screen wake lock is asked for on the first Done · Next, let go with the sun button, and after 15 idle minutes
   let go with a "Keep on" toast (stubbed API, fake clock);
-- a delete or overwrite step keeps its press folded until "Yes, I have checked";
+- a delete or overwrite step keeps its press folded until "Yes, I have checked" (the button reads "Confirm first");
+- a part's last step reads "Done · Checkpoint"; a risk step's hidden undo and Check get their own cue;
 - letter shortcuts never fire in a link, a button, a disclosure, a text field, an open dialog, a grid or a radiogroup,
   and do from the step's title;
 - #done with steps left lists them and does not tick the recap; with every chapter done, the course is complete
@@ -92,10 +93,44 @@ def test_irreversible_step_stays_folded_until_checked(run):
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
     run.go('./perform.html#s-scene-erase-delete')
     li = page.locator('li[data-step="scene-erase-delete"]')
-    assert li.locator('.preflight').is_visible(), 'Before you press shows first'
+    assert li.locator('.preflight').is_visible() and li.locator(':scope > .step-consequence').is_visible(), 'Before you press and what it erases show first'
     assert not li.locator(':scope > .step-do').is_visible(), 'The press waits for the confirmation'
+    assert page.locator('#player-next .pa-label').text_content() == 'Confirm first'
     li.locator('.gate-btn').click()
     assert li.locator(':scope > .step-do').is_visible() and li.locator(':scope > .step-noundo').is_visible()
+
+
+def test_labels_for_a_part_end_and_a_risk_step_below_the_fold(run):
+    """Plan 6.4: the last step of a part reads "Done · Checkpoint". Plan 5.4: when a risk step's undo or Check is
+    below the action bar, the cue says "Undo and Check below" ("No undo and Check below" for an irreversible step)."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./first-beat.html#s-beat-kicks')
+    last = page.evaluate("() => { const li = document.querySelector('li.is-current'), ol = li.closest('ol'); return ol.lastElementChild.dataset.step; }")
+    assert page.locator('#player-next .pa-label').text_content() == 'Done · Next'
+    run.go(f'./first-beat.html#s-{last}')
+    assert page.locator('#player-next .pa-label').text_content() == 'Done · Checkpoint'
+    page.set_viewport_size({'width': 360, 'height': 640})
+    for ch in ('first-beat', 'perform'):
+        run.go(f'./{ch}.html#all')
+        seen = page.evaluate("""async () => {
+          const out = [];
+          for (const li of document.querySelectorAll('li[data-risk]')) {
+            location.hash = '#s-' + li.dataset.step;
+            await new Promise(r => setTimeout(r, 150));
+            const gate = li.querySelector('.gate-btn'); if (gate && gate.offsetParent) { gate.click(); await new Promise(r => setTimeout(r, 150)); }
+            scrollTo(0, 0); await new Promise(r => setTimeout(r, 150));
+            const after = [...li.querySelectorAll(':scope > .step-undo, :scope > .step-noundo, :scope > .step-check')].filter(e => e.offsetParent);
+            const bar = document.querySelector('#player-actions .pa-row').getBoundingClientRect().top;
+            const below = after.length && after[after.length - 1].getBoundingClientRect().bottom > bar + 8;
+            const more = document.querySelector('.pa-more');
+            out.push([li.dataset.step, below, more.hidden ? '' : more.textContent, Boolean(li.querySelector(':scope > .step-noundo'))]);
+          }
+          return out; }""")
+        for sid, below, cue, noundo in seen:
+            want = ('No undo and Check below' if noundo else 'Undo and Check below') if below else cue
+            assert cue == want, f'{ch}/{sid}: cue {cue!r}, expected {want!r}'
+        assert any(below for _, below, _, _ in seen) or ch == 'first-beat', f'{ch}: no risk step to test the cue on at 360×640'
 
 
 def test_shortcuts_never_fire_in_excluded_contexts(run):

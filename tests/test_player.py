@@ -1,6 +1,7 @@
 """The step player's newer parts, and the order of a risky step's text.
 
 - Risk steps (static check of the HTML): the check that prevents loss comes before the press, the undo after it.
+- Every step has a Check, except info and recap steps; a risk step names what it clears or deletes.
 - Skipping a run of optional steps: they stop counting, the player moves past them, the toast can undo it.
 - A part's checkpoint: "Not quite" shows the fix and is kept in koii-coach-meta.checkpoints; it never changes a tick.
 - Chapter complete: arriving ticks the recap once everything else is done, and shows what you made and the new moves.
@@ -72,8 +73,45 @@ def test_risky_steps_check_before_the_press_and_undo_after(name):
             assert 'step-noundo' in s['parts'], f"{name}/{s['id']}: an irreversible step says No undo"
 
 
+@pytest.mark.parametrize('name', CHAPTERS)
+def test_every_step_says_what_to_check(name):
+    """Plan 5.3, 5.4(f) and 7.2: every step has one Check (what you hear or see afterwards), except an info or recap
+    step; a risk step names what its press clears or deletes (p.step-consequence) between Before you press and the Do
+    lines. A Check never says "You should" (CONTRIBUTING.md)."""
+    page = (ROOT / f'{name}.html').read_text(encoding='utf-8')
+    missing = []
+    for sid, attrs, body in re.findall(r'<li data-step="([^"]+)"([^>]*)>(.*?)\n *</li>', page, re.S):
+        kind = re.search(r'data-kind="([^"]+)"', attrs)
+        checks = re.findall(r'<p class="step-check">(.*?)</p>', body, re.S)
+        if kind and kind.group(1) in ('info', 'recap'):
+            assert not (kind.group(1) == 'info' and (checks or 'data-risk' in attrs)), f'{name}/{sid}: an info step has no Check and no risk'
+            continue
+        if len(checks) != 1:
+            missing.append(sid)
+        elif re.search(r'\byou should\b', unescape(re.sub(r'<[^>]+>', '', checks[0])), re.I):
+            missing.append(sid + ' ("You should")')
+        if 'data-risk' in attrs:
+            order = re.findall(r'\n\s*<p class="([^"]+)"', body)
+            assert 'step-consequence' in order and order.index('step-consequence') < order.index('step-do') and \
+                ('preflight' not in order or order.index('preflight') < order.index('step-consequence')), \
+                f'{name}/{sid}: a risk step says what it clears, after Before you press and before the Do ({order})'
+    assert not missing, f'{name}: steps without a Check: ' + ', '.join(missing)
+
+
+def test_plain_words_on_every_page():
+    """Plan 6.7: never "just", "simply" or "easy" (and CONTRIBUTING: never "make sure"). Quotes keep their words."""
+    found = []
+    for page in sorted(ROOT.glob('*.html')):
+        html = re.sub(r'<script.*?</script>|<style.*?</style>|<!--.*?-->', '', page.read_text(encoding='utf-8'), flags=re.S)
+        text = re.sub(r'“[^”]*”', '', unescape(re.sub(r'<[^>]+>', ' ', html)))
+        found += [f'{page.name}: …{text[max(0, m.start() - 40):m.end() + 20].strip()}…'
+                  for m in re.finditer(r'\b(just|simply|easy|easily|easier|make sure)\b', text, re.I)]
+    assert not found, 'Words the plan rules out:\n' + '\n'.join(found)
+
+
 # Chapters rewritten to the glance budget (plan 5.3, P7). Each step: a title of at most 48 characters; Do at most 26
-# words in at most 3 sentences (a risk step: Before you press and Do together at most 40); Check at most 15 words; undo
+# words in at most 3 sentences (a risk step: Before you press, its consequence and Do together at most 40); Check at
+# most 15 words; undo
 # at most 12. Add a chapter here when it is rewritten.
 STRUCTURED = ['sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house', 'setup', 'first-beat', 'song']
 
@@ -97,7 +135,7 @@ def test_glance_budget(name):
     for sid, attrs, body in re.findall(r'<li data-step="([^"]+)"([^>]*)>(.*?)\n *</li>', page, re.S):   # not a nested </li>
         title = re.search(r'<h3 class="step-title">(.*?)</h3>', body, re.S)
         field = lambda c: ' '.join(re.findall(rf'<p class="{c}">(.*?)</p>', body, re.S))
-        do, pre, check, undo = field('step-do'), field('preflight'), field('step-check'), field('step-undo')
+        do, pre, check, undo = field('step-do'), field('preflight') + ' ' + field('step-consequence'), field('step-check'), field('step-undo')
         risk = 'data-risk' in attrs
         problems = []
         if not title or len(unescape(re.sub(r'<[^>]+>', '', title.group(1)))) > 48:
@@ -208,6 +246,19 @@ def test_chapter_complete_ticks_the_recap(run):
     assert card.locator('.pd-made').text_content().startswith('You made:'), 'You made, from the page'
     assert card.locator('.pd-moves li').count() == 6, 'New moves, from the recap'
     assert card.locator('.led-row .led.on').count() == 16
+    # Scene numbers to keep, as LCD chips: what the learner noted, "–" for the rest (plan 5.9).
+    assert card.locator('.pd-notes .note-pair').all_text_contents() == ['DRUMS –', 'BEAT –']
+    # Back up now opens Chapter 0's backup part in a sheet, read-only; Back closes it.
+    card.locator('[data-backup]').click()
+    sheet = page.locator('#player-backup')
+    sheet.locator('li[data-step="backup-open-tool"]').wait_for()
+    assert sheet.locator('.check').count() == 0, 'Nothing to tick in the sheet'
+    page.go_back()
+    sheet.wait_for(state='hidden')
+    assert page.url.endswith('#done')
+    page.evaluate("() => localStorage.setItem('koii-coach-notes', JSON.stringify({v: 1, values: {'project-6/DRUMS': '3'}}))")
+    run.go('./first-beat.html#done')
+    assert page.locator('#player-done .pd-notes .note-pair').first.text_content() == 'DRUMS 3'
     # Every chapter's done screen lists its new moves.
     for ch, moves in (('setup', 6), ('sampling', 7), ('perform', 8), ('hiphop', 7), ('tech-house', 7), ('thodorakis-house', 7)):
         run.go(f'./{ch}.html#all')
@@ -359,6 +410,13 @@ def test_rhythm_lab(run):
     page.set_viewport_size({'width': 1024, 'height': 800})
     page.wait_for_function("() => document.querySelector('#beat').classList.contains('wide')")
     assert not page.locator('#lab-tabs').is_visible() and visible().count() == 64
+    # A Chapter 1 step's target rhythm links here (plan 4.6) and opens its rows only: kick and snare.
+    run.go('./first-beat.html#all')
+    href = page.locator('li[data-step] figure.pattern[data-rows="2"] .pattern-lab a').first.get_attribute('href')
+    assert href == './lab.html#recipe-2'
+    run.go('./lab.html#recipe-2')
+    on = page.evaluate("() => [0, 1, 2, 3].map(r => document.querySelectorAll(`#beat button[data-r='${r}'][aria-pressed='true']`).length)")
+    assert on == [4, 2, 0, 0], f'Kick and snare of the recipe only ({on})'
 
 
 @pytest.mark.browser

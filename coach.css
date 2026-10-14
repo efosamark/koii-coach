@@ -376,6 +376,8 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .appbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:var(--sp-3);height:var(--appbar-h);padding:0 var(--gutter);border-bottom:1px solid var(--line);background:var(--surface-1);transition:box-shadow var(--dur-swap) var(--ease)}
 .appbar.scrolled{box-shadow:var(--e2)}
 .appbar .menu-btn{margin-left:-10px}
+/* Without JavaScript the bar is the wordmark and a Search link to Troubleshooting (plan 5.8); shell.js replaces both. */
+.appbar .static-search{margin:0 -10px 0 auto}
 .wordmark{display:inline-flex;flex-direction:column;flex:none;color:var(--ink);font:600 14px/16px var(--font-mono);letter-spacing:.06em;text-decoration:none;white-space:nowrap}
 .wordmark-sep{display:none}
 .wordmark:hover{text-decoration:underline;text-decoration-thickness:1.5px}
@@ -765,7 +767,8 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .tile:hover{border-color:var(--line-strong)}
 .tile:hover .t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .tile .icon{color:var(--ink-2)}
-.tile .t{font-weight:600;line-height:1.3;-webkit-hyphens:auto;hyphens:auto}
+/* No break inside a word (plan 13.2): only at a space, or at the soft hyphen in "Trouble·shooting" on a narrow phone. */
+.tile .t{font-weight:600;line-height:1.3;overflow-wrap:normal;-webkit-hyphens:manual;hyphens:manual}
 .tile .d{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
 .home-foot{margin-top:var(--sp-4)}
 .offline-status:empty{display:none}
@@ -931,7 +934,7 @@ html[data-player="step"] .steps ol > li.is-current{position:relative;max-width:n
 html[data-player="step"] .steps ol > li.is-current::before,html[data-player="step"] .steps ol > li.is-current::after,html[data-player="step"] li.is-current > .here-tag{display:none}
 html[data-player="step"] .steps ol > li.is-current:focus{outline:none}
 html[data-player="step"].pl-kbd .steps ol > li.is-current:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-html[data-player="step"] .steps ol > li.is-current:is([data-risk="delete"],[data-risk="overwrite"]){border-left:4px solid var(--danger)}
+html[data-player="step"] .steps ol > li.is-current:is([data-risk="delete"],[data-risk="overwrite"],[data-risk="erase-scene"]){border-left:4px solid var(--danger)}
 html[data-player="step"] .steps ol > li.is-current.is-checkpoint{border-left:4px solid var(--here)}
 html[data-player="step"] li.is-current > .step-head{display:flex;min-height:48px;margin:0 0 var(--sp-3);padding-right:56px}
 html[data-player="step"] li.is-current .step-num{display:inline-flex;align-items:center;justify-content:center;min-width:2.5em;height:32px;padding:0 var(--sp-2);border-radius:var(--r-chip);background:var(--surface-3);color:var(--ink);font:600 var(--t-cap)/1 var(--font-mono)}
@@ -1064,7 +1067,7 @@ html[data-hand="left"] .pa-more{right:auto;left:var(--gutter)}
 input.lcd-input{width:4.6ch;min-height:44px;padding:0 .35em;border:1.5px solid var(--lcd-line);border-radius:var(--r-chip);background:var(--lcd-bg);color:var(--lcd-ink);font:600 20px/1 var(--font-mono);letter-spacing:.06em;text-align:center}
 input.lcd-input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .note-recall{margin:var(--sp-1) 0 var(--sp-2);color:var(--ink-2);font-size:var(--t-cap);line-height:1.9}
-.note-recall .note-pair{white-space:nowrap;color:var(--ink);font-weight:600}
+:is(.note-recall,.pd-notes) .note-pair{white-space:nowrap;color:var(--ink);font-weight:600}
 .note-recall .lcd{font-size:14px}
 .getback-notes .note-recall{margin:0 0 var(--sp-3);font-size:var(--t-body)}
 /* Shorter phones (up to 760px tall, such as 360×740): the same room-making as on a phone on its side, so the step's Do
@@ -1106,6 +1109,7 @@ html[data-text="larger"][data-player="step"] li.is-current > .step-check{margin-
   html.has-device li.is-current > .preflight{margin-bottom:var(--sp-2);padding:var(--sp-2) var(--sp-3);font-size:var(--t-body);line-height:var(--t-body-lh)}
   html.has-device li.is-current > .skip-box{order:1;margin:var(--sp-3) 0 0}
   html.has-device li.is-current > .preflight::before{display:inline;margin:0 .5em 0 0}
+  html.has-device[data-player="step"] li.is-current > .step-consequence{margin:calc(-1 * var(--sp-1)) 0 var(--sp-1);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
   html.has-device[data-player="step"] main{padding-top:var(--sp-2)}
   html.has-device .player-actions{left:40%}
   html.has-device .player-device{display:block;position:fixed;top:0;bottom:0;left:0;z-index:26;width:40%;overflow-y:auto;padding:var(--sp-2) var(--sp-3) var(--sp-3);border-right:1px solid var(--line);background:var(--surface-2)}
@@ -1199,12 +1203,19 @@ html[data-player] .steps li > .badge.ok{display:none}
 html:not([data-player="step"]) .steps li > .part-source{display:none}
 /* A note at body size; "No undo" in the danger colours, where an undo would stand. */
 .steps li > .step-note{margin:var(--sp-3) 0 var(--sp-2);color:var(--ink-2)}
+/* Chapter complete: the numbers to keep, and the backup steps in a sheet (plan 5.9). */
+.pd-notes{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-4)}
+.backup-steps{margin:0;padding-left:1.5em}
+.backup-steps > li{margin:0 0 var(--sp-5)}
+.backup-steps .step-title{margin:0 0 var(--sp-2);font-size:var(--t-body)}
+/* A risk step's consequence (plan 5.4): what the press clears or deletes, between Before you press and the Do lines. */
+.steps li > .step-consequence{margin:0 0 var(--sp-3);font-weight:600}
 .steps li > .step-noundo,.risk .step-noundo{margin:var(--sp-3) 0;padding:var(--sp-2) var(--sp-3);border-left:4px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
 /* Focus lands on a titled step's title in the player; its ring shows only for keyboard users (.pl-kbd). */
 .steps li > .step-title:focus{outline:none}
 html.pl-kbd .steps li > .step-title:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:4px}
 /* In the player the step's parts keep their own sizes: only the Do line (and the preflight) is large. */
-html[data-player="step"] li.is-current > :is(.step-extras,.step-source,.step-report,.step-moves,.pattern,.runner,.step-undo,.step-noundo,.step-note,.badge,.skip-box){font-size:var(--t-body);line-height:var(--t-body-lh)}
+html[data-player="step"] li.is-current > :is(.step-consequence,.step-extras,.step-source,.step-report,.step-moves,.pattern,.runner,.step-undo,.step-noundo,.step-note,.badge,.skip-box){font-size:var(--t-body);line-height:var(--t-body-lh)}
 html[data-player="step"] li.is-current > :is(.step-source,.step-report){font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 html[data-player="step"] li.is-current .step-more .key,html[data-player="step"] li.is-current .step-source .key{background:var(--surface-1);border-color:var(--line-strong);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
 /* A risk tag is a link to safety.html: a tag, not underlined. */
@@ -1216,6 +1227,7 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .pattern figcaption{margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
 .pattern-text{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:1.9}
 .pattern-text .lcd{font-size:13px}
+.pattern-lab{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .strip{display:grid;grid-template-columns:3.4em repeat(16,minmax(0,1fr));gap:3px;align-items:center}
 .strip-beat{grid-column:span 4;font:600 12px/1.2 var(--font-mono);color:var(--ink-2)}
 .strip-name{font-size:var(--t-cap);font-weight:600;line-height:1.2}

@@ -1,7 +1,9 @@
 """Accessibility (docs/overhaul-plan.md 8.1, test_a11y.py).
 
 - axe-core (tests/vendor, MPL-2.0, test-only and sha256-pinned) on every kind of page and sheet, at phone and desktop
-  width, in light and dark: no serious or critical WCAG 2.2 A/AA violation.
+  width, in light and dark: no serious or critical WCAG 2.2 A/AA violation. The desktop pass is 1280×1200, tall enough
+  that a chapter's docked action bar sits under the content instead of over it: at 900 a control that happens to end
+  half under the bar counts as a small target (target-size) until you scroll, wherever the step's length puts it.
 - Keyboard: from a step's title, Tab reaches Done · Next through the step's own controls, the part's note and the
   action bar only (test_behaviour.py checks the exact count);
   a whole part of Chapter 0 can be done with the keyboard alone, its checkpoint included.
@@ -78,7 +80,7 @@ def test_axe_on_every_page_and_sheet(run, scheme):
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
     page.emulate_media(color_scheme=scheme)
     found = []
-    for width, height in ((390, 844), (1280, 900)):
+    for width, height in ((390, 844), (1280, 1200)):
         page.set_viewport_size({'width': width, 'height': height})
         for href in PAGES:
             run.go(href)
@@ -214,10 +216,13 @@ def test_every_page_reads_without_javascript(browser, site_url):
           return {text: (document.querySelector('main') || document.body).innerText.trim().length, steps: steps.length,
                   hidden: steps.filter(li => !shown(li) || !shown(li.querySelector('.step-do'))).map(li => li.dataset.step),
                   wide: document.documentElement.scrollWidth > innerWidth + 1,
+                  search: (document.querySelector('#appbar a.static-search') || {}).href || '',
                   lab: document.querySelectorAll('#lab-positions samp').length};
         }""")
         if r['text'] < 300 or r['hidden'] or r['wide']:
             found.append(f"{href}: {r['text']} characters, hidden steps {r['hidden'][:5]}, sideways scroll {r['wide']}")
+        if not r['search'].endswith('/help.html'):   # plan 5.8: without JS, Search is a link to Troubleshooting
+            found.append(f"{href}: no Search link to help.html in the app bar ({r['search']!r})")
         if href == 'lab.html' and r['lab'] < 16:
             found.append('lab.html: the recipe positions are missing')
     # An unknown address three folders deep: the 404 page's links and stylesheet still work (its static <base>).

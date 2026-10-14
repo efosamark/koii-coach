@@ -30,7 +30,7 @@
 </head>
 <body data-chapter="first-beat">
   <a class="skip" href="#main">Skip to content</a>
-  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a><a class="icon-btn static-search" href="./help.html" aria-label="Search: Troubleshooting lists every topic"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-search"></use></svg></a></header>
   <script src="site.js"></script>
   <script src="progress.js"></script>
   <script src="shell.js"></script>
@@ -63,13 +63,17 @@
           <li data-step="beat-empty-project">
             <h3 class="step-title">Go home, and stop playback</h3>
             <p class="step-do">Press <span class="nobr"><kbd class="key">MAIN</kbd>.</span> If the K.O. II is playing, press <kbd class="key">PLAY</kbd> to stop it.</p>
+            <p class="step-check"><span class="sr">Check: </span>Nothing plays, and the display shows the current step.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>On a new K.O. II, projects 1–5 hold factory demos and projects 6–9 are completely empty. Working in project 6 keeps the demos safe, and every note you hear later is one you placed. We will make a one-bar, 90 BPM drum loop, then add bass and a second section. No finger-drumming skill required.</p></details><details class="step-more"><summary>Not working?</summary><p>Not on OS 2.5.1 yet, or music on the unit you care about? Do Chapter 0 · Set up your K.O. II first (update and backup).</p></details></div>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
           <li data-step="beat-open-project-6">
             <h3 class="step-title">Open empty project 6</h3>
             <p class="step-do">Hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> then press <kbd class="key pad">pad 6</kbd> and keep both held while you watch the display; release both once it changes.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display changes to show <samp class="lcd">P 6</samp>.</p>
             <p class="step-note">When it changes, it shows <samp class="lcd">P 6</samp>: P and the project number.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says “hold main and one of the pads (1-9) to select an empty project”.</p></details></div>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
           <li data-step="beat-check-empty">
             <h3 class="step-title">Check that project 6 is silent</h3>
@@ -83,10 +87,12 @@
             <h3 class="step-title">Set the tempo to 90 BPM</h3>
             <p class="step-do">Press <kbd class="key">TEMPO</kbd> and turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">90</samp> (or hold <kbd class="key">TEMPO</kbd> and type <span class="nobr"><kbd class="key">9</kbd>,</span> <span class="nobr"><kbd class="key">0</kbd>).</span></p>
             <p class="step-check"><span class="sr">Check: </span>At 90 BPM one bar (four beats) lasts about 2.7 seconds.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="beat-grid-16">
             <h3 class="step-title">Set the grid to 16, quantized</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd> and turn <kbd class="key knob">X</kbd> until it shows <span class="nobr"><samp class="lcd">16</samp>,</span> the default 1/16 grid (not <span class="nobr"><samp class="lcd">16T</samp>).</span> Press <kbd class="key">−</kbd> to choose quantize. Press <span class="nobr"><kbd class="key">MAIN</kbd>.</span></p>
+            <p class="step-check"><span class="sr">Check: </span>In TIMING the display shows <samp class="lcd">16</samp>, not <samp class="lcd">16T</samp>.</p>
             <p class="step-note">Leave <kbd class="key knob">Y</kbd> (swing) at no swing.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The recipe uses ordinary 4/4 and one-bar patterns with 16 steps per bar, four per beat. Quantize snaps live playing to the grid; it matters when you record live in the optional practice at the end. Interval and swing apply when you record, not to notes already written.</p></details><details class="step-more"><summary>Not working?</summary><p>If you turned Y before, turn it back to no swing. If you changed the time signature before, MAIN + TEMPO opens it; this recipe needs 4/4. Keep the default one-bar pattern length.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">Functions</a></p>
@@ -94,6 +100,8 @@
           <li data-step="beat-load-kick">
             <h3 class="step-title">A1: load the kick</h3>
             <p class="step-do">Press <span class="nobr"><kbd class="key">SOUND</kbd>,</span> tap <span class="nobr"><kbd class="key">A</kbd>,</span> then tap <span class="nobr"><kbd class="key pad">pad 1</kbd>.</span> Hold <span class="nobr"><kbd class="key">SOUND</kbd>,</span> type <kbd class="key">1</kbd> on the pads to load sample 001, and release <span class="nobr"><kbd class="key">SOUND</kbd>.</span></p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows the sample number you typed.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="beat-hear-kick">
             <h3 class="step-title">Hear the kick</h3>
@@ -133,9 +141,9 @@
         <ol start="11">
           <li data-step="beat-placement-move" data-place="A1 1.1.1">
             <h3 class="step-title">Learn the placement move once</h3>
-            <p class="step-do">Press <kbd class="key">MAIN</kbd> and make sure playback is stopped. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <span class="nobr"><samp class="lcd">1.1.1</samp>.</span> Hold <span class="nobr"><kbd class="key">RECORD</kbd>,</span> tap <kbd class="key pad">A1</kbd> once, then release <span class="nobr"><kbd class="key">RECORD</kbd>.</span></p>
+            <p class="step-do">Press <kbd class="key">MAIN</kbd> and check that playback is stopped. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <span class="nobr"><samp class="lcd">1.1.1</samp>.</span> Hold <span class="nobr"><kbd class="key">RECORD</kbd>,</span> tap <kbd class="key pad">A1</kbd> once, then release <span class="nobr"><kbd class="key">RECORD</kbd>.</span></p>
             <p class="step-check"><span class="sr">Check: </span>At <samp class="lcd">1.1.1</samp> pad <kbd class="key pad">A1</kbd> lights.</p>
-            <figure class="pattern" data-rows="1"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp></p></figure>
+            <figure class="pattern" data-rows="1"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp></p><p class="pattern-lab"><a href="./lab.html#recipe-1">Practise this away from the device</a> in the Rhythm lab.</p></figure>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This writes the kick at bar 1, beat 1, step 1 (1.1.1). A lit pad means a note is written on this step. Tapping a pad without RECORD only auditions it; nothing is written.</p></details><details class="step-more"><summary>Not working?</summary><p>Use the display as your guide and keep the loop stopped while placing notes. Made a mistake? SHIFT + B is undo while the umbrella icon is lit. Taps not sticking? See help: “<a href="./help.html#my-taps-do-not-repeat">My taps do not repeat</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
@@ -143,7 +151,7 @@
             <h3 class="step-title">Place all four kicks</h3>
             <p class="step-do">In stopped MAIN with group A, use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to reach each position and hold <kbd class="chord"><kbd class="key">RECORD</kbd> + <kbd class="key pad">A1</kbd></kbd> at <span class="nobr"><samp class="lcd">1.1.1</samp>,</span> <span class="nobr"><samp class="lcd">1.2.3</samp>,</span> <samp class="lcd">1.3.1</samp> and <span class="nobr"><samp class="lcd">1.4.3</samp>.</span></p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> lights at all four positions, and the kick row matches the target rhythm.</p>
-            <figure class="pattern" data-rows="1"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp></p></figure>
+            <figure class="pattern" data-rows="1"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp></p><p class="pattern-lab"><a href="./lab.html#recipe-1">Practise this away from the device</a> in the Rhythm lab.</p></figure>
             <p class="step-note">The placement helper lists them one by one.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>These are grid steps 1, 7, 9 and 15: a steady foundation with two off-beat pickups. 1.1.1 is already done; do not add it twice.</p></details><details class="step-more"><summary>Not working?</summary><p>Press PLAY to check, then stop before editing. One wrong note? Go to it and briefly press ERASE + that pad. Holding ERASE + a pad until TRK blinks clears all of that pad’s notes, so keep the press short. See help: “<a href="./help.html#the-beat-has-extra-hits">The beat has extra hits</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
@@ -152,7 +160,7 @@
             <h3 class="step-title">Place the two snares</h3>
             <p class="step-do">In stopped MAIN with group A, go to <span class="nobr"><samp class="lcd">1.2.1</samp>,</span> hold <kbd class="key">RECORD</kbd> and tap <span class="nobr"><kbd class="key pad">A2</kbd>.</span> Repeat at <span class="nobr"><samp class="lcd">1.4.1</samp>.</span></p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A2</kbd> lights at <samp class="lcd">1.2.1</samp> and <span class="nobr"><samp class="lcd">1.4.1</samp>;</span> the snare lands between the main kicks.</p>
-            <figure class="pattern" data-rows="2"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp></p></figure>
+            <figure class="pattern" data-rows="2"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp></p><p class="pattern-lab"><a href="./lab.html#recipe-2">Practise this away from the device</a> in the Rhythm lab.</p></figure>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>These are beats 2 and 4 (grid steps 5 and 13): the backbeat. Count one, TWO, three, FOUR.</p></details><details class="step-more"><summary>Not working?</summary><p>If the display shows a sample number instead of a position, you are still in SOUND: press MAIN. Use group A for both drums. See help: “<a href="./help.html#the-snare-is-in-the-wrong-place">The snare is in the wrong place</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
@@ -160,7 +168,7 @@
             <h3 class="step-title">Place the eight hats</h3>
             <p class="step-do">In stopped MAIN with group A, hold <kbd class="chord"><kbd class="key">RECORD</kbd> + <kbd class="key pad">A3</kbd></kbd> at <span class="nobr"><samp class="lcd">1.1.1</samp>,</span> <span class="nobr"><samp class="lcd">1.1.3</samp>,</span> <span class="nobr"><samp class="lcd">1.2.1</samp>,</span> <span class="nobr"><samp class="lcd">1.2.3</samp>,</span> <span class="nobr"><samp class="lcd">1.3.1</samp>,</span> <span class="nobr"><samp class="lcd">1.3.3</samp>,</span> <samp class="lcd">1.4.1</samp> and <span class="nobr"><samp class="lcd">1.4.3</samp>.</span></p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A3</kbd> lights at all eight positions, and the hats tick steadily over kick and snare.</p>
-            <figure class="pattern" data-rows="3"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp><br>Hat (A3): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.1.3</samp> <samp class="lcd">1.2.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.3.3</samp> <samp class="lcd">1.4.1</samp> <samp class="lcd">1.4.3</samp></p></figure>
+            <figure class="pattern" data-rows="3"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp><br>Hat (A3): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.1.3</samp> <samp class="lcd">1.2.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.3.3</samp> <samp class="lcd">1.4.1</samp> <samp class="lcd">1.4.3</samp></p><p class="pattern-lab"><a href="./lab.html#recipe-3">Practise this away from the device</a> in the Rhythm lab.</p></figure>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>These are the .1 and .3 of every beat: eighth notes, counted “1 and 2 and 3 and 4 and” (grid steps 1, 3, 5 … 15). The other eight steps stay empty.</p></details><details class="step-more"><summary>Not working?</summary><p>Some positions already hold a kick or snare: adding a hat there too is correct. Keep TIMING at 16 so every position exists. The placement helper below lists each one.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
@@ -168,7 +176,7 @@
             <h3 class="step-title">Listen to your finished drum beat</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd> on the K.O. II and listen to a few loops. Press <kbd class="key">PLAY</kbd> again to stop before editing.</p>
             <p class="step-check"><span class="sr">Check: </span>All three rows match the target rhythm above.</p>
-            <figure class="pattern" data-rows="3"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp><br>Hat (A3): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.1.3</samp> <samp class="lcd">1.2.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.3.3</samp> <samp class="lcd">1.4.1</samp> <samp class="lcd">1.4.3</samp></p></figure>
+            <figure class="pattern" data-rows="3"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp><br>Hat (A3): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.1.3</samp> <samp class="lcd">1.2.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.3.3</samp> <samp class="lcd">1.4.1</samp> <samp class="lcd">1.4.3</samp></p><p class="pattern-lab"><a href="./lab.html#recipe-3">Practise this away from the device</a> in the Rhythm lab.</p></figure>
             <p class="step-note">“Hear this recipe” gives a rough reference. Kick at <span class="nobr"><samp class="lcd">1.1.1</samp>,</span> <span class="nobr"><samp class="lcd">1.2.3</samp>,</span> <samp class="lcd">1.3.1</samp> and <span class="nobr"><samp class="lcd">1.4.3</samp>;</span> snare at <samp class="lcd">1.2.1</samp> and <span class="nobr"><samp class="lcd">1.4.1</samp>;</span> hats on every .1 and .3. That is a complete drum beat.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The web sounds are synthesised examples, not your factory samples. Compare the rhythm, not the exact sound.</p></details><details class="step-more"><summary>Not working?</summary><p>Taps that do not repeat were not written: see help “<a href="./help.html#my-taps-do-not-repeat">My taps do not repeat</a>”. Extra notes? Press SHIFT + B (undo) while the umbrella is lit, or see help “<a href="./help.html#the-beat-has-extra-hits">The beat has extra hits</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
@@ -184,18 +192,22 @@
           <li data-step="beat-balance">
             <h3 class="step-title">Tap the drums in SOUND</h3>
             <p class="step-do">Press <kbd class="key">SOUND</kbd> and tap <span class="nobr"><kbd class="key pad">A1</kbd>,</span> <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd> in turn.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd> play kick, snare and hat in turn.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="beat-balance-levels">
             <h3 class="step-title">Tweak the balance, one sound at a time</h3>
             <p class="step-do">Keep the kick solid, turn the snare’s <kbd class="key knob">X</kbd> down a little if it is harsh, and keep the hats lowest.</p>
-            <p class="step-check"><span class="sr">Check: </span>Kick and snare are easy to pick out; the hats are supporting detail.</p>
+            <p class="step-check"><span class="sr">Check: </span>Kick and snare stand out clearly; the hats are the quietest part.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This is basic mixing: choosing how loud each part is compared with the others. Keep the original pitch while getting the rhythm right.</p></details><details class="step-more"><summary>Not working?</summary><p>In MAIN, X is input gain, not pad volume: always set pad volume in SOUND. Press MAIN when finished.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="beat-commit-drums" data-note="DRUMS">
             <h3 class="step-title">Write down DRUMS</h3>
             <p class="step-do">Stop playback. Hold <kbd class="key">MAIN</kbd> and read the scene number on the display; write it down as DRUMS.</p>
+            <p class="step-check"><span class="sr">Check: </span>Nothing plays; while you hold <kbd class="key">MAIN</kbd>, the display shows the scene number.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Commit saves the current patterns as a scene and creates a new scene, so you can add variations without overwriting the previous section. It is not an audio export or a backup file.</p></details></div>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
           <li data-step="beat-commit-copy">
             <h3 class="step-title">Commit: make a copy</h3>
@@ -205,7 +217,7 @@
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> kick and snare are easy to pick out, DRUMS is on your paper, and the display showed a new number for the copy.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> kick and snare stand out clearly, DRUMS is on your paper, and the display showed a new number for the copy.</p>
         <p><b>If it doesn’t:</b> turning <kbd class="key knob">X</kbd> in <kbd class="key">MAIN</kbd> changes the input gain, not a pad: set pad volume in <kbd class="key">SOUND</kbd>. Lost track of scenes? See help <a href="./help.html#which-scene-am-i-in">“Which scene am I in?”</a>.</p>
       </details>
       <details id="add-a-bass">
@@ -215,6 +227,8 @@
           <li data-step="beat-bass-sound">
             <h3 class="step-title">B: select pad 1 in SOUND</h3>
             <p class="step-do">Tap <kbd class="key">B</kbd> (a short tap selects the group). Press <kbd class="key">SOUND</kbd> and tap <kbd class="key pad">pad 1</kbd> <span class="nobr">(<kbd class="key pad">B1</kbd>).</span></p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">B1</kbd> makes no sound yet: no sample is loaded on it.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="beat-bass-load">
             <h3 class="step-title">Choose one bass sound</h3>
@@ -226,9 +240,9 @@
           </li>
           <li data-step="beat-bass-pulses" data-place="B1 1.1.1 1.3.1">
             <h3 class="step-title">Place two bass pulses</h3>
-            <p class="step-do">Press <kbd class="key">MAIN</kbd> and make sure playback is stopped, with group B selected. Hold <kbd class="chord"><kbd class="key">RECORD</kbd> + <kbd class="key pad">B1</kbd></kbd> at <samp class="lcd">1.1.1</samp> and at <samp class="lcd">1.3.1</samp> only.</p>
+            <p class="step-do">Press <kbd class="key">MAIN</kbd> and check that playback is stopped, with group B selected. Hold <kbd class="chord"><kbd class="key">RECORD</kbd> + <kbd class="key pad">B1</kbd></kbd> at <samp class="lcd">1.1.1</samp> and at <samp class="lcd">1.3.1</samp> only.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">B1</kbd> lights at <samp class="lcd">1.1.1</samp> and <span class="nobr"><samp class="lcd">1.3.1</samp>,</span> and the bass row in the target rhythm matches.</p>
-            <figure class="pattern" data-rows="4"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp><br>Hat (A3): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.1.3</samp> <samp class="lcd">1.2.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.3.3</samp> <samp class="lcd">1.4.1</samp> <samp class="lcd">1.4.3</samp><br>Bass (B1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.3.1</samp></p></figure>
+            <figure class="pattern" data-rows="4"><figcaption>Target rhythm at 90 BPM</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp><br>Hat (A3): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.1.3</samp> <samp class="lcd">1.2.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.3.3</samp> <samp class="lcd">1.4.1</samp> <samp class="lcd">1.4.3</samp><br>Bass (B1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.3.1</samp></p><p class="pattern-lab"><a href="./lab.html#recipe-4">Practise this away from the device</a> in the Rhythm lab.</p></figure>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The bass reinforces beats 1 and 3 (grid steps 1 and 9). The same sample plays at its normal pitch both times.</p></details><details class="step-more"><summary>Not working?</summary><p>If the bass rings over the next note, shorten it in the next step. Do not add a melody until this simple layer works.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
@@ -236,6 +250,8 @@
             <h3 class="step-title">B1: open the trim page</h3>
             <p class="preflight">Never hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> on the trim page unless you mean to crop: that overwrites the sample file and cannot be undone.</p>
             <p class="step-do">Tap <span class="nobr"><kbd class="key pad">B1</kbd>,</span> then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> and use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to reach the trim page.</p>
+            <p class="step-check"><span class="sr">Check: </span>Tapping <kbd class="key pad">B1</kbd> plays the bass, still untrimmed.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="beat-bass-trim-y">
             <h3 class="step-title">Give the bass a shorter tail if needed</h3>
@@ -255,6 +271,8 @@
           <li data-step="beat-reverb" data-optional>
             <h3 class="step-title">Optional: choose reverb for A</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd> on the K.O. II. Tap <span class="nobr"><kbd class="key">A</kbd>,</span> then press <kbd class="key">FX</kbd> and choose reverb with <kbd class="key">−</kbd> / <span class="nobr"><kbd class="key">+</kbd>.</span></p>
+            <p class="step-check"><span class="sr">Check: </span>Your beat plays on while you choose reverb.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/effects">Effects</a></p>
           </li>
           <li data-step="beat-reverb-send" data-optional>
             <h3 class="step-title">Optional: a little room, not a wash</h3>
@@ -266,16 +284,21 @@
           <li data-step="beat-scene-sync" data-optional data-setting="411">
             <h3 class="step-title">Optional: make scene changes wait for the bar</h3>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> (system settings), type <span class="nobr"><kbd class="key">4</kbd>,</span> <span class="nobr"><kbd class="key">1</kbd>,</span> <span class="nobr"><kbd class="key">1</kbd>,</span> press <span class="nobr"><kbd class="key">ENTER</kbd>,</span> then press <span class="nobr"><kbd class="key">MAIN</kbd>.</span></p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows the current step again.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>By default a new scene starts the moment you pick it. With setting 411, scene changes wait for the end of the bar, so in the performance steps that follow you can pick the next scene a little early.</p></details><details class="step-more"><summary>Not working?</summary><p>Type 410 the same way to switch back. See help: “<a href="./help.html#scene-changes-land-at-the-wrong-moment">Scene changes land at the wrong moment</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/system">System</a></p>
           </li>
           <li data-step="beat-performance" data-note="BEAT">
             <h3 class="step-title">Write down BEAT</h3>
             <p class="step-do">Stop. Hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> read this scene’s number and write it down as BEAT (drums + bass).</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd>, the display shows a number different from DRUMS.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
           <li data-step="beat-perform-start">
             <h3 class="step-title">Keep BEAT safe, then start DRUMS</h3>
             <p class="step-do">Release, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once so BEAT stays safe. Now hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to select DRUMS, release and press <span class="nobr"><kbd class="key">PLAY</kbd>.</span></p>
+            <p class="step-check"><span class="sr">Check: </span>You hear drums only, with no bass.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
           <li data-step="beat-perform">
             <h3 class="step-title">Turn the loop into a tiny performance</h3>
@@ -295,11 +318,13 @@
           <li data-step="beat-live-practice" data-optional>
             <h3 class="step-title">Optional: make a practice copy</h3>
             <p class="step-do">Hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> select BEAT and release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once to make a practice copy; BEAT stays untouched.</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd>, the display shows BEAT’s scene number.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>So far you placed every note by hand. Live recording is the faster way: you play pads while the loop runs. Practising first costs nothing.</p></details></div>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
           <li data-step="beat-live-play-along" data-optional>
             <h3 class="step-title">Optional: play along before recording</h3>
-            <p class="step-do">Tap <span class="nobr"><kbd class="key">A</kbd>.</span> Press <kbd class="key">PLAY</kbd> and, without touching <span class="nobr"><kbd class="key">RECORD</kbd>,</span> tap <kbd class="key pad">pad 2</kbd> (snare) once near the end of each loop, just before it starts again.</p>
+            <p class="step-do">Tap <span class="nobr"><kbd class="key">A</kbd>.</span> Press <kbd class="key">PLAY</kbd> and, without touching <span class="nobr"><kbd class="key">RECORD</kbd>,</span> tap <kbd class="key pad">pad 2</kbd> (snare) once near the end of each loop, right before it starts again.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear your extra snare while you tap it; it disappears when you stop tapping.</p>
             <p class="step-note">Press <kbd class="key">PLAY</kbd> to stop.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>If your taps keep repeating on their own, RECORD was on: stop and press SHIFT + B (undo) while the umbrella is lit.</p></details></div>
@@ -308,11 +333,15 @@
           <li data-step="beat-live-record" data-optional>
             <h3 class="step-title">Optional: arm recording with a count-in</h3>
             <p class="step-do">Stopped, in the practice copy with group A selected: tap and release <span class="nobr"><kbd class="key">RECORD</kbd>,</span> then press <span class="nobr"><kbd class="key">PLAY</kbd>.</span></p>
+            <p class="step-check"><span class="sr">Check: </span>You hear a four-beat count-in before recording starts.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
           <li data-step="beat-live-record-tap" data-optional>
             <h3 class="step-title">Optional: tap the snare near each loop’s end</h3>
             <p class="step-do">After the four-beat count-in, tap <kbd class="key pad">A2</kbd> once near the end of each loop for two or three loops.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A2</kbd> plays the snare over the beat and metronome.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Quantize (the − you chose in TIMING) snaps each tap to the nearest step, so a slightly early or late tap still lands on the grid. A metronome clicks while you record; TEMPO Y sets its volume.</p></details><details class="step-more"><summary>Not working?</summary><p>No count-in? Pressing RECORD and PLAY together starts without one.</p></details></div>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
           <li data-step="beat-live-record-stop" data-optional>
             <h3 class="step-title">Optional: stop recording and listen</h3>
@@ -327,13 +356,16 @@
             <p class="step-undo">Too messy? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella icon is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>The practice copy sounds the way you chose.</p>
             <p class="step-note">Then press <kbd class="key">PLAY</kbd> to check it is gone.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
           <li data-step="beat-live-erase-note" data-optional data-risk="erase">
             <h3 class="step-title">Optional: or erase a single note</h3>
             <p class="preflight">Only in your practice copy: hold <kbd class="key">MAIN</kbd> and check it isn’t BEAT.</p>
+            <p class="step-consequence">Removes only the <kbd class="key pad">A2</kbd> note on this step.</p>
             <p class="step-do">To remove a single note instead, go to it in stopped MAIN and briefly press <span class="nobr"><kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A2</kbd></kbd>.</span></p>
             <p class="step-undo">Wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: that one snare is gone, the rest plays on.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
           <li data-step="beat-live-beat-clean" data-optional>
             <h3 class="step-title">Optional: BEAT is still clean</h3>
@@ -348,6 +380,7 @@
             <p class="step-check"><span class="sr">Check: </span>You can build a drum beat, add bass, perform two sections and fix a mistake.</p>
             <ul class="step-moves"><li>Navigate: stopped MAIN, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> <span class="nobr">(<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd></span> / <kbd class="key">+</kbd> jumps a bar).</li><li>Write: hold <kbd class="key">RECORD</kbd> + pad.</li><li>Erase one note: brief <kbd class="key">ERASE</kbd> + pad.</li><li>Undo: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</li><li>Commit: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>.</li><li>Select a scene: hold <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd>.</li></ul>
             <p class="step-note">Your scenes so far: DRUMS and BEAT.</p>
+            <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
           <li data-step="beat-recap-try" data-kind="recap">
             <h3 class="step-title">Try one move in a fresh copy</h3>

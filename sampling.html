@@ -28,7 +28,7 @@
 </head>
 <body data-chapter="sampling">
   <a class="skip" href="#main">Skip to content</a>
-  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a><a class="icon-btn static-search" href="./help.html" aria-label="Search: Troubleshooting lists every topic"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-search"></use></svg></a></header>
   <script src="site.js"></script>
   <script src="progress.js"></script>
   <script src="shell.js"></script>
@@ -73,6 +73,7 @@
           <li data-step="open-empty-project">
             <h3 class="step-title">Open empty project 7</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd>. If the K.O. II is playing, press <kbd class="key">PLAY</kbd> to stop it. Hold <kbd class="key">MAIN</kbd>, hold <kbd class="key pad">pad 7</kbd> as well, then release both.</p>
+            <p class="step-check"><span class="sr">Check: </span>While you hold both, the display shows <samp class="lcd">P 7</samp>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says “hold main and one of the pads (1-9) to select an empty project”, and project 7 is empty on a new unit. Your work from Chapters 1 and 2 in project 6 stays untouched.</p></details></div>
           </li>
           <li data-step="check-empty-project">
@@ -83,6 +84,7 @@
           <li data-step="set-tempo-grid">
             <h3 class="step-title">Set the tempo to 90 BPM</h3>
             <p class="step-do">Press <kbd class="key">TEMPO</kbd> and turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">90</samp> (or hold <kbd class="key">TEMPO</kbd> and type <kbd class="key">9</kbd>, <kbd class="key">0</kbd>).</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">90</samp>, the new tempo in BPM.</p>
           </li>
           <li data-step="set-grid-16">
             <h3 class="step-title">Set the grid to 16 steps</h3>
@@ -100,6 +102,7 @@
             <h3 class="step-title">Set the level and threshold</h3>
             <p class="preflight">Check that the pads are still blinking before you turn.</p>
             <p class="step-do">Turn <kbd class="key knob">Y</kbd> (threshold) all the way down, so recording starts as soon as you hold a pad. Set <kbd class="key knob">X</kbd> (input level) to about halfway.</p>
+            <p class="step-check"><span class="sr">Check: </span>The pads keep blinking, still in sample mode.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>In sample mode <kbd class="key knob">X</kbd> is input level and <kbd class="key knob">Y</kbd> is threshold, which are different jobs from SOUND mode.</p></details></div>
           </li>
           <li data-step="record-first-sample">
@@ -110,8 +113,8 @@
           </li>
           <li data-step="audition-first-sample">
             <h3 class="step-title">Listen, and set the level</h3>
-            <p class="step-do">Tap <kbd class="key pad">D1</kbd>. Too quiet: turn <kbd class="key knob">X</kbd> up. Crunchy or distorted: turn <kbd class="key knob">X</kbd> down.</p>
-            <p class="step-check"><span class="sr">Check: </span>You should hear your sound.</p>
+            <p class="step-do">Tap <kbd class="key pad">D1</kbd> to hear it. Too quiet or distorted? Turn <kbd class="key knob">X</kbd> (input level) up or down, press <kbd class="key">SAMPLE</kbd> and record <kbd class="key pad">D1</kbd> again.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> plays back your sound.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>To try again, the guide says you “get a second chance by pressing sample again and retaking it”: press <kbd class="key">SAMPLE</kbd>, hold <kbd class="key pad">D1</kbd> and record again.</p></details></div>
           </li>
           <li data-step="note-sample-number" data-note="FIRST" data-note-kind="sample">
@@ -123,6 +126,7 @@
           <li data-step="place-first-sample">
             <h3 class="step-title">Go to 1.1.1 with group D</h3>
             <p class="step-do">In <kbd class="key">MAIN</kbd>, stopped, with group <kbd class="key">D</kbd> selected: hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">1.1.1</samp>.</p>
           </li>
           <li data-step="place-first-sample-play">
             <h3 class="step-title">D1: place it and play</h3>
@@ -143,6 +147,7 @@
           <li data-step="erase-test-note" data-risk="erase">
             <h3 class="step-title">Erase the test note</h3>
             <p class="preflight">Press briefly: a long hold clears every note of the pad.</p>
+            <p class="step-consequence">Removes only that <kbd class="key pad">D1</kbd> note; the recording stays.</p>
             <p class="step-do">In <kbd class="key">MAIN</kbd>, stopped, with group <kbd class="key">D</kbd> selected, go to <samp class="lcd">1.1.1</samp> and briefly press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">D1</kbd></kbd>.</p>
             <p class="step-undo">Wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> no longer lights at <samp class="lcd">1.1.1</samp> and <kbd class="key">PLAY</kbd> stays silent.</p>
@@ -151,7 +156,7 @@
           <li data-step="kit-sample-setup">
             <h3 class="step-title">Set up group A for sampling</h3>
             <p class="step-do">Tap <kbd class="key">A</kbd>, then press <kbd class="key">SAMPLE</kbd>. Turn <kbd class="key knob">Y</kbd> (threshold) up a little from the bottom.</p>
-            <p class="step-check"><span class="sr">Check: </span>Check that the microphone source is still selected (press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> if not).</p>
+            <p class="step-check"><span class="sr">Check: </span>The display still shows <samp class="lcd">mic</samp> as the source.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Now recording waits until your sound is loud enough, so it starts right on the hit with no silent gap: the guide says threshold lets you “trigger the recording to start only when you make just the right amount of noise”.</p></details></div>
           </li>
           <li data-step="record-kick">
@@ -174,6 +179,7 @@
           <li data-step="shape-kit">
             <h3 class="step-title">Make the kick deeper</h3>
             <p class="step-do">Press <kbd class="key">SOUND</kbd> and tap <kbd class="key pad">A1</kbd>. Turn <kbd class="key knob">Y</kbd> (pitch) down a little: your mouth kick gets deeper.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> plays your kick at a lower pitch.</p>
           </li>
           <li data-step="shape-kit-hat">
             <h3 class="step-title">Make the hat quieter</h3>
@@ -183,6 +189,7 @@
           <li data-step="place-kit-kicks">
             <h3 class="step-title">Go to 1.1.1 with group A</h3>
             <p class="step-do">In <kbd class="key">MAIN</kbd>, stopped, with group <kbd class="key">A</kbd> selected, hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">1.1.1</samp>.</p>
           </li>
           <li data-step="place-kit-kicks-write">
             <h3 class="step-title">A1: place the kicks</h3>
@@ -204,6 +211,7 @@
           <li data-step="commit-voice-kit">
             <h3 class="step-title">Listen to your voice kit</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>, listen to a few loops and press <kbd class="key">PLAY</kbd> to stop.</p>
+            <p class="step-check"><span class="sr">Check: </span>Your voice kick, snare and hats play the Chapter 1 rhythm.</p>
           </li>
           <li data-step="commit-voice-kit-copy" data-note="VOICE KIT">
             <h3 class="step-title">Commit it as VOICE KIT</h3>
@@ -223,10 +231,13 @@
           <li data-step="handsfree-count">
             <h3 class="step-title">Set up hands-free sampling</h3>
             <p class="step-do">Tap <kbd class="key">D</kbd> and press <kbd class="key">SAMPLE</kbd>; check the mic source. Leave <kbd class="key knob">Y</kbd> slightly up so the recording waits for your voice.</p>
+            <p class="step-check"><span class="sr">Check: </span>Empty pads blink and the display shows <samp class="lcd">mic</samp>.</p>
           </li>
-          <li data-step="handsfree-count-start">
+          <li data-step="handsfree-count-start" data-os="2.0">
             <h3 class="step-title">D2: start hands-free sampling</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key pad">D2</kbd>, an empty, blinking pad.</p>
+            <p class="step-check"><span class="sr">Check: </span>The K.O. II now holds <kbd class="key pad">D2</kbd> for you; your hands are free.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The K.O. II now “holds the pad for you”.</p></details></div>
           </li>
           <li data-step="handsfree-count-record">
@@ -238,23 +249,26 @@
           <li data-step="line-connect">
             <h3 class="step-title">Connect your phone to the line input</h3>
             <p class="step-do">Line input: connect your phone’s headphone output (or its headphone adapter) to the K.O. II’s audio INPUT with a 3.5 mm stereo cable.</p>
+            <p class="step-check"><span class="sr">Check: </span>The cable runs from the phone into INPUT.</p>
             <p class="step-note">The input sits with the other sockets on the top side; do not use OUTPUT, MIDI or SYNC.</p>
           </li>
-          <li data-step="line-connect-volume">
+          <li data-step="line-connect-volume" data-kind="info">
             <h3 class="step-title">Set the phone’s volume to half</h3>
             <p class="step-do">Set the phone’s volume to about half.</p>
           </li>
-          <li data-step="line-handsfree-record">
+          <li data-step="line-handsfree-record" data-kind="info">
             <h3 class="step-title">Choose what to sample</h3>
             <p class="step-do">Choose 2–8 seconds of something you made or may use, such as a voice memo or your own loop.</p>
           </li>
           <li data-step="line-select-input">
             <h3 class="step-title">Select the line input</h3>
             <p class="step-do">Tap <kbd class="key">D</kbd>, press <kbd class="key">SAMPLE</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">in</samp>. Leave <kbd class="key knob">Y</kbd> slightly up.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">in</samp>; empty pads blink.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>That is the line input: the mono and stereo versions share this label, and either is fine here.</p></details></div>
           </li>
-          <li data-step="line-record-d3">
+          <li data-step="line-record-d3" data-os="2.0">
             <h3 class="step-title">D3: record the phone, hands-free</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key pad">D3</kbd>, start the phone, and press <kbd class="key">SAMPLE</kbd> when your part has finished. Tap <kbd class="key pad">D3</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear the phone’s sound, clean and undistorted.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Distorted: turn <kbd class="key knob">X</kbd> down and record again on an empty pad. Too quiet: raise <kbd class="key knob">X</kbd> or the phone’s volume.</p></details></div>
@@ -263,17 +277,20 @@
             <h3 class="step-title">Connect over USB audio (OS 2.5)</h3>
             <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Connect the K.O. II to the phone or a computer with a USB-C cable.</p>
+            <p class="step-check"><span class="sr">Check: </span>The K.O. II appears as an audio device.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This is USB audio (OS 2.5), for example if your phone has no headphone output.</p></details></div>
           </li>
           <li data-step="usb-connect-output">
             <h3 class="step-title">Choose the K.O. II as audio output</h3>
             <p class="step-do">On the phone or computer, choose the K.O. II as the audio output device.</p>
+            <p class="step-check"><span class="sr">Check: </span>The phone or computer shows the K.O. II as its output.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide says any “class compliant usb audio host” works.</p></details></div>
           </li>
           <li data-step="usb-live-monitor" data-optional data-setting="511">
             <h3 class="step-title">Optional: hear the phone while sampling</h3>
             <p class="preflight">With the K.O. II already on.</p>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> to open system settings. Type <kbd class="key">5</kbd>, <kbd class="key">1</kbd>, <kbd class="key">1</kbd> on the pads, press <kbd class="key">ENTER</kbd>, then press <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The SYSTEM icon goes out.</p>
             <p class="step-note">Type <kbd class="key">5</kbd><kbd class="key">1</kbd><kbd class="key">0</kbd> the same way to switch back.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Optional, to hear the phone through the K.O. II while you sample. Setting <samp class="lcd">511</samp> is “sampler + live monitoring”; the default, <samp class="lcd">510</samp>, is “sampler only”.</p></details></div>
           </li>
@@ -281,6 +298,7 @@
             <h3 class="step-title">Select USB as the source</h3>
             <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Tap <kbd class="key">D</kbd>, press <kbd class="key">SAMPLE</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">usb</samp> (mono and stereo share this label). Leave <kbd class="key knob">Y</kbd> slightly up.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">usb</samp>; empty pads blink.</p>
           </li>
           <li data-step="usb-record-d3" data-os="2.5">
             <h3 class="step-title">D3: record over USB, hands-free</h3>
@@ -301,6 +319,7 @@
           <li data-step="quality-record-hi">
             <h3 class="step-title">Choose the mic again</h3>
             <p class="step-do">Tap <kbd class="key">D</kbd>, press <kbd class="key">SAMPLE</kbd> and choose the mic source.</p>
+            <p class="step-check"><span class="sr">Check: </span>Empty pads blink and the display shows <samp class="lcd">mic</samp>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The K.O. II records at hi quality by default (46,875 Hz, setting <samp class="lcd">502</samp>).</p></details></div>
           </li>
           <li data-step="quality-record-hi-keys">
@@ -312,6 +331,7 @@
             <h3 class="step-title">Set the lo recording rate (500)</h3>
             <p class="preflight">With the K.O. II already on.</p>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> to open system settings. Type <kbd class="key">5</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> on the pads, press <kbd class="key">ENTER</kbd>, then press <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>You are on <samp class="lcd">500</samp>: new recordings use the lo rate.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Setting <samp class="lcd">500</samp> is the lo rate, 26,250 Hz. Menu route instead of the code: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, press <kbd class="key">+</kbd> until the display shows <samp class="lcd">smp</samp>, press <kbd class="key">ENTER</kbd>, <samp class="lcd">rec</samp> appears, press <kbd class="key">ENTER</kbd> again, use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to select <samp class="lcd">lo</samp>, then press <kbd class="key">ENTER</kbd>.</p></details></div>
           </li>
           <li data-step="quality-record-lo">
@@ -345,6 +365,7 @@
             <h3 class="step-title">A2: open sound edit</h3>
             <p class="preflight">Always press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> briefly: held, it saves your edits, and on the trim page it crops the file.</p>
             <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">A</kbd>, then tap <kbd class="key pad">A2</kbd> (your snare). Briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>: sound edit opens.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A2</kbd> plays your snare as you select it.</p>
           </li>
           <li data-step="edit-open-pages">
             <h3 class="step-title">Step through the six pages</h3>
@@ -355,6 +376,7 @@
           <li data-step="edit-trim">
             <h3 class="step-title">Trim the start of A2</h3>
             <p class="step-do">Go to the trim page. Turn <kbd class="key knob">X</kbd> (start point) a little at a time, tapping <kbd class="key pad">A2</kbd> between turns, until the snare starts the instant you tap.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A2</kbd> sounds the instant you tap it.</p>
             <p class="step-note">Hold <kbd class="key">SHIFT</kbd> while turning for finer steps.</p>
           </li>
           <li data-step="edit-trim-length">
@@ -379,6 +401,7 @@
             <h3 class="step-title">Copy A2’s sound</h3>
             <p class="preflight">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> only once; pressing it twice copies every sound in the group.</p>
             <p class="step-do">Press <kbd class="key">MAIN</kbd>, then press <kbd class="key">SOUND</kbd> and tap <kbd class="key pad">A2</kbd>. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">C</kbd> once: this copies <kbd class="key pad">A2</kbd>’s sound.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A2</kbd> plays your snare as you select it.</p>
           </li>
           <li data-step="copy-snare-paste">
             <h3 class="step-title">Paste it onto A4</h3>
@@ -388,6 +411,7 @@
           <li data-step="reverse-copy">
             <h3 class="step-title">A4: open the time page</h3>
             <p class="step-do">With <kbd class="key pad">A4</kbd> selected in <kbd class="key">SOUND</kbd>, briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>, then press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">tim</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">tim</samp>.</p>
           </li>
           <li data-step="reverse-copy-rev" data-os="2.5">
             <h3 class="step-title">Reverse A4</h3>
@@ -407,11 +431,13 @@
             <h3 class="step-title">Optional: set the kick’s crop points</h3>
             <p class="preflight">Optional and permanent: skip this if you are unsure.</p>
             <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key pad">A1</kbd>, briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>, go to the trim page and set <kbd class="key knob">X</kbd> and <kbd class="key knob">Y</kbd> so only the kick remains.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> plays only the kick.</p>
           </li>
           <li data-step="crop-optional-crop" data-os="2.5" data-optional data-risk="overwrite">
             <h3 class="step-title">Optional: crop the kick</h3>
             <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="preflight">Only crop a recording you made today, never a factory sound.</p>
+            <p class="step-consequence">Overwrites the kick’s file: only the part between your trim points is kept.</p>
             <p class="step-do">Then hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>.</p>
             <p class="step-noundo">Cropping rewrites the sample file to its trim points; the guide says it “will overwrite the file and cannot be undone”.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> sounds as before; the file now ends at your trim points.</p>
@@ -429,6 +455,7 @@
           <li data-step="chop-live-optional" data-optional>
             <h3 class="step-title">Optional: try live chop</h3>
             <p class="step-do">In <kbd class="key">MAIN</kbd> tap <kbd class="key">D</kbd>, tap <kbd class="key pad">D2</kbd>, tap <kbd class="key">C</kbd>, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SAMPLE</kbd></kbd> and tap C pads in time with the words.</p>
+            <p class="step-check"><span class="sr">Check: </span>In CHOP the display shows <samp class="lcd">Cho</samp>.</p>
             <p class="step-note">Whatever happens, press <kbd class="key">MAIN</kbd> when done; the next steps overwrite group <kbd class="key">C</kbd> anyway.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Optional first look at manual chopping, which the guide calls live chop: in CHOP mode you “press a pad to CHOP… keep pressing pads as the sample plays”, and the time between presses decides where each cut falls. The guide’s picture shows <samp class="lcd">Cho</samp> on the display and the first pad pressed at the very start of the sample. It doesn’t say what starts playback, and no owner report we found does, so treat this as an experiment.</p></details></div>
           </li>
@@ -439,14 +466,17 @@
             <p class="step-check"><span class="sr">Check: </span>You hear the count, and <kbd class="key pad">D2</kbd> is now the selected sample.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Chopping from one group into another needs OS 2.0.1 or newer. Auto chop “will reset any pad assignments” in the destination group, which is why you use the empty group <kbd class="key">C</kbd>.</p></details></div>
           </li>
-          <li data-step="chop-equal-mode">
+          <li data-step="chop-equal-mode" data-os="2.5">
             <h3 class="step-title">Choose equal-length slices</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SAMPLE</kbd></kbd> to enter CHOP. Hold the <kbd class="key">C</kbd> button and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">EQU</samp>. Release <kbd class="key">C</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">EQU</samp>: equal-length slices.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>EQU means equal-length slices; the other auto mode, attack, cuts at the loudest moments.</p></details></div>
           </li>
           <li data-step="chop-slice-count">
             <h3 class="step-title">Chop into four slices</h3>
             <p class="step-do">Press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the slice count on the display is <samp class="lcd">4</samp>, then press <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>Back in <kbd class="key">MAIN</kbd>, group <kbd class="key">C</kbd> holds four slices of your count.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide: “go back to (main) and your sample has been chopped.”</p></details></div>
           </li>
           <li data-step="chop-find-slices">
@@ -459,6 +489,7 @@
           <li data-step="chop-write-pattern">
             <h3 class="step-title">Go to 1.1.1 with group C</h3>
             <p class="step-do">Stopped, with group <kbd class="key">C</kbd> selected, go to <samp class="lcd">1.1.1</samp> (hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd>).</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">1.1.1</samp>.</p>
           </li>
           <li data-step="chop-write-slices">
             <h3 class="step-title">Place the four slices</h3>
@@ -468,8 +499,9 @@
           </li>
           <li data-step="chop-remix" data-risk="erase">
             <h3 class="step-title">Remix the count</h3>
-            <p class="preflight">Stop first, and press briefly: a long hold clears every note of the pad.</p>
-            <p class="step-do">Remix it: go to <samp class="lcd">1.3.1</samp>, briefly press <kbd class="key">ERASE</kbd> + the “three” pad, then hold <kbd class="key">RECORD</kbd> and tap the “one” pad there. Press <kbd class="key">PLAY</kbd>.</p>
+            <p class="preflight">Stopped, press briefly: a long hold clears every note of the pad.</p>
+            <p class="step-consequence">Removes only the “three” note at <samp class="lcd">1.3.1</samp>.</p>
+            <p class="step-do">Go to <samp class="lcd">1.3.1</samp>, briefly press <kbd class="key">ERASE</kbd> + the “three” pad, then hold <kbd class="key">RECORD</kbd> and tap the “one” pad there. Press <kbd class="key">PLAY</kbd>.</p>
             <p class="step-undo">Wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>The count now goes one, two, one, four.</p>
             <p class="step-note">Press <kbd class="key">PLAY</kbd> to stop.</p>
@@ -487,14 +519,17 @@
           <li data-step="resample-source">
             <h3 class="step-title">Stop, and select group B</h3>
             <p class="step-do">Stop playback. Tap <kbd class="key">B</kbd>: the empty group <kbd class="key">B</kbd> will receive the recording.</p>
+            <p class="step-check"><span class="sr">Check: </span>Nothing plays, and group <kbd class="key">B</kbd> is selected.</p>
           </li>
-          <li data-step="resample-source-rsp">
+          <li data-step="resample-source-rsp" data-os="2.0">
             <h3 class="step-title">Choose the resample source</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Press <kbd class="key">SAMPLE</kbd>, then press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">rsp</samp> (resample; mono and stereo share this label).</p>
             <p class="step-check"><span class="sr">Check: </span><samp class="lcd">rsp</samp> is on the display.</p>
           </li>
-          <li data-step="resample-record">
+          <li data-step="resample-record" data-os="2.0">
             <h3 class="step-title">B1: resample one bar</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="preflight">Do not press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> now, because that changes how many bars it records.</p>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key pad">B1</kbd>: hands-free sampling is engaged and waits. Press <kbd class="key">PLAY</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The beat plays and the K.O. II records it.</p>
@@ -510,6 +545,7 @@
           <li data-step="bounce-scene" data-note="BOUNCE">
             <h3 class="step-title">Commit a new scene: BOUNCE</h3>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> to commit, then hold <kbd class="key">MAIN</kbd> and write the new scene number down as BOUNCE.</p>
+            <p class="step-check"><span class="sr">Check: </span>The BOUNCE number is different from VOICE KIT.</p>
           </li>
           <li data-step="bounce-scene-empty">
             <h3 class="step-title">Empty groups A and C here</h3>
@@ -528,23 +564,28 @@
           <li data-step="fx-setup">
             <h3 class="step-title">Choose the filter for group B</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>, tap <kbd class="key">B</kbd>, press <kbd class="key">FX</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until you reach the filter. Raise the fader.</p>
+            <p class="step-check"><span class="sr">Check: </span>Your bounced beat plays from <kbd class="key pad">B1</kbd>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This sets up an effect for group <kbd class="key">B</kbd>. The guide lists delay, reverb, distortion, chorus, filter and compressor. In <kbd class="key">FX</kbd> it sets group <kbd class="key">B</kbd>’s send.</p></details></div>
           </li>
           <li data-step="fx-setup-shape">
             <h3 class="step-title">Shape the sound with X</h3>
             <p class="preflight">Do not hold <kbd class="key">FX</kbd> while pressing a group button: that solos the group.</p>
             <p class="step-do">Turn <kbd class="key knob">X</kbd> and listen: “turn left to cut the highs and right to cut the lows.”</p>
+            <p class="step-check"><span class="sr">Check: </span>Left, the beat sounds muffled; right, it loses its low end.</p>
             <p class="step-note">Press <kbd class="key">PLAY</kbd> to stop.</p>
           </li>
-          <li data-step="fx-resample">
+          <li data-step="fx-resample" data-os="2.0">
             <h3 class="step-title">B2: get ready to resample</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Tap <kbd class="key">B</kbd>, press <kbd class="key">SAMPLE</kbd> and check that <samp class="lcd">rsp</samp> is still the source. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key pad">B2</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span><samp class="lcd">rsp</samp> shows; hands-free sampling waits for <kbd class="key">PLAY</kbd>.</p>
             <p class="step-note">For more time, press <kbd class="key">+</kbd> once or twice now to record more bars, and watch the display.</p>
           </li>
           <li data-step="fx-resample-record">
             <h3 class="step-title">Record a filter sweep</h3>
             <p class="preflight">Turn only the knobs while holding <kbd class="key">FX</kbd>: pads trigger punch-in effects and group buttons solo.</p>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>. While it records, hold <kbd class="key">FX</kbd> and turn <kbd class="key knob">X</kbd> slowly from fully left towards the middle, then release <kbd class="key">FX</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The beat opens up from muffled to bright.</p>
           </li>
           <li data-step="fx-resample-listen">
             <h3 class="step-title">Listen to B2</h3>
@@ -554,6 +595,7 @@
           <li data-step="fx-resample-dry">
             <h3 class="step-title">Set group B back to dry</h3>
             <p class="step-do">Then press <kbd class="key">PLAY</kbd>, tap <kbd class="key">B</kbd>, press <kbd class="key">FX</kbd> and pull the fader down, so group <kbd class="key">B</kbd> plays dry again in the next section.</p>
+            <p class="step-check"><span class="sr">Check: </span>The beat plays dry, with no filter.</p>
             <p class="step-note">Press <kbd class="key">PLAY</kbd> to stop.</p>
           </li>
         </ol>
@@ -576,10 +618,12 @@
           <li data-step="stretch-bar-mode">
             <h3 class="step-title">B1: open the time page</h3>
             <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">B</kbd>, then tap <kbd class="key pad">B1</kbd>. Briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">tim</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">tim</samp>.</p>
           </li>
           <li data-step="stretch-bar-length">
             <h3 class="step-title">Stretch B1 to one bar</h3>
             <p class="step-do">Turn <kbd class="key knob">X</kbd> (time stretch mode: BPM, BAR or reverse) until <samp class="lcd">BAR</samp> shows. Turn <kbd class="key knob">Y</kbd> (sample length) until the display shows <samp class="lcd">1 bar</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The stopwatch TIME icon is now lit.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide: “if you choose 1 bar it stretches your sample to be 1 bar long.” The mode can also be off: teenage engineering’s factory sounds are stored with <code>"time.mode":"off"</code>. The stopwatch TIME icon “indicates if active sound has time stretch enabled”, so watch it as you turn <kbd class="key knob">X</kbd>.</p></details></div>
           </li>
           <li data-step="stretch-check">
@@ -590,16 +634,19 @@
           <li data-step="stretch-check-90">
             <h3 class="step-title">Go back to 90 BPM</h3>
             <p class="step-do">Press <kbd class="key">TEMPO</kbd> and turn <kbd class="key knob">X</kbd> back to 90 while it plays: the loop follows. Press <kbd class="key">PLAY</kbd> to stop.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">B1</kbd> slows down and stays in time.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Heavy stretching changes the sound a little (OS 2.5 made it cleaner), and stretched samples can use more of the K.O. II’s voices. The BPM mode works too: choose BPM and set <kbd class="key knob">Y</kbd> to 90, the tempo you recorded the loop at.</p></details></div>
           </li>
           <li data-step="tempo-match-optional" data-optional>
             <h3 class="step-title">Optional: match a song’s tempo</h3>
             <p class="step-do">Optional, tempo match: hold <kbd class="chord"><kbd class="key">SAMPLE</kbd> + <kbd class="key">TEMPO</kbd></kbd> and play a song from your phone into the line input, or close to the mic.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows the song’s tempo.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide: the K.O. II “will listen, find the tempo, display it on screen and then set the project tempo to match”.</p></details></div>
           </li>
           <li data-step="tempo-match-play" data-optional>
             <h3 class="step-title">Optional: play your stretched loop</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>: your stretched <kbd class="key pad">B1</kbd> follows the new tempo. Set <kbd class="key">TEMPO</kbd> back to 90 afterwards.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">B1</kbd> plays in time at the matched tempo.</p>
           </li>
           <li data-step="loop-optional" data-optional>
             <h3 class="step-title">Optional: start a LOOP</h3>
@@ -609,10 +656,12 @@
           <li data-step="loop-optional-move" data-optional>
             <h3 class="step-title">Optional: move the loop</h3>
             <p class="step-do">Turn <kbd class="key knob">X</kbd> to slide the loop position (it stays locked to the tempo) and <kbd class="key knob">Y</kbd> to change its length.</p>
+            <p class="step-check"><span class="sr">Check: </span>The repeated piece moves, still in time.</p>
           </li>
           <li data-step="loop-optional-leave" data-optional>
             <h3 class="step-title">Optional: leave the loop</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd> to leave at the next bar, or <kbd class="key">TEMPO</kbd> to leave at once.</p>
+            <p class="step-check"><span class="sr">Check: </span>The loop ends and the full beat plays on.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p><a href="./perform.html">Chapter 4 · Play &amp; perform</a> has more live tricks.</p></details></div>
           </li>
           <li data-step="keep-samples">

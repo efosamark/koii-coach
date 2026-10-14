@@ -424,5 +424,7 @@ steps.forEach(li=>{
 });
 recall();
 addEventListener('storage',e=>{if(e.key===NOTES)recall();});
-window.CoachNotes={book,list:noted,html:()=>{const l=noted();return l.length?'<p class="note-recall">Your notes: '+listHTML(l)+'</p>':'';}};
+// chapter(): this chapter's own names, in page order, with what is noted for each ('' when nothing is): [name, value, kind].
+const chapterNotes=()=>{const v=Object.fromEntries(noted()),out=[];steps.forEach(li=>namesOf(li).forEach(n=>{if(!out.some(x=>x[0]===n))out.push([n,v[n]||'',li.dataset.noteKind==='sample'?'sample':'scene']);}));return out;};
+window.CoachNotes={book,list:noted,chapter:chapterNotes,html:()=>{const l=noted();return l.length?'<p class="note-recall">Your notes: '+listHTML(l)+'</p>':'';}};
 })();

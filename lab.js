@@ -22,6 +22,10 @@ const pos=c=>`1.${Math.floor(c/4)+1}.${c%4+1}`,lcd=t=>`<samp class="lcd">${t}</s
 const recipe=()=>HITS.map(row=>Array.from({length:16},(_,i)=>row.includes(i)));
 const saved=P&&P.v2().lab;
 let grid=saved?saved.map(r=>Array.from({length:16},(_,i)=>r.includes(i))):recipe();
+// lab.html#recipe-N (from a Chapter 1 step's "Practise this away from the device"): that step's target rhythm, the
+// first N rows of the recipe. It is not saved until you change it, so your own grid is back on the next visit.
+const asked=/^#recipe-([1-4])$/.exec(location.hash);
+if(asked)grid=HITS.map((row,r)=>Array.from({length:16},(_,i)=>r<+asked[1]&&row.includes(i)));
 const compact=matchMedia('(max-width:759px)');
 let sel=0,focus={r:0,c:0};
 

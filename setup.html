@@ -28,7 +28,7 @@
 </head>
 <body data-chapter="setup">
   <a class="skip" href="#main">Skip to content</a>
-  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a><a class="icon-btn static-search" href="./help.html" aria-label="Search: Troubleshooting lists every topic"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-search"></use></svg></a></header>
   <script src="site.js"></script>
   <script src="progress.js"></script>
   <script src="shell.js"></script>
@@ -63,6 +63,7 @@
           <li data-step="power-batteries">
             <h3 class="step-title">Fit four AAA batteries</h3>
             <p class="step-do">Lift off the top lid to reach the battery compartment and insert 4 fresh AAA batteries, matching the + and − marks. Put the lid back.</p>
+            <p class="step-check"><span class="sr">Check: </span>Each battery’s + and − match the marks.</p>
             <p class="step-note">Using USB power instead? Connect a USB-C cable from a good charger (5 V, at least 1 A) and skip the batteries.</p>
           </li>
           <li data-step="power-switch-on">
@@ -73,18 +74,20 @@
           <li data-step="power-battery-icon">
             <h3 class="step-title">Find the battery icon</h3>
             <p class="step-do">On batteries, find the battery icon on the display: it is lit while the K.O. II runs on batteries and blinks when they are low.</p>
+            <p class="step-check"><span class="sr">Check: </span>The battery icon is lit, not blinking.</p>
             <p class="step-note">If it blinks, fit fresh batteries or switch to USB-C power before the update in Part 3.</p>
           </li>
           <li data-step="listen-speaker">
             <h3 class="step-title">Tap pads 1, 2 and 3</h3>
             <p class="step-do">Tap pads 1, 2 and 3.</p>
-            <p class="step-check"><span class="sr">Check: </span>You should hear them from the built-in speaker.</p>
+            <p class="step-check"><span class="sr">Check: </span>Each pad plays a sound through the built-in speaker.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A new K.O. II comes with sounds in projects 1–5.</p></details><details class="step-more"><summary>Not working?</summary><p>Silent? You may be in one of the empty projects: hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 1</kbd> as well, release both and tap again. Also check that the fader is not all the way down: by default it sets the level of the selected group.</p></details></div>
           </li>
           <li data-step="listen-headphones" data-optional>
             <h3 class="step-title">Optional: plug in headphones</h3>
-            <p class="preflight">The input is a 3.5 mm socket on the top side too, so make sure you chose the output.</p>
+            <p class="preflight">The input is a 3.5 mm socket on the top side too, so check that you chose the output.</p>
             <p class="step-do">Optional: turn your headphones or speaker down first, then plug them into the 3.5 mm stereo output on the top side of the K.O. II.</p>
+            <p class="step-check"><span class="sr">Check: </span>Pads play through them.</p>
           </li>
           <li data-step="listen-headphones-volume" data-optional>
             <h3 class="step-title">Optional: raise the volume slowly</h3>
@@ -101,7 +104,7 @@
         <summary><h2 class="part-title">Part 2 · Read the screen and the button language</h2></summary>
         <p><b>Goal:</b> understand what “hold X + press Y” means, find your way home to MAIN, and read the icons this course checks most.</p>
         <ol start="7">
-          <li data-step="button-language">
+          <li data-step="button-language" data-kind="info">
             <h3 class="step-title">Learn the four button words</h3>
             <p class="step-do">Learn the four words this course uses.</p>
             <p class="step-note">Press: tap and release. Hold: press and keep it down. X + Y: hold X, press Y, then release both. Then: one after the other. Many buttons and the <kbd class="key knob">X</kbd> and <kbd class="key knob">Y</kbd> knobs change job with the mode, so always check which mode you are in.</p>
@@ -122,6 +125,7 @@
           <li data-step="screen-shift-minus">
             <h3 class="step-title">Your first combination: SHIFT + −</h3>
             <p class="step-do">Now your first combination: hold <kbd class="key">SHIFT</kbd>, press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>, then release <kbd class="key">SHIFT</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">1.1.1</samp> again.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p><kbd class="key">SHIFT</kbd> is the gateway to other functions; together with <kbd class="key">−</kbd> and <kbd class="key">+</kbd> it moves a whole bar at a time.</p></details></div>
           </li>
           <li data-step="screen-sound-mode">
@@ -135,9 +139,9 @@
             <h3 class="step-title">PLAY lights its icon</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>. Press <kbd class="key">PLAY</kbd> again to stop.</p>
             <p class="step-check"><span class="sr">Check: </span>The PLAY icon lights while the K.O. II plays.</p>
-            <p class="step-note">If the project has no notes, it simply plays silence.</p>
+            <p class="step-note">If the project has no notes, it plays silence.</p>
           </li>
-          <li data-step="screen-icon-table">
+          <li data-step="screen-icon-table" data-kind="info">
             <h3 class="step-title">Read the icon table</h3>
             <p class="step-do">Read the icon table below.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The two you will check most often are the umbrella (undo is possible) and the floppy (saving).</p></details></div>
@@ -175,7 +179,7 @@
         <p><b>Goal:</b> run the newest OS, so every instruction in this course matches your K.O. II. The course is checked against OS 2.5.1, released on 3 July 2026 according to the official downloads page. The K.O. II doesn’t show its OS version on its own display, so let the official update utility read it for you.</p>
         <p>Already made music on this unit that you care about, or bought it second-hand? Do Part 4 (backup) first, then come back here.</p>
         <ol start="14">
-          <li data-step="update-open-utility">
+          <li data-step="update-open-utility" data-kind="info">
             <h3 class="step-title">Open the update utility</h3>
             <p class="step-do">On your computer, open Google Chrome and go to <a href="https://teenage.engineering/apps/update">teenage.engineering/apps/update</a>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The utility needs a browser that supports Web MIDI and names Chrome, Microsoft Edge and Brave.</p></details></div>
@@ -183,13 +187,14 @@
           <li data-step="update-connect">
             <h3 class="step-title">Connect the K.O. II</h3>
             <p class="step-do">With the K.O. II switched on, connect it to the computer with a USB-C cable that carries data.</p>
+            <p class="step-check"><span class="sr">Check: </span>The USB MIDI icon on the display lights.</p>
           </li>
           <li data-step="update-allow-midi">
             <h3 class="step-title">Allow MIDI access</h3>
             <p class="step-do">If the browser asks whether the page may use your MIDI devices, allow it.</p>
             <p class="step-check"><span class="sr">Check: </span>The USB MIDI icon lights, and the utility finds your K.O. II.</p>
           </li>
-          <li data-step="update-read-result">
+          <li data-step="update-read-result" data-kind="info">
             <h3 class="step-title">Read the result</h3>
             <p class="step-do">Read what the utility tells you: either that a newer version is available, or that your K.O. II is up to date.</p>
             <p class="step-note">If a newer one appears later, install that.</p>
@@ -199,6 +204,7 @@
             <h3 class="step-title">Install the update</h3>
             <p class="preflight">Don’t unplug the cable, close the tab or switch the K.O. II off until the utility says it has finished.</p>
             <p class="step-do">If an update is offered, start it and follow the utility’s on-screen instructions. Then reload the page and let it check again.</p>
+            <p class="step-check"><span class="sr">Check: </span>The utility says your K.O. II is up to date.</p>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> the update utility says your K.O. II is up to date.</p>
@@ -219,17 +225,19 @@
             <h3 class="step-title">Save a backup</h3>
             <p class="preflight">Don’t use its delete or restore features today.</p>
             <p class="step-do">Use the tool’s backup feature to save a backup of your K.O. II to the computer.</p>
+            <p class="step-check"><span class="sr">Check: </span>The tool reports that the backup has finished.</p>
             <p class="step-note">Button names can change between versions of the tool, so follow its own labels.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Backup and restore arrived with OS 1.2.0, and the official product page says you can also back up and restore single projects.</p></details></div>
           </li>
           <li data-step="backup-check-file">
             <h3 class="step-title">Find the backup file</h3>
             <p class="step-do">When the tool reports that the backup has finished, look in your browser’s downloads.</p>
-            <p class="step-check"><span class="sr">Check: </span>A new backup file should be there.</p>
+            <p class="step-check"><span class="sr">Check: </span>A new backup file is there.</p>
           </li>
           <li data-step="backup-second-copy">
             <h3 class="step-title">Copy it to a second place</h3>
             <p class="step-do">Copy it to a second place, such as a USB stick or cloud storage.</p>
+            <p class="step-check"><span class="sr">Check: </span>The backup file also appears in the second place.</p>
             <p class="step-note">Make a fresh backup after each chapter you care about and before every update or troubleshooting. Restoring a backup can replace what is on the K.O. II, so back up the current state before you ever restore.</p>
           </li>
         </ol>
@@ -244,6 +252,7 @@
           <li data-step="project-factory-sounds">
             <h3 class="step-title">Open factory project 1</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd> and stop playback if needed. Hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 1</kbd> as well, then release both.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">P 1</samp> before you release.</p>
           </li>
           <li data-step="project-factory-pads">
             <h3 class="step-title">Tap A, then pads 1, 2 and 3</h3>
@@ -253,6 +262,7 @@
           <li data-step="project-empty-six">
             <h3 class="step-title">Open empty project 6</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 6</kbd> as well, then release both.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">P 6</samp> before you release.</p>
           </li>
           <li data-step="project-empty-six-check">
             <h3 class="step-title">Check every group is silent</h3>
@@ -265,7 +275,7 @@
             <p class="step-do">Press <kbd class="key">PLAY</kbd>. Press <kbd class="key">PLAY</kbd> again to stop.</p>
             <p class="step-check"><span class="sr">Check: </span>Nothing plays.</p>
           </li>
-          <li data-step="project-write-course">
+          <li data-step="project-write-course" data-kind="info">
             <h3 class="step-title">Write PROJECT 6 = COURSE</h3>
             <p class="step-do">Write PROJECT 6 = COURSE on your paper.</p>
             <p class="step-note">Later chapters each start in a project of their own: 7 for Chapter 3, 8 for Chapter 5 and 9 for Chapter 6, so keep 7 and 8 empty. Until Chapter 6, use project 9 as a scratch project for trying things (next section). Leave the factory projects 1–5 as they are.</p>
@@ -297,10 +307,12 @@
           <li data-step="library-scratch-project">
             <h3 class="step-title">Open scratch project 9</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 9</kbd> as well, then release both. Tap a few pads: silent, so you are in project 9.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">P 9</samp> before you release.</p>
           </li>
           <li data-step="library-select-pad-1">
             <h3 class="step-title">SOUND: select pad 1</h3>
             <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">A</kbd>, then tap <kbd class="key pad">pad 1</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The SOUND icon lights; <kbd class="key pad">A1</kbd> is still silent.</p>
           </li>
           <li data-step="library-browse-kicks">
             <h3 class="step-title">Browse the kicks</h3>
@@ -311,6 +323,7 @@
           <li data-step="library-jump-ten">
             <h3 class="step-title">Jump ten at a time</h3>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd> to jump ten numbers at a time, then step with <kbd class="key">−</kbd> and <kbd class="key">+</kbd> alone.</p>
+            <p class="step-check"><span class="sr">Check: </span>The number jumps by ten, then by one.</p>
           </li>
           <li data-step="library-jump-categories">
             <h3 class="step-title">Jump to the snares</h3>
@@ -320,19 +333,23 @@
           <li data-step="library-other-categories">
             <h3 class="step-title">Try the other categories</h3>
             <p class="step-do">Do the same with <kbd class="key">2</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (hi-hats), <kbd class="key">3</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (percussion), <kbd class="key">4</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (bass) and <kbd class="key">5</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> (melodic sounds).</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> plays each kind of sound in turn.</p>
             <p class="step-note">Use <kbd class="key">−</kbd> and <kbd class="key">+</kbd> to hear a few neighbours each time.</p>
           </li>
           <li data-step="library-mini-kit">
             <h3 class="step-title">Mini kit: your favourite kick</h3>
             <p class="step-do">Mini project: still in SOUND with group <kbd class="key">A</kbd>, tap <kbd class="key pad">pad 1</kbd> and browse to your favourite kick.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> plays your favourite kick, numbered 1–99.</p>
           </li>
           <li data-step="mini-kit-snare-hat">
             <h3 class="step-title">Pick a snare and a hi-hat</h3>
             <p class="step-do">Tap <kbd class="key pad">pad 2</kbd> and choose a snare, tap <kbd class="key pad">pad 3</kbd> and choose a hi-hat. Write the three numbers on your paper.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A2</kbd> plays a snare and <kbd class="key pad">A3</kbd> a hi-hat.</p>
           </li>
           <li data-step="mini-kit-play">
             <h3 class="step-title">Play your mini kit</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd> and tap 1, 2, 3, 2 like a beat.</p>
+            <p class="step-check"><span class="sr">Check: </span>You hear kick, snare, hi-hat, then snare.</p>
             <p class="step-note">Chapter 1 starts from samples 001, 100 and 200; you can swap in your favourites there.</p>
           </li>
         </ol>
@@ -356,11 +373,13 @@
           <li data-step="settings-menu-metronome">
             <h3 class="step-title">Open the seq group</h3>
             <p class="step-do">Press <kbd class="key">+</kbd> or <kbd class="key">−</kbd> until the display shows <samp class="lcd">seq</samp>, then press <kbd class="key">ENTER</kbd> (one of the pads).</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows a setting inside <samp class="lcd">seq</samp>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Use the menu, as in the official how-to.</p></details></div>
           </li>
           <li data-step="settings-metronome-on" data-setting="400">
             <h3 class="step-title">Turn the metronome on (400)</h3>
             <p class="step-do">Press <kbd class="key">+</kbd> or <kbd class="key">−</kbd> until it shows <samp class="lcd">met</samp> and press <kbd class="key">ENTER</kbd>. Press <kbd class="key">+</kbd> or <kbd class="key">−</kbd> until it shows <samp class="lcd">on</samp> and press <kbd class="key">ENTER</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>Your choice is <samp class="lcd">on</samp>, not <samp class="lcd">rec</samp> or <samp class="lcd">cnt</samp>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This is setting <samp class="lcd">400</samp>: the metronome clicks while playing as well as while recording.</p></details></div>
           </li>
           <li data-step="settings-hear-click">
@@ -376,6 +395,7 @@
           <li data-step="settings-code-401" data-setting="401">
             <h3 class="step-title">The fast way: type 401</h3>
             <p class="step-do">Now the fast way, with a number: press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, type <kbd class="key">4</kbd>, <kbd class="key">0</kbd>, <kbd class="key">1</kbd> on the pads and press <kbd class="key">ENTER</kbd>, then press <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>After <kbd class="key">MAIN</kbd>, the SYSTEM icon goes out.</p>
           </li>
           <li data-step="settings-401-check">
             <h3 class="step-title">PLAY: no click now</h3>
@@ -385,6 +405,7 @@
           <li data-step="settings-course-picks" data-optional>
             <h3 class="step-title">Optional: the course picks</h3>
             <p class="step-do">Optional: set any course pick from the table below the same way: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, the three digits, <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>After <kbd class="key">MAIN</kbd>, the SYSTEM icon goes out.</p>
             <p class="step-note">Change one setting at a time and check it before the next.</p>
           </li>
         </ol>
@@ -395,12 +416,12 @@
           <tbody>
             <tr><td>300 · 301 · 302</td><td>Pad velocity off (default) · high, for a soft touch · low, for vigorous playing</td><td><b>300</b>: every tap plays at the same level while you learn.</td></tr>
             <tr><td>310 · 311</td><td>Sample audition on · off</td><td>Leave as it is. The guide gives no more detail.</td></tr>
-            <tr><td>320 · 321 · 322</td><td>LED brightness low · mid · high</td><td>Your choice. Brighter is easier to see in daylight.</td></tr>
+            <tr><td>320 · 321 · 322</td><td>LED brightness low · mid · high</td><td>Your choice. Brighter is clearer in daylight.</td></tr>
             <tr><td>330 · 331</td><td>Knob/fader takeover mode: scaling (default) · catch</td><td><b>330</b>, the default.</td></tr>
             <tr><td>400 · 401 · 402</td><td>Metronome at record + play · at record only (default) · at count-in only</td><td><b>401</b>, the default. Chapter 1’s live recording uses it.</td></tr>
             <tr><td>410 · 411 · 412</td><td>Change scene immediately (default) · sync scene changes with bar end · with pattern end</td><td><b>410</b> for now. Chapter 1’s performance step shows when 411 helps.</td></tr>
             <tr><td>420 · 421</td><td>Song loop off · on</td><td><b>420</b>: your Chapter 2 song stops at its end.</td></tr>
-            <tr><td>430 · 431</td><td>Play from current bar · play from pattern start</td><td><b>431</b>: PLAY always starts at the top of the pattern, which makes counting bars easier.</td></tr>
+            <tr><td>430 · 431</td><td>Play from current bar · play from pattern start</td><td><b>431</b>: PLAY always starts at the top of the pattern, which helps you count bars.</td></tr>
             <tr><td>500 · 501 · 502</td><td>Sample recording rate low, 26.25 kHz · mid, 32 kHz · high, 46.875 kHz (default)</td><td><b>502</b>, the default: best quality for sampling in Chapter 3.</td></tr>
             <tr><td>510 · 511</td><td>USB audio input mode: sampler only (default) · sampler + live monitoring</td><td><b>510</b>, the default, unless a later chapter asks for 511.</td></tr>
           </tbody>
@@ -414,12 +435,12 @@
         <summary><h2 class="part-title">Part 8 · If something is wrong: empty library, error codes and the format</h2></summary>
         <p><b>Goal:</b> know what to do if sounds are missing or the display shows an error, and why a new K.O. II never needs a format.</p>
         <ol start="46">
-          <li data-step="trouble-empty-library">
+          <li data-step="trouble-empty-library" data-kind="info">
             <h3 class="step-title">Library complete? Move on</h3>
             <p class="step-do">If Part 6 played every category, your library is complete: tick this and move on.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>If projects 1–5 are silent and most sample numbers play nothing, the library has probably been erased, for example by a previous owner’s format. You can still follow the course with your own sounds: in Chapter 3, Part 2 <a href="./sampling.html#make-your-own-kit">“Build a drum kit from your voice”</a> records a kick, a snare and a hi-hat with the built-in mic onto <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd> and <kbd class="key pad">A3</kbd>. The official EP sample tool page also says the tool can “restore factory sounds”; if you try that, back up first, because restoring can replace what is on the K.O. II.</p></details></div>
           </li>
-          <li data-step="trouble-error-codes">
+          <li data-step="trouble-error-codes" data-kind="info">
             <h3 class="step-title">Error code? Look it up</h3>
             <p class="step-do">If the display shows an error code when you switch on, look it up.</p>
             <p class="step-note"><samp class="lcd">E.01</samp>, <samp class="lcd">E.02</samp> and <samp class="lcd">E.03</samp> (sram, flash and codec errors) mean the unit needs repair: contact teenage engineering support and don’t format. <samp class="lcd">E.05</samp>, <samp class="lcd">E.10</samp>, <samp class="lcd">E.11</samp> and <samp class="lcd">E.12</samp> are file-system errors, and the official fix is the format in the warning box below. Update the OS first if you can: teenage engineering says its updates keep fixing bugs that may cause these errors.</p>
@@ -428,6 +449,7 @@
             <h3 class="step-title">Anything else: never format</h3>
             <p class="preflight">For anything else, such as silence, wrong sounds, a messy project or a mistake, never format.</p>
             <p class="step-do">Use undo (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit), choose another empty project, or restore your backup with the EP sample tool.</p>
+            <p class="step-check"><span class="sr">Check: </span>The mistake is gone; your sounds are still there.</p>
           </li>
         </ol>
         <div class="notice danger"><b>Warning: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> held while you switch on formats the drive.</b> The official guide says: “this will remove all your work as well as all factory sounds. once removed factory sounds can not be recovered!” Use it only as the official fix for errors <samp class="lcd">E.05</samp>, <samp class="lcd">E.10</samp>, <samp class="lcd">E.11</samp> and <samp class="lcd">E.12</samp>; a new K.O. II never needs it. Before any format, back up with the EP sample tool if the K.O. II still connects. So you recognise it: the guide says that with the K.O. II off, holding <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> while switching on shows <samp class="lcd">FMT</samp> for about 10 seconds, and then the K.O. II starts up with all content removed.</div>
@@ -439,21 +461,23 @@
         <summary><h2 class="part-title">Part 9 · Checklist: ready for Chapter 1</h2></summary>
         <p><b>Goal:</b> tick each item only when it is true for your K.O. II.</p>
         <ol start="49">
-          <li data-step="ready-updated">
+          <li data-step="ready-updated" data-kind="info">
             <h3 class="step-title">Ready check: updated</h3>
             <p class="step-do">Updated: the update utility says your K.O. II is up to date (OS 2.5.1 or newer).</p>
           </li>
-          <li data-step="ready-backed-up">
+          <li data-step="ready-backed-up" data-kind="info">
             <h3 class="step-title">Ready check: backed up</h3>
             <p class="step-do">Backed up: your backup file is on your computer and in a second place.</p>
           </li>
           <li data-step="ready-empty-project">
             <h3 class="step-title">Ready check: project 6</h3>
             <p class="step-do">Empty project chosen: hold <kbd class="key">MAIN</kbd>, then hold <kbd class="key pad">pad 6</kbd> as well, and release both. Tap a few pads in A, B, C and D: all silent.</p>
+            <p class="step-check"><span class="sr">Check: </span>Nothing plays in any group.</p>
           </li>
           <li data-step="ready-silence">
             <h3 class="step-title">Ready check: silence, and paper</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>: silence; press <kbd class="key">PLAY</kbd> to stop. PROJECT 6 = COURSE is on your paper.</p>
+            <p class="step-check"><span class="sr">Check: </span>Nothing plays while the PLAY icon is lit.</p>
           </li>
           <li data-step="setup-recap" data-kind="recap">
             <h3 class="step-title">Set-up done: your moves</h3>
@@ -461,7 +485,7 @@
             <p class="step-check"><span class="sr">Check: </span>You can find your way home, browse sounds and change a setting.</p>
             <ul class="step-moves"><li>Home: press <kbd class="key">MAIN</kbd>; <kbd class="key">PLAY</kbd> starts and stops.</li><li>To the start: hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>.</li><li>Change project: hold <kbd class="key">MAIN</kbd>, hold a pad 1–9 as well, then release both.</li><li>Browse sounds: <kbd class="key">SOUND</kbd>, tap the pad, then <kbd class="key">−</kbd> / <kbd class="key">+</kbd> (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">+</kbd></kbd> jumps ten). Hold <kbd class="key">SOUND</kbd> and type a number to jump there.</li><li>System settings, with the unit already on: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd>, three digits, <kbd class="key">ENTER</kbd>, then <kbd class="key">MAIN</kbd>.</li><li>Undo: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</li></ul>
           </li>
-          <li data-step="ready-open-first-beat">
+          <li data-step="ready-open-first-beat" data-kind="info">
             <h3 class="step-title">Open Chapter 1</h3>
             <p class="step-do">Ready: leave the K.O. II on in project 6, keep paper and pencil nearby, and open <a href="./first-beat.html">Chapter 1 · First beat</a>.</p>
           </li>

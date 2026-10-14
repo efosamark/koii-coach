@@ -28,7 +28,7 @@
 </head>
 <body data-chapter="vocal-house">
   <a class="skip" href="#main">Skip to content</a>
-  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a><a class="icon-btn static-search" href="./help.html" aria-label="Search: Troubleshooting lists every topic"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-search"></use></svg></a></header>
   <script src="site.js"></script>
   <script src="progress.js"></script>
   <script src="shell.js"></script>
@@ -78,7 +78,7 @@
         <summary><h2 class="part-title">Part 1 · Set up an empty 128 BPM project</h2></summary>
         <p><b>Goal:</b> a project with no notes in it, at 128 BPM with a 16-step grid, ready for your own sounds.</p>
         <ol>
-          <li data-step="choose-project-to-use">
+          <li data-step="choose-project-to-use" data-kind="info">
             <h3 class="step-title">Choose a project for this chapter</h3>
             <p class="step-do">Is one of projects 6–9 still empty, because you skipped a chapter? Use that one. Otherwise reuse the project you need least.</p>
             <p class="step-note">For most people that is 7, the Chapter 3 practice project.</p>
@@ -87,51 +87,59 @@
           <li data-step="backup-reused-project">
             <h3 class="step-title">Reusing one? Back it up first</h3>
             <p class="step-do">Back it up first with the official <a href="https://teenage.engineering/apps/ep-sample-tool">EP sample tool</a> (<a href="./setup.html">Chapter 0 · Set up your K.O. II</a>, Part 4).</p>
+            <p class="step-check"><span class="sr">Check: </span>A new backup file appears in your browser’s downloads.</p>
             <p class="step-note">Your recordings stay in the sound library either way.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official <a href="https://teenage.engineering/products/ep-133">product page</a> says you can “back up and restore individual projects”.</p></details></div>
           </li>
           <li data-step="open-chosen-project">
             <h3 class="step-title">Open the project</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd>. If music is playing, press <kbd class="key">PLAY</kbd> to stop it. Then hold <kbd class="key">MAIN</kbd>, hold the project’s pad as well, and release both.</p>
+            <p class="step-check"><span class="sr">Check: </span>While you hold both, the display shows P and the project’s number.</p>
           </li>
           <li data-step="set-tempo-128">
             <h3 class="step-title">Set the tempo to 128 BPM</h3>
             <p class="step-do">Press <kbd class="key">TEMPO</kbd> and turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">128</samp>. Press <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">128</samp> before you press <kbd class="key">MAIN</kbd>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>At 128 BPM one bar lasts 1.875 seconds and a four-bar loop 7.5 seconds.</p></details></div>
           </li>
           <li data-step="set-timing-16">
             <h3 class="step-title">Set the grid to 16</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd> and turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">16</samp>, not <samp class="lcd">1</samp>, <samp class="lcd">4</samp> or <samp class="lcd">16T</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">16</samp>: 16 steps per bar.</p>
           </li>
           <li data-step="set-quantize">
             <h3 class="step-title">Quantize on, swing alone</h3>
             <p class="step-do">Press <kbd class="key">−</kbd> to choose quantize. Leave <kbd class="key knob">Y</kbd> (swing) alone. Press <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>Notes you record now snap to the 16-step grid.</p>
           </li>
           <li data-step="check-or-clear-patterns">
             <h3 class="step-title">Listen: is the project empty?</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>. Silence means an empty project: press <kbd class="key">PLAY</kbd> again to stop and go on.</p>
-            <p class="step-note">Music? Press <kbd class="key">PLAY</kbd> to stop and don’t erase anything yet: first make sure you are in the project you chose. If you hear your Chapter 6 tech house track, your Chapter 5 hip-hop beat or your Chapter 1–2 beat, <kbd class="key">MAIN</kbd> + the pad switched scene instead of project: go back to step 3.</p>
+            <p class="step-check"><span class="sr">Check: </span>Nothing plays: the project is empty.</p>
+            <p class="step-note">Music? Press <kbd class="key">PLAY</kbd> to stop and don’t erase anything yet: first check that you are in the project you chose. If you hear your Chapter 6 tech house track, your Chapter 5 hip-hop beat or your Chapter 1–2 beat, <kbd class="key">MAIN</kbd> + the pad switched scene instead of project: go back to step 3.</p>
           </li>
           <li data-step="clear-old-patterns" data-risk="erase">
             <h3 class="step-title">Old music? Clear the old patterns</h3>
-            <p class="preflight">Only when you hear the reused project’s own old music, and only after you have backed it up.</p>
+            <p class="preflight">Only for the reused project’s own old music, and only after a backup.</p>
+            <p class="step-consequence">Erases the current pattern of every group.</p>
             <p class="step-do">Hold <kbd class="key">ERASE</kbd> and <kbd class="key">A</kbd> until <samp class="lcd">PTN</samp> blinks on the display, and do the same with <kbd class="key">B</kbd>, <kbd class="key">C</kbd> and <kbd class="key">D</kbd>.</p>
             <p class="step-undo">Wrong project? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once while the umbrella is lit.</p>
-            <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd> again: now you should hear nothing.</p>
+            <p class="step-check"><span class="sr">Check: </span><samp class="lcd">PTN</samp> blinks for each group; <kbd class="key">PLAY</kbd> now plays nothing.</p>
             <p class="step-note">In project 7, that is your Chapter 3 voice kit or the bounced beat. Or restore your backup. Stop.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The official guide says this erases “the current patterns”.</p></details></div>
           </li>
           <li data-step="empty-d-pads">
             <h3 class="step-title">Reused project 7? Empty D1 to D5</h3>
             <p class="step-do">Empty them first, with playback stopped: press <kbd class="key">SOUND</kbd>, tap <kbd class="key">D</kbd>, tap <kbd class="key pad">D1</kbd>, hold <kbd class="key">SOUND</kbd>, type <kbd class="key">0</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and release <kbd class="key">SOUND</kbd>. Repeat for <kbd class="key pad">D2</kbd> to <kbd class="key pad">D5</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> are now empty and play nothing.</p>
             <p class="step-note">A reused project keeps its pad sounds and pad settings; Parts 2 and 4 put new sounds on every pad this chapter uses. If one of them later plays backwards, stretched or cut short (Chapter 3 leaves <kbd class="key pad">A4</kbd> reversed and <kbd class="key pad">B1</kbd> stretched to one bar), check that pad in SOUND EDIT, as in Chapter 3, Parts 5 and 8. The Chapter 3 recordings stay in the sound library.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Reused project 7? Its <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> still hold your Chapter 3 recordings, so they won’t blink in <kbd class="key">SAMPLE</kbd>, and hands-free sampling is not allowed on a pad that already holds a recording. The official how-to says setting a pad to “000” “will create an empty pad”.</p></details></div>
           </li>
-          <li data-step="prepare-paper">
+          <li data-step="prepare-paper" data-kind="info">
             <h3 class="step-title">Write the project and V1 to V5</h3>
             <p class="step-do">On your paper, write the project number (for example 7 = VOCAL HOUSE), then V1 to V5 with a blank beside each for a sample number.</p>
           </li>
-          <li data-step="paper-scenes">
+          <li data-step="paper-scenes" data-kind="info">
             <h3 class="step-title">Write the scene names</h3>
             <p class="step-do">Below that, write the scene names DROP A, DROP B, PEAK, GROOVE, INTRO, BREAK and BUILD, each with a blank for its scene number.</p>
           </li>
@@ -144,7 +152,7 @@
         <summary><h2 class="part-title">Part 2 · Get your five vocals onto D1–D5</h2></summary>
         <p><b>Goal:</b> V1 to V5 on pads D1 to D5 of this project, with each sample’s number on your paper. The official guide suggests group D “for loops and samples”. <a href="./sampling.html">Chapter 3 · Sample, chop &amp; resample</a> teaches sampling in depth; this is the short version.</p>
         <ol start="12">
-          <li data-step="plan-five-vocals">
+          <li data-step="plan-five-vocals" data-kind="info">
             <h3 class="step-title">Plan your five vocals</h3>
             <p class="step-do">Decide what V1 to V5 will be. Keep V1 and V5 under about 1.9 seconds, so each fits in one bar, and keep V3 tiny.</p>
             <p class="step-note">See “Sound roles” above. Your own voice is perfect: sing, hum, speak or whisper. Using someone else’s recording? Read the rights note in Part 14 first.</p>
@@ -157,65 +165,76 @@
           <li data-step="choose-vocal-input">
             <h3 class="step-title">Choose the source</h3>
             <p class="step-do">Press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to choose the source.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows your source: <samp class="lcd">mic</samp>, <samp class="lcd">in</samp> or <samp class="lcd">usb</samp>.</p>
             <p class="step-note"><samp class="lcd">mic</samp> is the built-in microphone. <samp class="lcd">in</samp> is the 3.5 mm input, for example a phone’s headphone output connected with a cable. <samp class="lcd">usb</samp> (OS 2.5) is a phone or computer connected by USB-C, with the K.O. II chosen as its audio output.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Mono is fine for a voice; on OS 2.5 a mono sample can be up to 40 seconds long.</p></details></div>
           </li>
           <li data-step="set-vocal-level">
             <h3 class="step-title">Set the input level</h3>
             <p class="step-do">While you sing or play the vocal, turn <kbd class="key knob">X</kbd> (input level) up until it is loud but clean, never distorted.</p>
+            <p class="step-check"><span class="sr">Check: </span>The lights keep blinking: you are still in <kbd class="key">SAMPLE</kbd>.</p>
           </li>
           <li data-step="vocal-threshold">
             <h3 class="step-title">Set the threshold low</h3>
             <p class="step-do">Turn <kbd class="key knob">Y</kbd> (threshold) low, so recording starts as soon as you make a sound.</p>
+            <p class="step-check"><span class="sr">Check: </span>The lights still blink: nothing records until you hold a pad.</p>
           </li>
           <li data-step="record-v1-d1">
             <h3 class="step-title">D1: record V1</h3>
-            <p class="step-do">Get ready, then press and hold pad <kbd class="key pad">D1</kbd> (<kbd class="key pad">pad 1</kbd>, with <kbd class="key">D</kbd> selected). Perform V1, and release just after the last word.</p>
+            <p class="step-do">Get ready, then press and hold pad <kbd class="key pad">D1</kbd> (<kbd class="key pad">pad 1</kbd>, with <kbd class="key">D</kbd> selected). Perform V1, and release right after the last word.</p>
             <p class="step-check"><span class="sr">Check: </span>The pad stops blinking and stays lit: it now has a sample.</p>
             <p class="step-note">Need both hands? In <kbd class="key">SAMPLE</kbd>, <kbd class="key">SHIFT</kbd> + an empty, blinking pad starts hands-free recording, and pressing <kbd class="key">SAMPLE</kbd> stops it.</p>
           </li>
           <li data-step="record-v1-listen">
             <h3 class="step-title">Listen to D1</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd> and tap <kbd class="key pad">D1</kbd> to hear it.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> plays V1, perhaps with a little silence around it.</p>
             <p class="step-note">A little silence before and after is fine; you trim it in Part 3.</p>
           </li>
           <li data-step="record-v2-to-v5">
             <h3 class="step-title">D2 to D5: record V2 to V5</h3>
             <p class="step-do">Press <kbd class="key">SAMPLE</kbd> again, with <kbd class="key">D</kbd> still selected. Record V2 on <kbd class="key pad">D2</kbd>, V3 on <kbd class="key pad">D3</kbd>, V4 on <kbd class="key pad">D4</kbd> and V5 on <kbd class="key pad">D5</kbd> the same way.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D2</kbd> to <kbd class="key pad">D5</kbd> stop blinking and stay lit.</p>
           </li>
           <li data-step="record-v2-v5-check">
             <h3 class="step-title">Listen to D2 to D5</h3>
             <p class="step-do">Check each one in <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D2</kbd> to <kbd class="key pad">D5</kbd> play V2 to V5.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>A bad take? Record that pad again. The pad gets the new take, and the old one stays in the sound library.</p></details></div>
           </li>
           <li data-step="upload-files-by-number">
             <h3 class="step-title">Audio files? Transfer them</h3>
             <p class="step-do">Only if your vocals are audio files: connect the K.O. II to a computer by USB-C, open <a href="https://teenage.engineering/apps/ep-sample-tool">teenage.engineering/apps/ep-sample-tool</a> and transfer the five files.</p>
+            <p class="step-check"><span class="sr">Check: </span>The tool shows your K.O. II, and each file gets a sample number.</p>
             <p class="step-note">Recorded on the K.O. II? Tick this step and move on.</p>
           </li>
           <li data-step="load-files-by-number">
             <h3 class="step-title">Load each file onto its pad</h3>
             <p class="step-do">Then, for each vocal: press <kbd class="key">SOUND</kbd>, tap <kbd class="key">D</kbd>, tap its pad, hold <kbd class="key">SOUND</kbd>, type the vocal’s sample number on the pads and release <kbd class="key">SOUND</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> now play V1 to V5.</p>
             <p class="step-note"><kbd class="key pad">D1</kbd> for V1 and so on.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Not sure of a number? Select the pad in <kbd class="key">SOUND</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until you hear the vocal (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd></kbd> jumps ten numbers).</p></details></div>
           </li>
-          <li data-step="vocals-already-on-pads">
+          <li data-step="vocals-already-on-pads" data-kind="info">
             <h3 class="step-title">Vocals already on pads?</h3>
             <p class="step-do">Only if your vocals are already on pads, for example from Chapter 3: first write down each vocal’s number.</p>
           </li>
           <li data-step="read-vocal-numbers">
             <h3 class="step-title">Read each number, then come back</h3>
             <p class="step-do">In that project, press <kbd class="key">SOUND</kbd>, select the pad and read the display. Then come back to this project (hold <kbd class="key">MAIN</kbd>, then hold its pad as well).</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows each pad’s sample number.</p>
           </li>
           <li data-step="load-vocals-here">
             <h3 class="step-title">Load D1 to D5 by number</h3>
             <p class="step-do">Load the vocals onto <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> by number, as for audio files above.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> play V1 to V5 in this project.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Loading or pasting a sound only changes which sample a pad plays; the sample stays in the library.</p></details></div>
           </li>
           <li data-step="copy-vocal-in-project">
             <h3 class="step-title">Or copy a sound inside one project</h3>
             <p class="preflight">Always paste onto an empty pad, so no vocal is replaced before it has been copied.</p>
             <p class="step-do">In <kbd class="key">SOUND</kbd>, select the source pad and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd>, then select an empty pad and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The empty pad now plays the source pad’s sound.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Inside one project you can also copy a sound.</p></details></div>
           </li>
           <li data-step="note-vocal-numbers" data-note="V1|V2|V3|V4|V5" data-note-kind="sample">
@@ -237,30 +256,36 @@
           <li data-step="trim-v1-start">
             <h3 class="step-title">D1: open the trim page</h3>
             <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">D</kbd> and tap <kbd class="key pad">D1</kbd>. Briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> to open sound edit, then press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to step through its pages to trim.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">TRI</samp>.</p>
             <p class="step-note">The six pages show as <samp class="lcd">SND</samp>, <samp class="lcd">TRI</samp>, <samp class="lcd">ENV</samp>, <samp class="lcd">TIM</samp>, <samp class="lcd">MID</samp> and <samp class="lcd">GRP</samp>: sound, trim, envelope, time, midi and mute group. Stop at <samp class="lcd">TRI</samp>.</p>
           </li>
           <li data-step="trim-v1-start-x">
             <h3 class="step-title">Trim the start of V1</h3>
-            <p class="step-do">Turn <kbd class="key knob">X</kbd> (start) a little at a time, tapping <kbd class="key pad">D1</kbd> between turns, until playback begins just before the first sound. Don’t cut into the first word.</p>
+            <p class="step-do">Turn <kbd class="key knob">X</kbd> (start) a little at a time, tapping <kbd class="key pad">D1</kbd> between turns, until playback begins right before the first sound. Don’t cut into the first word.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> now starts right on its first sound.</p>
           </li>
           <li data-step="trim-v1-length">
             <h3 class="step-title">Trim the end of V1</h3>
-            <p class="step-do">Stay on trim. Turn <kbd class="key knob">Y</kbd> (length) down until playback ends just after the last word. Press <kbd class="key">MAIN</kbd> when it sounds right.</p>
+            <p class="step-do">Stay on trim. Turn <kbd class="key knob">Y</kbd> (length) down until playback ends right after the last word. Press <kbd class="key">MAIN</kbd> when it sounds right.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> stops right after the last word.</p>
             <p class="step-note">For smaller steps, hold <kbd class="key">SHIFT</kbd> while you turn, and keep your fingers off <kbd class="key">SOUND</kbd> while <kbd class="key">SHIFT</kbd> is down.</p>
           </li>
           <li data-step="trim-v2-to-v5">
             <h3 class="step-title">Trim D2 to D5</h3>
             <p class="step-do">Trim <kbd class="key pad">D2</kbd> to <kbd class="key pad">D5</kbd> the same way.</p>
-            <p class="step-note">V2: one word, about half a second. V3: one syllable or breath, about 0.2 seconds. V4: long and smooth. V5: just the phrase.</p>
+            <p class="step-check"><span class="sr">Check: </span>Each D pad starts on its first sound and ends cleanly.</p>
+            <p class="step-note">V2: one word, about half a second. V3: one syllable or breath, about 0.2 seconds. V4: long and smooth. V5: the phrase only.</p>
           </li>
           <li data-step="oneshot-vocals">
             <h3 class="step-title">D1: set oneshot</h3>
             <p class="step-do">Select <kbd class="key pad">D1</kbd> in <kbd class="key">SOUND</kbd>, briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to reach the sound page. Turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">oneshot</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> now plays the whole vocal from one tap.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide says oneshot “plays the whole sample, one at a time”, so a single trigger plays the whole vocal.</p></details></div>
           </li>
           <li data-step="oneshot-d2-d5">
             <h3 class="step-title">D2 to D5: oneshot too</h3>
             <p class="step-do">Repeat for <kbd class="key pad">D2</kbd> to <kbd class="key pad">D5</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D2</kbd> to <kbd class="key pad">D5</kbd> each play the whole vocal from one tap.</p>
           </li>
           <li data-step="optional-reverse-v4" data-os="2.5" data-optional>
             <h3 class="step-title">Optional: reverse V4 (OS 2.5)</h3>
@@ -289,32 +314,39 @@
           <li data-step="choose-kick">
             <h3 class="step-title">A1: load sample 001</h3>
             <p class="step-do">Press <kbd class="key">SOUND</kbd>, tap <kbd class="key">A</kbd>, tap <kbd class="key pad">A1</kbd>. Hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd> on the pads and release <kbd class="key">SOUND</kbd> to load sample 001. Tap <kbd class="key pad">A1</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> plays a factory kick.</p>
             <p class="step-note">Want a different kick? Press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> within 1–99, the factory kicks (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd></kbd> jumps ten numbers). Choose a short, punchy one.</p>
           </li>
           <li data-step="choose-clap-and-hat">
             <h3 class="step-title">A2: a clap or snare</h3>
             <p class="step-do">Tap <kbd class="key pad">A2</kbd> and choose a clap or snare: the factory snares are 100–199 (hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd>).</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A2</kbd> plays a clap or snare.</p>
             <p class="step-note">No clap you like there? Try percussion, 300–399.</p>
           </li>
           <li data-step="choose-hat">
             <h3 class="step-title">A3: a closed hat</h3>
             <p class="step-do">Tap <kbd class="key pad">A3</kbd> and choose a short closed hat from 200–299.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A3</kbd> plays a short closed hat.</p>
           </li>
           <li data-step="choose-open-hat">
             <h3 class="step-title">A4: an open hat</h3>
             <p class="step-do">Tap <kbd class="key pad">A4</kbd> and choose an open hat (200–299) or a shaker-like percussion sound (300–399). Turn <kbd class="key knob">X</kbd> down so it is quieter than the kick and clap.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A4</kbd> plays an open hat, quieter than the kick and clap.</p>
           </li>
           <li data-step="choose-bass-b1">
             <h3 class="step-title">B1: choose a bass</h3>
             <p class="step-do">Tap <kbd class="key">B</kbd>, then <kbd class="key pad">B1</kbd>. Hold <kbd class="key">SOUND</kbd>, type <kbd class="key">4</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and release, then press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> within 400–499 for a short, round bass.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">B1</kbd> plays a short, round bass.</p>
           </li>
           <li data-step="bass-level">
             <h3 class="step-title">Turn the bass down</h3>
             <p class="step-do">Turn <kbd class="key knob">X</kbd> down so it sits under the kick.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">B1</kbd> now sounds quieter than the kick.</p>
           </li>
           <li data-step="audition-kit-v2">
             <h3 class="step-title">Play the kit</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd>. Tap <kbd class="key">A</kbd> and play <kbd class="key pad">A1</kbd>, <kbd class="key pad">A2</kbd>, <kbd class="key pad">A3</kbd> and <kbd class="key pad">A4</kbd>; tap <kbd class="key">B</kbd> and play <kbd class="key pad">B1</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>You hear kick, clap, closed hat, open hat and bass.</p>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> you hear kick, clap, closed hat, open hat and bass, all factory sounds, while <kbd class="key pad">D1</kbd> to <kbd class="key pad">D5</kbd> still play your vocals.</p>
@@ -327,7 +359,8 @@
         <ol start="43">
           <li data-step="write-first-kick">
             <h3 class="step-title">Go to 1.1.1 with group A</h3>
-            <p class="step-do">Press <kbd class="key">MAIN</kbd>, tap <kbd class="key">A</kbd> and make sure playback is stopped. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>.</p>
+            <p class="step-do">Press <kbd class="key">MAIN</kbd>, tap <kbd class="key">A</kbd> and check that playback is stopped. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">1.1.1</samp>, the first step of the pattern.</p>
           </li>
           <li data-step="write-first-kick-a1">
             <h3 class="step-title">A1: the first kick</h3>
@@ -337,15 +370,18 @@
           <li data-step="write-kicks">
             <h3 class="step-title">A1: a kick on every beat</h3>
             <p class="step-do">Press <kbd class="key">+</kbd> until the display shows <samp class="lcd">1.2.1</samp> and write <kbd class="key pad">A1</kbd> the same way. Repeat at <samp class="lcd">1.3.1</samp> and <samp class="lcd">1.4.1</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> lights at each of the four positions.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A kick on every beat is the “four on the floor”.</p></details></div>
           </li>
           <li data-step="write-claps">
             <h3 class="step-title">A2: claps on 2 and 4</h3>
             <p class="step-do">Write <kbd class="key pad">A2</kbd> at <samp class="lcd">1.2.1</samp> and <samp class="lcd">1.4.1</samp>, beats 2 and 4.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A2</kbd> lights at <samp class="lcd">1.2.1</samp> and <samp class="lcd">1.4.1</samp>.</p>
           </li>
           <li data-step="write-offbeat-hats">
             <h3 class="step-title">A3: off-beat hats</h3>
             <p class="step-do">Write <kbd class="key pad">A3</kbd> at <samp class="lcd">1.1.3</samp>, <samp class="lcd">1.2.3</samp>, <samp class="lcd">1.3.3</samp> and <samp class="lcd">1.4.3</samp>, the “and” between the beats. Then press <kbd class="key">PLAY</kbd>, listen to a few loops and press <kbd class="key">PLAY</kbd> to stop.</p>
+            <p class="step-check"><span class="sr">Check: </span>You hear boom, tss, clap, tss on repeat.</p>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> boom, tss, clap, tss on repeat. A kick on every beat, a clap on 2 and 4, and a closed hat between the kicks.</p>
@@ -369,10 +405,12 @@
           <li data-step="add-hat-accents">
             <h3 class="step-title">A3: two hat accents</h3>
             <p class="step-do">Disarmed and stopped, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">+</kbd></kbd> to jump to bar 2, then <kbd class="key">+</kbd> until the display shows <samp class="lcd">2.2.4</samp>, and write <kbd class="key pad">A3</kbd>. Do the same at <samp class="lcd">4.2.4</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A3</kbd> lights at <samp class="lcd">2.2.4</samp> and <samp class="lcd">4.2.4</samp>.</p>
           </li>
           <li data-step="add-open-hats" data-risk="erase">
             <h3 class="step-title">A4: open hats instead of closed</h3>
             <p class="preflight">Press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">A3</kbd></kbd> briefly: a long hold clears every closed hat.</p>
+            <p class="step-consequence">Removes only those two <kbd class="key pad">A3</kbd> notes.</p>
             <p class="step-do">Write <kbd class="key pad">A4</kbd> at <samp class="lcd">2.4.3</samp> and <samp class="lcd">4.4.3</samp>. At both positions, also briefly press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A3</kbd></kbd>, so the open hat replaces the closed hat.</p>
             <p class="step-undo">Wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>At <samp class="lcd">2.4.3</samp> and <samp class="lcd">4.4.3</samp> <kbd class="key pad">A4</kbd> lights and <kbd class="key pad">A3</kbd> does not.</p>
@@ -380,6 +418,7 @@
           <li data-step="play-drum-loop">
             <h3 class="step-title">Play the drum loop</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd> and listen to two passes, about 15 seconds, then stop.</p>
+            <p class="step-check"><span class="sr">Check: </span>Four bars repeat; open hats end bars 2 and 4.</p>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> the groove runs for four bars and repeats, and the open hat at the end of bars 2 and 4 pulls you back to bar 1.</p>
@@ -393,6 +432,7 @@
           <li data-step="bass-bar-1-b1">
             <h3 class="step-title">B1: off-beat bass in bar 1</h3>
             <p class="step-do">Press <kbd class="key">MAIN</kbd> and tap <kbd class="key">B</kbd>, with playback stopped. Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until <samp class="lcd">1.1.1</samp>. Write <kbd class="key pad">B1</kbd> at <samp class="lcd">1.1.3</samp>, <samp class="lcd">1.2.3</samp>, <samp class="lcd">1.3.3</samp> and <samp class="lcd">1.4.3</samp>.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">B1</kbd> lights at all four positions.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This is the classic house off-beat bass, between the kicks.</p></details></div>
           </li>
           <li data-step="double-bass-four-bars">
@@ -403,6 +443,7 @@
           <li data-step="bass-bar-4-gap" data-risk="erase">
             <h3 class="step-title">B1: a gap at the end of bar 4</h3>
             <p class="preflight">Press briefly: a long hold clears the whole bassline.</p>
+            <p class="step-consequence">Removes only the <kbd class="key pad">B1</kbd> note at <samp class="lcd">4.4.3</samp>.</p>
             <p class="step-do">Go to <samp class="lcd">4.4.3</samp> (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">+</kbd></kbd> jumps to bar 4, then <kbd class="key">+</kbd> moves step by step) and briefly press <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">B1</kbd></kbd>.</p>
             <p class="step-undo">Wrong note? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>At <samp class="lcd">4.4.3</samp> <kbd class="key pad">B1</kbd> no longer lights.</p>
@@ -411,6 +452,7 @@
           <li data-step="check-drums-and-bass-v2">
             <h3 class="step-title">Checkpoint: drums and bass</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd> and listen to the drums and bass together for two passes, then stop.</p>
+            <p class="step-check"><span class="sr">Check: </span>The bass bounces between kicks, with a gap before the loop restarts.</p>
           </li>
           <li data-step="optional-sidechain" data-os="2.0" data-optional>
             <h3 class="step-title">Optional: open sidechain</h3>
@@ -423,16 +465,18 @@
             <h3 class="step-title">Optional: kick in, bass out</h3>
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hold <kbd class="key">A</kbd> and tap <kbd class="key pad">pad 1</kbd> to add the kick as the source. Hold <kbd class="key">SHIFT</kbd> and tap <kbd class="key">B</kbd> to add the bass group as the destination.</p>
+            <p class="step-check"><span class="sr">Check: </span>During playback, the bass now ducks at each kick.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide: “hold a group pad and select a sound”.</p></details></div>
           </li>
           <li data-step="sidechain-shape" data-os="2.0" data-optional>
             <h3 class="step-title">Optional: shape the duck</h3>
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do"><kbd class="key knob">X</kbd> sets how long the duck lasts, <kbd class="key knob">Y</kbd> its shape. Press <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">LEN</samp> as you turn <kbd class="key knob">X</kbd>, <samp class="lcd">ShP</samp> for <kbd class="key knob">Y</kbd>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide’s pictures show <samp class="lcd">LEN</samp> on the display for the length and <samp class="lcd">ShP</samp> for the shape.</p></details></div>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> the bass bounces between the kicks for four bars, with a short gap just before the loop starts again.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> the bass bounces between the kicks for four bars, with a short gap right before the loop starts again.</p>
         <p><b>If it doesn’t:</b> the bass blurs into the kick? Select <kbd class="key pad">B1</kbd> in <kbd class="key">SOUND</kbd>, briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>, go to trim and turn <kbd class="key knob">Y</kbd> (length) down a little. You can also turn <kbd class="key knob">Y</kbd> (release) down on the envelope page, or lower <kbd class="key knob">X</kbd> in plain <kbd class="key">SOUND</kbd>. Bass only in bar 1? Check that B was selected, then double it again with <kbd class="key">RECORD</kbd> armed.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Modes (trim and envelope)</a> · <a href="https://teenage.engineering/guides/ep-133/effects">Effects (sidechain)</a></p>
       </details>
@@ -448,19 +492,23 @@
           <li data-step="place-hook-d1">
             <h3 class="step-title">D1: the hook at 1.1.1</h3>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until <samp class="lcd">1.1.1</samp>. Hold <kbd class="key">RECORD</kbd>, tap <kbd class="key pad">D1</kbd>, then release.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> lights at <samp class="lcd">1.1.1</samp>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This is the main hook, once every four bars.</p></details></div>
           </li>
           <li data-step="place-answer-d2">
             <h3 class="step-title">D2: the answer at 3.2.3</h3>
             <p class="step-do">Go to <samp class="lcd">3.2.3</samp> (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">+</kbd></kbd> to bar 3, then <kbd class="key">+</kbd> step by step) and write <kbd class="key pad">D2</kbd>, the answer.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D2</kbd> lights at <samp class="lcd">3.2.3</samp>.</p>
           </li>
           <li data-step="place-chops-d3">
             <h3 class="step-title">D3: two tiny chops</h3>
-            <p class="step-do">Write <kbd class="key pad">D3</kbd> at <samp class="lcd">2.4.4</samp> and <samp class="lcd">4.2.4</samp>: two tiny chops just before a beat.</p>
+            <p class="step-do">Write <kbd class="key pad">D3</kbd> at <samp class="lcd">2.4.4</samp> and <samp class="lcd">4.2.4</samp>: two tiny chops right before a beat.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D3</kbd> lights at <samp class="lcd">2.4.4</samp> and <samp class="lcd">4.2.4</samp>.</p>
           </li>
           <li data-step="place-texture-d4">
             <h3 class="step-title">D4: the texture under the hook</h3>
             <p class="step-do">Write <kbd class="key pad">D4</kbd> at <samp class="lcd">1.1.1</samp>, under the hook. Then press <kbd class="key">PLAY</kbd> for two passes and stop.</p>
+            <p class="step-check"><span class="sr">Check: </span>Hook and texture start bar 1, over the drums and bass.</p>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> bar 1 has the hook with the texture under it, the end of bar 2 a chop, bar 3 the answer and bar 4 another chop. The drums and bass run underneath.</p>
@@ -474,26 +522,31 @@
           <li data-step="balance-mix">
             <h3 class="step-title">Balance the mix</h3>
             <p class="step-do">Press <kbd class="key">PLAY</kbd>, then <kbd class="key">SOUND</kbd>. While the loop plays, select one pad at a time and adjust its <kbd class="key knob">X</kbd>. Press <kbd class="key">MAIN</kbd> when done.</p>
-            <p class="step-note">The kick and bass are strongest, the clap a little under the kick and the hats low. <kbd class="key pad">D1</kbd> should be easy to understand but under the kick, <kbd class="key pad">D2</kbd> a bit lower, <kbd class="key pad">D3</kbd> and <kbd class="key pad">D4</kbd> low.</p>
+            <p class="step-check"><span class="sr">Check: </span>Kick and bass lead; the hook is clear.</p>
+            <p class="step-note">The kick and bass are strongest, the clap a little under the kick and the hats low. <kbd class="key pad">D1</kbd> should be clear but under the kick, <kbd class="key pad">D2</kbd> a bit lower, <kbd class="key pad">D3</kbd> and <kbd class="key pad">D4</kbd> low.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Always set a pad’s volume in <kbd class="key">SOUND</kbd>.</p></details></div>
           </li>
           <li data-step="add-voice-reverb-d">
             <h3 class="step-title">D: choose reverb</h3>
             <p class="preflight">Don’t hold <kbd class="key">RECORD</kbd> while you move the fader, or <kbd class="key">FX</kbd> while you press a group button.</p>
             <p class="step-do">With the loop still playing, tap <kbd class="key">D</kbd>, press <kbd class="key">FX</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until you reach reverb. Raise the fader a little.</p>
+            <p class="step-check"><span class="sr">Check: </span>A little space opens around the vocals.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>In <kbd class="key">FX</kbd> it sets how much of group <kbd class="key">D</kbd> goes to the effect. Holding <kbd class="key">RECORD</kbd> would record the fader movement; holding <kbd class="key">FX</kbd> solos the group.</p></details></div>
           </li>
           <li data-step="voice-reverb-set">
             <h3 class="step-title">Set the reverb</h3>
             <p class="step-do"><kbd class="key knob">X</kbd> sets the reverb length, so start short. Tap <kbd class="key">A</kbd> and keep its fader low; leave B at none. Press <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The vocals get a short tail; the bass stays dry.</p>
           </li>
           <li data-step="listen-drop">
             <h3 class="step-title">Checkpoint: listen to the drop</h3>
             <p class="step-do">Listen to four passes at a comfortable volume, then press <kbd class="key">PLAY</kbd> to stop.</p>
+            <p class="step-check"><span class="sr">Check: </span>Steady kick, bouncing bass and a clear hook.</p>
           </li>
           <li data-step="commit-drop-a-v2" data-note="DROP A">
             <h3 class="step-title">Write down DROP A</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and read the scene number on the display. Write it beside DROP A.</p>
+            <p class="step-check"><span class="sr">Check: </span>While you hold <kbd class="key">MAIN</kbd>, the display shows a scene number.</p>
           </li>
           <li data-step="name-drop-b" data-note="DROP B">
             <h3 class="step-title">Commit, and name the copy DROP B</h3>
@@ -502,7 +555,7 @@
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>DROP A is kept, and you are now in a copy of it.</p></details></div>
           </li>
         </ol>
-        <p class="checkpoint"><b>Checkpoint:</b> you want to nod along. The kick is steady, the bass bounces, the hook is easy to understand and there is a little space around the voice. The DROP A and DROP B numbers are on your paper.</p>
+        <p class="checkpoint"><b>Checkpoint:</b> you want to nod along. The kick is steady, the bass bounces, the hook is clear and there is a little space around the voice. The DROP A and DROP B numbers are on your paper.</p>
         <p><b>If it doesn’t:</b> words unclear? Lower the hats and the texture before you raise the hook. Muddy? Less reverb on D, none on B. A level now moves by itself every loop? You recorded fader movement: press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit (OS 2.5 can also erase fader automation with <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">FADER</kbd></kbd> + pad). Same number after <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>? Hold <kbd class="key">MAIN</kbd> and select the copy, which is the new number, before you edit anything.</p>
         <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/effects">Effects (fx level, reverb)</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Modes (sound volume, scenes, commit)</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record (fader)</a></p>
       </details>
@@ -513,18 +566,22 @@
           <li data-step="make-drop-b-v2">
             <h3 class="step-title">D5: the second phrase in DROP B</h3>
             <p class="step-do">You are in DROP B. Press <kbd class="key">MAIN</kbd> and tap <kbd class="key">D</kbd>, with playback stopped. Go to <samp class="lcd">2.1.1</samp> and write <kbd class="key pad">D5</kbd>: the second phrase answers the hook.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D5</kbd> lights at <samp class="lcd">2.1.1</samp>.</p>
           </li>
           <li data-step="commit-peak" data-note="PEAK">
             <h3 class="step-title">Commit, and name the copy PEAK</h3>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once. Hold <kbd class="key">MAIN</kbd> and write the new number beside PEAK.</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not DROP B’s.</p>
           </li>
           <li data-step="make-peak-v2">
             <h3 class="step-title">D3 and D5: more for PEAK</h3>
             <p class="step-do">In PEAK, with <kbd class="key">D</kbd> selected, write <kbd class="key pad">D3</kbd> at <samp class="lcd">1.4.4</samp> and <samp class="lcd">3.4.4</samp> (two more chops) and <kbd class="key pad">D5</kbd> at <samp class="lcd">4.1.1</samp> (the second phrase again).</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D3</kbd> lights at <samp class="lcd">1.4.4</samp> and <samp class="lcd">3.4.4</samp>, <kbd class="key pad">D5</kbd> at <samp class="lcd">4.1.1</samp>.</p>
           </li>
           <li data-step="check-drop-scenes">
             <h3 class="step-title">Listen to DROP A, DROP B and PEAK</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to select DROP A. Press <kbd class="key">PLAY</kbd> for one pass, then stop. Do the same for DROP B, then PEAK.</p>
+            <p class="step-check"><span class="sr">Check: </span>Each scene sounds fuller than the last; DROP A has no V5.</p>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> each scene sounds a little fuller than the one before, and DROP A has no V5.</p>
@@ -539,28 +596,33 @@
           <li data-step="commit-groove" data-note="GROOVE">
             <h3 class="step-title">Commit, and name the copy GROOVE</h3>
             <p class="step-do">In PEAK, with playback stopped, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>. Hold <kbd class="key">MAIN</kbd> and write the new number beside GROOVE.</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not PEAK’s.</p>
           </li>
           <li data-step="groove-clear-vocals" data-risk="erase">
             <h3 class="step-title">GROOVE: clear D3, D4 and D5</h3>
             <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be GROOVE.</p>
-            <p class="step-do">In GROOVE, tap <kbd class="key">D</kbd>. Hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">D3</kbd></kbd> until <samp class="lcd">TRK</samp> blinks, then release. Do the same with <kbd class="key pad">D4</kbd> and <kbd class="key pad">D5</kbd>.</p>
+            <p class="step-consequence">Clears every note of <kbd class="key pad">D3</kbd>, <kbd class="key pad">D4</kbd> and <kbd class="key pad">D5</kbd> in GROOVE.</p>
+            <p class="step-do">Tap <kbd class="key">D</kbd>. Hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">D3</kbd></kbd> until <samp class="lcd">TRK</samp> blinks, then release. Do the same with <kbd class="key pad">D4</kbd> and <kbd class="key pad">D5</kbd>.</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>GROOVE keeps the drums, bass, hook and answer.</p>
           </li>
           <li data-step="commit-intro" data-note="INTRO">
             <h3 class="step-title">Commit, and name the copy INTRO</h3>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>. Hold <kbd class="key">MAIN</kbd> and write the new number beside INTRO.</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not GROOVE’s.</p>
           </li>
           <li data-step="intro-clear" data-risk="erase">
             <h3 class="step-title">INTRO: clear the bass and vocals</h3>
             <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be INTRO.</p>
+            <p class="step-consequence">Clears every note of <kbd class="key pad">B1</kbd>, <kbd class="key pad">D1</kbd> and <kbd class="key pad">D2</kbd> in INTRO.</p>
             <p class="step-do">In INTRO, tap <kbd class="key">B</kbd> and hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">B1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks. Tap <kbd class="key">D</kbd> and do the same with <kbd class="key pad">D1</kbd> and <kbd class="key pad">D2</kbd>.</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
-            <p class="step-check"><span class="sr">Check: </span>INTRO is now drums only, easy for a DJ to mix in.</p>
+            <p class="step-check"><span class="sr">Check: </span>INTRO is now drums only: no bass, no vocals.</p>
           </li>
           <li data-step="check-intro-groove">
             <h3 class="step-title">Listen to INTRO, GROOVE and PEAK</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> with <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to select each scene, and play one pass each of INTRO, GROOVE and PEAK.</p>
+            <p class="step-check"><span class="sr">Check: </span>INTRO: drums only. GROOVE: drums, bass, hook, answer. PEAK: everything.</p>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> INTRO plays drums only. GROOVE plays drums, bass, hook and answer. PEAK still plays everything.</p>
@@ -574,10 +636,12 @@
           <li data-step="commit-break" data-note="BREAK">
             <h3 class="step-title">Commit, and name the copy BREAK</h3>
             <p class="step-do">In INTRO, with playback stopped, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>. Hold <kbd class="key">MAIN</kbd> and write the new number beside BREAK.</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not INTRO’s.</p>
           </li>
           <li data-step="break-clear-drums" data-risk="erase">
             <h3 class="step-title">BREAK: clear the kick and clap</h3>
             <p class="preflight">Hold <kbd class="key">MAIN</kbd> first: the number must be BREAK.</p>
+            <p class="step-consequence">Clears every note of <kbd class="key pad">A1</kbd> and <kbd class="key pad">A2</kbd> in BREAK.</p>
             <p class="step-do">In BREAK, tap <kbd class="key">A</kbd>. Hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A1</kbd></kbd> until <samp class="lcd">TRK</samp> blinks, then do the same with <kbd class="key pad">A2</kbd>.</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>The closed and open hats stay.</p>
@@ -585,6 +649,7 @@
           <li data-step="break-add-voice">
             <h3 class="step-title">D1 and D4: voice in BREAK</h3>
             <p class="step-do">Tap <kbd class="key">D</kbd>. At <samp class="lcd">1.1.1</samp>, hold <kbd class="key">RECORD</kbd>, tap <kbd class="key pad">D1</kbd> and release; then hold <kbd class="key">RECORD</kbd>, tap <kbd class="key pad">D4</kbd> and release. Go to <samp class="lcd">3.1.1</samp> and write <kbd class="key pad">D4</kbd> again.</p>
+            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> and <kbd class="key pad">D4</kbd> light at <samp class="lcd">1.1.1</samp>, <kbd class="key pad">D4</kbd> again at <samp class="lcd">3.1.1</samp>.</p>
           </li>
           <li data-step="break-listen">
             <h3 class="step-title">Listen to BREAK</h3>
@@ -594,15 +659,18 @@
           <li data-step="commit-build" data-note="BUILD">
             <h3 class="step-title">Commit, and name the copy BUILD</h3>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>. Hold <kbd class="key">MAIN</kbd> and write the new number beside BUILD.</p>
+            <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not BREAK’s.</p>
           </li>
           <li data-step="build-timing-4">
             <h3 class="step-title">Set the grid to 4</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd> and turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">4</samp>: four steps per bar, one per beat (the guide calls it 1/4). Press <kbd class="key">MAIN</kbd>.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">4</samp>: one step per beat.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Quantize (<kbd class="key">−</kbd>) stays on, so every tap you record lands exactly on a beat.</p></details></div>
           </li>
           <li data-step="build-practice-kick">
             <h3 class="step-title">Practise the kick on every beat</h3>
             <p class="step-do">Practise first. Tap <kbd class="key">A</kbd> and press <kbd class="key">PLAY</kbd>. Without touching <kbd class="key">RECORD</kbd>, tap <kbd class="key pad">A1</kbd> on every beat along with the hats, counting 1, 2, 3, 4.</p>
+            <p class="step-check"><span class="sr">Check: </span>Each tap plays a kick over the hats; nothing records.</p>
             <p class="step-note">Press <kbd class="key">PLAY</kbd> to stop when it feels steady.</p>
           </li>
           <li data-step="build-live-kick">
@@ -620,10 +688,12 @@
           <li data-step="build-timing-16">
             <h3 class="step-title">Set the grid back to 16</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd> and turn <kbd class="key knob">X</kbd> back to <samp class="lcd">16</samp>. Press <kbd class="key">MAIN</kbd>. <kbd class="key">−</kbd> / <kbd class="key">+</kbd> now moves four steps per beat again.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">16</samp> again: 16 steps per bar.</p>
           </li>
           <li data-step="build-clap-roll">
             <h3 class="step-title">A2: a clap roll in bar 4</h3>
             <p class="step-do">With <kbd class="key">A</kbd> selected and playback stopped, write <kbd class="key pad">A2</kbd> at <samp class="lcd">4.3.1</samp>, <samp class="lcd">4.3.3</samp>, <samp class="lcd">4.4.1</samp> and <samp class="lcd">4.4.3</samp>. Press <kbd class="key">PLAY</kbd> for one pass and stop.</p>
+            <p class="step-check"><span class="sr">Check: </span>A roll of four claps ends bar 4.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A clap roll that leads into the drop.</p></details></div>
           </li>
         </ol>
@@ -635,7 +705,7 @@
         <summary><h2 class="part-title">Part 13 · Arrange 32 positions: 128 bars, 4:00</h2></summary>
         <p><b>Goal:</b> a song list that plays the whole track in order by itself (song mode, OS 2.0+).</p>
         <ol start="91">
-          <li data-step="read-song-map">
+          <li data-step="read-song-map" data-kind="info">
             <h3 class="step-title">Read the song map</h3>
             <p class="step-do">Read the song map below, with your paper beside you.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The guide says “the length of the song position is the same as the longest pattern in the scene”. Every scene’s longest pattern is four bars, so each position plays four bars: 32 positions × 4 = 128 bars.</p></details></div>
@@ -651,37 +721,49 @@
             <h3 class="step-title">Open the song list</h3>
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and press <kbd class="key">ENTER</kbd> to open the song list editor.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows the current song position.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The display shows the current song position.</p></details></div>
           </li>
-          <li data-step="song-position-1">
+          <li data-step="song-position-1" data-os="2.0">
             <h3 class="step-title">Set position 1 to INTRO</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until position 1 holds INTRO’s scene number.</p>
+            <p class="step-check"><span class="sr">Check: </span>Position 1 now holds INTRO.</p>
           </li>
-          <li data-step="song-positions-2-12">
+          <li data-step="song-positions-2-12" data-os="2.0">
             <h3 class="step-title">Add position 2: INTRO</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">A</kbd> to add a position. Still holding <kbd class="key">SHIFT</kbd>, press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to give it its scene. Choose INTRO for position 2.</p>
+            <p class="step-check"><span class="sr">Check: </span>Position 2 now holds INTRO too.</p>
             <p class="step-note">Set every position yourself: don’t assume a new one copies the last.</p>
           </li>
           <li data-step="song-positions-2-12-set">
             <h3 class="step-title">Positions 3 to 12</h3>
             <p class="step-do">Set positions 3 and 4 to INTRO, 5–8 to GROOVE and 9–12 to DROP A.</p>
+            <p class="step-check"><span class="sr">Check: </span>Twelve positions so far, matching the song map.</p>
           </li>
           <li data-step="song-positions-13-24">
             <h3 class="step-title">Positions 13 to 24</h3>
             <p class="step-do">Carry on: positions 13–16 DROP B, 17–19 BREAK, 20 BUILD, 21–24 PEAK.</p>
+            <p class="step-check"><span class="sr">Check: </span>24 positions so far, matching the song map.</p>
           </li>
           <li data-step="song-positions-25-32">
             <h3 class="step-title">Positions 25 to 32</h3>
             <p class="step-do">Finish with 25–28 GROOVE and 29–32 INTRO again, now a drums-only outro for DJs.</p>
+            <p class="step-check"><span class="sr">Check: </span>32 positions in all; the last four hold INTRO.</p>
             <p class="step-note">That makes 31 presses of <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> in total.</p>
           </li>
-          <li data-step="check-song-list">
+          <li data-step="check-song-list" data-os="2.0">
             <h3 class="step-title">Check all 32 positions</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Release <kbd class="key">SHIFT</kbd> and step from position 1 to 32 with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>, checking each scene number against the song map.</p>
+            <p class="step-check"><span class="sr">Check: </span>All 32 positions match the song map.</p>
           </li>
-          <li data-step="play-song-list">
+          <li data-step="play-song-list" data-os="2.0">
             <h3 class="step-title">Checkpoint: play the song</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> to play the song from the start, and listen to the whole track.</p>
+            <p class="step-check"><span class="sr">Check: </span>The sections play in order and stop after about 4:00.</p>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> INTRO, GROOVE, DROP A, DROP B, BREAK, BUILD, PEAK, GROOVE, INTRO, then it stops after about 4:00. DROP A starts at 1:00, BREAK at 2:00 and PEAK at 2:30.</p>
@@ -692,36 +774,42 @@
         <summary><h2 class="part-title">Part 14 · Quality gate before you share it</h2></summary>
         <p><b>Goal:</b> check the track like a DJ would, record it, back it up and know the rules before you share it.</p>
         <ol start="101">
-          <li data-step="dance-test">
+          <li data-step="dance-test" data-os="2.0">
             <h3 class="step-title">Dance test</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Dance test: play the whole track with <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> and stand up.</p>
-            <p class="step-check"><span class="sr">Check: </span>You should want to move in DROP A, DROP B and PEAK.</p>
+            <p class="step-check"><span class="sr">Check: </span>You want to move in DROP A, DROP B and PEAK.</p>
           </li>
           <li data-step="low-end-test">
             <h3 class="step-title">Low-end test</h3>
             <p class="step-do">Low-end test: play it at low volume.</p>
-            <p class="step-check"><span class="sr">Check: </span>The kick and bass should still be clear.</p>
+            <p class="step-check"><span class="sr">Check: </span>The kick and bass are still clear.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>If they aren’t, shorten <kbd class="key pad">B1</kbd> on the trim page (<kbd class="key knob">Y</kbd>) or lower the vocals’ <kbd class="key knob">X</kbd> in <kbd class="key">SOUND</kbd>.</p></details></div>
           </li>
           <li data-step="voice-test">
             <h3 class="step-title">Voice test</h3>
-            <p class="step-do">Voice test: the <kbd class="key pad">D1</kbd> hook should be easy to remember and understand.</p>
+            <p class="step-do">Voice test: the <kbd class="key pad">D1</kbd> hook should be clear and stick in your head.</p>
+            <p class="step-check"><span class="sr">Check: </span>You understand every word of the <kbd class="key pad">D1</kbd> hook.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>If the words disappear, lower <kbd class="key pad">D3</kbd> and <kbd class="key pad">D4</kbd> first.</p></details></div>
           </li>
           <li data-step="contrast-test">
             <h3 class="step-title">Contrast test</h3>
             <p class="step-do">Contrast test: BREAK should feel clearly emptier than the drops, and PEAK should feel like the biggest moment.</p>
+            <p class="step-check"><span class="sr">Check: </span>BREAK is clearly emptier; PEAK is the biggest moment.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>If not, take more out of BREAK or add one more V3 chop to PEAK.</p></details></div>
           </li>
-          <li data-step="record-full-pass">
+          <li data-step="record-full-pass" data-os="2.5">
             <h3 class="step-title">Record one full pass</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">On OS 2.5, connect the K.O. II by USB-C to a computer or phone and record its USB audio output.</p>
+            <p class="step-check"><span class="sr">Check: </span>You have a recording of the full 4-minute track.</p>
             <p class="step-note">You can also record the headphone output with an external recorder.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Record one full pass before you change anything else. Commit only copies scenes inside the K.O. II; it doesn’t export audio. The guide: “usb audio out, to record sound directly into your DAW”.</p></details></div>
           </li>
           <li data-step="backup-and-rights">
             <h3 class="step-title">Back up, and check the rights</h3>
             <p class="step-do">Back up the project with the official EP sample tool on a computer over USB-C, and keep your paper (project, scene and V1–V5 numbers) with it.</p>
+            <p class="step-check"><span class="sr">Check: </span>A new backup file appears in your browser’s downloads.</p>
             <p class="step-note">Using anyone else’s voice or recording? For public release of music containing someone else’s record, check and obtain the necessary permissions; do not assume sampling automatically grants rights.</p>
           </li>
           <li data-step="vocal-recap" data-kind="recap">

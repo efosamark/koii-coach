@@ -4,6 +4,600 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.23
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.19; for this release its How to, System, What’s new, Modes, Play and record and Effects pages were re-read on 14 October 2026 (the facts used are named below). **Written for:** OS 2.5.1.
+
+Fixes from a third independent review of the overhaul.
+
+**Every step now says what to check** (plan 5.3 and 5.4 f): 362 steps that had none got a Check, a fact you see or hear afterwards, taken from the step itself, its part, the next step or the official guide; 40 Checks were reworded because they said "You should…" or gave an instruction instead of a fact. 26 steps that change nothing on the K.O. II (reading, writing on paper, work on a phone or computer) are now info steps without one. Each is listed under "Step by step" below.
+
+**Every risk step says what it clears or deletes** (plan 5.4 a), in a line between Before you press and the Do lines, such as "Clears every note of A1 and B1 in this pattern." (32 steps). To keep Before you press, the consequence and the Do within 40 words, and on screen beside the keys panel with the phone on its side, words the consequence now says were taken out of some Do lines; no key, pad or display value changed in them.
+
+**Two instructions changed, with their source** (they join the owner's device check):
+- Chapter 3, "Listen, and set the level": in sample mode X is the input level for the next take, as the step before says, so turning it does nothing to a recording you have. Do: "Tap D1 to hear it. Too quiet or distorted? Turn X (input level) up or down, press SAMPLE and record D1 again." (was "Tap D1. Too quiet: turn X up. Crunchy or distorted: turn X down."). The guide: "you get a second chance by pressing sample again and retaking it".
+- Chapter 5, "Check VERSE and HOOK are unchanged": the step now plays each scene, which it needs to let you hear them. Do: "Hold MAIN, select VERSE and release; press PLAY, then stop. Do the same with HOOK." (was "Hold MAIN and select VERSE: its bass is still there. Select HOOK: its vocal is still there.").
+
+**Checked and kept:** "press MAIN" to leave system settings: the guide’s How to says "press (main) to return to main and exit the system settings". Chapter 7’s "Then press RECORD" to stop recording while the loop plays: the guide’s Play and record says "press (RECORD) to keep the beat going but stop recording".
+
+**"Needs OS …"** now also marks every step in the song list (song mode, OS 2.0), Chapter 6’s second sidechain step (OS 2.0), hands-free sampling and resampling (OS 2.0), equal-length chop and the arpeggio set-up (OS 2.5), recording over USB audio (OS 2.5), and the two steps that erase a scene, whose CLR/DEL behaviour came with OS 2.0.1 (What’s new): 39 steps.
+
+**Sources:** the 26 steps of Chapters 1 and 2 that had no "Official guide" line now name their page.
+
+**Rhythm lab:** Chapter 1’s six target rhythms link to it: "Practise this away from the device in the Rhythm lab." The lab then opens with that step’s rows of the recipe (`lab.html#recipe-2`: kick and snare), without saving over your own grid.
+
+**Chapter complete** (plan 5.9): "Scene numbers to keep" shows the chapter’s scenes (or samples) as LCD numbers, from your notes, with "–" for any you did not note here ("– is a number you did not note here: take it from your paper."). "Back up now" gets a "Show the backup steps" button: Chapter 0’s backup part opens in a sheet, read-only, offline too; Back closes it.
+
+**Step player:**
+- The last step of a part reads "Done · Checkpoint" (plan 6.4).
+- When a risk step’s undo and Check are below the action bar, the cue reads "Undo and Check below" ("No undo and Check below" on an irreversible step) instead of "More below" (plan 5.4).
+- The scene-erase steps get the red left edge of irreversible steps too.
+- The delete gate’s note: "There is no undo. Check that you are on the right sound or scene before you press." (was "Make sure you are…").
+
+**Without JavaScript** the app bar has a Search link to Troubleshooting, which lists every topic (plan 5.8).
+
+**Home:** the Troubleshooting tile breaks at "Trouble-shooting" on a narrow phone instead of mid-word ("Troubleshootin / g"). "Not sure? Start with Chapter 0: nothing in Parts 1–7 erases music." (was "nothing in its first seven sections erases music").
+
+**Plain words** (plan 6.7): "just", "simply", "easy" and "make sure" are gone from every page (42 places, listed below; "right before" for timing, "check that" for "make sure"), and a test keeps them out. Quotes from the guide keep their words.
+
+**Docs:**
+- Decision 23 in the plan: the search index is built in the browser from the saved pages (0.2 s on desktop, 1.1 s with the CPU slowed 4×) instead of a deploy-time file.
+- README: the three details with no source (how KEYS mode ends, removing a sidechain destination, what starts playback in live chop) and the two guesses next to them now say they wait for the owner’s check on a device.
+- CONTRIBUTING: every step has a Check unless it is an info step; risk steps have a consequence line, counted in their 40 words; the plain-words rule.
+
+**Tests:**
+- `test_player.py`: every step has a Check, every risk step its consequence in order, no page uses the ruled-out words, the chapter-complete numbers and backup sheet, the Rhythm lab link and `#recipe-2`.
+- `test_behaviour.py`: "Confirm first", "Done · Checkpoint" and the risk cue.
+- `test_a11y.py`: the Search link without JavaScript. The desktop axe pass is now 1280×1200: at 900 a control that happens to end half under the docked action bar counts as a small target until you scroll.
+
+**Wordings added in 2026.10.14.21 and not listed then** (the recap steps and the cheat sheet):
+
+- Chapter 0, "Set-up done: your moves" (setup-recap): Do "Read the six moves below, then try one from memory without reading this app."; Check "You can find your way home, browse sounds and change a setting."; moves:
+  - “Home: press MAIN; PLAY starts and stops.”
+  - “To the start: hold SHIFT and press − until the display shows 1.1.1.”
+  - “Change project: hold MAIN, hold a pad 1–9 as well, then release both.”
+  - “Browse sounds: SOUND, tap the pad, then − / + (SHIFT + + jumps ten). Hold SOUND and type a number to jump there.”
+  - “System settings, with the unit already on: SHIFT + ERASE, three digits, ENTER, then MAIN.”
+  - “Undo: SHIFT + B while the umbrella is lit.”
+- Chapter 3, "Your sampling moves" (sampling-recap): Do "Read the seven moves below, then try one from memory without reading this app."; Check "You can record, edit, chop and resample a sound."; moves:
+  - “Sample: tap the group, press SAMPLE, pick the source with − / +; X is the level, Y the threshold. Hold a pad to record.”
+  - “Hands-free: hold SHIFT and press an empty pad; press SAMPLE to stop.”
+  - “Sound edit: SOUND, tap the pad, briefly press SHIFT + SOUND; − / + steps through its pages.”
+  - “Copy a sound: in SOUND, SHIFT + C; tap another pad, SHIFT + D.”
+  - “Time page (tim): X chooses BPM, BAR or rev.”
+  - “Chop: select the sample, tap the destination group, SHIFT + SAMPLE; hold the group button and − / + for EQU.”
+  - “Resample: source rsp, hold SHIFT and press an empty pad, then PLAY.”
+- Chapter 4, "Your performance moves" (perform-recap): Do "Read the eight moves below, then try one from memory without reading this app."; Check "You can record live, play KEYS, repeat, add FX and pump the mix."; moves:
+  - “Record live: at 1.1.1 tap RECORD, press PLAY, play after the count-in, then press RECORD.”
+  - “TIMING: X sets the grid, − quantize, + free time, Y swing.”
+  - “KEYS: select a pad, press KEYS; hold it and turn X for the key, Y for the scale.”
+  - “Note repeat: hold TIMING and a pad; in TIMING, SHIFT + the pad latches it.”
+  - “Punch-in FX: while playing, hold FX and press a pad.”
+  - “Copy a pad’s notes: hold it, SHIFT + C; hold another, SHIFT + D.”
+  - “Next scene in time: hold MAIN, − / + before the change lands.”
+  - “Sidechain: SHIFT + FX, +; hold a group button and press a pad for the source, SHIFT + a group to dip.”
+- Chapter 5, "Your hip-hop moves" (hiphop-recap): Do "Read the seven moves below, then try one from memory without reading this app."; Check "You can sample a phrase, trim it and build a song from scenes."; moves:
+  - “Sample: tap C, press SAMPLE, pick the input with − / +; X level, Y threshold; hold the pad.”
+  - “Copy a sound: in SOUND, SHIFT + C; tap another pad, SHIFT + D.”
+  - “Trim: briefly SHIFT + SOUND, − / + to the trim page; X start, Y length.”
+  - “New section: SHIFT + MAIN, then hold MAIN and write the number down.”
+  - “Clear a pad’s notes: stopped, hold ERASE + the pad until TRK blinks.”
+  - “Double a pattern: arm RECORD, hold SHIFT and press +, then disarm.”
+  - “Song list: hold MAIN and press ENTER; SHIFT + A adds a position, SHIFT + − / + picks its scene.”
+- Chapter 6, "Your tech house moves" (tech-house-recap): Do "Read the seven moves below, then try one from memory without reading this app."; Check "You can build a loop, make it breathe and arrange a full track."; moves:
+  - “Load by number: hold SOUND, type the number on the pads, release.”
+  - “Double a pattern: arm RECORD, hold SHIFT and press +, then disarm.”
+  - “A fresh pattern for a group: tap it, then SHIFT + A.”
+  - “Sidechain: SHIFT + FX, +; hold a group button and press a pad for the source, SHIFT + a group to duck.”
+  - “Sections: SHIFT + MAIN, then clear what you don’t need with ERASE + the pad until TRK blinks.”
+  - “Reverb: tap the group, FX, − / + to reverb, raise the fader.”
+  - “Song list: hold MAIN and press ENTER; SHIFT + A adds a position, SHIFT + − / + picks its scene.”
+- Chapter 7, "Your vocal house moves" (vocal-recap): Do "Read the seven moves below, then try one from memory without reading this app."; Check "You can shape your vocals and grow one drop into a full track."; moves:
+  - “Load a sample by number: SOUND, tap the pad, hold SOUND, type the number, release.”
+  - “Trim: briefly SHIFT + SOUND, − / + to the trim page; X start, Y length.”
+  - “Play to the end: on the sound page, turn X to oneshot.”
+  - “Reverb on a group: tap it, FX, − / + to reverb, raise the fader.”
+  - “Grow and strip: SHIFT + MAIN, then hold ERASE + the pad until TRK blinks to clear one sound.”
+  - “Play it in: tap RECORD, press PLAY, play after the count-in.”
+  - “Song list: hold MAIN and press ENTER; SHIFT + A adds a position, SHIFT + − / + picks its scene.”
+- Cheat sheet headings: "Chapter 3 · Sample, chop & resample: moves and pad plan" (was "…: your pad plan"), "Chapter 4 · Play & perform: moves and section starts" (was "…: how every section starts"), and a new section "Chapter 0 · Set up your K.O. II: moves" with Chapter 0’s six moves above. Each chapter’s moves were added to its section too.
+
+**Step by step: every wording changed in this release** (Check, consequence, Do and other lines; "was" gives the old text):
+
+- **Chapter 0** (37 steps):
+  - “Fit four AAA batteries”: Check added: “Each battery’s + and − match the marks.”.
+  - “Find the battery icon”: Check added: “The battery icon is lit, not blinking.”.
+  - “Tap pads 1, 2 and 3”: Check: “Each pad plays a sound through the built-in speaker.” (was “You should hear them from the built-in speaker.”).
+  - “Optional: plug in headphones”: Before you press: “The input is a 3.5 mm socket on the top side too, so check that you chose the output.” (was “The input is a 3.5 mm socket on the top side too, so make sure you chose the output.”); Check added: “Pads play through them.”.
+  - “Learn the four button words”: now an info step (no Check).
+  - “Your first combination: SHIFT + −”: Check added: “The display shows 1.1.1 again.”.
+  - “PLAY lights its icon”: Note: “If the project has no notes, it plays silence.” (was “If the project has no notes, it simply plays silence.”).
+  - “Read the icon table”: now an info step (no Check).
+  - “Open the update utility”: now an info step (no Check).
+  - “Connect the K.O. II”: Check added: “The USB MIDI icon on the display lights.”.
+  - “Read the result”: now an info step (no Check).
+  - “Install the update”: Check added: “The utility says your K.O. II is up to date.”.
+  - “Save a backup”: Check added: “The tool reports that the backup has finished.”.
+  - “Find the backup file”: Check: “A new backup file is there.” (was “A new backup file should be there.”).
+  - “Copy it to a second place”: Check added: “The backup file also appears in the second place.”.
+  - “Open factory project 1”: Check added: “The display shows P 1 before you release.”.
+  - “Open empty project 6”: Check added: “The display shows P 6 before you release.”.
+  - “Write PROJECT 6 = COURSE”: now an info step (no Check).
+  - “Open scratch project 9”: Check added: “The display shows P 9 before you release.”.
+  - “SOUND: select pad 1”: Check added: “The SOUND icon lights; A1 is still silent.”.
+  - “Jump ten at a time”: Check added: “The number jumps by ten, then by one.”.
+  - “Try the other categories”: Check added: “A1 plays each kind of sound in turn.”.
+  - “Mini kit: your favourite kick”: Check added: “A1 plays your favourite kick, numbered 1–99.”.
+  - “Pick a snare and a hi-hat”: Check added: “A2 plays a snare and A3 a hi-hat.”.
+  - “Play your mini kit”: Check added: “You hear kick, snare, hi-hat, then snare.”.
+  - “Open the seq group”: Check added: “The display shows a setting inside seq.”.
+  - “Turn the metronome on (400)”: Check added: “Your choice is on, not rec or cnt.”.
+  - “The fast way: type 401”: Check added: “After MAIN, the SYSTEM icon goes out.”.
+  - “Optional: the course picks”: Check added: “After MAIN, the SYSTEM icon goes out.”.
+  - “Library complete? Move on”: now an info step (no Check).
+  - “Error code? Look it up”: now an info step (no Check).
+  - “Anything else: never format”: Check added: “The mistake is gone; your sounds are still there.”.
+  - “Ready check: updated”: now an info step (no Check).
+  - “Ready check: backed up”: now an info step (no Check).
+  - “Ready check: project 6”: Check added: “Nothing plays in any group.”.
+  - “Ready check: silence, and paper”: Check added: “Nothing plays while the PLAY icon is lit.”.
+  - “Open Chapter 1”: now an info step (no Check).
+- **Chapter 1** (27 steps):
+  - “Go home, and stop playback”: Check added: “Nothing plays, and the display shows the current step.”; Source added: “Official guide: Get started”.
+  - “Open empty project 6”: Check added: “The display changes to show P 6.”; Source added: “Official guide: Get started”.
+  - “Set the tempo to 90 BPM”: Source added: “Official guide: Modes”.
+  - “Set the grid to 16, quantized”: Check added: “In TIMING the display shows 16, not 16T.”.
+  - “A1: load the kick”: Check added: “The display shows the sample number you typed.”; Source added: “Official guide: Modes”.
+  - “Learn the placement move once”: Do: “Press MAIN and check that playback is stopped. Hold SHIFT and press − until the display shows 1.1.1. Hold RECORD, tap A1 once, then release RECORD.” (was “Press MAIN and make sure playback is stopped. Hold SHIFT and press − until the display shows 1.1.1. Hold RECORD, tap A1 once, then release RECORD.”); Rhythm lab link added: “Practise this away from the device in the Rhythm lab.”.
+  - “Place all four kicks”: Rhythm lab link added: “Practise this away from the device in the Rhythm lab.”.
+  - “Place the two snares”: Rhythm lab link added: “Practise this away from the device in the Rhythm lab.”.
+  - “Place the eight hats”: Rhythm lab link added: “Practise this away from the device in the Rhythm lab.”.
+  - “Listen to your finished drum beat”: Rhythm lab link added: “Practise this away from the device in the Rhythm lab.”.
+  - “Tap the drums in SOUND”: Check added: “A1, A2 and A3 play kick, snare and hat in turn.”; Source added: “Official guide: Modes”.
+  - “Tweak the balance, one sound at a time”: Check: “Kick and snare stand out clearly; the hats are the quietest part.” (was “Kick and snare are easy to pick out; the hats are supporting detail.”).
+  - “Write down DRUMS”: Check added: “Nothing plays; while you hold MAIN, the display shows the scene number.”; Source added: “Official guide: Get started”.
+  - “B: select pad 1 in SOUND”: Check added: “B1 makes no sound yet: no sample is loaded on it.”; Source added: “Official guide: Modes”.
+  - “Place two bass pulses”: Do: “Press MAIN and check that playback is stopped, with group B selected. Hold RECORD + B1 at 1.1.1 and at 1.3.1 only.” (was “Press MAIN and make sure playback is stopped, with group B selected. Hold RECORD + B1 at 1.1.1 and at 1.3.1 only.”); Rhythm lab link added: “Practise this away from the device in the Rhythm lab.”.
+  - “B1: open the trim page”: Check added: “Tapping B1 plays the bass, still untrimmed.”; Source added: “Official guide: Modes”.
+  - “Optional: choose reverb for A”: Check added: “Your beat plays on while you choose reverb.”; Source added: “Official guide: Effects”.
+  - “Optional: make scene changes wait for the bar”: Check added: “The display shows the current step again.”.
+  - “Write down BEAT”: Check added: “Holding MAIN, the display shows a number different from DRUMS.”; Source added: “Official guide: Get started”.
+  - “Keep BEAT safe, then start DRUMS”: Check added: “You hear drums only, with no bass.”; Source added: “Official guide: Get started”.
+  - “Optional: make a practice copy”: Check added: “Holding MAIN, the display shows BEAT’s scene number.”; Source added: “Official guide: Get started”.
+  - “Optional: play along before recording”: Do: “Tap A. Press PLAY and, without touching RECORD, tap pad 2 (snare) once near the end of each loop, right before it starts again.” (was “Tap A. Press PLAY and, without touching RECORD, tap pad 2 (snare) once near the end of each loop, just before it starts again.”).
+  - “Optional: arm recording with a count-in”: Check added: “You hear a four-beat count-in before recording starts.”; Source added: “Official guide: Play and record”.
+  - “Optional: tap the snare near each loop’s end”: Check added: “A2 plays the snare over the beat and metronome.”; Source added: “Official guide: Play and record”.
+  - “Optional: keep it or undo it”: Source added: “Official guide: Play and record”.
+  - “Optional: or erase a single note”: Consequence added: “Removes only the A2 note on this step.”; Source added: “Official guide: Play and record”.
+  - “Your first beat is done”: Source added: “Official guide: Get started · Modes · Play and record”.
+- **Chapter 2** (12 steps):
+  - “Go home, and stop playback”: Check added: “Nothing plays: the K.O. II is stopped.”; Source added: “Official guide: Modes”.
+  - “Select BEAT”: Check added: “The display shows BEAT’s scene number while you hold MAIN.”; Source added: “Official guide: Modes”.
+  - “INTRO: select group B”: Do: “In INTRO, tap B once (do not hold it) to select group B. Press MAIN and check that playback is stopped.” (was “In INTRO, tap B once (do not hold it) to select group B. Press MAIN and make sure playback is stopped.”); Check added: “Nothing plays: INTRO is stopped, with group B selected.”; Source added: “Official guide: Modes”.
+  - “Make the intro: remove the bass”: Consequence added: “Removes only the B1 notes on these two steps.”.
+  - “MELODY: select C1”: Check added: “C1 plays its current sound, if it holds one.”; Source added: “Official guide: Modes”.
+  - “Give the melody two bars”: Do: “Press MAIN and check that playback is stopped, with group C selected. Hold RECORD, press + once, then release both.” (was “Press MAIN and make sure playback is stopped, with group C selected. Hold RECORD, press + once, then release both.”); Why: “This makes C’s pattern two bars long. A and B stay one bar and repeat underneath. Extending adds empty space; it does not copy notes.” (was “This makes C’s pattern two bars long. A and B stay one bar and simply repeat underneath. Extending adds empty space; it does not copy notes.”).
+  - “Make the breakdown: clear kick and bass”: Consequence added: “Clears every note of A1 and B1 in this pattern.”; Do: “Stopped, press MAIN and tap A. Hold ERASE + A1 until TRK blinks, then release. Tap B and do the same with B1.” (was “In BREAK, stopped, press MAIN and tap A. Hold ERASE + pad 1 (A1) until TRK blinks on the display, then release. Tap B and do the same with B1.”).
+  - “Open the song list”: Check added: “The display shows the current song position.”; Source added: “Official guide: Modes”.
+  - “Add position 2: INTRO”: Check added: “Position 2 holds INTRO, the same as position 1.”; Source added: “Official guide: Modes”.
+  - “Start the song”: “Needs OS 2.0 or newer”; Check added: “The song plays from the start, beginning with INTRO.”; Source added: “Official guide: Modes”.
+  - “A: add a little reverb”: Check added: “You hear a little reverb on the drums.”; Source added: “Official guide: Effects”.
+  - “Your song is ready to develop”: Source added: “Official guide: Modes”.
+- **Chapter 3** (50 steps):
+  - “Open empty project 7”: Check added: “While you hold both, the display shows P 7.”.
+  - “Set the tempo to 90 BPM”: Check added: “The display shows 90, the new tempo in BPM.”.
+  - “Set the level and threshold”: Check added: “The pads keep blinking, still in sample mode.”.
+  - “Listen, and set the level”: Do: “Tap D1 to hear it. Too quiet or distorted? Turn X (input level) up or down, press SAMPLE and record D1 again.” (was “Tap D1. Too quiet: turn X up. Crunchy or distorted: turn X down.”); Check: “D1 plays back your sound.” (was “You should hear your sound.”).
+  - “Go to 1.1.1 with group D”: Check added: “The display shows 1.1.1.”.
+  - “Erase the test note”: Consequence added: “Removes only that D1 note; the recording stays.”.
+  - “Set up group A for sampling”: Check: “The display still shows mic as the source.” (was “Check that the microphone source is still selected (press − / + if not).”).
+  - “Make the kick deeper”: Check added: “A1 plays your kick at a lower pitch.”.
+  - “Go to 1.1.1 with group A”: Check added: “The display shows 1.1.1.”.
+  - “Listen to your voice kit”: Check added: “Your voice kick, snare and hats play the Chapter 1 rhythm.”.
+  - “Set up hands-free sampling”: Check added: “Empty pads blink and the display shows mic.”.
+  - “D2: start hands-free sampling”: “Needs OS 2.0 or newer”; Check added: “The K.O. II now holds D2 for you; your hands are free.”.
+  - “Connect your phone to the line input”: Check added: “The cable runs from the phone into INPUT.”.
+  - “Set the phone’s volume to half”: now an info step (no Check).
+  - “Choose what to sample”: now an info step (no Check).
+  - “Select the line input”: Check added: “The display shows in; empty pads blink.”.
+  - “D3: record the phone, hands-free”: “Needs OS 2.0 or newer”.
+  - “Connect over USB audio (OS 2.5)”: Check added: “The K.O. II appears as an audio device.”.
+  - “Choose the K.O. II as audio output”: Check added: “The phone or computer shows the K.O. II as its output.”.
+  - “Optional: hear the phone while sampling”: Check added: “The SYSTEM icon goes out.”.
+  - “Select USB as the source”: Check added: “The display shows usb; empty pads blink.”.
+  - “Choose the mic again”: Check added: “Empty pads blink and the display shows mic.”.
+  - “Set the lo recording rate (500)”: Check added: “You are on 500: new recordings use the lo rate.”.
+  - “A2: open sound edit”: Check added: “A2 plays your snare as you select it.”.
+  - “Trim the start of A2”: Check added: “A2 sounds the instant you tap it.”.
+  - “Copy A2’s sound”: Check added: “A2 plays your snare as you select it.”.
+  - “A4: open the time page”: Check added: “The display shows tim.”.
+  - “Optional: set the kick’s crop points”: Check added: “A1 plays only the kick.”.
+  - “Optional: crop the kick”: Consequence added: “Overwrites the kick’s file: only the part between your trim points is kept.”.
+  - “Optional: try live chop”: Check added: “In CHOP the display shows Cho.”.
+  - “Choose equal-length slices”: “Needs OS 2.5 or newer”; Check added: “The display shows EQU: equal-length slices.”.
+  - “Chop into four slices”: Check added: “Back in MAIN, group C holds four slices of your count.”.
+  - “Go to 1.1.1 with group C”: Check added: “The display shows 1.1.1.”.
+  - “Remix the count”: Before you press: “Stopped, press briefly: a long hold clears every note of the pad.” (was “Stop first, and press briefly: a long hold clears every note of the pad.”); Consequence added: “Removes only the “three” note at 1.3.1.”; Do: “Go to 1.3.1, briefly press ERASE + the “three” pad, then hold RECORD and tap the “one” pad there. Press PLAY.” (was “Remix it: go to 1.3.1, briefly press ERASE + the “three” pad, then hold RECORD and tap the “one” pad there. Press PLAY.”).
+  - “Stop, and select group B”: Check added: “Nothing plays, and group B is selected.”.
+  - “Choose the resample source”: “Needs OS 2.0 or newer”.
+  - “B1: resample one bar”: “Needs OS 2.0 or newer”.
+  - “Commit a new scene: BOUNCE”: Check added: “The BOUNCE number is different from VOICE KIT.”.
+  - “Choose the filter for group B”: Check added: “Your bounced beat plays from B1.”.
+  - “Shape the sound with X”: Check added: “Left, the beat sounds muffled; right, it loses its low end.”.
+  - “B2: get ready to resample”: “Needs OS 2.0 or newer”; Check added: “rsp shows; hands-free sampling waits for PLAY.”.
+  - “Record a filter sweep”: Check added: “The beat opens up from muffled to bright.”.
+  - “Set group B back to dry”: Check added: “The beat plays dry, with no filter.”.
+  - “B1: open the time page”: Check added: “The display shows tim.”.
+  - “Stretch B1 to one bar”: Check added: “The stopwatch TIME icon is now lit.”.
+  - “Go back to 90 BPM”: Check added: “B1 slows down and stays in time.”.
+  - “Optional: match a song’s tempo”: Check added: “The display shows the song’s tempo.”.
+  - “Optional: play your stretched loop”: Check added: “B1 plays in time at the matched tempo.”.
+  - “Optional: move the loop”: Check added: “The repeated piece moves, still in time.”.
+  - “Optional: leave the loop”: Check added: “The loop ends and the full beat plays on.”.
+- **Chapter 4** (96 steps):
+  - “Copy BEAT as a practice scene”: Check added: “You are now in the copy, not BEAT.”.
+  - “Name it LIVE and listen”: Check: “You hear the same drums and bass as BEAT.” (was “You should hear the same drums and bass as BEAT.”).
+  - “Turn on pad velocity (301)”: Check added: “The SYSTEM icon goes out. Soft taps now play quietly.”.
+  - “Play A2 softly, then firmly”: Check: “You hear a quiet snare, then a loud one.” (was “You should hear a quiet snare, then a loud one.”).
+  - “Turn on the practice click (400)”: Check added: “The SYSTEM icon goes out. The click now plays with the beat.”.
+  - “Set the click volume”: Check added: “The click gets louder or softer with Y.”.
+  - “Clear the snare in LIVE”: Consequence added: “Clears every note of A2 in LIVE.”; Do: “Stopped, in MAIN with group A selected, hold ERASE + A2 until TRK blinks, then release.” (was “Remove the placed snare in LIVE: stopped, in MAIN with group A selected, hold ERASE + A2 until TRK blinks on the display, then release.”).
+  - “Set quantize on the 16 grid”: Check added: “Recorded hits now snap to the 16-step grid.”.
+  - “Practise the backbeat on A2”: Check added: “Your snare joins the beat on 2 and 4.”.
+  - “Add soft ghost notes”: Do: “Then add one or two very soft taps right before beat 4. Practise until it feels steady, then stop.” (was “Then add one or two very soft taps just before beat 4. Practise until it feels steady, then stop.”); Check added: “The ghost notes sound much quieter than the backbeat.”.
+  - “Get ready to record live”: Check added: “You hear a four-beat count-in, then recording starts.”.
+  - “Record one bar of snare”: Check: “Your backbeat and ghost notes repeat by themselves, on the grid.” (was “You should hear your backbeat and ghost notes repeat by themselves, on the grid.”).
+  - “Not happy? Undo, or erase while it plays”: Consequence added: “Erases only the A2 hits held through.”; Do: “Press SHIFT + B while the umbrella is lit and record again. Or, while it plays, hold ERASE + A2 as the unwanted hits sound.” (was “Not happy? Press SHIFT + B while the umbrella is lit and record again. Or, while it plays, hold ERASE + A2 as the unwanted hits sound.”).
+  - “Fix a ghost note that is too loud”: Check added: “The ghost note on that step now plays quieter.”.
+  - “Switch to free time”: Check added: “Recorded hits now keep your exact timing.”.
+  - “Optional: clear the hats in LIVE”: Consequence added: “Clears every note of A3 in LIVE.”.
+  - “Optional: record swung hats”: Check: “The hats lean into a shuffle.” (was “You should hear the hats lean into a shuffle.”).
+  - “Set quantize back, without swing”: Check added: “The SWING icon goes out.”.
+  - “Set the metronome back (401)”: Check added: “The SYSTEM icon goes out. The click now plays only while recording.”.
+  - “Copy DRUMS as BASSLINE”: Check added: “You are now in the copy, not DRUMS.”.
+  - “Name it, and listen”: Check added: “You hear drums only; no bass plays.”.
+  - “Copied BEAT? Clear its bass”: Consequence added: “Clears every note of B1 in BASSLINE.”.
+  - “Make group B two bars long”: Why: “A stays one bar long and repeats underneath.” (was “A stays one bar long and simply repeats underneath.”).
+  - “Drop an octave”: Check added: “Each pad plays B1’s bass an octave lower.”.
+  - “Choose a key”: Check added: “The display shows the key, changing as X turns.”.
+  - “Choose the blues scale”: Check added: “The display shows BLU.”.
+  - “Count along for two bars”: Check added: “The drums play under your count.”.
+  - “Play a two-bar bassline”: Check: “You play the same two-bar line twice in a row.” (was “Repeat the same two-bar line until you can play it twice in a row.”).
+  - “Record your bassline”: Check: “Your bassline repeats every two bars over the drums.” (was “You should hear your bassline repeat every two bars over the drums.”).
+  - “Switch KEYS off”: Check: “You hear kick and snare, not one sound at different pitches.” (was “You should hear kick and snare, not one sound at different pitches.”).
+  - “Copy BEAT as ROLL, clear the hats”: Consequence added: “Clears every note of A3 in ROLL.”; Do: “Make a practice copy of BEAT and write it as ROLL. Tap A. Stopped, hold ERASE + A3 until TRK blinks.” (was “In project 6, make a practice copy of BEAT and write it as ROLL. Tap A. Stopped, hold ERASE + A3 until TRK blinks to clear the hats.”).
+  - “Set the repeat to eighth notes”: Check added: “Kick, snare and bass play, with no hats.”.
+  - “Get ready to record the hats”: Check added: “You hear a four-beat count-in, then recording starts.”.
+  - “Record one bar of repeated hats”: Check: “You hear steady eighth-note hats again, this time played by you.” (was “You should hear steady eighth-note hats again, this time played by you.”).
+  - “Set a fast roll (32)”: Check added: “Note repeat now runs at 32 per bar.”.
+  - “Record a roll on beat 4”: Do: “Tap RECORD and press PLAY. After the count-in, count the bar, and on beat 4 hold TIMING + A3 for that one beat only.” (was “Tap RECORD and press PLAY. After the count-in, count the bar, and on beat 4 hold TIMING + A3 for just that one beat.”); Check added: “The hat rolls fast through beat 4.”.
+  - “Let go and stop recording”: Check: “You hear a fast “trrrr” leading into every new loop.” (was “You should hear a fast “trrrr” leading into every new loop.”).
+  - “Set the grid back to 16”: Check added: “The grid is back to 16 steps per bar.”.
+  - “Set the repeat to one per beat”: Check added: “The beat plays and the display shows 4.”.
+  - “Latch the hat”: Check added: “The hat repeats once per beat, hands-free.”.
+  - “Stop the latch and reset”: Check added: “The hat repeat stops, then playback stops.”.
+  - “C2: select an unused pad”: Check added: “The SOUND icon lights; C2 plays its current sound, if any.”.
+  - “Load a short melodic sound”: Check added: “The display shows a number in 500–599: melodic sounds.”.
+  - “Find the play mode page”: Check added: “The display changes with each page.”.
+  - “Set C2 to oneshot or legato”: Check added: “C2 now plays one note at a time.”.
+  - “Switch on KEYS at the 16 grid”: “Needs OS 2.5 or newer”; Check added: “The piano icon lights and the beat plays.”.
+  - “Play an arpeggio”: Check: “The notes play one at a time, in the order you pressed them.” (was “You should hear the notes one at a time, in the order you pressed them.”).
+  - “Set quantize back”: Check added: “The grid is back to 16 steps, with quantize on.”.
+  - “Switch KEYS off”: Check: “C1 plays your Chapter 2 melody sound at its normal pitch.” (was “It should play your Chapter 2 melody sound at its normal pitch.”).
+  - “Copy BEAT as FXJAM”: Check added: “The copy plays the same beat as BEAT.”.
+  - “Beat repeat: FX + pad 1”: Check: “The beat stutters, then carries on normally when you let go.” (was “You should hear the beat stutter, then carry on normally when you let go.”).
+  - “Try the other punch-in FX”: Check added: “Each pad changes the beat differently while held.”.
+  - “Read the fader labels”: Check added: “The labels include level, pitch and pan.”.
+  - “Find normal pitch again”: Check added: “The drums sound normal again, then playback stops.”.
+  - “Record a fader move”: Check: “You hear your move repeat by itself every loop.” (was “You should hear your move repeat by itself every loop.”).
+  - “Erase the pitch moves only”: Consequence added: “Erases the recorded pitch moves only; the notes stay.”.
+  - “Set the fader back to level”: Check added: “The fader controls drum volume again, not pitch.”.
+  - “Copy BEAT as EDIT”: Check added: “You are in EDIT, a copy with its own number.”.
+  - “A4: choose a free pad”: Check added: “The SOUND icon lights; A4 plays its current sound, if any.”.
+  - “Load a short click on A4”: Check added: “The display shows a number in 300–399: percussion.”.
+  - “Make it quieter than the kick”: Check added: “A4 now sounds quieter than the kick.”.
+  - “Copy A1’s notes onto A4”: Check added: “A4 now has a note wherever A1 has one.”.
+  - “Check the copied layer”: Check: “A4 lights there, like A1. Every kick now has the percussion stacked on top.” (was “A4 lights there, just like A1. Every kick now has the percussion stacked on top.”).
+  - “Open timing correct”: Check added: “Timing correct is open; no notes have moved yet.”.
+  - “A4: move the layer six ticks later”: Check added: “Every A4 note now sits six ticks later.”.
+  - “Hear the flam”: Check: “The layer lands slightly after the kick, a thicker double hit called a flam.” (was “The layer now lands just after the kick, a thicker double hit called a flam.”).
+  - “Free time, at 1.4.1”: Check added: “The display shows 1.4.1, and A2 lights there.”.
+  - “Set quantize back and compare”: Check: “EDIT sounds thicker and slightly laid-back.” (was “EDIT should sound thicker and slightly laid-back.”).
+  - “Make scene changes wait (412)”: Check added: “The SYSTEM icon goes out. Scene changes now wait for the pattern’s end.”.
+  - “Write a running order”: now an info step (no Check).
+  - “Play INTRO and count the passes”: Check added: “INTRO plays, repeating once per bar.”.
+  - “Try a direct jump to a scene”: Check added: “The scene whose number you typed plays.”.
+  - “Perform your running order”: Check added: “Each scene change lands at the end of a pattern.”.
+  - “Copy a throwaway scene: TRASH”: Check added: “Holding MAIN shows the copy’s new number.”.
+  - “Clear TRASH”: “Needs OS 2.0.1 or newer”; Before you press: “Only ever do this on a scene whose number you checked a moment ago.” (was “Only ever do this on a scene whose number you have just checked.”); Consequence added: “Clears everything in this scene.”.
+  - “Delete the empty TRASH scene”: “Needs OS 2.0.1 or newer”; Consequence added: “Deletes the scene itself.”; Check: “DEL shows: the empty TRASH scene is deleted.” (was “Hold MAIN to see which scene you are in now.”).
+  - “Optional: leave lock mode”: Check added: “The K.O. II starts without showing LOK.”.
+  - “Set instant scene changes (410)”: Check added: “The SYSTEM icon goes out. Scene changes happen immediately again.”.
+  - “Open the song list”: Check added: “The display shows the current song position.”.
+  - “Put BREAK2 at position 7”: “Needs OS 2.0 or newer”; Check added: “Position 7 now holds BREAK2’s number.”.
+  - “Play the longer song”: “Needs OS 2.0 or newer”.
+  - “Make the song loop (421)”: Check added: “The SYSTEM icon goes out. Song loop is now on.”.
+  - “Rehearse with the loop”: “Needs OS 2.0 or newer”; Check added: “After position 10 the song starts again.”.
+  - “Switch the loop off (420)”: Check added: “The SYSTEM icon goes out. Song loop is now off.”.
+  - “Optional: cut position 10”: “Needs OS 2.0 or newer”; Check added: “The song list now has 9 positions.”.
+  - “Optional: insert it at position 1”: “Needs OS 2.0 or newer”; Check added: “BREAK now plays at or near the start.”.
+  - “Play MELODY”: Check added: “MELODY plays: drums, bass and melody.”.
+  - “A1: make the kick the trigger”: Check added: “A1 is now the sidechain trigger; MELODY plays on.”.
+  - “Choose B and C to dip”: Check added: “Groups B and C are now set to dip on every kick.”.
+  - “Leave the settings and listen”: Do: “Press MAIN to leave the settings, then stop. Play BEAT and INTRO too, and compare them.” (was “Press MAIN to leave the settings, then stop. Play BEAT and INTRO too, and listen for the pump there.”); Check added: “BEAT’s bass pumps too; INTRO, drums only, stays steady.”.
+  - “Connect the K.O. II over USB-C”: Check added: “The USB MIDI icon lights, and a new USB audio device appears.”.
+  - “Choose it as your app’s input”: “Needs OS 2.5 or newer”; Check added: “The app shows the K.O. II as its input.”.
+  - “Set the recording level”: “Needs OS 2.0 or newer”; Check added: “The app’s meter peaks below the top.”.
+  - “Record your performance”: “Needs OS 2.0 or newer”; Check added: “The song plays from the start while the app records.”.
+  - “Stop the recording and listen”: Check added: “Your song plays back, with your live effects.”.
+  - “No USB audio? Use the line output”: Check added: “The recorder’s level meter moves when the K.O. II plays.”.
+- **Chapter 5** (81 steps):
+  - “Open empty project 8”: Check added: “Project 8 opens: the display shows P 8.”.
+  - “Check that project 8 is empty”: Check: “Nothing sounds: PLAY and the pads are silent.” (was “Nothing should sound. Silent too.”).
+  - “A1: load the kick”: Check added: “The display shows the sample number for A1.”.
+  - “A2 and A3: load snare and hat”: Check added: “The display shows sample numbers 100, then 200.”.
+  - “Set the tempo to 90 BPM”: Check added: “The display shows 90: 90 BPM.”.
+  - “Set the grid to 16, quantized”: Check added: “The MAIN icon is lit again.”.
+  - “Go to 1.1.1 with group A”: Check added: “The display shows 1.1.1: the start of bar 1.”.
+  - “Practise the snare on 2 and 4”: Check added: “Each tap plays a snare over the beat.”.
+  - “Arm recording with a count-in”: Check added: “A four-beat count-in plays, then recording starts.”.
+  - “Play the snare on two and four”: Check added: “Your snare now repeats by itself each loop.”.
+  - “Checkpoint: the rebuilt beat”: Check: “You hear the Chapter 1 · First beat drums.” (was “You should hear the Chapter 1 · First beat drums.”).
+  - “Optional: open timing correct”: Check added: “The display changes as timing correct opens.”.
+  - “Name VERSE and commit”: Check added: “VERSE’s scene number is on your paper.”.
+  - “Checkpoint: HOOK sounds like VERSE”: Check: “You hear the drums plus two bass pulses per bar, exactly like VERSE.” (was “You should hear the drums plus two bass pulses per bar, exactly like VERSE.”).
+  - “Turn down, then set up one source”: now an info step (no Check).
+  - “Find your PHRASE”: now an info step (no Check).
+  - “Note where the PHRASE is”: now an info step (no Check).
+  - “Pick your ANSWER word”: now an info step (no Check).
+  - “C: open SAMPLE”: Check added: “The pads light up and blink: sample mode is on.”.
+  - “Choose the input and level”: Check added: “The display names your input: usb, in or mic.”.
+  - “Set the threshold low”: Check added: “The pads still blink, ready to record.”.
+  - “Start the song before the PHRASE”: Check added: “The pads still blink while the song plays.”.
+  - “C1: record the PHRASE”: Do: “Right BEFORE the first word, hold pad 1 (C1) and keep holding through the words; release right AFTER the last word.” (was “Just BEFORE the first word, hold pad 1 (C1) and keep holding through the words; release just AFTER the last word.”); Not working?: “Need both hands for the source? Hands-free sampling (OS 2.0 and later): hold SHIFT and press pad 1 right before the words, then press SAMPLE right after them.” (was “Need both hands for the source? Hands-free sampling (OS 2.0 and later): hold SHIFT and press pad 1 just before the words, then press SAMPLE right after them.”).
+  - “Copy C1’s sound”: Check added: “Selecting C1 plays your phrase.”.
+  - “C1: open the trim page”: Check added: “The display shows TRI: C1’s trim page.”.
+  - “Trim the start of the PHRASE”: Do: “Turn X (start) a little at a time, tapping pad 1 between changes, until playback starts right before the first word.” (was “Turn X (start) a little at a time, tapping pad 1 between changes, until playback starts just before the first word.”); Check added: “C1 now starts right before the first word.”.
+  - “Trim the end of the PHRASE”: Do: “Stay on the trim page. Turn Y (length) down, tapping pad 1, until playback stops right after the LAST word.” (was “Stay on the trim page. Turn Y (length) down, tapping pad 1, until playback stops just after the LAST word.”); Check: “Every word stays clear, and playback ends soon after the last one.” (was “Keep every word clear.”).
+  - “C2: open the trim page”: Check added: “The display shows TRI again, for C2.”.
+  - “C2: set oneshot”: Check added: “The display shows oneshot, not key or legato.”.
+  - “C1: set oneshot”: Check added: “The display shows oneshot for C1 too.”.
+  - “Set the vocal volume”: Check added: “The words sound clear, no louder than the snare.”.
+  - “C1: place the PHRASE at 1.1.1”: Check added: “C1 lights at 1.1.1.”.
+  - “Check the phrase timing”: Check: “The phrase starts right at the top of bar 1, with room after it.” (was “The phrase should start right at the top of bar 1, with room after it.”).
+  - “Go to 2.3.1”: Check added: “The display shows 2.3.1.”.
+  - “Listen to the bass with the words”: Check added: “Drums, bass, phrase and answer play together.”.
+  - “Retune the bass if it clashes”: Check added: “B1 plays the bass at a new pitch.”.
+  - “Nothing fits? Try another bass”: Check added: “The sample number changes with each press.”.
+  - “HOOK only: drop the bass”: Consequence added: “Clears every note of B1 in HOOK.”; Do: “Still clashing? Stopped, tap B, hold ERASE + pad 1 until TRK blinks, then release.” (was “Still clashing? Drop the bass from HOOK only: stopped, tap B, hold ERASE + pad 1 until TRK blinks, then release.”).
+  - “Lower the hats if they cover the words”: Check added: “The hats sit below the words.”.
+  - “Set the vocal pads”: Do: “Tap C and set pads 1 and 2 so the words come through clearly.” (was “Tap C and set pads 1 and 2 so the words are easy to follow.”); Check added: “Every word of the phrase and answer is clear.”.
+  - “Keep the bass below the kick”: Check added: “The kick stands out above the bass.”.
+  - “Copy VERSE as INTRO”: Check added: “The new number differs from VERSE’s.”.
+  - “Clear INTRO’s bass”: Consequence added: “Clears every note of B1 in INTRO.”.
+  - “Check VERSE and HOOK are unchanged”: Do: “Hold MAIN, select VERSE and release; press PLAY, then stop. Do the same with HOOK.” (was “Hold MAIN and select VERSE: its bass is still there. Select HOOK: its vocal is still there.”); Check added: “VERSE still has its bass, and HOOK its vocal.”.
+  - “Copy INTRO as BREAK”: Check added: “The new number differs from INTRO’s.”.
+  - “Clear the snare in BREAK”: Consequence added: “Clears every note of A2 in BREAK.”.
+  - “Clear the hats in BREAK”: Consequence added: “Clears every note of A3 in BREAK.”.
+  - “A3: two hats per bar”: Check added: “A3 lights at 1.1.1 and 1.3.1 only.”.
+  - “Copy HOOK as RETURN”: Check added: “HOOK plays its vocal; RETURN gets a new number.”.
+  - “Copy C1’s sound”: Check added: “Selecting C1 plays your trimmed phrase.”.
+  - “D1: open the trim page”: Check added: “The display shows TRI, now for D1.”.
+  - “Trim D1 to one short word”: Check added: “D1 plays only one short word.”.
+  - “Make D1 quieter”: Check added: “D1 now plays quieter, a small detail.”.
+  - “Optional: open D1’s time page”: Check added: “The display shows tim.”.
+  - “Go to 2.4.1 in RETURN”: Check added: “The display shows 2.4.1: bar 2, beat 4.”.
+  - “Copy INTRO as END”: Check added: “The new number differs from INTRO’s.”.
+  - “Clear the kicks, write one per bar”: Consequence added: “Clears every note of A1 in END.”.
+  - “Checkpoint: play RETURN and HOOK”: Check added: “RETURN repeats the word twice; HOOK does not.”.
+  - “Play END”: Check added: “One kick per bar, with snare and hats only.”.
+  - “Read the song map”: now an info step (no Check).
+  - “INTRO: select group C”: Check added: “The scene number matches INTRO on your paper.”.
+  - “Do the same in END”: Check added: “The display shows Ln.4 in END too.”.
+  - “Make VERSE, HOOK and RETURN 16 bars”: Check added: “Each press doubles the length shown, up to 16 bars.”.
+  - “Open the song list”: Check added: “The display shows the current song position.”.
+  - “Set position 1 to INTRO”: “Needs OS 2.0 or newer”; Check added: “Position 1 holds INTRO’s scene number.”.
+  - “Add VERSE as position 2”: Check added: “Position 2 holds VERSE’s scene number.”.
+  - “Checkpoint: play the song”: “Needs OS 2.0 or newer”.
+  - “Play the song from the beginning”: “Needs OS 2.0 or newer”; Check added: “The song starts with INTRO: drums only.”.
+  - “Listen to the balance”: Do: “Listen for kick and snare first, then the bass, then whether the words are clear.” (was “Listen for kick and snare first, then the bass, then whether the words are easy to understand.”); Check added: “Kick and snare stand out, and every word is clear.”.
+  - “Optional: start the song”: “Needs OS 2.0 or newer”; Check added: “The song plays from the start, INTRO first.”.
+  - “Optional: add reverb to the vocal”: Check added: “The vocal gains a light reverb tail.”.
+  - “Listen to BREAK into RETURN”: “Needs OS 2.0 or newer”; Check: “After the bare break, the phrase, answer and repeated word sound bigger.” (was “The bare break should make the phrase, answer and repeated word feel bigger.”).
+  - “Optional: scene changes wait for the bar (411)”: Check added: “The SYSTEM icon lights, then goes out after MAIN.”.
+  - “Optional: start INTRO by hand”: Check added: “INTRO plays: drums only.”.
+  - “Optional: pick each next scene in time”: Check added: “Each new scene starts at the bar’s end.”.
+  - “Optional: instant scene changes again (410)”: Check added: “The SYSTEM icon lights, then goes out after MAIN.”.
+  - “Connect a recorder”: “Needs OS 2.5 or newer”; Check added: “Your recording app lists the K.O. II as an input.”.
+  - “Record the song”: “Needs OS 2.0 or newer”; Check added: “The song plays while your app records.”.
+  - “Write down your scene numbers”: now an info step (no Check).
+  - “Back up the project”: Check added: “A new backup file is on your computer.”.
+  - “Checkpoint: the finished song”: “Needs OS 2.0 or newer”; Check: “You hear a finished beat of about 2:51.” (was “You should hear a finished beat of about 2:51.”).
+- **Chapter 6** (85 steps):
+  - “Open empty project 9”: Check added: “While both are held, the display shows P 9.”.
+  - “Check that project 9 is empty”: Check: “You hear nothing: in an empty project the pads have no sounds yet.” (was “You should hear nothing. In an empty project the pads have no sounds yet.”).
+  - “Set the grid to 16”: Check added: “The display shows 16.”.
+  - “Choose quantize, no swing”: Check added: “The display shows a position such as 1.1.1 again.”.
+  - “A1: load sound 001”: Check added: “A1 plays a kick, sound 001.”.
+  - “Browse for a punchy kick”: Check added: “A1 plays a short, punchy kick.”.
+  - “A2: choose a clap or snare”: Check added: “A2 plays a crisp, short clap or snare.”.
+  - “A3: choose a closed hat”: Check added: “A3 plays a short closed hat.”.
+  - “Turn the hat down”: Check added: “A3 sounds quieter than the kick and clap.”.
+  - “A4: an open hat”: Check added: “A4 plays a short open hat.”.
+  - “A5 and A6: a rim and a shaker”: Check added: “A5 clicks; A6 plays a soft shaker.”.
+  - “B1: choose a bass”: Check added: “B1 plays a clean, short bass.”.
+  - “Turn the bass down”: Check added: “B1 sounds quieter than the kick.”.
+  - “Go to 1.1.1 with group A”: Do: “Press MAIN and check that playback is stopped. Tap A. Hold SHIFT and press − until the display shows 1.1.1.” (was “Press MAIN and make sure playback is stopped. Tap A. Hold SHIFT and press − until the display shows 1.1.1.”); Check added: “The display shows 1.1.1.”.
+  - “A3: off-beat hats”: Check: “The kick feels steady and the hats sound smaller than the clap.” (was “The kick should feel steady and the hats smaller than the clap.”).
+  - “A6: a shaker in bar 1”: Check added: “At 1.1.4 and 1.3.4 A6 lights.”.
+  - “A3: two hat accents”: Check added: “A3 lights at 2.2.4 and 4.2.4.”.
+  - “A4: open hats instead of closed”: Consequence added: “Removes only those two A3 notes.”; Do: “Write A4 (open hat) at 2.4.3 and 4.4.3. There, also briefly press ERASE + A3, so the open hat replaces the closed hat.” (was “Write A4 (open hat) at 2.4.3 and 4.4.3. At both positions also briefly press ERASE + A3, so the open hat replaces the closed hat instead of stacking on it.”).
+  - “A5: rim clicks”: Check added: “A5 lights at all four positions.”.
+  - “Turn the rim down”: Check added: “A5 is now a tiny, quiet click.”.
+  - “Listen, then stop”: Check added: “Your tom hits play back at the end of bar 4.”.
+  - “Optional: open timing correct”: Check added: “The display shows 16 for X.”.
+  - “Optional: push the shaker later”: Check added: “The shaker now lands a touch later, for a looser groove.”.
+  - “B1: bass in bar 1”: Check added: “B1 lights at all four positions.”.
+  - “Double B to four bars”: Check added: “B doubles to four bars, its notes copied.”.
+  - “B2: the answer at 4.4.3”: Consequence added: “Removes only the B1 note at 4.4.3.”.
+  - “Open the sidechain page”: Check added: “The beat plays on while the sidechain page is open.”.
+  - “Kick as source, bass as destination”: Check added: “The beat keeps playing while you set source and destination.”.
+  - “Set the duck”: Check: “The bass dips under each kick and recovers before its next note.” (was “Stop adjusting when the bass dips under each kick and recovers before its next note.”).
+  - “The stand-up test”: Check: “Your body wants to move: the groove works.” (was “If your body wants to move, continue.”).
+  - “Write down GROOVE”: Check added: “While MAIN is held, the display shows the scene number.”.
+  - “Choose the source”: Check added: “The display names the source, such as usb or in.”.
+  - “Set the input level”: Check added: “The input level is strong but not distorted.”.
+  - “Set the threshold low”: Check added: “The pads still blink; nothing records until you hold a pad.”.
+  - “C1: record your hook”: Check added: “Recording stops as you release; C1 now holds your words.”.
+  - “C1: select it in SOUND”: Check added: “C1 plays your hook as you select it.”.
+  - “Open the trim page”: Check added: “Nothing is cropped yet: C1 still plays your whole recording.”.
+  - “Trim the start”: Check added: “Tapping C1 starts right on the first word.”.
+  - “Trim the end”: Do: “Turn Y (length) until it ends right after the last word.” (was “Turn Y (length) until it ends just after the last word.”); Check added: “C1 now stops right after your last word.”.
+  - “C1: set oneshot”: Check added: “A single tap of C1 plays the whole trimmed phrase.”.
+  - “Set the vocal level”: Check added: “C1 is clear but no louder than the clap.”.
+  - “Check you are in DROP A”: Check added: “The display shows DROP A’s number from your paper.”.
+  - “Commit, and name the copy DROP B”: Check added: “The new number differs from DROP A’s.”.
+  - “DROP B: select C2”: Check added: “C2 is now the selected pad in SOUND.”.
+  - “Choose a short synth stab”: Check added: “C2 plays a short, quiet synth stab.”.
+  - “C2: write the answer”: Check added: “C2 lights at 2.3.3 and 4.3.3.”.
+  - “Listen to DROP B”: Check added: “Drums, bass, the hook and the synth answer in bars 2 and 4.”.
+  - “Copy GROOVE as OUTRO”: Check added: “The new number differs from GROOVE’s.”.
+  - “Clear the open hats, rim and tom”: Consequence added: “Clears every note of A4, A5 and A7 in OUTRO.”; Do: “Tap A. Hold ERASE + A4 until TRK blinks, then release. Do the same with A5 and A7.” (was “Tap A. Hold ERASE + A4 until TRK blinks, then release: every open hat in this pattern is gone. Do the same with A5 (rim) and A7 (tom).”).
+  - “Copy OUTRO as INTRO”: Check added: “The new number differs from OUTRO’s.”.
+  - “Clear INTRO’s bass”: Consequence added: “Clears every note of B1 and B2 in INTRO.”.
+  - “Copy DROP A as BUILD”: Check added: “The new number differs from DROP A’s.”.
+  - “Clear the bass and hats”: Consequence added: “Clears the bass and both hats in BUILD.”; Do: “Tap B and clear B1 and B2 (hold ERASE + pad until TRK blinks). Tap A and clear A3 and A4 the same way.” (was “Tap B and clear B1 and B2 (hold ERASE + pad until TRK blinks). Tap A and clear A3 (closed hats) and A4 (open hats) the same way.”).
+  - “A2: a clap roll in bar 4”: Check added: “Bar 4 ends with a roll of claps.”.
+  - “Copy BUILD as BREAK”: Check added: “The new number differs from BUILD’s.”.
+  - “Clear the kick, clap and tom”: Consequence added: “Clears every note of A1, A2 and A7 in BREAK.”; Check: “PLAY gives only the rim, shaker and your hook.” (was “PLAY gives just the rim, shaker and your hook.”).
+  - “Copy DROP B as PEAK”: Check added: “The new number differs from DROP B’s.”.
+  - “Remove the last kick”: Consequence added: “Removes only the A1 note at 4.4.1.”.
+  - “Play DROP B”: Check added: “DROP B plays: the hook plus the synth answer.”.
+  - “C: add a short reverb”: Check added: “The hook gains space; the words stay clear.”.
+  - “Optional: copy C1’s sound”: Check added: “C1 plays your hook as you tap it.”.
+  - “Optional: a fresh D pattern in BUILD”: Check added: “D has a fresh, empty pattern in BUILD only.”.
+  - “Checkpoint: the sections in order”: Check: “Something new arrives with each scene.” (was “Something new should arrive each time.”).
+  - “Check every scene is four bars”: Check: “Each one restarts after four bars (16 beats).” (was “It should restart after four bars (16 beats).”); Note: “Groups you never lengthened stay one bar and repeat underneath; that is fine.” (was “Groups you never lengthened stay one bar and simply repeat underneath; that is fine.”).
+  - “Open the song list”: Check added: “The display shows the current song position.”.
+  - “Set position 1 to INTRO”: “Needs OS 2.0 or newer”; Check added: “Song position 1 now holds INTRO’s scene.”.
+  - “Add position 2: INTRO”: “Needs OS 2.0 or newer”; Check added: “Song position 2 now holds INTRO’s scene too.”.
+  - “Add positions 13 to 28”: Check added: “The display shows song position 28; it holds OUTRO.”.
+  - “Checkpoint: play the song”: “Needs OS 2.0 or newer”.
+  - “List three things you dislike”: Check added: “The song stops by itself; your paper lists three dislikes.”.
+  - “First fix: the drum levels”: Check added: “The kick is loudest, the clap slightly below it.”.
+  - “Bass and vocal levels”: Check added: “The bass sits under the kick; the words are clear.”.
+  - “Second fix: shorten the bass tail”: Check added: “B1 ends sooner and the low end clears.”.
+  - “Or lengthen the sidechain duck”: “Needs OS 2.0 or newer”; Check added: “The bass ducks a little longer under each kick.”.
+  - “If it feels empty or crowded”: Check added: “The shaker or rim is slightly louder in every scene.”.
+  - “Third fix: your real speaker”: Check added: “On your speaker the kick leads and nothing distorts.”.
+  - “Checkpoint: into the second drop”: “Needs OS 2.0 or newer”.
+  - “Connect a recorder”: “Needs OS 2.5 or newer”; Check added: “The recording app shows K.O. II as its input.”.
+  - “Record the song”: “Needs OS 2.0 or newer”; Check added: “The song plays from the start; the app records it.”.
+  - “Write down your scene numbers”: now an info step (no Check).
+  - “Back up your samples”: Check added: “A copy of your samples is on your computer.”.
+  - “Optional: scenes wait for the pattern (412)”: Do: “With the unit on, press SHIFT + ERASE, type 4, 1, 2, press ENTER, then MAIN.” (was “With the unit already switched on, press SHIFT + ERASE (system settings), type 4, 1, 2, press ENTER, then press MAIN.”); Check added: “The SYSTEM icon goes out.”.
+  - “Optional: pick each next scene early”: Check added: “The new scene starts when the current pattern ends.”.
+  - “Optional: instant scene changes again (410)”: Check added: “Scene changes are instant again.”.
+  - “Checkpoint: the finished track”: Check added: “The whole track plays and stops by itself.”.
+- **Chapter 7** (91 steps):
+  - “Choose a project for this chapter”: now an info step (no Check).
+  - “Reusing one? Back it up first”: Check added: “A new backup file appears in your browser’s downloads.”.
+  - “Open the project”: Check added: “While you hold both, the display shows P and the project’s number.”.
+  - “Set the tempo to 128 BPM”: Check added: “The display shows 128 before you press MAIN.”.
+  - “Set the grid to 16”: Check added: “The display shows 16: 16 steps per bar.”.
+  - “Quantize on, swing alone”: Check added: “Notes you record now snap to the 16-step grid.”.
+  - “Listen: is the project empty?”: Check added: “Nothing plays: the project is empty.”; Note: “Music? Press PLAY to stop and don’t erase anything yet: first check that you are in the project you chose. If you hear your Chapter 6 tech house track, your Chapter 5 hip-hop beat or your Chapter 1–2 beat, MAIN + the pad switched scene instead of project: go back to step 3.” (was “Music? Press PLAY to stop and don’t erase anything yet: first make sure you are in the project you chose. If you hear your Chapter 6 tech house track, your Chapter 5 hip-hop beat or your Chapter 1–2 beat, MAIN + the pad switched scene instead of project: go back to step 3.”).
+  - “Old music? Clear the old patterns”: Before you press: “Only for the reused project’s own old music, and only after a backup.” (was “Only when you hear the reused project’s own old music, and only after you have backed it up.”); Consequence added: “Erases the current pattern of every group.”; Check: “PTN blinks for each group; PLAY now plays nothing.” (was “Press PLAY again: now you should hear nothing.”).
+  - “Reused project 7? Empty D1 to D5”: Check added: “D1 to D5 are now empty and play nothing.”.
+  - “Write the project and V1 to V5”: now an info step (no Check).
+  - “Write the scene names”: now an info step (no Check).
+  - “Plan your five vocals”: now an info step (no Check).
+  - “Choose the source”: Check added: “The display shows your source: mic, in or usb.”.
+  - “Set the input level”: Check added: “The lights keep blinking: you are still in SAMPLE.”.
+  - “Set the threshold low”: Check added: “The lights still blink: nothing records until you hold a pad.”.
+  - “D1: record V1”: Do: “Get ready, then press and hold pad D1 (pad 1, with D selected). Perform V1, and release right after the last word.” (was “Get ready, then press and hold pad D1 (pad 1, with D selected). Perform V1, and release just after the last word.”).
+  - “Listen to D1”: Check added: “D1 plays V1, perhaps with a little silence around it.”.
+  - “D2 to D5: record V2 to V5”: Check added: “D2 to D5 stop blinking and stay lit.”.
+  - “Listen to D2 to D5”: Check added: “D2 to D5 play V2 to V5.”.
+  - “Audio files? Transfer them”: Check added: “The tool shows your K.O. II, and each file gets a sample number.”.
+  - “Load each file onto its pad”: Check added: “D1 to D5 now play V1 to V5.”.
+  - “Vocals already on pads?”: now an info step (no Check).
+  - “Read each number, then come back”: Check added: “The display shows each pad’s sample number.”.
+  - “Load D1 to D5 by number”: Check added: “D1 to D5 play V1 to V5 in this project.”.
+  - “Or copy a sound inside one project”: Check added: “The empty pad now plays the source pad’s sound.”.
+  - “D1: open the trim page”: Check added: “The display shows TRI.”.
+  - “Trim the start of V1”: Do: “Turn X (start) a little at a time, tapping D1 between turns, until playback begins right before the first sound. Don’t cut into the first word.” (was “Turn X (start) a little at a time, tapping D1 between turns, until playback begins just before the first sound. Don’t cut into the first word.”); Check added: “D1 now starts right on its first sound.”.
+  - “Trim the end of V1”: Do: “Stay on trim. Turn Y (length) down until playback ends right after the last word. Press MAIN when it sounds right.” (was “Stay on trim. Turn Y (length) down until playback ends just after the last word. Press MAIN when it sounds right.”); Check added: “D1 stops right after the last word.”.
+  - “Trim D2 to D5”: Check added: “Each D pad starts on its first sound and ends cleanly.”; Note: “V2: one word, about half a second. V3: one syllable or breath, about 0.2 seconds. V4: long and smooth. V5: the phrase only.” (was “V2: one word, about half a second. V3: one syllable or breath, about 0.2 seconds. V4: long and smooth. V5: just the phrase.”).
+  - “D1: set oneshot”: Check added: “D1 now plays the whole vocal from one tap.”.
+  - “D2 to D5: oneshot too”: Check added: “D2 to D5 each play the whole vocal from one tap.”.
+  - “A1: load sample 001”: Check added: “A1 plays a factory kick.”.
+  - “A2: a clap or snare”: Check added: “A2 plays a clap or snare.”.
+  - “A3: a closed hat”: Check added: “A3 plays a short closed hat.”.
+  - “A4: an open hat”: Check added: “A4 plays an open hat, quieter than the kick and clap.”.
+  - “B1: choose a bass”: Check added: “B1 plays a short, round bass.”.
+  - “Turn the bass down”: Check added: “B1 now sounds quieter than the kick.”.
+  - “Play the kit”: Check added: “You hear kick, clap, closed hat, open hat and bass.”.
+  - “Go to 1.1.1 with group A”: Do: “Press MAIN, tap A and check that playback is stopped. Hold SHIFT and press − until the display shows 1.1.1.” (was “Press MAIN, tap A and make sure playback is stopped. Hold SHIFT and press − until the display shows 1.1.1.”); Check added: “The display shows 1.1.1, the first step of the pattern.”.
+  - “A1: a kick on every beat”: Check added: “A1 lights at each of the four positions.”.
+  - “A2: claps on 2 and 4”: Check added: “A2 lights at 1.2.1 and 1.4.1.”.
+  - “A3: off-beat hats”: Check added: “You hear boom, tss, clap, tss on repeat.”.
+  - “A3: two hat accents”: Check added: “A3 lights at 2.2.4 and 4.2.4.”.
+  - “A4: open hats instead of closed”: Consequence added: “Removes only those two A3 notes.”.
+  - “Play the drum loop”: Check added: “Four bars repeat; open hats end bars 2 and 4.”.
+  - “B1: off-beat bass in bar 1”: Check added: “B1 lights at all four positions.”.
+  - “B1: a gap at the end of bar 4”: Consequence added: “Removes only the B1 note at 4.4.3.”.
+  - “Checkpoint: drums and bass”: Check added: “The bass bounces between kicks, with a gap before the loop restarts.”.
+  - “Optional: kick in, bass out”: Check added: “During playback, the bass now ducks at each kick.”.
+  - “Optional: shape the duck”: Check added: “The display shows LEN as you turn X, ShP for Y.”.
+  - “D1: the hook at 1.1.1”: Check added: “D1 lights at 1.1.1.”.
+  - “D2: the answer at 3.2.3”: Check added: “D2 lights at 3.2.3.”.
+  - “D3: two tiny chops”: Do: “Write D3 at 2.4.4 and 4.2.4: two tiny chops right before a beat.” (was “Write D3 at 2.4.4 and 4.2.4: two tiny chops just before a beat.”); Check added: “D3 lights at 2.4.4 and 4.2.4.”.
+  - “D4: the texture under the hook”: Check added: “Hook and texture start bar 1, over the drums and bass.”.
+  - “Balance the mix”: Check added: “Kick and bass lead; the hook is clear.”; Note: “The kick and bass are strongest, the clap a little under the kick and the hats low. D1 should be clear but under the kick, D2 a bit lower, D3 and D4 low.” (was “The kick and bass are strongest, the clap a little under the kick and the hats low. D1 should be easy to understand but under the kick, D2 a bit lower, D3 and D4 low.”).
+  - “D: choose reverb”: Check added: “A little space opens around the vocals.”.
+  - “Set the reverb”: Check added: “The vocals get a short tail; the bass stays dry.”.
+  - “Checkpoint: listen to the drop”: Check added: “Steady kick, bouncing bass and a clear hook.”.
+  - “Write down DROP A”: Check added: “While you hold MAIN, the display shows a scene number.”.
+  - “D5: the second phrase in DROP B”: Check added: “D5 lights at 2.1.1.”.
+  - “Commit, and name the copy PEAK”: Check added: “Holding MAIN shows a new number, not DROP B’s.”.
+  - “D3 and D5: more for PEAK”: Check added: “D3 lights at 1.4.4 and 3.4.4, D5 at 4.1.1.”.
+  - “Listen to DROP A, DROP B and PEAK”: Check added: “Each scene sounds fuller than the last; DROP A has no V5.”.
+  - “Commit, and name the copy GROOVE”: Check added: “Holding MAIN shows a new number, not PEAK’s.”.
+  - “GROOVE: clear D3, D4 and D5”: Consequence added: “Clears every note of D3, D4 and D5 in GROOVE.”; Do: “Tap D. Hold ERASE + D3 until TRK blinks, then release. Do the same with D4 and D5.” (was “In GROOVE, tap D. Hold ERASE + D3 until TRK blinks, then release. Do the same with D4 and D5.”).
+  - “Commit, and name the copy INTRO”: Check added: “Holding MAIN shows a new number, not GROOVE’s.”.
+  - “INTRO: clear the bass and vocals”: Consequence added: “Clears every note of B1, D1 and D2 in INTRO.”; Check: “INTRO is now drums only: no bass, no vocals.” (was “INTRO is now drums only, easy for a DJ to mix in.”).
+  - “Listen to INTRO, GROOVE and PEAK”: Check added: “INTRO: drums only. GROOVE: drums, bass, hook, answer. PEAK: everything.”.
+  - “Commit, and name the copy BREAK”: Check added: “Holding MAIN shows a new number, not INTRO’s.”.
+  - “BREAK: clear the kick and clap”: Consequence added: “Clears every note of A1 and A2 in BREAK.”.
+  - “D1 and D4: voice in BREAK”: Check added: “D1 and D4 light at 1.1.1, D4 again at 3.1.1.”.
+  - “Commit, and name the copy BUILD”: Check added: “Holding MAIN shows a new number, not BREAK’s.”.
+  - “Set the grid to 4”: Check added: “The display shows 4: one step per beat.”.
+  - “Practise the kick on every beat”: Check added: “Each tap plays a kick over the hats; nothing records.”.
+  - “Set the grid back to 16”: Check added: “The display shows 16 again: 16 steps per bar.”.
+  - “A2: a clap roll in bar 4”: Check added: “A roll of four claps ends bar 4.”.
+  - “Read the song map”: now an info step (no Check).
+  - “Open the song list”: Check added: “The display shows the current song position.”.
+  - “Set position 1 to INTRO”: “Needs OS 2.0 or newer”; Check added: “Position 1 now holds INTRO.”.
+  - “Add position 2: INTRO”: “Needs OS 2.0 or newer”; Check added: “Position 2 now holds INTRO too.”.
+  - “Positions 3 to 12”: Check added: “Twelve positions so far, matching the song map.”.
+  - “Positions 13 to 24”: Check added: “24 positions so far, matching the song map.”.
+  - “Positions 25 to 32”: Check added: “32 positions in all; the last four hold INTRO.”.
+  - “Check all 32 positions”: “Needs OS 2.0 or newer”; Check added: “All 32 positions match the song map.”.
+  - “Checkpoint: play the song”: “Needs OS 2.0 or newer”; Check added: “The sections play in order and stop after about 4:00.”.
+  - “Dance test”: “Needs OS 2.0 or newer”; Check: “You want to move in DROP A, DROP B and PEAK.” (was “You should want to move in DROP A, DROP B and PEAK.”).
+  - “Low-end test”: Check: “The kick and bass are still clear.” (was “The kick and bass should still be clear.”).
+  - “Voice test”: Do: “Voice test: the D1 hook should be clear and stick in your head.” (was “Voice test: the D1 hook should be easy to remember and understand.”); Check added: “You understand every word of the D1 hook.”.
+  - “Contrast test”: Check added: “BREAK is clearly emptier; PEAK is the biggest moment.”.
+  - “Record one full pass”: “Needs OS 2.5 or newer”; Check added: “You have a recording of the full 4-minute track.”.
+  - “Back up, and check the rights”: Check added: “A new backup file appears in your browser’s downloads.”.
+
+**Outside the steps:**
+- Checkpoints: Chapter 1, Part 3: "kick and snare stand out clearly" (was "are easy to pick out"); Chapter 7: "with a short gap right before the loop starts again" (was "just before"); "the hook is clear" (was "is easy to understand").
+- Glossary: Audition "Tapping a pad only to hear it." (was "just to hear it"); Drop / build "the rising part right before it" (was "just before it"); Pickup "A note right before a main beat" (was "just before").
+- Safety, erase a scene: "Only ever do this on a scene whose number you checked a moment ago" (was "you have just checked").
+- Settings tables (Chapter 0 and the cheat sheet): "Brighter is clearer in daylight." (was "easier to see in daylight"); "which helps you count bars." (was "which makes counting bars easier.").
+
 ## 2026.10.14.22
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.19. **Written for:** OS 2.5.1. No button sequence changed.

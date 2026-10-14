@@ -12,9 +12,11 @@
      starting <b>If it doesn't:</b>; ol > li[data-step]: the step. Inside a step, when the chapter has been marked up:
        h3.step-title the step's name (other steps are named by their first line)
        p.preflight   the check that keeps a risky press safe ("Before you press", shown first in a caution box)
+       p.step-consequence  a risk step's scope: what the press clears or deletes, before the Do lines
        p.step-do     the instruction (large); a step without one is a stage-1 step: its whole text is shown large
        p.step-undo   how to undo it, straight after the press; p.step-noundo says there is none
-       p.step-check  what you should hear or see (its own block, with an ear or an eye)
+       p.step-check  what you hear or see afterwards (its own block, with an ear or an eye); every step has one,
+                     except li[data-kind="info"|"recap"]
        p.step-note   more about the step, at body size; p.step-source names the official guide page
      li[data-risk="erase"]              recoverable clear: amber "Clears notes" tag, no gate
      li[data-risk="delete"|"overwrite"|"erase-scene"]  no undo: red tag ("Deletes", "Overwrites", "Erases the scene"),
@@ -177,7 +179,7 @@ steps.forEach(li=>{
   if(!risk||risk[0]!=='danger')return;
   // Delete and overwrite: the rest of the step waits for "Yes, I have checked". A stage-1 step's loose text is put in
   // one <div class="step-body"> first, so it can be folded away (its text is unchanged).
-  const keep=n=>n.nodeType===1&&n.matches('.step-head,.step-title,.preflight,.check,.here-tag');
+  const keep=n=>n.nodeType===1&&n.matches('.step-head,.step-title,.preflight,.step-consequence,.check,.here-tag');
   if([...li.childNodes].some(n=>n.nodeType===3&&n.textContent.trim())){
     const body=el('div','step-body');
     [...li.childNodes].filter(n=>!keep(n)).forEach(n=>body.append(n));
@@ -185,12 +187,12 @@ steps.forEach(li=>{
   }
   const pre=li.querySelector(':scope > .preflight');
   const g=el('div','gate pl-own',
-    (pre?'':`<p class="gate-note">${li.dataset.risk==='overwrite'?'There is no undo. Make sure you are on the right sound before you press.':'There is no undo. Make sure you are on the right sound or scene before you press.'}</p>`)+
+    (pre?'':`<p class="gate-note">${li.dataset.risk==='overwrite'?'There is no undo. Check that you are on the right sound before you press.':'There is no undo. Check that you are on the right sound or scene before you press.'}</p>`)+
     '<button class="btn gate-btn" type="button">Yes, I have checked</button>'+
     '<p class="gate-hint">The rest of this step shows once you confirm.</p>'+
     `<span class="tag done gate-ok" hidden>${icon('check')}Checked</span>`);
   g.hidden=true;
-  (pre||title||head).after(g);
+  (li.querySelector(':scope > .step-consequence')||pre||title||head).after(g);
   gates.set(li,{box:g,btn:g.querySelector('.gate-btn'),hint:g.querySelector('.gate-hint'),ok:g.querySelector('.gate-ok')});
   gates.get(li).btn.addEventListener('click',()=>{confirmed=li;render();focusStep(li);});
 });
@@ -282,7 +284,7 @@ wrap.after(checkCard,doneCard);
 // Action bar, after <main> in reading order: Back, Tools, the one primary.
 const actions=el('div','player-actions pl-own',
   // "More below" is for pointers: it hides itself as the page scrolls, and Tab already scrolls, so it is not a Tab stop.
-  `<button class="pa-more" type="button" tabindex="-1" hidden>${downIcon}More below</button>`+
+  `<button class="pa-more" type="button" tabindex="-1" hidden>${downIcon}<span>More below</span></button>`+
   `<div class="pa-row"><button class="pa-btn" id="player-back" type="button" aria-keyshortcuts="ArrowLeft">${icon('back')}<span>Back</span></button>`+
   `<button class="pa-btn" id="player-tools-btn" type="button" aria-haspopup="dialog" aria-keyshortcuts="T">${icon('grid')}<span>Tools</span></button>`+
   `<button class="btn primary pa-main" id="player-next" type="button"><span class="pa-label">Done · Next</span>${icon('next')}</button>`+
@@ -328,6 +330,31 @@ if(Shell&&barActions){
   moreBtn.addEventListener('click',()=>actModal.open());
 }
 
+// "Back up now" on the chapter-complete screen (plan 5.9): Chapter 0's backup part in a sheet, read-only, from the
+// saved copy of setup.html when offline. The link beside the button goes to the chapter itself.
+const backupSheet=el('dialog','sheet backup-sheet pl-own',
+  `<div class="sheet-box"><div class="sheet-head"><h2 class="sheet-title" id="player-backup-title">Back up your work</h2>`+
+  `<button class="icon-btn" type="button" data-close aria-label="Close">${icon('close')}</button></div><div class="sheet-body"><p class="meta">Loading the backup steps…</p></div></div>`);
+backupSheet.id='player-backup';backupSheet.setAttribute('aria-labelledby','player-backup-title');
+let backupModal=null,backupOpener=null;
+if(Shell&&slug!=='setup'){
+  document.body.append(backupSheet);
+  backupModal=Shell.modal(backupSheet,null,()=>{
+    const body=backupSheet.querySelector('.sheet-body');
+    fetch('./setup.html').then(r=>{if(!r.ok)throw new Error(r.status);return r.text();}).then(t=>{
+      const doc=new DOMParser().parseFromString(t,'text/html'),first=doc.querySelector('li[data-step="backup-open-tool"]'),P=first&&first.closest('details');
+      if(!P)throw new Error('no backup part');
+      const h=P.querySelector('summary'),list=P.querySelector('ol');
+      list.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
+      list.querySelectorAll('.check,.step-extras,.step-report').forEach(x=>x.remove());
+      list.querySelectorAll('li[data-step]').forEach(li=>{const t=li.querySelector(':scope > .step-title');if(t){const a=document.createElement('a');a.href='./setup.html#s-'+li.dataset.step;a.innerHTML=t.innerHTML;t.replaceChildren(a);}});
+      body.innerHTML=`<p class="sub">From Chapter 0 · ${esc(clean(h?h.textContent:'Back up'))}</p><ol class="steps backup-steps">${list.innerHTML}</ol>`+
+        `<p><a class="btn" href="./setup.html#s-backup-open-tool">Open it in Chapter 0${icon('next')}</a></p><p class="meta">Nothing here is ticked: your place in this chapter stays where it is.</p>`;
+    }).catch(()=>{body.innerHTML=`<p>The backup steps could not be loaded. They are in <a href="./setup.html#s-backup-open-tool">Chapter 0 · Set up your K.O. II, Part 4</a>.</p>`;});
+  });
+  backupSheet.addEventListener('close',()=>{if(backupOpener&&backupOpener.isConnected)backupOpener.focus();});
+}
+
 // ---------- State and rendering ----------
 let view='',cur=null,part=null,confirmed=null,printing=false,fixOpen=false;
 function setHidden(want){
@@ -354,7 +381,7 @@ function render(){
     [...P.el.children].forEach(e=>{if(e.tagName!=='OL'&&e!==about)want.add(e);});
     [...P.el.querySelectorAll(':scope > ol')].forEach(ol=>{if(!ol.contains(cur))want.add(ol);});
     P.steps.forEach(li=>{if(li!==cur)want.add(li);});
-    if(isGated())[...cur.children].forEach(e=>{if(!e.matches('.step-head,.step-title,.preflight,.gate,.check,.here-tag'))want.add(e);});
+    if(isGated())[...cur.children].forEach(e=>{if(!e.matches('.step-head,.step-title,.preflight,.step-consequence,.gate,.check,.here-tag'))want.add(e);});
   }else if(v==='check'||v==='done'){
     k.forEach(e=>{if(e!==note)want.add(e);});
     if(v==='check'&&foot)want.add(foot);
@@ -401,7 +428,7 @@ function paint(){
   if(view==='start'){const r=C.hasProgress()&&C.resumeId();label=r?'Continue at step '+num(byId.get(r)):'Start Part 1';}
   else if(view==='step'&&cur){
     if(isGated()){label='Confirm first';nextBtn.setAttribute('aria-disabled','true');}
-    else label=isDone(cur)?'Next':'Done · Next';
+    else{const P=partOf(cur),last=P.steps[P.steps.length-1]===cur;label=isDone(cur)?'Next':last&&P.checkpoint?'Done · Checkpoint':'Done · Next';}
   }else if(view==='check'&&part){
     const np=parts[part.i+1];
     label=(part.checkpoint?'Yes · ':'')+(np?'Part '+np.n+': '+np.title:'Finish the chapter');
@@ -419,11 +446,15 @@ function paint(){
   if(Shell)Shell.refreshChapter();
   cue();
 }
-// "More below": the step card runs on under the action bar.
+// "More below": the step card runs on under the action bar. On a risk step whose undo or Check is hidden there, it
+// says so (plan 5.4): "Undo and Check below".
 function cue(){
-  let on=view==='step'&&cur&&!actions.hidden;
-  if(on){const row=actions.querySelector('.pa-row').getBoundingClientRect(),end=cur.getBoundingClientRect().bottom;on=end>Math.min(row.top,innerHeight)+8;}
+  let on=view==='step'&&cur&&!actions.hidden,risky=false;
+  if(on){const row=actions.querySelector('.pa-row').getBoundingClientRect(),limit=Math.min(row.top,innerHeight)+8,end=cur.getBoundingClientRect().bottom;on=end>limit;
+    const after=cur.dataset.risk&&[...cur.querySelectorAll(':scope > .step-undo,:scope > .step-noundo,:scope > .step-check')].filter(e=>e.offsetParent);
+    risky=Boolean(on&&after&&after.length&&after[after.length-1].getBoundingClientRect().bottom>limit);}
   more.hidden=!on;
+  more.lastChild.textContent=risky?(cur.querySelector(':scope > .step-noundo')?'No undo and Check below':'Undo and Check below'):'More below';
 }
 let cueFrame=0;
 const cueSoon=()=>{if(!cueFrame)cueFrame=requestAnimationFrame(()=>{cueFrame=0;cue();});};
@@ -539,13 +570,16 @@ function showDone(opt){
   if(recaps.some(li=>!isDone(li))&&steps.every(li=>recaps.includes(li)||settled(li)))recaps.forEach(li=>C.setDone(li.dataset.step,true));
   view='done';cur=null;manual(true);
   const open=steps.filter(li=>!settled(li)),complete=!open.length,skipped=steps.filter(isSkipped).length;
-  const moves=recaps.map(li=>li.querySelector(':scope > .step-moves')).filter(Boolean);
+  const moves=recaps.map(li=>li.querySelector(':scope > .step-moves')).filter(Boolean),kept=window.CoachNotes&&CoachNotes.chapter?CoachNotes.chapter():[];
   // Every chapter done: the course-complete list (plan 5.9), what each one made.
   const course=complete&&window.CoachProgress?CoachProgress.chapters():[],all=course.length&&course.every(p=>p.done||p.c.slug===slug);
   const head=complete?'Chapter '+esc(chNum)+' done':'Chapter '+esc(chNum)+' · '+esc(plural(open.length,'step','steps'))+' not ticked yet';
   doneCard.innerHTML=`<p class="pl-eyebrow">Chapter ${esc(chNum)} · ${esc(chName)}</p><h2 class="pd-title" id="player-done-title" tabindex="-1">${head}</h2>`+
     (complete?`<p class="pd-leds">${leds(Array.from({length:16}),()=>true)}</p>`+(makes?`<p class="pd-made">${made()}</p>`:'')+
       `<p>All ${C.total()} steps are ticked${skipped?` (${plural(skipped,'optional step','optional steps')} skipped)`:''}.</p>`+
+      (kept.length?`<h3 class="pd-moves-title">${kept.some(k=>k[2]==='scene')?'Scene numbers to keep':'Numbers to keep'}</h3><p class="pd-notes">`+
+        kept.map(([n,v])=>`<span class="note-pair">${esc(n)} <samp class="lcd">${v?esc(v):'–'}</samp></span>`).join(' ')+'</p>'+
+        (kept.some(k=>!k[1])?'<p class="meta">– is a number you did not note here: take it from your paper.</p>':''):'')+
       (moves.length?'<h3 class="pd-moves-title">New moves</h3>'+moves.map(m=>{const c=copy(m);c.classList.add('pd-moves');return c.outerHTML;}).join(''):'')
     :`<p>Tick them, or skip the optional ones, and this chapter is done:</p><ul class="pd-open">`+
       open.slice(0,8).map(li=>`<li><a href="#s-${esc(li.dataset.step)}"><span class="pd-n">${num(li)}</span><span class="pd-t">${esc(gist(li))}</span></a></li>`).join('')+'</ul>'+
@@ -553,7 +587,8 @@ function showDone(opt){
     (all?`<section class="pd-course"><h3>Course complete</h3><p>All ${course.length} chapters are done. What you made:</p><ul class="made-list">`+
       course.map(p=>`<li><span class="num">${esc(p.c.num)}</span> <a href="${esc(p.c.href)}">${esc(p.c.title)}</a>${p.c.made?`<span class="sub meta">${esc(p.c.made.charAt(0).toUpperCase()+p.c.made.slice(1))}.</span>`:''}</li>`).join('')+
       `</ul><p><a href="./cheat-sheet.html">The cheat sheet</a> keeps every move and reference table in one place.</p></section>`:'')+
-    (slug!=='setup'&&complete?`<div class="notice tip"><b>Back up now.</b> Save a copy of your work with the official EP sample tool, as in <a href="./setup.html#s-backup-open-tool">Chapter 0 · Set up your K.O. II, Part 4</a>.</div>`:'')+
+    (slug!=='setup'&&complete?`<div class="notice tip pd-backup"><p><b>Back up now.</b> Save a copy of your work with the official EP sample tool, as in <a href="./setup.html#s-backup-open-tool">Chapter 0 · Set up your K.O. II, Part 4</a>.</p>`+
+      (backupModal?`<p><button class="btn" type="button" data-backup aria-haspopup="dialog" aria-controls="player-backup">${icon('list')}Show the backup steps</button></p>`:'')+'</div>':'')+
     `<div class="row pd-actions">${complete?`<a class="btn" href="#all" data-review>${icon('list')}Review steps</a>`:''}${nextLink?'<a class="btn" href="./index.html">Back to the course</a>':''}`+
     (complete?`<button class="btn ghost" type="button" data-act="restart">${icon('undo')}Restart this chapter</button>`:'')+'</div>';
   render();
@@ -683,6 +718,7 @@ listModes.addEventListener('click',e=>{
 });
 doneCard.addEventListener('click',e=>{
   if(e.target.closest('[data-review]')){e.preventDefault();showList();setUrl('#all');scrollTo(0,0);return;}
+  const bk=e.target.closest('[data-backup]');if(bk&&backupModal){backupOpener=bk;backupModal.open();return;}
   act(e,now);
 });
 
