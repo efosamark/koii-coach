@@ -473,15 +473,26 @@ def test_device_panel_landscape_and_desktop(run):
     sheet.wait_for(state='visible')
     card = page.locator('li.is-current').bounding_box()
     assert sheet.bounding_box()['x'] >= card['x'] + card['width'], 'The Tools sheet sits beside the card, not over it'
-    # 1024–1199px has no right panel: the sheet docks and the page makes room for it.
+    # 1024–1199px has no right panel: the sheet docks, the rail steps aside and the page makes room for it; the page
+    # still scrolls, so a long step's Check can come into view.
     page.keyboard.press('Escape')
     sheet.wait_for(state='hidden')
-    page.set_viewport_size({'width': 1100, 'height': 900})
-    run.go('./first-beat.html#s-beat-load-kick')
+    page.set_viewport_size({'width': 1024, 'height': 768})
+    run.go('./tech-house.html#s-add-open-hats')
     page.keyboard.press('t')
     sheet.wait_for(state='visible')
     card = page.locator('li.is-current').bounding_box()
-    assert sheet.bounding_box()['x'] >= card['x'] + card['width'] - 1, 'At 1100px the docked sheet does not cover the card'
+    assert sheet.bounding_box()['x'] >= card['x'] + card['width'] - 1, 'At 1024px the docked sheet does not cover the card'
+    assert card['width'] >= 500 and not page.locator('.rail').is_visible(), 'The card keeps its width'
+    check = page.locator('li.is-current .step-check')
+    page.mouse.move(300, 400)
+    for _ in range(6):
+        page.mouse.wheel(0, 200)
+    page.wait_for_function("() => document.querySelector('li.is-current .step-check').getBoundingClientRect().bottom < document.querySelector('#player-actions').getBoundingClientRect().top")
+    assert sheet.is_visible() and check.is_visible()
+    page.keyboard.press('Escape')
+    sheet.wait_for(state='hidden')
+    assert page.locator('.rail').is_visible(), 'The rail is back when Tools closes'
 
 
 @pytest.mark.browser
@@ -499,14 +510,39 @@ def test_start_screen_on_one_screen_and_list_banner(run):
         more = page.locator('.player-more')
         more.locator('summary').click()
         assert more.locator('.inside p').first.is_visible()
-    # One screen: on a first visit the Parts heading is above the action bar in every chapter, with the safety notes
-    # open (a short list; the notes in full wait in "About this chapter in full").
-    for ch in ('setup', 'first-beat', 'song', 'sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house'):
+    # One screen (decision 24): on a first visit, with the safety notes open (a short list; the notes in full wait in
+    # "About this chapter in full"), the Parts heading is wholly above the action bar in every chapter at 390×844, and
+    # at 360×740 in the chapters with no safety box, or in all once the box is closed. From 1024px the parts stand
+    # beside the rest.
+    def parts_on_screen(ch, rows=0, closed=False):
         run.go(f'./{ch}.html')
-        bar = page.locator('#player-actions .pa-row').bounding_box()['y']
-        assert page.locator('#player-parts-title').bounding_box()['y'] + 24 < bar, f'{ch}: the parts start in the first screen'
+        if closed:   # as on any later visit to #start
+            page.evaluate("() => { const s = document.querySelector('.player-safety'); if (s) s.open = false; }")
+        bar = page.locator('#player-actions').bounding_box()['y']
+        last = page.locator('.pp-list li').nth(rows - 1) if rows else page.locator('#player-parts-title')
+        box = last.bounding_box()
+        return box['y'] + box['height'] <= bar
+    chapters = ('setup', 'first-beat', 'song', 'sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house')
+    for ch in chapters:
+        assert parts_on_screen(ch), f'{ch}: the Parts heading is on the first screen at 390×844'
+    page.set_viewport_size({'width': 360, 'height': 740})
+    for ch in ('first-beat', 'song', 'hiphop'):
+        assert parts_on_screen(ch), f'{ch}: the Parts heading is on the first screen at 360×740'
+    for ch in chapters:
+        assert parts_on_screen(ch, closed=True), f'{ch}: with the safety box closed, the Parts heading fits at 360×740'
+    page.set_viewport_size({'width': 1024, 'height': 768})
+    for ch in chapters:
+        assert parts_on_screen(ch, rows=3), f'{ch}: at 1024×768 the parts list is beside the rest'
+    page.set_viewport_size({'width': 390, 'height': 844})
+    # The safety box names the actions its heading counts, with their keys.
     run.go('./sampling.html')
     assert page.locator('.player-safety').get_attribute('open') is not None and page.locator('.player-safety .safety-short li').count() == 3
+    assert '1 action here' in page.locator('.player-safety summary').text_content()
+    assert 'Cropping a sample' in page.locator('.player-safety .safety-short li').first.text_content()
+    run.go('./perform.html')
+    assert '2 actions here' in page.locator('.player-safety summary').text_content()
+    assert 'ERASE + MAIN' in page.locator('.player-safety .safety-short li').first.text_content()
+    run.go('./sampling.html')
     assert page.locator('.player-more .inside .notice.danger').count() == 1, 'The safety notice in full is under "About this chapter in full"'
     # All steps with progress: the banner is in the first screen, and Continue goes to the step.
     run.go('./sampling.html#all')

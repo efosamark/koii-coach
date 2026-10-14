@@ -261,7 +261,7 @@ const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!=
     // The page's short list (ul.safety-short, plan 5.2: a few lines), with the notices in full under "About this
     // chapter in full"; without one, the notices themselves.
     const box=safety.lastElementChild;
-    if(shortSafety){const l=copy(shortSafety);l.insertAdjacentHTML('beforeend','<li class="safety-more">More below the parts, and in <a href="./safety.html">Safety and erasing</a>.</li>');box.append(l);}
+    if(shortSafety){const l=copy(shortSafety);l.insertAdjacentHTML('beforeend','<li class="safety-more">In full below, and in <a href="./safety.html">Safety and erasing</a>.</li>');box.append(l);}
     else{dangers.forEach(d=>box.append(copy(d)));box.insertAdjacentHTML('beforeend','<p class="meta"><a href="./safety.html">Safety and erasing</a> lists every action that erases something.</p>');}
     dangers[0].before(safety);
   }

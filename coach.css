@@ -523,14 +523,12 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .device .info h3{margin:var(--sp-1) 0}
 .hint{margin:0 0 var(--sp-2)}
 .controls:not(.schem-keys){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-2)}
-.pads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--sp-2);margin-top:var(--sp-3)}
 .control{min-height:48px;padding:var(--sp-1);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);box-shadow:0 3px 0 var(--line-strong);font:600 var(--t-cap)/1.2 var(--font-mono);overflow-wrap:anywhere}
 .control:active{transform:translateY(1px)}
 .control.hot{border-color:var(--key-edge);background:var(--key);color:var(--on-key);box-shadow:0 3px 0 var(--key-edge)}
 .control.chosen{outline:3px solid var(--ink);outline-offset:2px}
 .control:focus-visible{outline-color:var(--focus)}
 .control.sym{font-size:20px;line-height:1}
-.pads .control{font-size:var(--t-body)}
 .scroll{overflow-x:auto;padding:var(--sp-2) var(--sp-1)}
 /* Rhythm lab (lab.js). A phone shows one sound at a time as 4×4, a row per beat, cells about 64px tall; wider screens
    show four rows of 16 44px cells. A hit is ink with its sound's glyph (Kick ●, Snare ■, Hat ▲, Bass ◆), so it never
@@ -989,7 +987,7 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .pd-actions .btn .icon{width:20px;height:20px}
 /* Start screen: chips, the safety summary (copies of the page's danger notices), the parts */
 .player-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-1);margin:0 0 var(--sp-3);padding:0;list-style:none}
-.player-chips li{max-width:none;margin:0;padding:var(--sp-1) var(--sp-2);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono)}
+.player-chips li{max-width:none;margin:0;padding:2px 6px;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono)}
 /* The chapter needs a newer OS than the one chosen in Settings: a caution chip with the way to update. */
 .player-chips li.warn{display:inline-flex;align-items:center;gap:var(--sp-2);border-color:var(--caution-line);background:var(--caution-surface);color:var(--caution-ink)}
 .player-chips li.warn .icon{width:18px;height:18px}
@@ -997,6 +995,7 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 /* The start screen's promise and "Before you start" rows (plan 5.2): only there; All steps, print and pages without
    JavaScript show the full preamble as written. */
 main > .promise,main > .needs{display:none}
+html[data-player="start"] .page-head{margin-bottom:var(--sp-3)}
 html[data-player="start"] main > .promise{display:block;margin:0 0 var(--sp-3)}
 html[data-player="start"] main > .needs{display:block;margin:var(--sp-3) 0}
 .needs > h2{margin:0 0 var(--sp-2);font-size:var(--t-check);line-height:var(--t-check-lh)}
@@ -1014,9 +1013,9 @@ html[data-player="start"] main > .needs{display:block;margin:var(--sp-3) 0}
 .player-reference .ref-part > h2{margin-top:var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
 .player-reference .inside > :last-child{margin-bottom:0}
 .player-safety{margin:var(--sp-3) 0;border:1px solid var(--danger);border-left-width:6px;border-radius:var(--r-control);background:var(--danger-surface)}
-.player-safety > summary{padding:var(--sp-2) var(--sp-4);color:var(--danger)}
+.player-safety > summary{padding:var(--sp-2) var(--sp-3);color:var(--danger)}
 .player-safety > summary .icon{width:22px;height:22px}
-.player-safety > .inside{padding:0 var(--sp-4) var(--sp-3)}
+.player-safety > .inside{padding:0 var(--sp-3) var(--sp-2)}
 .player-safety .notice{margin:var(--sp-2) 0}
 /* The short safety list shows only in the start screen's safety box; the page itself keeps the full notices. */
 main > .safety-short{display:none}
@@ -1032,9 +1031,10 @@ main > .safety-short{display:none}
 .pp-list a:hover{background:var(--surface-2)}
 .pp-list a:hover .pp-t,.ps-step:hover .ps-t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .pp-list .tally,.ps-part .tally{margin-left:0}
-/* A wide screen: the parts list stands beside everything above it (player.js counts those rows into --start-rows). */
-@media (min-width:1360px){
-  html[data-player="start"] main.reading{display:grid;grid-template-columns:minmax(0,46rem) minmax(0,20rem);column-gap:var(--sp-6);align-content:start;max-width:calc(66rem + var(--sp-6) + 2 * var(--gutter))}
+/* From 1024px the parts list stands beside everything above it, so it is on the first screen (plan 5.2; player.js
+   counts those rows into --start-rows). */
+@media (min-width:1024px){
+  html[data-player="start"] main.reading{display:grid;grid-template-columns:minmax(0,46rem) minmax(16rem,20rem);column-gap:var(--sp-6);align-content:start;max-width:calc(66rem + var(--sp-6) + 2 * var(--gutter))}
   html[data-player="start"] main.reading > *{grid-column:1;min-width:0}
   html[data-player="start"] main.reading > .player-parts{grid-column:2;grid-row:1/span var(--start-rows,6);align-self:start;position:sticky;top:calc(var(--sticky-top) + var(--sp-4));margin-top:var(--sp-2)}
 }
@@ -1044,10 +1044,10 @@ main > .safety-short{display:none}
 @media (min-width:600px){.padgrids{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .padgrid{margin:0;min-width:0}
 .padgrid figcaption{margin:0 0 var(--sp-1);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
-.pads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;max-width:120px}
-.pads span{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border:1px solid var(--line-strong);border-radius:5px;color:var(--ink-2);font:600 12px/1 var(--font-mono)}
+.pads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;max-width:156px}
+.pads span{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border:1px solid var(--line-strong);border-radius:5px;color:var(--ink-2);font:600 14px/1 var(--font-mono)}
 .pads .on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
-.pads .enter{font-size:7px;letter-spacing:-.02em}
+.pads .enter{letter-spacing:-.1em}
 .pad-legend{max-width:none;margin:var(--sp-1) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 @media (forced-colors:active){.pads .on{forced-color-adjust:none;background:CanvasText;color:Canvas}}
 /* All steps: "You're on Part 3, step 31 of 61 · Continue", under the chapter's title. */
@@ -1310,8 +1310,7 @@ html.pl-kbd .tools-panel:focus-visible{outline:3px solid var(--focus);outline-of
 .tools-panel .device.schem{width:min(100%,calc(60dvh * 522 / 712))}
 .tools-panel .control,.player-device .control{position:relative;min-height:36px;padding:2px 6px;box-shadow:0 2px 0 var(--line-strong)}
 .tools-panel .control.hot,.player-device .control.hot{box-shadow:0 2px 0 var(--key-edge)}
-.tools-panel .controls,.tools-panel .pads,.player-device .controls,.player-device .pads{gap:6px}
-.tools-panel .pads,.player-device .pads{margin-top:var(--sp-2)}
+.tools-panel .controls,.player-device .controls{gap:6px}
 .tools-panel .control .order,.player-device .control .order{position:absolute;top:-8px;right:-6px;display:grid;place-items:center;min-width:22px;height:22px;padding:0 4px;border:2px solid var(--surface-1);border-radius:999px;background:var(--ink);color:var(--surface-1);font:600 12px/1 var(--font-mono)}
 .tools-panel .control[aria-pressed="true"],.player-device .control[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
 .press-order{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-4);margin:var(--sp-3) 0;padding:0;max-width:none;list-style:none}
@@ -1339,11 +1338,14 @@ html.pl-kbd .tools-panel:focus-visible{outline:3px solid var(--focus);outline-of
   .sheet.tools-sheet[open]{animation-name:sheet-in-right}
 }
 /* From 1024px with no right panel (toolsheet.js sets .tools-docked), the sheet docks on the right and the page makes
-   room for it, so it never covers the step card (plan 5.7). */
+   room for it, so it never covers the step card (plan 5.7). The rail steps aside meanwhile (plan 4.5 has none below
+   1200px), so the card keeps its width, and the page behind still scrolls to a long step's Check. */
 @media (min-width:1024px){
   html.tools-docked{--dock-w:min(440px,40vw)}
-  html.tools-docked body{padding-right:var(--dock-w)}
-  html.tools-docked .appbar{margin-right:calc(-1 * var(--dock-w))}
+  html.tools-docked .rail{display:none}
+  html.tools-docked body,html.shell-on.tools-docked body{padding-left:0;padding-right:var(--dock-w)}
+  html.tools-docked .appbar,html.shell-on.tools-docked .appbar{margin-left:0;margin-right:calc(-1 * var(--dock-w))}
+  html.tools-docked:has(.tools-sheet[open]):not(:has(.sheet:not(.tools-sheet)[open])),html.has-device:has(.tools-sheet[open]):not(:has(.sheet:not(.tools-sheet)[open])){overflow:auto}
   html.tools-docked .sheet.tools-sheet{width:var(--dock-w);height:calc(100dvh - var(--appbar-h));margin:var(--appbar-h) 0 0 auto;border-left:1px solid var(--line);border-radius:0;box-shadow:none}
   html.tools-docked .sheet.tools-sheet::backdrop{background:rgb(0 0 0/.08)}
 }

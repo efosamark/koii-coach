@@ -4,6 +4,52 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.27
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23 (a new pattern’s length shows as `ln.1`, get started; TIMING sets the note interval and quantize, functions). **Written for:** OS 2.5.1. No button sequence changed.
+
+Fixes from a seventh independent review of the overhaul.
+
+**Start screen** (plan 5.2, decision 24, new):
+- From 1024 px the parts list stands beside the rest of the start screen (it did from 1360 px), so on a laptop the parts are always on the first screen: at 1024×768 the Parts heading is at 96 px (it was 482–661 px, under the action bar in Chapters 6 and 7).
+- Tighter spacing: 12 px under the title (was 24), slimmer chips and a slimmer safety box. At 390×844 on a first visit the Parts heading is now wholly above the action bar in every chapter (its top at 510–728 px, the bar at 771 px; in 2026.10.14.26 it ended up to 8 px under the bar’s top edge in Chapters 4, 6 and 7).
+- At 360×740, the Parts heading is on the first screen in Chapters 1, 2 and 5, and in all eight once the safety box is closed, as on every later visit. On a first visit to Chapters 0, 3, 4, 6 and 7 it starts 56–108 px below the bar: the safety box stays open and complete there on purpose (decision 24). The 2026.10.14.26 entry gave the 360×740 positions but said the heading was above the bar in every chapter, which was not true at that size.
+- The safety box names the actions its heading counts, with their keys: Chapter 3 "Cropping a sample (hold SHIFT + SOUND, Part 5) can’t be undone." (its list named ERASE + SOUND instead, which no Chapter 3 step uses; that warning stays in the notice in full), Chapter 4 "Clearing and deleting a scene (hold ERASE + MAIN, Part 6) can’t be undone." (the ERASE + SOUND line moves to the notice in full). Chapter 7’s undo line says when it works again: "… while the umbrella icon is lit." The last line reads "In full below, and in Safety and erasing." (was "More below the parts, and in Safety and erasing.").
+
+**Tools from 1024 px:** while the sheet is docked (1024–1199 px), the course rail steps aside, so the step card keeps 550–695 px of width (it was 262–308 px at 1024–1100 px, with the Done · Next label cut off), and the page behind Tools still scrolls, so a long step’s Check can be brought into view (also beside the right panel from 1200 px). Closing Tools brings the rail back (plan 4.5 and 5.7; decision 21 updated).
+
+**Content** (Checks you can see or hear, a Do line that is an action; listed below): Chapter 4 "Set the grid back to 16" and "Set quantize back"; Chapter 7 "Make D four bars long" (`Ln.4`, as Chapter 6’s and Chapter 7’s own "Double again to four bars"), "Set the reverb" and "Dance test".
+
+**Pad plans:** the pad numbers and ENTER are 14 px (were 12 px and 7 px), on cells up to 50 px; unused rules of the old keys panel that also styled `.pads` are gone.
+
+**Corrections to the 2026.10.14.26 entry:**
+- Chapter 5 has no safety box on its start screen (none of its steps is irreversible; its safety notice stays in "Button instructions and sources"); the entry said it showed its notice "as before". The line under a box with no short list reads "Safety and erasing lists every action that erases something." as that entry said.
+- The time chips of Chapters 0–2 changed too: "45–60 min" (was "About 45–60 minutes"), "30–50 min" (was "About 30–50 minutes"), "60–90 min" (was "About 60–90 minutes").
+
+**Docs:** decision 24 (the start screen on the smallest phone) and the docked Tools sheet in decision 21; plan 5.2 names the sizes the start screen is measured at.
+
+**Tests:** the start screen at 390×844 (every chapter), 360×740 (with no safety box, and every chapter with it closed) and 1024×768 (the first three parts on screen); the safety box naming Chapter 3’s and Chapter 4’s irreversible actions; Tools docked at 1024×768 with the rail hidden, the card at least 500 px wide, the page scrolling to the Check and the rail back after Esc.
+
+**Step by step** ("was" gives the old text):
+
+- **Chapter 4** (2 steps):
+  - “Set the grid back to 16”: Check: “The display showed 16, not 16T; the MAIN icon is lit again.” (was “The grid is back to 16 steps per bar.”).
+  - “Set quantize back”: Check: “The display showed 16, not 16T; the MAIN icon is lit again.” (was “The grid is back to 16 steps, with quantize on.”).
+- **Chapter 7** (3 steps):
+  - “Make D four bars long”: Check: “The display shows Ln.4: D’s empty pattern is four bars long, like A and B.” (was “D’s empty pattern is now four bars long, like A and B.”).
+  - “Set the reverb”: Do: “Turn X low for a short reverb. Tap A and keep its fader low; leave B at none. Press MAIN.” (was “X sets the reverb length, so start short. Tap A and keep its fader low; leave B at none. Press MAIN.”).
+  - “Dance test”: Check: “DROP A, DROP B and PEAK hit harder than INTRO and GROOVE.” (was “You want to move in DROP A, DROP B and PEAK.”).
+
+**Outside the steps** ("was" gives the old text; " · " separates list items):
+
+- **Chapter 3**:
+  - You will make: “a drum kit from your voice, slices and a bounced beat.” (was “a drum kit from your voice, chopped slices and a bounced beat.”)
+  - Safety box: “Cropping a sample (hold SHIFT + SOUND, Part 5) can’t be undone.” · “Never hold SHIFT + ERASE as you switch on.” (was “Never hold SHIFT + ERASE as you switch on.” · “Held, ERASE + SOUND deletes a sample.”)
+- **Chapter 4**:
+  - Safety box: “Clearing and deleting a scene (hold ERASE + MAIN, Part 6) can’t be undone.” · “Work only in practice copies.” (was “Work only in practice copies.” · “Never use ERASE + SOUND: it deletes a sample.”)
+- **Chapter 7**:
+  - Safety box: “Never use ERASE + SOUND: it deletes a sample.” · “SHIFT + B undoes a cleared note while the umbrella icon is lit.” (was “Never use ERASE + SOUND: it deletes a sample.” · “SHIFT + B undoes a cleared note.”)
+
 ## 2026.10.14.26
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23; the pad layout of the new pad plans is the control map’s (taken from teenage engineering’s top-view photo, decision 20). **Written for:** OS 2.5.1. No button sequence changed; one press dropped in 2026.10.14.25 is back (below).
