@@ -4,7 +4,8 @@
    thodorakis-house.html (11).
    Each page sets <body data-chapter="slug"> and gives every step <li> inside .steps a stable data-step id.
    Progress is stored per chapter as {v:1,done:[stepId,...],last:stepId,n} under 'koii-coach-ch-<slug>', plus the
-   optional fields cur (the step Continue points at) and at (ISO time of the last tick). v stays 1 and fields are only
+   optional fields cur (the step Continue points at), at (ISO time of the last tick), skip and m (the last split
+   migration applied: progress.js migrates every record on load; a new record starts at the current level). v stays 1 and fields are only
    ever added. 'koii-coach-meta' gets lastChapter (shared with the other pages: its other fields are kept), and a
    notice that progress.js left there for this chapter ({chapter, text} in meta.notices) is shown once.
    01 and 02 (slugs first-beat and song) were views of the old single-page app: progress.js derives their records from
@@ -118,6 +119,9 @@ if(!(state&&state.v===1&&Array.isArray(state.done))){
     }
     L.old.forEach(k=>{const o=read(k);if(Array.isArray(o)&&o.length)note='This chapter was rewritten since you last ticked steps here, so ticks from that older version could not be carried over.';});
   }
+  // Ticks carried over from the old keys name the steps as they were then: split them like any older record. A record
+  // that starts empty starts at the current level, so ticking a step's first part never ticks its other parts.
+  if(window.CoachProgress){if(state.done.length)CoachProgress.migrateRecord(slug,state);else if(CoachProgress.level(slug))state.m=CoachProgress.level(slug);}
   // The old keys stay (plan 7.7: nothing deletes a legacy key before the P8 clean-up, so an older copy of the site still
   // finds them). From now on this record wins over them everywhere; Reset all progress clears both.
   save();

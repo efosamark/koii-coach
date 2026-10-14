@@ -11,7 +11,8 @@
                            firmware, finished, songFinished, lab}. It stays the home of the OS choice (firmware), the Learn
                            lessons marked as tried (done), the 01 placement helper's note and the Rhythm lab (lab).
                            Writes keep all twelve fields: the old app rebuilt it from these and dropped anything else.
-     koii-coach-ch-<slug>  a chapter's ticks, {v:1, done:[ids], last, n, cur?, at?, derivedFrom?} (chapter.js owns it)
+     koii-coach-ch-<slug>  a chapter's ticks, {v:1, done:[ids], last, n, cur?, at?, derivedFrom?, skip?, m?} (chapter.js
+                           owns it; m is the last split migration applied to it, below)
      koii-coach-prefs      settings, {v:1, setup, wake, modes}: Reset and loading a file keep it
      koii-coach-meta       {v:1, lastChapter, appAt, setupReason, notices:[{chapter, text}]}
 
@@ -33,6 +34,7 @@
      migratedSetup           true when this page load moved an existing learner past the set-up question
      mirror(slug, record)    called by chapter.js before it saves a 01/02 record
      order(slug)             01/02: the step ids in page order (chapter.js checks them against the page)
+     migrateRecord(slug, record), level(slug)   split migrations (below), for chapter.js
      exportFile(), readFile(object), applyFile(keys), resetAll(), restore(snapshot)   for Settings */
 (()=>{
 const V2='koii-coach-v2',PREFS='koii-coach-prefs',META='koii-coach-meta',CH='koii-coach-ch-';
@@ -198,9 +200,40 @@ function restore(snap){
   Object.keys(snap||{}).forEach(k=>{try{localStorage.setItem(k,snap[k]);}catch(e){}});
 }
 
-function run(){derive('first-beat');derive('song');return migrateSetup();}
+// ---------- Steps split in a rewrite (plan 7.7, P7) ----------
+// When a long step is split, its first part keeps the old id (so links and ticks still find it) and the other parts get
+// new ids. A learner who had ticked the old step has every part ticked. Each batch is applied to a record once: the
+// record's m holds the last batch applied, and a record made after a batch starts at that batch (chapter.js), so a
+// tick on the first part later never ticks the rest. Frozen history: add batches, never edit one that shipped.
+const MIGRATIONS={
+  // 2026.10.14.5: Chapter 3 rewritten to the step budget
+  sampling:[{v:1,split:{'open-empty-project':['open-empty-project','check-empty-project'],'set-tempo-grid':['set-tempo-grid','set-grid-16'],'place-first-sample':['place-first-sample','place-first-sample-play'],'shape-kit':['shape-kit','shape-kit-hat'],'place-kit-kicks':['place-kit-kicks','place-kit-kicks-write'],'commit-voice-kit':['commit-voice-kit','commit-voice-kit-copy'],'handsfree-count':['handsfree-count','handsfree-count-start','handsfree-count-record'],'line-connect':['line-connect','line-connect-volume'],'line-handsfree-record':['line-handsfree-record','line-select-input','line-record-d3'],'usb-connect':['usb-connect','usb-connect-output'],'usb-handsfree-record':['usb-handsfree-record','usb-record-d3'],'quality-record-hi':['quality-record-hi','quality-record-hi-keys'],'edit-open':['edit-open','edit-open-pages'],'edit-trim':['edit-trim','edit-trim-length'],'copy-snare-pad':['copy-snare-pad','copy-snare-paste'],'reverse-copy':['reverse-copy','reverse-copy-rev'],'crop-optional':['crop-optional','crop-optional-crop'],'chop-write-pattern':['chop-write-pattern','chop-write-slices'],'resample-source':['resample-source','resample-source-rsp'],'bounce-scene':['bounce-scene','bounce-scene-empty'],'fx-setup':['fx-setup','fx-setup-shape'],'fx-resample':['fx-resample','fx-resample-record','fx-resample-listen','fx-resample-dry'],'stretch-bar-mode':['stretch-bar-mode','stretch-bar-length'],'stretch-check':['stretch-check','stretch-check-90'],'tempo-match-optional':['tempo-match-optional','tempo-match-play'],'loop-optional':['loop-optional','loop-optional-move','loop-optional-leave']}}]
+};
+const level=slug=>(MIGRATIONS[slug]||[]).reduce((a,b)=>Math.max(a,b.v),0);
+function migrateRecord(slug,rec){
+  const list=MIGRATIONS[slug];
+  if(!list||!rec||!Array.isArray(rec.done))return false;
+  const from=int(rec.m)?rec.m:0;let changed=false;
+  list.filter(b=>b.v>from).forEach(b=>{
+    Object.keys(b.split||{}).forEach(old=>{
+      if(!rec.done.includes(old))return;
+      const add=b.split[old].filter(id=>!rec.done.includes(id));
+      if(!add.length)return;
+      rec.done=[...rec.done,...add];
+      if(int(rec.n))rec.n+=add.length;
+    });
+    rec.m=b.v;changed=true;
+  });
+  return changed;
+}
+function migrateAll(){
+  const site=window.COACH_SITE;
+  (site&&Array.isArray(site.chapters)?site.chapters:[]).forEach(c=>{const r=obj(CH+c.slug);if(r&&migrateRecord(c.slug,r))write(CH+c.slug,r);});
+}
+
+function run(){derive('first-beat');derive('song');migrateAll();return migrateSetup();}
 const migratedSetup=run();
 
-window.CoachProgress={v2,writeV2,prefs,meta,patch,chapters,continueTarget,v2Progress,firstRun,migratedSetup,mirror,order:slug=>(ORDER[slug]||[]).slice(),
+window.CoachProgress={v2,writeV2,prefs,meta,patch,chapters,continueTarget,v2Progress,firstRun,migratedSetup,mirror,order:slug=>(ORDER[slug]||[]).slice(),migrateRecord,level,
   exportFile,readFile,applyFile,resetAll,restore,keys};
 })();

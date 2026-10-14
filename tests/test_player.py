@@ -10,6 +10,8 @@
 Run after a build, like test_smoke.py:  python -m pytest tests/test_player.py
 """
 import pathlib
+import re
+from html import unescape
 from html.parser import HTMLParser
 from urllib.parse import urljoin
 
@@ -62,6 +64,46 @@ def test_risky_steps_check_before_the_press_and_undo_after(name):
                 assert i > first_do, f"{name}/{s['id']}: {cls} comes after the press ({parts})"
     for s in risky:
         assert s['parts'].count('step-do') >= 1, f"{name}/{s['id']}: a risky step names its press in a Do line"
+
+
+# Chapters rewritten to the glance budget (plan 5.3, P7). Each step: a title of at most 48 characters; Do at most 26
+# words in at most 3 sentences (a risk step: Before you press and Do together at most 40); Check at most 15 words; undo
+# at most 12. Add a chapter here when it is rewritten.
+STRUCTURED = ['sampling']
+
+
+def _words(h):
+    text = re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', h)))
+    return [w for w in text.split() if re.search(r'[\w−+]', w)]
+
+
+def _sentences(h):
+    text = re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', '', h))).strip()
+    text = re.sub(r'K\.O\. II', 'KO II', text)
+    return [s for s in re.split(r'(?<=[.?!])\s+(?=[A-Z“(])', text) if s]
+
+
+@pytest.mark.parametrize('name', STRUCTURED)
+def test_glance_budget(name):
+    page = (ROOT / f'{name}.html').read_text(encoding='utf-8')
+    over = []
+    for sid, attrs, body in re.findall(r'<li data-step="([^"]+)"([^>]*)>(.*?)</li>', page, re.S):
+        title = re.search(r'<h3 class="step-title">(.*?)</h3>', body, re.S)
+        field = lambda c: ' '.join(re.findall(rf'<p class="{c}">(.*?)</p>', body, re.S))
+        do, pre, check, undo = field('step-do'), field('preflight'), field('step-check'), field('step-undo')
+        risk = 'data-risk' in attrs
+        problems = []
+        if not title or len(unescape(re.sub(r'<[^>]+>', '', title.group(1)))) > 48:
+            problems.append('title')
+        if len(_words(do)) + (len(_words(pre)) if risk else 0) > (40 if risk else 26) or len(_sentences(do)) > 3:
+            problems.append(f'do {len(_words(do))}w/{len(_sentences(do))}')
+        if len(_words(re.sub(r'<span class="sr">Check: </span>', '', check))) > 15:
+            problems.append('check')
+        if len(_words(undo)) > 12:
+            problems.append('undo')
+        if problems:
+            over.append(f'{sid}: ' + ', '.join(problems))
+    assert not over, f'{name}: steps over the glance budget: ' + '; '.join(over)
 
 
 @pytest.fixture

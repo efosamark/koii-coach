@@ -10,6 +10,8 @@ Fails (exit 1) when:
 - sw.js precaches a file that is not in the site (one 404 stops the offline install),
 - a page, script, stylesheet, font or SVG in the site is not precached by sw.js (it would not work offline),
 - VERSION in sw.js, version in site.js and the newest CHANGELOG.md heading differ,
+- a link to one step (page.html#s-<id>) names a step that is not on that page,
+- a page loads shell.js without site.js and progress.js before it (progress and migrations would not run there),
 - a page's visible text names a chapter by its number before the renumber ("chapter 07", "07 / Sample…", "section 04",
   "CHAPTER 09") or by an old name ("Start here", "Tech House"): the course is Chapter 0-7 and parts are "Part 4".
 Standard library only, so it runs anywhere Python 3.8+ does.
@@ -158,6 +160,17 @@ def main():
         errors.append('release versions differ: ' + ', '.join(f'{w} is {v}' for w, v in versions.items())
                       + '. Set all three to the same value (see README, "Releasing a content change").')
 
+    step_ids = {f: set(re.findall(r'data-step="([^"]+)"', (out / f).read_text(encoding='utf-8'))) for f in files if f.endswith('.html')}
+    for name in [f for f in files if f.endswith('.html') or f.endswith('.js')]:
+        src = (out / name).read_text(encoding='utf-8')
+        for page, sid in re.findall(r'\./([a-z-]+\.html)#s-([a-z0-9-]+)', src):
+            if page in step_ids and sid not in step_ids[page]:
+                errors.append(f'{name} links to {page}#s-{sid}, but {page} has no step "{sid}"')
+    for name in [f for f in files if f.endswith('.html')]:
+        src = (out / name).read_text(encoding='utf-8')
+        order = re.findall(r'<script src="(site|progress|shell)\.js"></script>', src)
+        if 'shell' in order and order[:3] != ['site', 'progress', 'shell']:
+            errors.append(f'{name} must load site.js, progress.js and shell.js in that order (it has {order})')
     for name in [f for f in files if f.endswith('.html')]:
         text = visible_text((out / name).read_text(encoding='utf-8'))
         for rule, what in BARE:

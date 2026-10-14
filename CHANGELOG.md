@@ -4,6 +4,21 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.5
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.
+
+Chapter 3 · Sample, chop & resample, rewritten for a glance (phase P7 of the overhaul).
+
+- **Every step fits on a phone propped beside the K.O. II:** a short title, at most three moves (26 words) to do, and one short Check, with the reason and the fixes folded under "Why" and "Not working?". Long steps were split, so the chapter has 88 steps instead of 57.
+- **Your progress carries over.** A split step keeps its address, and if you had ticked it, every part of it is ticked. Links to a step still open it.
+- The few sentences that changed wording: "Write the number down as FIRST" (was "Write it down"); the examples of a kick sound, "such as a deep “dm” or “boom”", moved to Why; the parenthesis after `in`, `usb` and `EQU`, and after "press D3" (if D3 already holds a line-in sample, use the next empty pad), moved to Why or Not working?; "Hold RECORD and tap “one” at 1.1.1, “two” at 1.2.1 …" (was "the “one” pad at …"); "Check: the reversed snare swells and its loud end lands …" (was "swells up"); "Set up an effect for group B" and "To crop your kick" became the step titles. A Check that was cut in half at "K.O. II" in the resample step is whole again.
+- Chapters 0 and 3 to 7 now load the shared progress code, as the others did: the "Needs OS" badges there follow the OS chosen in Settings, and the menu shows Continue.
+
+### Repository
+
+- `progress.js` keeps the split migrations (each record remembers the last one applied in a new field, `m`). The site build checks that every link to a step names a real step, and that every page loads `site.js`, `progress.js` and `shell.js` in order. `tests/test_player.py` checks the glance budget for the rewritten chapters, and `tests/test_progress.py` that split steps keep their ticks.
+
 ## 2026.10.14.4
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: only chapter and part numbers and three chapter names.

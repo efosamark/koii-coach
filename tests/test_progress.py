@@ -136,3 +136,23 @@ def test_progress_file_round_trip(run, tmp_path):
     assert run.get('koii-coach-ch-first-beat')['cur'] == 'beat-load-snare'
     assert run.get('koii-coach-v2')['firmware'] == 'older', 'This browser keeps its OS choice'
     assert run.get('koii-coach-prefs')['wake'] == 'auto', 'This browser keeps its settings'
+
+
+def test_split_steps_keep_their_ticks(run):
+    """A step split in a rewrite (Chapter 3, 2026.10.14.5): ticked before, every part is ticked after; a record made
+    after the rewrite never ticks the other parts when the first is ticked."""
+    page = run.page
+    run.seed({'koii-coach-ch-sampling': {'v': 1, 'done': ['open-empty-project', 'set-tempo-grid'], 'last': 'set-tempo-grid', 'n': 2, 'cur': 'choose-mic-source'},
+              'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./index.html')
+    rec = run.get('koii-coach-ch-sampling')
+    assert rec['done'] == ['open-empty-project', 'set-tempo-grid', 'check-empty-project', 'set-grid-16'] and rec['n'] == 4 and rec['m'] == 1, rec
+    run.go('./sampling.html#all')
+    assert page.locator('#progress-count').text_content().startswith('4 of 88'), page.locator('#progress-count').text_content()
+    assert run.get('koii-coach-ch-sampling')['cur'] == 'choose-mic-source', 'The place to continue at stays'
+    # A record made now starts at the current level.
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./sampling.html#all')
+    page.evaluate("() => CoachChapter.setDone('open-empty-project', true)")
+    run.go('./index.html')
+    assert run.get('koii-coach-ch-sampling')['done'] == ['open-empty-project'], 'Ticking a first part never ticks the others'
