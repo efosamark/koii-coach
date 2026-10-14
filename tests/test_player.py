@@ -298,3 +298,37 @@ def test_larger_text_and_left_hand(run):
     run.go('./settings.html')
     page.locator('#reset-settings').click()
     assert page.locator('input[name="text"][value="default"]').is_checked() and page.locator('input[name="hand"][value="right"]').is_checked(), 'Reset settings puts both back'
+
+
+@pytest.mark.browser
+def test_rhythm_lab(run):
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./lab.html')
+    beat = page.locator('#beat')
+    assert beat.get_attribute('role') == 'grid' and page.locator('#beat button').count() == 64, 'All 64 cells stay in one grid'
+    visible = lambda: page.locator('#beat button:visible')
+    assert page.locator('#lab-tabs').is_visible() and visible().count() == 16, 'A phone shows one sound at a time'
+    assert visible().nth(6).get_attribute('aria-label') == 'Kick A1, step 7, position 1.2.3', 'Row 2, column 3 is 1.2.3'
+    page.locator('#lab-tab-1').click()
+    assert visible().first.get_attribute('data-r') == '1' and page.locator('#lab-tab-1').get_attribute('aria-selected') == 'true'
+    # One tab stop; the arrow keys move between cells (Down is the next beat on a phone).
+    assert page.locator('#beat button[tabindex="0"]').count() == 1
+    first = visible().first
+    first.focus()
+    page.keyboard.press('ArrowRight')
+    page.keyboard.press('ArrowDown')
+    assert page.evaluate('() => document.activeElement.dataset.c') == '5', 'Right then Down lands on 1.2.2'
+    page.keyboard.press('Space')
+    assert page.evaluate('() => document.activeElement.getAttribute("aria-pressed")') == 'true'
+    # Steppers: the buttons and the arrow keys.
+    page.locator('.step-btn[data-k="bpm"][data-d="1"]').click()
+    page.locator('#bpm-text').focus()
+    page.keyboard.press('ArrowUp')
+    assert page.locator('#bpm-text').get_attribute('aria-valuenow') == '92', 'Tempo goes up one at a time'
+    page.keyboard.press('End')
+    assert page.locator('#bpm-text').text_content() == '160' and page.locator('.step-btn[data-k="bpm"][data-d="1"]').is_disabled()
+    # Wider: four rows of 16, no tabs.
+    page.set_viewport_size({'width': 1024, 'height': 800})
+    page.wait_for_function("() => document.querySelector('#beat').classList.contains('wide')")
+    assert not page.locator('#lab-tabs').is_visible() and visible().count() == 64

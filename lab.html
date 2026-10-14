@@ -37,10 +37,20 @@
       <p class="lead">Hear a small change before you write it. A one-bar teaching sequencer: tap cells to add or remove hits, then play it.</p>
     </header>
     <section class="card lab">
+      <div class="lab-transport">
+        <button type="button" id="audio-play" class="btn primary lab-play"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-play"></use></svg>Play lab</button>
+        <span class="lab-now"><span class="meta">Now at</span> <samp class="lcd lab-pos" id="lab-pos">–.–.–</samp></span>
+        <span id="audio-status" class="meta" role="status">Stopped</span>
+      </div>
+      <div class="lab-tabs" id="lab-tabs" role="tablist" aria-label="Sound" hidden></div>
+      <div class="scroll"><div id="beat" class="beat" role="grid"><noscript><p>The Rhythm lab needs JavaScript.</p></noscript></div></div>
+      <p class="meta">Tap a cell to add or remove a hit. With a keyboard, the arrow keys move between cells and Space adds or removes.</p>
       <div class="row"><button type="button" class="btn" id="recipe">Load first-beat recipe</button><button type="button" class="btn" id="clear">Clear grid</button></div>
-      <div class="row toolbar"><button type="button" id="audio-play" class="btn primary"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-play"></use></svg>Play lab</button><label class="meta">Volume <input id="volume" type="range" min="0" max="25" value="18"></label><label class="meta">Tempo <span id="bpm-text">90</span> BPM <input id="bpm" type="range" min="50" max="160" value="90"></label><span id="audio-status" class="meta" role="status">Stopped</span></div>
+      <div class="lab-steppers">
+        <div class="stepper"><span class="stepper-label" id="bpm-label">Tempo</span><button type="button" class="step-btn" data-k="bpm" data-d="-1" tabindex="-1" aria-label="Slower">−</button><samp class="lcd stepper-value" id="bpm-text" role="spinbutton" tabindex="0" aria-labelledby="bpm-label" aria-valuemin="50" aria-valuemax="160" aria-valuenow="90" aria-valuetext="90 BPM">90</samp><button type="button" class="step-btn" data-k="bpm" data-d="1" tabindex="-1" aria-label="Faster">+</button><span class="meta" aria-hidden="true">BPM</span></div>
+        <div class="stepper"><span class="stepper-label" id="vol-label">Volume</span><button type="button" class="step-btn" data-k="vol" data-d="-1" tabindex="-1" aria-label="Quieter">−</button><samp class="lcd stepper-value" id="vol-text" role="spinbutton" tabindex="0" aria-labelledby="vol-label" aria-valuemin="0" aria-valuemax="10" aria-valuenow="7" aria-valuetext="70%">7</samp><button type="button" class="step-btn" data-k="vol" data-d="1" tabindex="-1" aria-label="Louder">+</button></div>
+      </div>
       <p class="meta hint">No sound? Turn your phone volume up. On iPhone, also switch off Silent mode or use headphones.</p>
-      <div class="scroll"><div id="beat" class="beat"><noscript><p>The Rhythm lab needs JavaScript.</p></noscript></div></div>
       <h2 class="sub">Copy it to your K.O. II</h2>
       <div id="lab-positions"></div>
       <p class="meta">To write each note: stop playback, press <span class="nobr"><kbd class="key">MAIN</kbd>,</span> select the group, use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows the position, then hold <kbd class="key">RECORD</kbd> and tap the pad.</p>

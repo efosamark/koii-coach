@@ -507,31 +507,53 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .control.sym{font-size:20px;line-height:1}
 .pads .control{font-size:var(--t-body)}
 .scroll{overflow-x:auto;padding:var(--sp-2) var(--sp-1)}
-.beat{display:grid;grid-template-columns:64px repeat(16,32px);gap:5px;align-items:center;width:max-content}
-.beat.half{grid-template-columns:52px repeat(8,minmax(0,1fr));gap:4px;width:100%}
-.beat:not(.half) .label{position:sticky;left:0;z-index:1;background:var(--surface-1)}
-.beat button{height:34px;padding:0;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1 var(--font-mono)}
+/* Rhythm lab (lab.js). A phone shows one sound at a time as 4×4, a row per beat, cells about 64px tall; wider screens
+   show four rows of 16 44px cells. A hit is ink with its sound's glyph (Kick ●, Snare ■, Hat ▲, Bass ◆), so it never
+   depends on colour; the playhead is a lime ring round every cell of its column. */
+.lab-transport{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-3) var(--sp-4)}
+.lab-play{min-height:56px;padding-inline:var(--sp-5)}
+.lab-now{display:inline-flex;align-items:center;gap:var(--sp-2)}
+.lab-pos{min-width:5.5ch;font-size:28px;line-height:1.3;text-align:center}
+.lab-steppers{display:flex;flex-wrap:wrap;gap:var(--sp-3) var(--sp-5);margin:var(--sp-4) 0 var(--sp-2)}
+.stepper{display:inline-flex;align-items:center;gap:var(--sp-2)}
+.stepper-label{min-width:4.5em;font-weight:600}
+.step-btn{width:48px;height:48px;padding:0;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 22px/1 var(--font-mono)}
+.step-btn:disabled{opacity:.4;cursor:default}
+.stepper-value{min-width:3.5ch;font-size:20px;text-align:center}
+.lab-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-1);margin:var(--sp-4) 0 var(--sp-2)}
+.lab-tabs[hidden]{display:none}
+.lab-tabs [role="tab"]{min-height:48px;padding:var(--sp-1) 2px;white-space:nowrap;font-size:15px;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font-weight:600;line-height:1.2}
+.lab-tabs [role="tab"] .glyph{margin-right:.25em}
+.lab-tabs [role="tab"][aria-selected="true"]{border-color:var(--ink);background:var(--surface-2);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.lab-tabs .tab-count{display:block;font:600 var(--t-cap)/1.2 var(--font-mono);color:var(--ink-2)}
+.beat{display:grid;gap:5px;width:max-content}
+.beat-row{display:grid;gap:5px;align-items:center}
+.beat.wide{gap:4px}
+.beat.wide .beat-row{grid-template-columns:88px repeat(16,44px);gap:3px}
+.beat.wide .beat-heads{gap:3px}
+.beat.wide .label{position:sticky;left:0;z-index:1;background:var(--surface-1)}
+.beat.compact{width:100%}
+.beat.compact .inst{display:grid;gap:6px}
+.beat.compact .beat-row{grid-template-columns:56px repeat(4,minmax(0,1fr));gap:6px}
+.beat.compact .beat-cols span{font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2);text-align:center}
+.beat button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;height:44px;padding:0;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1 var(--font-mono)}
+.beat.compact button{height:64px}
 .beat button:disabled{cursor:default}
 .beat button.on{border-color:var(--ink);background:var(--ink);color:var(--surface-1)}
-/* A hit shows its instrument's glyph instead of the step number (Kick ●, Snare ■, Hat ▲, Bass ◆), so a hit never
-   depends on colour alone; the row labels carry the same glyphs as the key. */
-.beat button.on{font-size:0}
-.beat button.on::before{font-size:15px;line-height:1}
+.beat button.on::before{font-size:18px;line-height:1}
+.beat.compact button.on::before{font-size:24px}
+.beat.wide button.on .cell-pos{display:none}
 .beat button.on[data-r="0"]::before{content:"●"}
 .beat button.on[data-r="1"]::before{content:"■"}
 .beat button.on[data-r="2"]::before{content:"▲"}
 .beat button.on[data-r="3"]::before{content:"◆"}
 .beat .label .glyph{display:inline-block;width:1.1em;color:var(--ink-2)}
-.beat button.beatstart{border-left:3px solid var(--ink-2)}
-.beat button.beatstart.on{border-left-color:var(--ink)}
-.beat button.now{box-shadow:inset 0 0 0 3px var(--here)}
-.beat button.on.now{box-shadow:inset 0 0 0 3px var(--done-fill)}
-.beat button.selected{outline:3px dashed var(--focus);outline-offset:2px}
-.beat button.selected:not(.on){background:var(--info-surface)}
+.beat.wide button.beatstart{border-left:3px solid var(--ink-2)}
+.beat.wide button.beatstart.on{border-left-color:var(--ink)}
+.beat button.now{box-shadow:0 0 0 3px var(--here)}
 .beat .label{font-size:var(--t-cap);font-weight:600;line-height:1.15}
 .beat .beathead{grid-column:span 4;padding-left:5px;border-left:3px solid var(--ink-2);font-size:var(--t-cap);font-weight:600;line-height:1.25}
 .beat .beathead small{display:block;font:600 var(--t-cap)/1.25 var(--font-mono);color:var(--ink-2)}
-.beat .spacer{grid-column:1/-1;height:8px}
 .search{width:100%;margin:var(--sp-2) 0 var(--sp-2)}
 .lbl{font-weight:600}
 .inside{padding:0 var(--sp-5) var(--sp-4)}

@@ -4,6 +4,17 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.14
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No instruction changed.
+
+The Rhythm lab, rebuilt for the phone. Your saved pattern carries over.
+
+- On a phone, tabs pick one sound (Kick ●, Snare ■, Hat ▲, Bass ◆, each with its number of hits) and its bar shows as a 4×4 grid with a row for each beat, so the cell in row 2, column 3 is 1.2.3, as on the K.O. II's display. Cells are about 64px tall. On a wider screen the four sounds are rows of 16 cells, as before, now 44px.
+- The grid sits right under Play. While it plays, a lime ring marks every cell of the step that is sounding, and an LCD beside Play shows its position.
+- Tempo and volume are −/+ buttons with an LCD value (tempo one BPM at a time; hold to go faster), instead of sliders.
+- With a keyboard the grid is one Tab stop: the arrow keys move between cells (Up and Down move a beat on a phone, a sound on a wider screen), Home and End go to the ends of a row, and Space adds or removes a hit. Tempo and volume take the arrow keys and Page Up and Down.
+
 ## 2026.10.14.13
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No instruction changed.
