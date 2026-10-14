@@ -4,6 +4,20 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.32
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23. **Written for:** OS 2.5.1. No button sequence changed.
+
+The final independent review rated 2026.10.14.31 COMPLETE. One correction found after it: the 2026.10.14.31 entry said the single semicolons in 16 step lines were full stops, but the script that changed them skipped five (where a key, a reading or a capitalised name followed the semicolon). These five are full stops now, so no step line has a semicolon:
+
+- **Chapter 1** (2 steps):
+  - “Place the two snares”: Check: “A2 lights at 1.2.1 and 1.4.1. The snare lands between the main kicks.” (was “A2 lights at 1.2.1 and 1.4.1; the snare lands between the main kicks.”).
+  - “Optional: make a practice copy”: Do: “Hold MAIN, select BEAT and release. Press SHIFT + MAIN once to make a practice copy. BEAT stays untouched.” (was “Hold MAIN, select BEAT and release. Press SHIFT + MAIN once to make a practice copy; BEAT stays untouched.”).
+- **Chapter 4** (3 steps):
+  - “C2: select an unused pad”: Check: “The SOUND icon lights. C2 plays its current sound, if any.” (was “The SOUND icon lights; C2 plays its current sound, if any.”).
+  - “A4: choose a free pad”: Check: “The SOUND icon lights. A4 plays its current sound, if any.” (was “The SOUND icon lights; A4 plays its current sound, if any.”).
+  - “Leave the settings and listen”: Check: “BEAT’s bass pumps too. INTRO, drums only, stays steady.” (was “BEAT’s bass pumps too; INTRO, drums only, stays steady.”).
+
 ## 2026.10.14.31
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23. **Written for:** OS 2.5.1. No button sequence changed (all 655 steps checked by script against 2026.10.14.29).
