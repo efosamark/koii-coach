@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- GitHub Pages serves this page for an unknown address at any depth (/koii-coach/a/b/c), so every link has to
+       resolve from the site's root: a <base> made before anything else loads. On github.io the root is the project's
+       folder (/koii-coach/); anywhere else (a local copy) it is /. -->
+  <script>(function(){var s=location.pathname.split('/')[1]||'',b=document.createElement('base');b.href=/\.github\.io$/.test(location.hostname)&&s&&!/\.html?$/.test(s)?'/'+s+'/':'/';document.head.appendChild(b);})();</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Page not found / K.O. II Coach</title>
+  <meta name="description" content="This address is not part of K.O. II Coach.">
+  <meta name="theme-color" content="#FFFEF8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161E19" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="robots" content="noindex">
+  <link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="coach.css">
+</head>
+<body>
+  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+  <script src="site.js"></script>
+  <script src="progress.js"></script>
+  <script src="shell.js"></script>
+  <main id="main" class="page reading" tabindex="-1">
+    <header class="page-head">
+      <p class="eyebrow">K.O. II Coach</p>
+      <h1>Page not found</h1>
+      <p class="lead">This address is not part of K.O. II Coach, or it has moved. Every chapter and tool is listed below.</p>
+    </header>
+    <p class="notice tip" id="did-you-mean" hidden></p>
+    <p><a class="btn primary lg" href="./index.html">Go to Home<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-next"></use></svg></a></p>
+    <section class="card section" aria-labelledby="nf-course">
+      <h2 id="nf-course">The course</h2>
+      <ol class="path">
+        <li><span class="led" aria-hidden="true"></span><span><span class="num">00</span> <a href="./setup.html">Start here</a></span></li>
+        <li><span class="led" aria-hidden="true"></span><span><span class="num">01</span> <a href="./first-beat.html">First beat</a></span></li>
+        <li><span class="led" aria-hidden="true"></span><span><span class="num">02</span> <a href="./song.html">Make it a song</a></span></li>
+        <li><span class="led" aria-hidden="true"></span><span><span class="num">07</span> <a href="./sampling.html">Sample, chop &amp; resample</a></span></li>
+        <li><span class="led" aria-hidden="true"></span><span><span class="num">08</span> <a href="./perform.html">Play &amp; perform</a></span></li>
+        <li><span class="led" aria-hidden="true"></span><span><span class="num">09</span> <a href="./hiphop.html">Full hip-hop beat</a></span></li>
+        <li><span class="led" aria-hidden="true"></span><span><span class="num">10</span> <a href="./tech-house.html">Tech House</a></span></li>
+        <li><span class="led" aria-hidden="true"></span><span><span class="num">11</span> <a href="./thodorakis-house.html">House with your own vocal samples</a></span></li>
+      </ol>
+    </section>
+    <section class="card section" aria-labelledby="nf-tools">
+      <h2 id="nf-tools">Tools</h2>
+      <ul class="link-list">
+        <li><a href="./learn.html">Learn</a></li>
+        <li><a href="./controls.html">Control map</a></li>
+        <li><a href="./lab.html">Rhythm lab</a></li>
+        <li><a href="./help.html">Troubleshooting</a></li>
+        <li><a href="./glossary.html">Glossary</a></li>
+        <li><a href="./cheat-sheet.html">Cheat sheet</a></li>
+        <li><a href="./safety.html">Safety and erasing</a></li>
+        <li><a href="./settings.html">Settings</a></li>
+      </ul>
+    </section>
+  </main>
+  <footer class="page reading site-foot">
+    <p>Unofficial. Not affiliated with or endorsed by teenage engineering. EP-133 and K.O. II are trademarks of teenage engineering.</p>
+    <p>No hardware connection, official factory audio, accounts or analytics. Progress stays in this browser. External guides require internet.</p>
+    <p><a id="report" href="https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml" target="_blank" rel="noopener noreferrer">Report a wrong instruction<span class="sr"> (opens in a new tab)</span></a> · <a href="https://github.com/efosamark/koii-coach" target="_blank" rel="noopener noreferrer">Source code<span class="sr"> (opens in a new tab)</span></a></p>
+  </footer>
+  <div class="toast hidden" id="toast" role="status"></div>
+  <script>
+  // An old or mistyped address: offer the page it most likely meant (the last part of the path, with or without .html).
+  (function(){
+    var seg=decodeURIComponent(location.pathname.split('/').filter(Boolean).pop()||'').toLowerCase().replace(/\.html?$/,''),
+      map={first:'first-beat',beat:'first-beat','first-beat':'first-beat',song:'song',setup:'setup','start-here':'setup',start:'setup',sampling:'sampling',sample:'sampling',perform:'perform',hiphop:'hiphop','hip-hop':'hiphop','tech-house':'tech-house',techhouse:'tech-house',house:'thodorakis-house','vocal-house':'thodorakis-house','thodorakis-house':'thodorakis-house',thodorakis:'thodorakis-house',
+        manual:'learn',learn:'learn',lessons:'learn',controls:'controls',control:'controls','control-map':'controls',lab:'lab','rhythm-lab':'lab',help:'help',troubleshooting:'help',glossary:'glossary',words:'glossary','cheat-sheet':'cheat-sheet',cheatsheet:'cheat-sheet',safety:'safety',settings:'settings',index:'index',home:'index'},
+      file=map[seg],el=document.getElementById('did-you-mean');
+    if(!file||!el)return;
+    var a=document.querySelector('a[href="./'+file+'.html"]'),name=a?a.textContent:file;
+    el.innerHTML='Did you mean <a href="./'+file+'.html">'+name.replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];})+'</a>?';
+    el.hidden=false;
+  })();
+  </script>
+</body>
+</html>

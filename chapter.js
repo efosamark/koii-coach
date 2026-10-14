@@ -1,10 +1,16 @@
 'use strict';
-/* Shared checklist, progress and resume logic for the chapter pages: setup.html (00), sampling.html (07),
-   perform.html (08), hiphop.html (09), tech-house.html (10) and thodorakis-house.html (11).
+/* Shared checklist, progress and resume logic for the chapter pages: setup.html (00), first-beat.html (01),
+   song.html (02), sampling.html (07), perform.html (08), hiphop.html (09), tech-house.html (10) and
+   thodorakis-house.html (11).
    Each page sets <body data-chapter="slug"> and gives every step <li> inside .steps a stable data-step id.
    Progress is stored per chapter as {v:1,done:[stepId,...],last:stepId,n} under 'koii-coach-ch-<slug>', plus the
    optional fields cur (the step Continue points at) and at (ISO time of the last tick). v stays 1 and fields are only
-   ever added. 'koii-coach-meta' gets lastChapter (shared with the app: its other fields are kept).
+   ever added. 'koii-coach-meta' gets lastChapter (shared with the other pages: its other fields are kept), and a
+   notice that progress.js left there for this chapter ({chapter, text} in meta.notices) is shown once.
+   01 and 02 (slugs first-beat and song) were views of the old single-page app: progress.js derives their records from
+   its saved position, and every save here passes the record to CoachProgress.mirror() first, which writes the position
+   back for that older app and notes it in the record's derivedFrom.
+   A step with data-os="2.0" gets a "Needs OS 2.0+" badge that follows the OS chosen in Settings (koii-coach-v2.firmware).
    A link such as sampling.html#s-<step id> opens that step; wake.js (optional) keeps the screen on while ticking.
    How it all looks is up to coach.css and the shell (shell.js); this file only fills in the progress bar and its
    meter, the tick rows, the section tallies and the "You are here" mark on the step to continue at.
@@ -89,7 +95,12 @@ document.querySelectorAll('.steps ol').forEach(ol=>{
 // Load progress, migrating the old position-based keys the first time.
 const read=k=>{try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}};
 let saved=true,note='',state=read(KEY);
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));saved=true;}catch(e){saved=false;}return saved;};
+const save=()=>{
+  if(window.CoachProgress)try{CoachProgress.mirror(slug,state);}catch(e){console.error(e);}
+  try{localStorage.setItem(KEY,JSON.stringify(state));saved=true;}catch(e){saved=false;}return saved;
+};
+// 01 and 02: progress.js knows their steps in page order, to derive and mirror their records. They must agree.
+if(window.CoachProgress){const o=CoachProgress.order(slug);if(o.length&&o.join(' ')!==ids.join(' '))console.warn('chapter.js: the steps of this page differ from ORDER["'+slug+'"] in progress.js; update that list');}
 if(!(state&&state.v===1&&Array.isArray(state.done))){
   state={v:1,done:[],last:null};
   const L=LEGACY[slug];
@@ -130,6 +141,16 @@ function remember(){
 }
 if(state.n!==count()||!('cur' in state))store(false,true);   // also adds cur to a record saved before it existed
 remember();
+// A notice another page left for this chapter (progress.js, when it carried a place over): shown once, then removed.
+(()=>{
+  const m=read('koii-coach-meta');
+  if(!m||typeof m!=='object'||m.v!==1||!Array.isArray(m.notices))return;
+  const mine=m.notices.filter(x=>x&&x.chapter===slug&&typeof x.text==='string');
+  if(!mine.length)return;
+  note=[note,...mine.map(x=>x.text)].filter(Boolean).join(' ');
+  m.notices=m.notices.filter(x=>!mine.includes(x));
+  try{localStorage.setItem('koii-coach-meta',JSON.stringify(m));}catch(e){}
+})();
 
 // The step after the one ticked most recently (or after the furthest ticked step) that is not ticked yet.
 function target(){
@@ -174,7 +195,7 @@ steps.forEach((li,i)=>{
 });
 
 // Per-section tallies in each summary.
-const sections=[...document.querySelectorAll('.steps details')].map(d=>{
+const sections=[...document.querySelectorAll('.steps > details')].map(d=>{
   const t=document.createElement('span');t.className='tally';
   const s=d.querySelector('summary');if(s)s.append(' ',t);
   return [steps.filter(li=>d.contains(li)),t];
@@ -206,6 +227,19 @@ function update(){
   p.className='notice '+(saved?'info':'caution');   // a note about rewritten steps is information; ticks that cannot be saved need care
 }
 
+// "Needs OS x+" on the steps that need a newer OS than the one chosen in Settings (the old app's badge, kept as is).
+(()=>{
+  const fw=window.CoachProgress?CoachProgress.v2().firmware:'2.5',num={'2.5':2.5,'2':2,older:1}[fw],
+    name={'2.5':'OS 2.5.x','2':'OS 2.0.x',older:'an OS older than 2.0'}[fw],upd='<a href="./setup.html">00 Start here</a> shows how';
+  steps.forEach(li=>{
+    const os=li.dataset.os;if(!os||!/^\d+(\.\d+)?$/.test(os))return;
+    const b=document.createElement(num>=parseFloat(os)?'p':'div'),tag='Needs OS '+os+'+';
+    if(num>=parseFloat(os)){b.className='badge ok';b.textContent=tag+' · your '+name+' has it.';}
+    else{b.className='badge warn';b.innerHTML='<b>'+tag+'</b> '+(num?'You chose '+name+' in <a href="./settings.html">Settings</a>, which doesn’t have this. Update to the latest OS first ('+upd+'), or skip this step.':'Not sure which OS you have? Update to the latest OS first ('+upd+'), then choose it in <a href="./settings.html">Settings</a>.');}
+    const old=li.querySelector(':scope > .os-badge');
+    if(old)old.replaceWith(b);else{const t=li.querySelector(':scope > .step-title');if(t)t.after(b);else li.prepend(b);}
+  });
+})();
 $('resume').addEventListener('click',()=>{const t=here();if(t>=0)go(t);});
 const openAll=()=>document.querySelectorAll('details').forEach(d=>d.open=true);
 addEventListener('beforeprint',openAll);
@@ -299,6 +333,4 @@ window.CoachChapter={
   route(fn){router=typeof fn==='function'?fn:null;},
   routed:()=>routed   // true once the first route has run (a router added later should then route the page itself)
 };
-
-if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 })();

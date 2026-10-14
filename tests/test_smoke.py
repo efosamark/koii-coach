@@ -8,7 +8,7 @@ Writes ARTIFACTS_DIR/results.json as {note, results:[{target, status, error?, ..
 import json
 import re
 import traceback
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import urljoin
 
 import pytest
 
@@ -21,15 +21,24 @@ NOTE = ('Tests exercise the UI, navigation, saved progress, the service worker a
 
 # Chapter pages in guided order: (file, <body data-chapter>, header number, previous link, next link).
 CHAPTERS = [
-    ('setup.html', 'setup', '00', None, './index.html#first'),
-    ('sampling.html', 'sampling', '07', './index.html#song', './perform.html'),
+    ('setup.html', 'setup', '00', None, './first-beat.html'),
+    ('first-beat.html', 'first-beat', '01', './setup.html', './song.html'),
+    ('song.html', 'song', '02', './first-beat.html', './sampling.html'),
+    ('sampling.html', 'sampling', '07', './song.html', './perform.html'),
     ('perform.html', 'perform', '08', './sampling.html', './hiphop.html'),
     ('hiphop.html', 'hiphop', '09', './perform.html', './tech-house.html'),
     ('tech-house.html', 'tech-house', '10', './hiphop.html', './thodorakis-house.html'),
     ('thodorakis-house.html', 'vocal-house', '11', './tech-house.html', None),
 ]
-VIEWS = [('first', '#step-title'), ('song', '#song-title'), ('manual', '[data-lesson]'),
-         ('controls', '[data-control]'), ('lab', '#beat'), ('help', '#search'), ('settings', '#firmware')]
+# Tool pages: (file, h1, a selector the page must have).
+TOOLS = [('learn.html', 'Learn', '[data-lesson]'), ('controls.html', 'Control map', '[data-control]'), ('lab.html', 'Rhythm lab', '#beat button'),
+         ('help.html', 'Troubleshooting', '#search'), ('glossary.html', 'Glossary', '.gloss .term'), ('cheat-sheet.html', 'Cheat sheet', '.moves'),
+         ('safety.html', 'Safety and erasing', '#delete-sample'), ('settings.html', 'Settings', '#firmware'), ('404.html', 'Page not found', '.path a')]
+# Old addresses of the single-page app: (hash on index.html, the page it opens now, a selector that must be there).
+LEGACY = [('first', 'first-beat.html', 'body[data-chapter="first-beat"]'), ('song/song-plan', 'song.html#s-song-plan', 'li[data-step="song-plan"]:visible'),
+          ('manual/groups-and-scenes', 'learn.html#groups-and-scenes', 'details#groups-and-scenes[open]'),
+          ('help/a-pad-is-silent', 'help.html#a-pad-is-silent', 'details#a-pad-is-silent[open]'), ('controls', 'controls.html', '[data-control]'),
+          ('lab', 'lab.html', '#beat'), ('settings', 'settings.html', '#firmware'), ('help', 'help.html', '#search')]
 
 # Counts every sound the page schedules, so "playing" and "stopped" can be told apart without listening.
 # Python passes init scripts as text, so the body is wrapped in a call.
@@ -50,15 +59,15 @@ def assert_match(text, pattern, flags=0, message=None):
     assert re.search(pattern, text or '', flags), message or f'The input did not match the regular expression {pattern!r}. Input: {text!r}'
 
 
-def current_view(page):
-    return page.locator('nav [data-view][aria-current="page"]').first.get_attribute('data-view')
+def store(page, key):
+    """A koii-coach* key from localStorage, parsed."""
+    return page.evaluate('k => JSON.parse(localStorage.getItem(k) || "null")', key)
 
 
-def open_view(page, url, v):
-    """Opens index.html#view (or #view/<id>) as a fresh page load (as if typed into the address bar) and waits for that view."""
+def fresh_goto(page, url):
+    """A fresh page load, as if the address were typed in (a hash-only change would not reload)."""
     page.goto('about:blank')
-    page.goto(urljoin(url, './index.html#' + v), wait_until='networkidle')
-    page.locator(f'nav [data-view="{v.split("/")[0]}"][aria-current="page"]').wait_for(state='attached')
+    page.goto(url, wait_until='networkidle')
 
 
 def describe(error):
@@ -92,7 +101,7 @@ def run_target(browser, artifacts_dir, name, url, results):
     page.set_default_timeout(15000)
     watch(page, url, errors, bad_assets)
     try:
-        # --- Main app, desktop ---
+        # --- Home, desktop ---
         response = page.goto(url, wait_until='networkidle', timeout=45000)
         assert response and response.ok, f'Homepage returned HTTP {response.status if response else None}'
         # "/" opens Home. First run is defined by what the learner has done, not by saved keys, so reloads keep the welcome.
@@ -106,100 +115,118 @@ def run_target(browser, artifacts_dir, name, url, results):
         result['checks'].append('Home: first-run welcome card (kept over reloads) and chapter numbers in the navigation')
         page.screenshot(path=artifacts_dir / f'{name}-desktop.png', full_page=True)
 
-        page.locator('nav [data-view="first"]').click()
-        page.locator('#next').click()
-        assert page.locator('[data-dot="1"]').get_attribute('aria-current') == 'step'  # 01's dots: data-dot (chapter pages own data-step)
+        # --- 01 First beat in the step player ---
+        page.goto(absolute('./first-beat.html'), wait_until='networkidle')
+        assert page.evaluate('() => document.documentElement.dataset.player') == 'start', '01 opens on its start screen'
+        page.locator('#player-next').click()
+        page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'beat-empty-project'")
+        assert_match(page.title(), r'^Start in an empty project · Step 1 of 6', message='The tab title names the step')
+        page.locator('#player-next').click()
+        assert store(page, 'koii-coach-ch-first-beat')['done'] == ['beat-empty-project'], 'Done · Next ticks the 01 step'
+        v2 = store(page, 'koii-coach-v2')
+        assert v2['step'] == 1 and v2['stepId'] == 'beat-tempo-grid' and v2['schema'] == 4, f'01 moves are written back to koii-coach-v2 ({v2})'
+        result['checks'].append('01 First beat runs in the player; Done · Next ticks and writes the place back to koii-coach-v2')
+
+        # The placement helper walks this step's positions only (1.1.1 was placed in the step before), and is saved.
+        fresh_goto(page, absolute('./first-beat.html#s-beat-kicks'))
+        assert_match(page.locator('#placement').text_content(), r'^1\.2\.3 · A1$', message='The helper starts at the first kick not placed yet')
         page.locator('#note-next').click()
-        assert_match(page.locator('#placement').text_content(), r'1\.2\.3')
-        result['checks'].append('Recipe navigation and exact note-position helper')
+        assert_match(page.locator('#placement').text_content(), r'^1\.3\.1 · A1$')
+        assert store(page, 'koii-coach-v2')['note'] == 2, 'The helper position is saved as koii-coach-v2.note'
+        result['checks'].append('Placement helper: the step\'s own positions, one at a time, saved')
 
-        # "Start again from step 1" asks first, and the move back can be undone from the toast.
-        page.once('dialog', lambda dialog: dialog.dismiss())
-        page.locator('#restart').click()
-        assert page.locator('[data-dot="1"]').get_attribute('aria-current') == 'step', 'Cancel keeps the current step'
-        page.once('dialog', lambda dialog: dialog.accept())
-        page.locator('#restart').click()
-        assert page.locator('[data-dot="0"]').get_attribute('aria-current') == 'step', 'OK goes back to step 1'
-        page.locator('#toast button', has_text='Undo').click()
-        assert page.locator('[data-dot="1"]').get_attribute('aria-current') == 'step', 'Undo returns to the step'
-        assert_match(page.locator('#placement').text_content(), r'1\.2\.3')
-        result['checks'].append('"Start again from step 1" asks first and can be undone')
+        # "Hear this recipe" plays the target rhythm, and moving to the next step stops it.
+        page.locator('li[data-step="beat-kicks"] .hear-btn').click()
+        page.wait_for_function("() => window.__coachAudioContexts.some(c => c.state === 'running') && window.__coachAudioStarts > 0")
+        page.locator('#player-next').click()
+        page.locator('li[data-step="beat-snares"]').wait_for(state='visible')
+        stopped = page.evaluate('() => window.__coachAudioStarts')
+        page.wait_for_timeout(400)
+        assert page.evaluate('() => window.__coachAudioStarts') == stopped, 'Done · Next stops the practice sound'
+        result['checks'].append('Web Audio: "Hear this recipe" starts; the next step stops scheduling new sounds')
 
-        # With progress, "/" shows Continue (never the last view), and Continue opens 01 at the saved step.
+        # With progress, "/" shows Continue, and Continue opens 01 at the step to continue at.
         page.goto(url, wait_until='networkidle')
         assert page.locator('.card.start').count() == 0, 'Home drops the welcome card once 01 has progress'
         assert_match(page.locator('.continue .eyebrow').text_content(), r'Chapter 01')
+        cur = store(page, 'koii-coach-ch-first-beat')['cur']
+        assert page.locator('#resume').get_attribute('href') == './first-beat.html#s-' + cur, 'Continue links the step to continue at'
         page.locator('#resume').click()
-        assert current_view(page) == 'first'
-        assert page.locator('[data-dot="1"]').get_attribute('aria-current') == 'step', 'Continue opens the saved step'
+        page.wait_for_function('id => document.activeElement && document.activeElement.dataset.step === id', arg=cur)
         result['checks'].append('Home continues 01 at the saved step')
 
-        page.locator('nav [data-view="controls"]').click()
-        page.locator('[data-control="SAMPLE"]').first.click()
+        # Old addresses of the single-page app open their new pages; any other hash is Home.
+        for old, new, sel in LEGACY:
+            fresh_goto(page, absolute('./index.html#' + old))
+            # The player may add #s-<step> to a chapter's address once it opens, so a bare page only has to match its path.
+            page.wait_for_url(absolute('./' + new) if '#' in new else lambda u, n=absolute('./' + new): u.split('#')[0] == n)
+            assert page.locator(sel).count() > 0, f'index.html#{old} opens {new} ({sel})'
+        fresh_goto(page, absolute('./index.html#help/a-pad-is-silent'))
+        page.wait_for_url(absolute('./help.html#a-pad-is-silent'))
+        page.wait_for_function("() => document.activeElement === document.querySelector('#a-pad-is-silent summary')")
+        fresh_goto(page, absolute('./index.html#no-such-view'))
+        assert page.evaluate('location.hash') == '' and page.locator('#resume').count() == 1, 'An unknown hash opens Home'
+        result['checks'].append('Old routes #first #song/<step> #manual/<lesson> #help/<topic> #controls #lab #settings #help open their pages; '
+                                'an unknown hash opens Home')
+
+        # Every tool page has its h1 and its contents.
+        for file, h1, sel in TOOLS:
+            r = page.goto(absolute('./' + file), wait_until='networkidle')
+            assert r and r.ok, f'{file} returned HTTP {r.status if r else None}'
+            assert page.locator('#main h1').text_content().strip() == h1, f'{file} h1 is {h1}'
+            assert page.locator(sel).count() > 0, f'{file} has {sel}'
+        result['checks'].append('Tool pages: Learn, Control map, Rhythm lab, Troubleshooting, Glossary, Cheat sheet, Safety, Settings, 404')
+
+        page.goto(absolute('./controls.html'), wait_until='networkidle')
+        page.locator('[data-control="SAMPLE"]').click()
         assert_match(page.locator('#info').text_content(), r'capture|source|input', re.I)
-        result['checks'].append('Clickable control explanations')
+        assert page.locator('[data-control="SAMPLE"]').get_attribute('aria-checked') == 'true'
+        page.keyboard.press('ArrowRight')
+        assert page.locator('[data-control="KEYS"]').get_attribute('aria-checked') == 'true', 'Arrow keys move through the controls'
+        result['checks'].append('Control map: a tap explains the control; arrow keys move')
 
-        page.locator('nav [data-view="manual"]').click()
-        page.locator('[data-lesson="0"]').click()
-        page.locator('#complete').click()
-        page.go_back()  # a lesson is its own history entry (#manual/<lesson-id>), so Back returns to the list
-        page.locator('[data-lesson="1"]').wait_for()
-        assert page.evaluate('location.hash') == '#manual', 'Back from a lesson returns to the lesson list'
-        result['checks'].append('Learn lesson can be marked as tried; Back returns to the list')
+        page.goto(absolute('./learn.html'), wait_until='networkidle')
+        lesson = page.locator('[data-lesson="0"]')
+        lesson.locator('summary').click()
+        assert page.evaluate('location.hash') == '#samples-notes-and-patterns', 'An opened lesson has its own address'
+        lesson.locator('.complete').click()
+        assert lesson.locator('.complete').get_attribute('aria-pressed') == 'true'
+        assert 'samples-notes-and-patterns' in store(page, 'koii-coach-v2')['done'], 'A tried lesson is saved'
+        page.go_back()  # opening a lesson added a history entry, so Back closes it again
+        page.wait_for_function("() => !document.querySelector('[data-lesson=\"0\"]').open && location.hash === ''")
+        result['checks'].append('Learn: a lesson can be marked as tried; Back closes the lesson')
 
-        page.locator('nav [data-view="help"]').click()
+        page.goto(absolute('./help.html'), wait_until='networkidle')
         page.locator('#search').fill('silent')
-        page.locator('#results h2.sub', has_text='Troubleshooting').wait_for()
-        assert page.locator('#results details').count() > 0, 'Help search "silent" lists a troubleshooting topic'
+        page.locator('#results h2.sub:visible').first.wait_for()
+        assert page.locator('#results details[data-topic]:visible').count() > 0, 'Help search "silent" lists a troubleshooting topic'
+        assert page.locator('#results details[data-topic="my-taps-do-not-repeat"]').is_hidden(), 'Topics that do not match are hidden'
         page.locator('#search').fill('USB')
-        assert page.locator('#results details').count() > 0, 'Help search "USB" lists a troubleshooting topic'
-        result['checks'].append('Help search returns troubleshooting topics')
+        assert page.locator('#results details[data-topic]:visible').count() > 0, 'Help search "USB" lists a troubleshooting topic'
+        assert_match(page.evaluate('location.search'), r'q=USB', message='The query is in the address')
+        result['checks'].append('Troubleshooting search filters the topics')
 
-        # #help/<topic-id> (a slug of the topic title) opens Help with that topic expanded and focused.
-        open_view(page, url, 'help/a-pad-is-silent')
-        topic = page.locator('#results details[data-topic="a-pad-is-silent"]')
-        assert topic.get_attribute('open') is not None, '#help/a-pad-is-silent expands that topic'
-        assert page.evaluate("() => document.activeElement === document.querySelector('[data-topic=\"a-pad-is-silent\"] summary')")
-        result['checks'].append('#help/<topic-id> opens and focuses that topic')
-
-        # Firmware picker (in Settings): a step that needs OS 2.0 shows a warning badge for an older OS and an OK badge for OS 2.5.
-        os_step = page.evaluate('() => song.findIndex(s => s[7] && s[7].os)')
-        assert os_step >= 0, 'course.js has a song step with a minimum OS'
-        page.locator('nav [data-view="settings"]').click()
+        # OS choice (Settings): a step that needs OS 2.0 shows a warning for an older OS and an OK badge for OS 2.5.
+        page.goto(absolute('./settings.html'), wait_until='networkidle')
         page.locator('#firmware').select_option('older')
         assert_match(page.locator('#version-note').text_content(), r'update first', re.I)
-        page.locator('nav [data-view="song"]').click()
-        page.locator(f'[data-song-step="{os_step}"]').click()
-        assert page.locator(f'[data-song-step="{os_step}"]').get_attribute('aria-current') == 'step'
-        assert_match(page.locator('.badge.warn').first.text_content(), r'Needs OS')
-        page.locator('nav [data-view="settings"]').click()
+        assert store(page, 'koii-coach-v2')['firmware'] == 'older'
+        fresh_goto(page, absolute('./song.html#s-song-list-open'))
+        assert_match(page.locator('li[data-step="song-list-open"] .badge.warn').text_content(), r'Needs OS 2\.0\+')
+        page.goto(absolute('./settings.html'), wait_until='networkidle')
         page.locator('#firmware').select_option('2.5')
-        page.locator('nav [data-view="song"]').click()
+        fresh_goto(page, absolute('./song.html#s-song-list-open'))
         assert page.locator('.badge.warn').count() == 0
-        assert_match(page.locator('.badge.ok').first.text_content(), r'Needs OS')
-        result['checks'].append('Firmware picker changes the "Needs OS" badge')
+        assert_match(page.locator('li[data-step="song-list-open"] .badge.ok').text_content(), r'Needs OS')
+        result['checks'].append('The OS choice in Settings changes the "Needs OS" badges')
 
-        # Song chapter: the current step survives a reload (the #song hash reopens the view).
+        # 02: the step on screen survives a reload (the address holds it).
+        page.locator('#player-next').click()
         page.reload(wait_until='networkidle')
-        assert current_view(page) == 'song'
-        assert page.locator(f'[data-song-step="{os_step}"]').get_attribute('aria-current') == 'step'
-        result['checks'].append('Song step and view survive reload')
+        page.wait_for_function("() => document.activeElement && document.activeElement.dataset.step === 'song-list-first-half'")
+        result['checks'].append('A 02 step survives a reload')
 
-        # Hash routes, typed into the address bar and changed in place.
-        for v, sel in VIEWS:
-            open_view(page, url, v)
-            assert current_view(page) == v, f'#{v} opens the {v} view'
-            assert page.locator(sel).count() > 0, f'#{v} renders {sel}'
-        page.evaluate("() => { location.hash = '#lab'; }")
-        page.wait_for_function("""() => document.querySelector('nav [data-view="lab"][aria-current="page"]')""")
-        page.goto('about:blank')
-        page.goto(urljoin(url, './index.html#no-such-view'), wait_until='networkidle')
-        page.wait_for_function("() => location.hash === '#home'")
-        assert page.locator('nav [data-view][aria-current="page"]').count() == 0 and page.locator('#resume').count() == 1, \
-            'An unknown hash opens Home'
-        result['checks'].append('Hash routes #first #song #manual #controls #lab #help #settings; an unknown hash opens Home')
-
-        page.locator('nav [data-view="lab"]').click()
+        page.goto(absolute('./lab.html'), wait_until='networkidle')
         assert page.locator('#beat button').count() == 64
         page.locator('#clear').click()
         assert page.locator('#beat button.on').count() == 0
@@ -207,6 +234,7 @@ def run_target(browser, artifacts_dir, name, url, results):
         assert page.locator('#beat button.on').count() == 16
         page.locator('#beat button').first.click()
         assert page.locator('#beat button.on').count() == 15
+        assert len(store(page, 'koii-coach-v2')['lab'][0]) == 3, 'The lab pattern is saved'
         page.locator('#recipe').click()
         result['checks'].append('64-cell rhythm grid, clear/recipe and note toggles')
         page.locator('#audio-play').click()
@@ -217,29 +245,25 @@ def run_target(browser, artifacts_dir, name, url, results):
         assert page.evaluate('() => window.__coachAudioStarts') == stopped_starts
         page.locator('#audio-play').click()
         page.wait_for_function('old => window.__coachAudioStarts > old', arg=stopped_starts)
-        page.locator('nav [data-view="first"]').click()
-        navigation_starts = page.evaluate('() => window.__coachAudioStarts')
-        page.wait_for_timeout(400)
-        assert page.evaluate('() => window.__coachAudioStarts') == navigation_starts
-        result['checks'].append('Web Audio starts; Stop and navigation stop scheduling new sounds')
+        page.locator('#audio-play').click()
+        result['checks'].append('Web Audio in the lab starts and Stop stops scheduling new sounds')
 
-        # Service worker: registers, and the footer reports the offline copy once every asset is cached.
+        # Service worker: registers, and Home's footer reports the offline copy once every asset is cached.
         # Capped at 30 s: if one precached file is missing, install fails and .ready would never resolve.
+        page.goto(url, wait_until='networkidle')
         sw = page.evaluate("""() => 'serviceWorker' in navigator ? Promise.race([
             navigator.serviceWorker.ready.then(r => Boolean(r.active)),
             new Promise(resolve => setTimeout(() => resolve(false), 30000))]) : false""")
         assert sw, 'Service worker is active'
+        page.reload(wait_until='networkidle')
         page.wait_for_function("() => /Offline ready: the coach and all its chapters/.test(document.querySelector('#offline').textContent)", timeout=30000)
-        result['checks'].append('Service worker registers and caches every chapter')
+        result['checks'].append('Service worker registers and caches every page')
 
-        # Reset all progress (in Settings) asks first: Cancel keeps progress, OK clears it but keeps the settings.
-        open_view(page, url, 'settings')
+        # Reset all progress (in Settings) asks first: Cancel keeps progress, OK clears it but keeps the settings, Undo restores it.
+        page.goto(absolute('./settings.html'), wait_until='networkidle')
         page.locator('input[name="wake"][value="off"]').check()  # a setting in koii-coach-prefs that Reset must keep
-
-        def saved():
-            return page.evaluate("() => JSON.parse(localStorage.getItem('koii-coach-v2') || 'null')")
-
-        assert saved()['song'] > 0, 'Song progress is saved before the reset test'
+        before = store(page, 'koii-coach-ch-first-beat')
+        assert before and before['done'], '01 has progress before the reset test'
         asked = []
 
         def cancel(dialog):
@@ -249,49 +273,31 @@ def run_target(browser, artifacts_dir, name, url, results):
         page.once('dialog', cancel)
         page.locator('#reset').click()
         assert_match(asked[0] if asked else '', r'Reset all')
-        assert saved()['song'] > 0, 'Cancel keeps progress'
+        assert store(page, 'koii-coach-ch-first-beat') == before, 'Cancel keeps progress'
         page.once('dialog', lambda dialog: dialog.accept())
         page.locator('#reset').click()
         page.locator('#toast', has_text='reset').wait_for()
-        after = saved()
-        assert after['song'] == 0, 'OK resets progress'
-        assert after['firmware'] == '2.5', 'Reset keeps the firmware choice'
-        prefs = page.evaluate("() => JSON.parse(localStorage.getItem('koii-coach-prefs') || 'null')")
+        assert store(page, 'koii-coach-ch-first-beat') is None, 'OK resets progress'
+        assert store(page, 'koii-coach-v2')['firmware'] == '2.5', 'Reset keeps the firmware choice'
+        prefs = store(page, 'koii-coach-prefs')
         assert prefs and prefs.get('wake') == 'off' and prefs.get('setup') == 'ready', f'Reset keeps koii-coach-prefs (got {prefs})'
-        result['checks'].append('Reset all progress asks for confirmation and keeps the settings')
+        page.locator('#toast button', has_text='Undo').click()
+        assert store(page, 'koii-coach-ch-first-beat') == before, 'Undo brings the progress back'
+        result['checks'].append('Reset all progress asks for confirmation, keeps the settings and can be undone')
 
-        # --- Main app, 390 px phone ---
+        # --- 390 px phone ---
         page = phone.new_page()
         page.set_default_timeout(15000)
         watch(page, url, errors, bad_assets)
         page.goto(url, wait_until='networkidle')
         no_overflow(page, 'Home (first run) at 390 px')
-        for v, _ in VIEWS:
-            open_view(page, url, v)
-            no_overflow(page, f'index.html#{v} at 390 px')
-        open_view(page, url, 'first')
-        assert page.locator('#next').is_visible()
-        assert page.locator('#note-next').is_visible()
-        page.screenshot(path=artifacts_dir / f'{name}-mobile.png', full_page=True)
-        # Under 600 px the step dots give way to a "Step N of M" meter and a "Steps" list whose rows jump.
-        assert page.locator('.step-card .dots').is_hidden() and page.locator('.step-meter').is_visible(), 'Phone shows the meter, not the dots'
-        page.locator('.step-list summary').click()
-        page.locator('[data-jump="2"]').click()
-        assert_match(page.locator('.step-pos').text_content(), r'^Step 3 of \d+\Z')
-        # Next from the bottom of a long step brings the new step's title into view, below the sticky app bar, and focuses it.
-        page.evaluate('() => window.scrollTo(0, document.documentElement.scrollHeight)')
-        page.locator('#next').click()
-        title = page.evaluate("""() => {
-            const r = document.querySelector('#step-title').getBoundingClientRect(), bar = document.querySelector('#appbar');
-            return {top: r.top, bottom: r.bottom, h: window.innerHeight, bar: bar ? bar.getBoundingClientRect().bottom : 0,
-                    focused: document.activeElement && document.activeElement.id};
-        }""")
-        assert title['top'] >= title['bar'] and title['bottom'] <= title['h'], \
-            f"Next shows the new step title (top {round(title['top'])}px under a {round(title['bar'])}px bar in a {title['h']}px window)"
-        assert title['focused'] == 'step-title'
-        page.goto(url, wait_until='networkidle')
-        no_overflow(page, 'Home (Continue) at 390 px')
-        result['checks'].append('Phone width: no horizontal scrolling on Home or in any view; Steps list jumps; Next scrolls the new step into view')
+        for file, _, _ in TOOLS:
+            page.goto(absolute('./' + file), wait_until='networkidle')
+            no_overflow(page, f'{file} at 390 px')
+        page.goto(absolute('./first-beat.html#s-beat-hats'), wait_until='networkidle')
+        assert page.locator('#note-next').is_visible() and page.locator('#player-next').is_visible()
+        no_overflow(page, 'first-beat.html placement step at 390 px')
+        page.screenshot(path=artifacts_dir / f'{name}-mobile.png', full_page=False)
 
         # --- Chapter pages, 390 px phone ---
         # Each page opens in the step player (player.js): a fresh visit shows the start screen, which hides the steps.
@@ -349,18 +355,14 @@ def run_target(browser, artifacts_dir, name, url, results):
             assert_match(page.locator('#player-next').text_content(), r'^\s*Next\s*$', message=f'{file}: a ticked step reads Next')
             first_li.locator('.check input').uncheck()
 
-            # Previous and next chapter links land on the right page (and the right view of the main app).
+            # Previous and next chapter links land on the right page.
             for href in [h for h in (prev, nxt) if h]:
                 page.goto(absolute('./' + file), wait_until='networkidle')
                 page.locator(f'.chapters a[href="{href}"]').click()
                 page.wait_for_url(absolute(href))
                 page.wait_for_load_state('networkidle')
-                fragment = urlsplit(absolute(href)).fragment
-                if fragment:
-                    assert current_view(page) == fragment, f'{file} → {href} opens the {fragment} view'
-                else:
-                    assert page.locator('header .eyebrow').count() > 0, f'{file} → {href} opens a chapter page'
-        result['checks'].append('Chapter pages 00 and 07-11: start screen, list at #all (ticks survive reload), player at #s-<first id> '
+                assert page.locator('header .eyebrow').count() > 0, f'{file} → {href} opens a chapter page'
+        result['checks'].append('Chapter pages 00, 01, 02 and 07-11: start screen, list at #all (ticks survive reload), player at #s-<first id> '
                                 '(Done · Next ticks and moves on, Back returns, action bar on screen), report link, prev/next, no horizontal scrolling')
 
         # A #s-<step id> link opens that step in the player and focuses it, below the sticky bars; in All steps it opens
@@ -401,7 +403,13 @@ def run_target(browser, artifacts_dir, name, url, results):
         hit.click()
         page.wait_for_url(absolute(href))
         page.wait_for_function('id => document.activeElement && document.activeElement.dataset.step === id', arg=href.split('#s-')[1])
-        result['checks'].append('Search finds a chapter step ("sidechain") and opens it')
+        # The same search finds 01's steps by their titles, and help topics on help.html.
+        page.locator('#appbar .search-btn').click()
+        page.locator('#site-search').fill('snare')
+        page.locator('#site-results a.search-hit[href^="./first-beat.html#s-"]').first.wait_for()
+        page.locator('#site-search').fill('silent pad')
+        page.locator('#site-results a.search-hit[href="./help.html#a-pad-is-silent"]').wait_for()
+        result['checks'].append('Search finds chapter steps ("sidechain", "snare" in 01) and help topics, and opens a step')
 
         # After ticks in a chapter, Home's Continue opens that chapter at the next step to do.
         page.goto(absolute('./sampling.html#all'), wait_until='networkidle')

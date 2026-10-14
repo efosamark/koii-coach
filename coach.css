@@ -1,5 +1,5 @@
-/* coach.css: the one stylesheet for every page of K.O. II Coach (index.html and the chapter pages).
-   Tokens, base, components, page layouts, the shared shell (shell.js), legacy app classes, forced colours and print.
+/* coach.css: the one stylesheet for every page of K.O. II Coach (Home, the eight chapter pages and the tool pages).
+   Tokens, base, components, page layouts, the shared shell (shell.js), tool pages, forced colours and print.
    No build step: pages link it as it is. Spec: docs/overhaul-plan.md sections 4.5, 5.6 and 6.
 
    ======================================================================================================
@@ -21,6 +21,7 @@
        <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span>
          <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
        <script src="site.js"></script>
+       <script src="progress.js"></script>
        <script src="shell.js"></script>             plain, synchronous, straight after the header (see shell.js)
        <main id="main" class="page" tabindex="-1">    chapter pages: class="page reading"
          <header class="page-head">                   the page's own eyebrow and h1 (one .eyebrow per page head)
@@ -34,14 +35,14 @@
    Without JavaScript the static header is a home link and every page still reads top to bottom.
    shell.js fills #appbar (menu button, wordmark, title, actions), adds the menu sheet (<dialog id="shell-menu">)
    and, from 1024px, the course rail (#shell-rail) on the left. The chapter title in the bar comes from site.js
-   via <body data-chapter>; index.html views get theirs from the nav link marked aria-current="page".
+   via <body data-chapter>; a tool page gets its own from its entry in site.js.
    The bar's right-hand side is <div class="appbar-actions" id="appbar-actions">: the Search button (.search-btn)
    is in it, and a page script may append or prepend its own .icon-btn there (shell.js runs first, so it exists).
    Search is lazy: the first tap builds <dialog class="sheet search-sheet" id="site-search-dialog"> and loads
    search.js, so a page pays nothing until someone searches. Its ids are site-search (the field), site-results and
-   site-search-status, never #search / #results, which are Help's. Results link to chapter steps as
-   <page>.html#s-<step id>, to 01/02 steps as index.html#first/<step id> and #song/<step id>, to lessons as
-   index.html#manual/<lesson id> and to help topics as index.html#help/<slug of the title>.
+   site-search-status, never #search / #results, which are help.html's own. Results link to chapter steps as
+   <page>.html#s-<step id>, to lessons as learn.html#<lesson id>, to help topics as help.html#<topic id>, to words
+   as glossary.html#term-<word> and to controls as controls.html#control-<name>.
    Ids the shell owns: appbar, appbar-actions, shell-menu, shell-menu-title, shell-rail, shell-offline,
    site-search-dialog, site-search, site-results, site-search-status. It never adds a
    <header> with .eyebrow, a <footer>, an <h1> or a [data-step], so page selectors stay unique.
@@ -58,8 +59,7 @@
      Cards        .card; .card.start (welcome card)
      Disclosure   any <details>/<summary> gets the chevron and a 48px summary; details.card / .disclosure = boxed
      Progress     <span class="meter" aria-hidden="true"><span class="meter-fill" style="width:40%"></span></span>
-                  next to visible text ("23 of 57 done"); .status-bar = sticky chapter bar under the app bar;
-                  .dots = the 01/02 step dots (buttons with .done / .current)
+                  next to visible text ("23 of 57 done"); .status-bar = sticky chapter bar under the app bar
      Tick         label.check > input[type=checkbox] + span (chapter.js builds it): 48px row, round tick
      Toast        .toast (role="status"; hide with [hidden] or .hidden)
      Sheet        <dialog class="sheet"> > .sheet-box > .sheet-head + .sheet-body: bottom sheet under 600px,
@@ -67,24 +67,12 @@
      Search       .search-sheet (a .sheet: full height under 600px, a 640px panel from 600px) > .search-head
                   (.search-field > input#site-search) + .search-chips > .search-chip + .search-body >
                   .search-group > h2.search-group-title + ul.search-list > li > a.search-hit (.search-hit-title,
-                  .search-hit-crumb, .search-hit-snip; <mark> is a matched word), or li.search-word for a glossary term
+                  .search-hit-crumb, .search-hit-snip; <mark> is a matched word; a.search-hit.search-word for a word)
      Text         .eyebrow (mono caps, ink-2) .meta (14px ink-2) .muted .sr (visually hidden) .lead
      Layout       .page (1180px container) .page.reading (chapter reading column) .page-head .row .grid
                   (auto-fill tiles; .grid > div = inset tile) .split (two columns when wide) .sticky .section
      Chapter      .steps > details (section cards), .steps ol > li[data-step] rows, li.here, .tally (.all),
                   .chapters .prev/.next, .site-foot
-   Old class -> new class:
-     chapter pages: header (dark band) -> the shell + header.page-head inside main; .progress -> .status-bar;
-       .button -> .btn (#resume .btn.primary, #print .btn, #reset .btn.danger); .actions -> .row;
-       .good -> .checkpoint; .notice -> .notice + .tip/.info/.caution/.danger; <code> holding a display
-       value -> <samp class="lcd"> (plain <code> still works); .card, .grid, .check, .tally, .here, .chapters,
-       .skip keep their names. chapter.css is no longer needed.
-     index.html: the inline <style> and the 12-link nav go (the shell renders the nav); .wrap -> .page;
-       .btn.orange -> .btn.primary (orange is for keycaps only); .btn.light -> .btn; .tiny -> .meta;
-       .hero -> .page-head (.hero still works); .progress (dots) -> .dots; .notice.ok -> .notice.tip or
-       .checkpoint. .card, .row, .split, .grid, .sticky, .badge, .key, .field, .device, .controls, .control,
-       .pads, .display, .beat, .scroll, .search, .lessoncard, .inside, .source, .links, .map, .gloss, .path,
-       .toast, .hidden, .sr, .skip keep working as they are (see "Legacy app classes" below).
    Notes:
      Sticky things go at top:var(--sticky-top) (the app bar's height; 0 on short viewports, where the bar
      scrolls away). A script that checks whether an element is hidden under the bar compares its top with
@@ -137,6 +125,7 @@
   --i-warning:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.3 4.3L2.8 17.5A2 2 0 0 0 4.5 20.5h15a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0z'/%3E%3Cpath d='M12 9.5v4M12 17h.01'/%3E%3C/svg%3E");
   --i-erase:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 20.5h11'/%3E%3Cpath d='M4.9 13.9l8.5-8.5a2 2 0 0 1 2.8 0l3.4 3.4a2 2 0 0 1 0 2.8L11 20.2a1 1 0 0 1-.7.3H8.2a1 1 0 0 1-.7-.3l-2.6-2.6a2 2 0 0 1 0-2.8z'/%3E%3Cpath d='M9 9.8l5.2 5.2'/%3E%3C/svg%3E");
   --i-check:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E");
+  --i-undo:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 14L4 9l5-5'/%3E%3Cpath d='M4 9h10.5a5.5 5.5 0 0 1 0 11H11'/%3E%3C/svg%3E");
   /* The tick inside a done checkbox is drawn in --on-done, which is near-black in both themes. */
   --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2318251E' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
 }
@@ -264,6 +253,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 .key.knob{border-radius:999px;min-width:2.1em}
 .key.pad{min-width:2.4em}
 .chord{font:inherit;white-space:nowrap}
+.nobr{white-space:nowrap}   /* punctuation that must stay on the line of the keycap or chip it touches */
 .lcd{display:inline-block;padding:.05em .4em;border:1px solid var(--lcd-line);border-radius:var(--r-chip);background:var(--lcd-bg);color:var(--lcd-ink);font:600 max(.85em,14px)/1.5 var(--font-mono);letter-spacing:.04em;white-space:nowrap}
 .lcd.readout{display:block;width:max-content;max-width:100%;margin:var(--sp-2) 0;padding:var(--sp-2) var(--sp-4);border-radius:var(--r-control);font-size:28px;line-height:36px;white-space:normal}
 
@@ -273,7 +263,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 .tag.caution{background:var(--caution-surface);border-color:var(--caution-line);color:var(--caution-ink)}
 .tag.danger{background:var(--danger-surface);border-color:var(--danger);color:var(--danger)}
 .tag.info{background:var(--info-surface);border-color:var(--info-ink);color:var(--info-ink)}
-/* "Needs OS x+" on a step (index.html): .ok when the chosen OS has it, .warn when it does not. */
+/* "Needs OS x+" on a step (chapter.js): .ok when the OS chosen in Settings has it, .warn when it does not. */
 .badge{margin:var(--sp-2) 0 var(--sp-3)}
 .badge.ok{display:inline-block;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .badge.warn{padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-left-width:4px;border-radius:var(--r-control);background:var(--caution-surface);color:var(--ink)}
@@ -325,12 +315,6 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .status-bar > p{margin:0;font-weight:600}
 .status-bar .meter{flex:1 1 6rem}
 .status-bar .btn{min-height:44px;padding-inline:var(--sp-4)}
-/* Step dots of 01/02 (index.html): buttons, done and current told apart by height as well as colour. */
-.dots{display:flex;gap:3px;margin:var(--sp-3) 0}
-.dots button{flex:1;min-width:6px;height:28px;padding:11px 0;border:0;border-radius:2px;background:var(--line-strong);background-clip:content-box}
-.dots button.done{padding:8px 0;background-color:var(--done-ink)}
-.dots button.current{padding:3px 0;background-color:var(--ink)}
-@media (max-width:599px){.dots{flex-wrap:wrap;row-gap:4px}.dots button{flex:0 0 calc((100% - 33px)/12);min-width:24px}}
 /* Tick: label.check > input + span. The whole 48px row is the target; the circle fills when done. */
 .check{display:flex;align-items:center;gap:var(--sp-3);min-height:48px;margin-top:var(--sp-2);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh);cursor:pointer;max-width:max-content}
 .check input{-webkit-appearance:none;appearance:none;flex:none;width:32px;height:32px;margin:0;border:2px solid var(--line-strong);border-radius:999px;background:var(--surface-1) center/22px no-repeat;cursor:pointer;transition:background-color var(--dur-press) var(--ease)}
@@ -470,22 +454,9 @@ html:has(.sheet[open]){overflow:hidden}
   html.shell-on .toast{left:calc(50% + var(--rail-w) / 2)}
 }
 
-/* ---------- Legacy app classes (index.html) ---------- */
-/* The single-page app still generates these names in its script. They are restyled here on the tokens,
-   so the app needs no class changes beyond the renames listed in the contract. */
-.wrap{width:100%;max-width:calc(var(--container) + 2 * var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
-.hero{margin:0 0 var(--sp-5)}
-.hero > p{max-width:var(--measure)}
-.hero .row > span{color:var(--ink-2)}
-.hero.compact h1{font-size:var(--t-h2);line-height:var(--t-h2-lh)}
+/* ---------- Tool page components: the control map, the Rhythm lab grid, Help, Learn, tables ---------- */
 .card.start h2{margin-top:var(--sp-1)}
 h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
-.field{padding:var(--sp-4) 0;border-top:1px solid var(--line)}
-.field > b{display:block;margin-bottom:var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
-.field p{margin:0}
-.field.action{margin:var(--sp-4) 0;padding:var(--sp-4);border:0;border-radius:var(--r-control);background:var(--surface-2)}
-.field.action > p:not(.chips){font-size:var(--t-check);line-height:var(--t-check-lh)}
-.field p.chips{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);margin-top:var(--sp-3)}
 .device{padding:var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-card);background:var(--surface-3)}
 .display{margin-bottom:var(--sp-3);padding:var(--sp-3) var(--sp-4);border:1px solid var(--lcd-line);border-radius:var(--r-control);background:var(--lcd-bg);color:var(--lcd-ink);font:600 15px/1.4 var(--font-mono);letter-spacing:.04em}
 .display small{display:block;font-size:var(--t-cap)}
@@ -524,11 +495,6 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .source{display:block;margin:var(--sp-3) 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .links{display:flex;flex-wrap:wrap;gap:var(--sp-1) var(--sp-4)}
 .links .source{margin:0}
-.lessoncard{display:flex;flex-direction:column;gap:var(--sp-2);width:100%;text-align:left;color:var(--ink);cursor:pointer}
-.lessoncard:hover{border-color:var(--line-strong)}
-.lessoncard .t{font-size:var(--t-check);line-height:var(--t-check-lh);font-weight:600}
-.lessoncard .d{color:var(--ink-2)}
-.notice.ok{border-left-color:var(--here)}
 dl.gloss dt{margin-top:var(--sp-3)}
 #goals,.path{padding-left:0;list-style:none}
 .goal.ok{color:var(--done-ink);font-weight:600}
@@ -559,9 +525,6 @@ dl.gloss dt{margin-top:var(--sp-3)}
   .beat button.now{outline:3px solid CanvasText;outline-offset:-4px}
   .meter{border:1px solid CanvasText}
   .meter-fill{forced-color-adjust:none;background:Highlight}
-  /* Done and to-do dots differ by height; the current one is Highlight. The selectors match the colour rules above. */
-  .dots button,.dots button.done{forced-color-adjust:none;background-color:CanvasText}
-  .dots button.current{background-color:Highlight}
   .led{forced-color-adjust:none;border-color:CanvasText;background:Canvas}
   [data-state="doing"] .led{border-color:Highlight;background:linear-gradient(90deg,Highlight 50%,Canvas 50%)}
   [data-state="done"] .led{border-color:CanvasText;background:CanvasText}
@@ -581,75 +544,19 @@ dl.gloss dt{margin-top:var(--sp-3)}
   :root{color-scheme:light;--bg:#fff;--surface-1:#fff;--surface-2:#fff;--surface-3:#fff;--ink:#000;--ink-2:#333;--line:#bbb;--line-strong:#666;--lcd-bg:#fff;--lcd-ink:#000;--lcd-line:#000;--key:#fff;--on-key:#000;--key-edge:#000;--e1:none;--e2:none;--e3:none}
   html.shell-on body{padding-left:0}
   body{background:#fff;color:#000}
-  .appbar,.rail,.sheet,.skip,.toast,.status-bar,#progress-note,.check,.tally,.chapters,.no-print,.menu-btn,.row button,.dots,.device{display:none!important}
+  .appbar,.rail,.sheet,.skip,.toast,.status-bar,#progress-note,.check,.tally,.chapters,.no-print,.menu-btn,.row button,.device,.strip-tools,.runner{display:none!important}
   .page{max-width:none;padding:0}
   .card,.steps > details{box-shadow:none;break-inside:avoid}
   details{break-inside:avoid}
   .key.hot{border-width:2px}
 }
 
-/* ---------- App views (index.html) ---------- */
-/* Layout only the single-page app uses (chapters 01-02 and the tools); everything else it draws is a component above.
-   Its script generates this markup. Hooks the smoke test relies on: #step-title #song-title #next #note-next
-   #placement #beat #audio-play [data-dot] [data-song-step] [data-lesson] [data-control] #search #results #reset. */
+/* ---------- Course rows, Home and the lab's challenges ---------- */
 .page-head .row{margin-top:var(--sp-4)}
 .page-head.compact h1{font-size:var(--t-h2);line-height:var(--t-h2-lh)}
-.tag .icon,.lessoncard .more .icon{width:16px;height:16px}
+.tag .icon{width:16px;height:16px}
 .source .icon{width:16px;height:16px;margin-left:var(--sp-1);vertical-align:-3px}
-
-/* Step card of 01/02. Emphasis follows the reading order: Do (20px on an inset), then what you should hear or see
-   (the check, with a "here" stripe), then Why (muted) and If stuck. */
-.step-card > h2{margin:var(--sp-3) 0 var(--sp-2)}
-.step-top{display:flex;align-items:center;gap:var(--sp-3);min-height:24px}
-.step-top .eyebrow{flex:none;margin:0}
-.step-meter{flex:1 1 auto}
-.field > b{display:flex;align-items:center;gap:var(--sp-2)}
-.field > b .icon{width:18px;height:18px}
-.field.expect{margin:var(--sp-2) 0 var(--sp-3);padding:var(--sp-1) 0 var(--sp-1) var(--sp-4);border-top:0;border-left:4px solid var(--here)}
-.field.expect > b{color:var(--done-ink)}
-.field.why p{color:var(--ink-2)}
-.step-actions{margin:var(--sp-5) 0 var(--sp-4)}
-.step-actions > :not(.prev){flex:1 1 auto}
-/* Phones: Previous shrinks to a 56px arrow (its name stays for screen readers) so Next can fill the row. */
-@media (max-width:599px){
-  .step-actions{flex-wrap:nowrap}
-  .step-actions .prev{flex:none;width:56px;padding:0}
-  .step-actions .prev-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-  .step-actions > :not(.prev){min-width:0;padding-inline:var(--sp-4)}
-}
-
-/* Step position: the dots from 600px; on phones a plain meter plus the "Steps" list, whose 48px rows jump to a step. */
-@media (max-width:599px){.step-card .dots{display:none}}
-@media (min-width:600px){.step-meter,.step-list{display:none}}
-.step-list{margin:var(--sp-3) 0 0;border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-2)}
-.step-list > summary{padding:0 var(--sp-4)}
-.step-list ol{margin:0;padding:0 var(--sp-2) var(--sp-2);list-style:none}
-.step-list li{max-width:none;margin:0}
-.step-list button{display:flex;align-items:center;gap:var(--sp-3);width:100%;min-height:48px;padding:var(--sp-2) var(--sp-3);border:0;border-radius:var(--r-control);background:transparent;color:var(--ink);text-align:left;line-height:1.3}
-.step-list button:hover{background:var(--surface-3)}
-.step-list .n{flex:none;min-width:2.5ch;font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2);text-align:right}
-.step-list .t{flex:1 1 auto;min-width:0}
-.step-list [aria-current="step"]{background:var(--surface-1);box-shadow:inset 3px 0 0 var(--here);font-weight:600}
-.you-here{flex:none;font:600 var(--t-cap)/1.2 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--done-ink)}
-/* The label gets its own line under the title, so on a narrow phone the title keeps the row's full width. */
-.step-list [aria-current="step"]{flex-wrap:wrap;row-gap:var(--sp-1)}
-.step-list [aria-current="step"] .you-here{flex-basis:100%;padding-left:calc(2.5ch + var(--sp-3))}
-
-/* Target rhythm in 01: read-only, so flat cells with no outline or keycap edge. The Rhythm lab keeps its buttons. */
-.beat .cell{display:grid;place-items:center;height:30px;border-radius:4px;background:var(--surface-3);color:var(--ink-2);font:600 var(--t-cap)/1 var(--font-mono)}
-.beat .cell.on{background:var(--ink);color:var(--surface-1)}
-.beat .cell.beatstart{border-left:3px solid var(--line-strong)}
-.beat .cell.now{box-shadow:inset 0 0 0 3px var(--here)}
-.beat .cell.selected{outline:3px dashed var(--focus);outline-offset:2px}
-.beat .cell.selected:not(.on){background:var(--info-surface)}
-/* Playhead on a hit: a ring in the card colour, which shows in both themes (lime on dark mode's light ink does not). */
-.beat button.on.now,.beat .cell.on.now{box-shadow:inset 0 0 0 3px var(--surface-1)}
-
-/* Note helper: the facts as quiet keycaps and an LCD chip, then the move itself as a Do line with lit keys. */
-.note-facts{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-4)}
-.note-do{font-size:var(--t-check);line-height:var(--t-check-lh)}
-
-/* Your path (01/02 views) and the lab's challenges: LED rows like the course menu. */
+/* Course rows (Home, 404) and the lab's challenges: LED rows like the course menu. */
 .path li{display:grid;grid-template-columns:12px minmax(0,1fr) auto;align-items:center;gap:var(--sp-1) var(--sp-3);min-height:48px;max-width:none;margin:0;padding:var(--sp-2) 0;border-bottom:1px solid var(--line)}
 .path li:last-child{border-bottom:0}
 .path a{font-weight:600}
@@ -661,25 +568,12 @@ dl.gloss dt{margin-top:var(--sp-3)}
 .modes{padding-left:0;list-style:none}
 .modes li{margin:var(--sp-2) 0}
 
-/* Learn: lesson cards fill their grid row; the "Tried" tag sits beside the number. */
-.lessoncard{height:100%}
-.lesson-top{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2);min-height:24px}
-.lesson-top .eyebrow{margin:0}
-.lessoncard .more{display:inline-flex;align-items:center;gap:var(--sp-1);margin-top:auto;font-weight:600}
-.lessoncard:hover .t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
-
 /* Help */
 #results details.card{margin:var(--sp-2) 0}
 #firmware-card .row{margin-bottom:var(--sp-2)}
 #import-file:focus-visible + label{outline:3px solid var(--focus);outline-offset:2px}
 
-@media (forced-colors:active){
-  .beat .cell{border:1px solid CanvasText}
-  .beat .cell.on{forced-color-adjust:none;background:Highlight;color:HighlightText}
-  .beat .cell.now{outline:3px solid CanvasText;outline-offset:-4px}
-  .step-list [aria-current="step"]{outline:3px solid Highlight;outline-offset:-3px}
-}
-@media print{.step-list,.step-meter,.toolbar,.hint{display:none!important}}
+@media print{.toolbar,.hint{display:none!important}}
 
 /* ---------- Chapter pages, continued: progress bar, "You are here", footer ---------- */
 /* Refines the base "Chapter pages" styles above for the six checklist pages (00, 07 to 11). It comes last so it wins,
@@ -740,8 +634,8 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 @media (prefers-reduced-motion:reduce){.steps li.linked::after{display:none}}
 @media print{.steps li.linked::after{display:none}}
 
-/* ---------- App views, phase 2: Home, the course list and Settings (index.html) ---------- */
-/* Home (#home, the default view): the welcome or Continue card, the course in guided order, device projects and the
+/* ---------- Home (index.html), the course list and Settings (settings.html) ---------- */
+/* Home: the welcome or Continue card, the course in guided order, device projects and the
    tools; two columns where .split has them. Settings: the keep-screen-on choice. Everything else is a component above. */
 .home > div > .card:first-child{margin-top:0}
 .welcome .lead{margin-bottom:var(--sp-5)}
@@ -979,7 +873,7 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
   html[data-player] body{padding-bottom:0}
   .player-actions{position:sticky;left:auto;right:auto;max-width:calc(46rem + 2 * var(--gutter));margin:0 auto;padding:0 var(--gutter) var(--sp-4);border:0;background:none;box-shadow:none}
   .pa-row{max-width:none;padding:var(--sp-2);border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e2)}
-  .pa-hint{display:block;max-width:none;margin:var(--sp-2) 0 0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh);text-align:center}
+  .pa-hint{display:block;width:max-content;max-width:100%;margin:var(--sp-2) auto 0;padding:2px var(--sp-3);border-radius:var(--r-chip);background:var(--bg);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh);text-align:center}
   .pa-hint .key{font-size:12px}
   html[data-player] .toast{bottom:calc(var(--bar-h) + var(--sp-6))}
 }
@@ -1019,3 +913,106 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
   .player-actions,.player-bar{border:2px solid CanvasText}
 }
 @media print{.player-actions,.player-bar,.player-modes,.player-sheet,.part-about,.player-chips,.player-safety,.player-parts,.player-card,.gate,.step-num{display:none!important}}
+
+/* ---------- Every chapter in the player: the parts of a 01/02 step, and the rhythm helpers of 01 ---------- */
+/* A part's title is an <h2> inside its <summary> (01, 02); it reads as the summary text. */
+.steps summary > .part-title{margin:0;font:inherit;color:inherit}
+/* Step parts, in reading order: title, (OS badge), Before you press, Do, (moves), (rhythm), Undo, Check, Why and
+   Not working?, the guide page. */
+.steps li > .step-title{margin:0 0 var(--sp-2);font-size:var(--t-check);line-height:var(--t-check-lh)}
+.steps li > .step-undo,.risk .step-undo{position:relative;margin:var(--sp-3) 0;padding:var(--sp-2) var(--sp-3) var(--sp-2) calc(var(--sp-3) + 30px);border-radius:var(--r-control);background:var(--surface-2)}
+.steps li > .step-undo::before,.risk .step-undo::before{content:"";position:absolute;left:var(--sp-3);top:calc(var(--sp-2) + 3px);width:22px;height:22px;background:var(--ink-2);-webkit-mask:var(--i-undo) center/contain no-repeat;mask:var(--i-undo) center/contain no-repeat}
+.step-moves,.moves{margin:var(--sp-2) 0 var(--sp-3);padding-left:1.25em}
+.step-moves li,.moves li{margin:var(--sp-1) 0}
+.step-extras{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:var(--sp-3) 0 var(--sp-2)}
+.step-more{border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-2)}
+.step-more > summary{min-height:44px;padding:0 var(--sp-4) 0 var(--sp-3);font-size:var(--t-cap)}
+.step-more[open]{flex-basis:100%}
+.step-more > p{max-width:none;margin:0;padding:0 var(--sp-4) var(--sp-3);font-size:var(--t-body);line-height:var(--t-body-lh)}
+.steps li > .step-source,.steps li > .step-report,.step-source{margin:var(--sp-2) 0 0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.steps li > .badge{margin:0 0 var(--sp-3)}
+/* In the player the step's parts keep their own sizes: only the Do line (and the preflight) is large. */
+html[data-player="step"] li.is-current > :is(.step-extras,.step-source,.step-report,.step-moves,.pattern,.runner,.step-undo,.badge){font-size:var(--t-body);line-height:var(--t-body-lh)}
+html[data-player="step"] li.is-current > :is(.step-source,.step-report){font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+html[data-player="step"] li.is-current .step-more .key,html[data-player="step"] li.is-current .step-source .key{background:var(--surface-1);border-color:var(--line-strong);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
+/* A risk tag is a link to safety.html: a tag, not underlined. */
+a.tag{text-decoration:none}
+a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+/* Target rhythm (first-beat.js): a read-only grid, ink squares for hits and outlines for empty steps, beats 4px apart.
+   The figure's text list says the same for screen readers and without JavaScript. */
+.pattern{margin:var(--sp-3) 0;padding:var(--sp-3);border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-2)}
+.pattern figcaption{margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.pattern-text{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:1.9}
+.pattern-text .lcd{font-size:13px}
+.strip{display:grid;grid-template-columns:3.4em repeat(16,minmax(0,1fr));gap:3px;align-items:center}
+.strip-beat{grid-column:span 4;font:600 12px/1.2 var(--font-mono);color:var(--ink-2)}
+.strip-name{font-size:var(--t-cap);font-weight:600;line-height:1.2}
+.strip-cell{height:22px;border:1.5px solid var(--line-strong);border-radius:4px;background:var(--surface-1)}
+.strip-cell.beatstart{margin-left:4px}
+.strip-cell.on{border-color:var(--ink);background:var(--ink)}
+.strip-cell.now{box-shadow:0 0 0 2px var(--here)}
+.strip-tools{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin-top:var(--sp-3)}
+.strip-tip{flex-basis:100%;margin:0}
+.strip-status:empty{display:none}
+/* Placement helper: the step's positions as LCD chips (done dim with a tick, the current one outlined in orange),
+   then "Placed · next position". */
+.runner{margin:var(--sp-3) 0;padding:var(--sp-3) var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1)}
+.runner-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-2)}
+.runner-head .eyebrow{margin:0}
+#placement{font:600 var(--t-check)/var(--t-check-lh) var(--font-mono)}
+.runner-list{display:flex;flex-wrap:wrap;gap:var(--sp-2);max-width:none;margin:0 0 var(--sp-3)}
+.runner-pos .lcd{font-size:15px}
+.runner-pos.done .lcd{opacity:.55}
+.runner-pos.done .lcd::after{content:" ✓"}
+.runner-pos.now .lcd{font-size:22px;line-height:1.4;outline:3px solid var(--key);outline-offset:2px}
+.runner-row{gap:var(--sp-2)}
+@keyframes pa-pulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 6px var(--here)}}
+#player-next.pulse{animation:pa-pulse 1.2s var(--ease) 2}
+@media (forced-colors:active){
+  .strip-cell{border:1px solid CanvasText}
+  .strip-cell.on{forced-color-adjust:none;background:CanvasText}
+  .strip-cell.now{outline:3px solid Highlight}
+  .runner-pos.now .lcd{outline-color:Highlight}
+  .steps li > .step-undo::before{forced-color-adjust:none;background:CanvasText}
+}
+
+/* ---------- Tool pages (learn, controls, lab, help, glossary, cheat-sheet, safety, settings, 404) ---------- */
+/* Learn: each lesson is a card that opens; its title is an <h2> in the summary, "Tried" beside it. */
+.lessons{display:grid;gap:var(--sp-3);margin:0 0 var(--sp-4)}
+.lesson{margin:0}
+.lesson > summary{padding:var(--sp-2) var(--sp-5);min-height:56px}
+.lesson-title{flex:1 1 auto;margin:0;font-size:var(--t-check);line-height:var(--t-check-lh)}
+.lesson-n{margin-right:var(--sp-2);font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2)}
+.lesson > .inside h3{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+@media (max-width:599px){.lesson > summary{padding:var(--sp-2) var(--sp-4)}}
+/* 02's song map, in the part that builds the song list */
+.map-title{margin:var(--sp-3) 0 0}
+/* Help: the search field, then topics in groups. A topic opened from a link is scrolled to below the bar. */
+.help-search{margin:0 0 var(--sp-2)}
+.help-group h2.sub{margin-top:var(--sp-5)}
+details.topic{margin:var(--sp-2) 0}
+details[id],.term[id],.risk[id],.card[id]{scroll-margin-top:calc(var(--sticky-top) + var(--sp-4))}
+.link-list{padding-left:1.25em}
+.link-list li{margin:var(--sp-2) 0}
+/* Control map: the explanation sits under the buttons in a fixed-height panel that scrolls inside, so choosing a
+   control never moves anything on the page. The chosen control is filled and ringed; focus is the blue ring. */
+.control-map #info{height:13rem;margin:var(--sp-3) 0;overflow:auto;box-shadow:none}
+.control-map #info:empty{display:block}
+.control[aria-checked="true"]{background:var(--surface-3);outline:3px solid var(--ink);outline-offset:2px}
+.control-list > div{padding:var(--sp-2) 0;border-bottom:1px solid var(--line)}
+.control-list > div:last-child{border-bottom:0}
+.control-list dd p{margin:0 0 var(--sp-2)}
+/* Glossary: a sticky row of letters, then the words. A word opened from a link is marked. */
+.az{position:sticky;top:var(--sticky-top);z-index:4;display:flex;gap:2px;margin:0 0 var(--sp-3);padding:var(--sp-1);overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-1);scrollbar-width:thin}
+.az a{display:inline-grid;flex:none;place-items:center;min-width:40px;min-height:44px;border-radius:var(--r-chip);font:600 var(--t-cap)/1 var(--font-mono);text-decoration:none}
+.az a:hover{background:var(--surface-3)}
+.gloss-letter h2.sub,.gloss .term{scroll-margin-top:calc(var(--sticky-top) + 72px)}
+.gloss .term:target{margin:0 calc(var(--sp-3) * -1);padding:var(--sp-1) var(--sp-3);border-radius:var(--r-control);background:var(--surface-3);box-shadow:inset 3px 0 0 var(--here)}
+/* Safety and erasing: a danger stripe on the actions with no undo, amber on the careful ones. */
+.risk h3{margin-top:0}
+.risk.danger{border-left:6px solid var(--danger)}
+.risk.caution{border-left:6px solid var(--caution-line)}
+.risk .no-undo{padding:var(--sp-2) var(--sp-3);border-radius:var(--r-control);background:var(--danger-surface)}
+.risk .no-undo b{color:var(--danger)}
+@media (forced-colors:active){.risk.danger,.risk.caution{border-left:6px solid CanvasText}.control[aria-checked="true"]{outline:3px solid Highlight}}
+@media print{.az,.help-search,#result-count,.help-more,.lesson .complete{display:none!important}.lesson .inside,details.topic .inside{display:block}}

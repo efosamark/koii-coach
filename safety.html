@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Safety and erasing / K.O. II Coach</title>
+  <meta name="description" content="Safety and erasing, in K.O. II Coach: every EP-133 K.O. II action that erases or overwrites something, how to avoid it and how to undo it where you can.">
+  <meta name="theme-color" content="#FFFEF8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161E19" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="K.O. II Coach">
+  <meta property="og:title" content="Safety and erasing / K.O. II Coach">
+  <meta property="og:description" content="Safety and erasing, in K.O. II Coach: every EP-133 K.O. II action that erases or overwrites something, how to avoid it and how to undo it where you can.">
+  <meta property="og:url" content="https://efosamark.github.io/koii-coach/safety.html">
+  <meta property="og:image" content="https://efosamark.github.io/koii-coach/icons/icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://efosamark.github.io/koii-coach/safety.html">
+  <link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="coach.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+  <script src="site.js"></script>
+  <script src="progress.js"></script>
+  <script src="shell.js"></script>
+  <main id="main" class="page reading" tabindex="-1">
+    <header class="page-head">
+      <p class="eyebrow">Tools</p>
+      <h1>Safety and erasing</h1>
+      <p class="lead">Every action in this course that erases or overwrites something on the K.O. II, how to avoid doing it by accident, and how to undo it where you can.</p>
+    </header>
+    <section class="card" id="undo" aria-labelledby="undo-t">
+      <h2 id="undo-t">Undo</h2>
+      <p>Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella icon is lit. The umbrella means undo is possible; once it is off, undo cannot bring the change back. Work in a copy of a scene (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>) when you try something, and back up with the official EP sample tool before anything that cannot be undone.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">Play and record (erase and undo)</a></p>
+    </section>
+    <h2 id="recoverable">Can be undone</h2>
+    <section class="card risk" id="erase-note" aria-labelledby="erase-note-t">
+      <h3 id="erase-note-t">Erase one note: a brief ERASE + pad</h3>
+      <p><b>What it does:</b> In stopped MAIN, at the note’s position, a brief <kbd class="key">ERASE</kbd> + pad removes only the note on the current step.</p>
+      <p><b>Avoid it by accident:</b> Keep the press short: holding <kbd class="key">ERASE</kbd> + a pad until <samp class="lcd">TRK</samp> blinks clears all of that pad’s notes.</p>
+      <p class="step-undo"><b>Undo:</b> <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
+    </section>
+    <section class="card risk" id="erase-track" aria-labelledby="erase-track-t">
+      <h3 id="erase-track-t">Clear a pad’s notes: hold ERASE + pad until TRK blinks</h3>
+      <p><b>What it does:</b> Clears every note of that pad in this pattern in one move.</p>
+      <p><b>Avoid it by accident:</b> Hold <kbd class="key">MAIN</kbd> first and check the scene number before erasing anything: the scene you mean to change must be the one selected.</p>
+      <p class="step-undo"><b>Undo:</b> <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
+    </section>
+    <section class="card risk caution" id="erase-pattern" aria-labelledby="erase-pattern-t">
+      <h3 id="erase-pattern-t">Clear a group’s pattern: hold ERASE + group until PTN blinks</h3>
+      <p><b>What it does:</b> The official guide says this erases “the current patterns”.</p>
+      <p><b>Avoid it by accident:</b> Check that you are in the project and scene you mean, and back it up first.</p>
+      <p class="step-undo"><b>Undo:</b> <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once while the umbrella is lit, or restore your backup.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">Play and record (erase pattern)</a></p>
+    </section>
+    <h2 id="no-undo">No undo</h2>
+    <section class="card risk danger" id="erase-scene" aria-labelledby="erase-scene-t">
+      <h3 id="erase-scene-t">Clear or delete a scene: hold ERASE + MAIN for 2 seconds</h3>
+      <p><b>What it does:</b> On a scene with notes, <samp class="lcd">CLR</samp> shows: the scene is cleared, not deleted. Holding <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key">MAIN</kbd></kbd> for 2 seconds again on the empty scene deletes it (<samp class="lcd">DEL</samp> blinks) when it is not in the song list.</p>
+      <p><b>Avoid it by accident:</b> Only ever do this on a scene whose number you have just checked, for example a copy made with <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>.</p>
+      <p class="no-undo"><b>No undo.</b> This course does not rely on undo for a cleared scene.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">Play and record (erase scene)</a></p>
+    </section>
+    <section class="card risk danger" id="delete-sample" aria-labelledby="delete-sample-t">
+      <h3 id="delete-sample-t">Delete a sample: hold ERASE + SOUND until SND blinks</h3>
+      <p><b>What it does:</b> Deletes the selected sample from the K.O. II permanently.</p>
+      <p><b>Avoid it by accident:</b> Check the sample’s number first. Deleting a sample is never needed to fix a misplaced hit: use undo (<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd>) or a brief <kbd class="key">ERASE</kbd> + pad.</p>
+      <p class="no-undo"><b>No undo.</b> A backup made with the official EP sample tool can bring the sample back.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
+    </section>
+    <section class="card risk danger" id="crop-sample" aria-labelledby="crop-sample-t">
+      <h3 id="crop-sample-t">Crop a sample: hold SHIFT + SOUND on the trim page</h3>
+      <p><b>What it does:</b> Overwrites the sample file with the trimmed sound.</p>
+      <p><b>Avoid it by accident:</b> Pressing <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> opens sound edit, and trimming there (<kbd class="key knob">X</kbd> start, <kbd class="key knob">Y</kbd> length) changes how the sound plays without changing the file. Never hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> on the trim page unless you mean to crop.</p>
+      <p class="no-undo"><b>No undo.</b> The stored sample file is changed.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes (sound edit)</a></p>
+    </section>
+    <h2 id="power-on">At power-on</h2>
+    <section class="card risk danger" id="format-drive" aria-labelledby="format-drive-t">
+      <h3 id="format-drive-t">Format the drive: hold SHIFT + ERASE while switching on</h3>
+      <p><b>What it does:</b> Formats the drive: it removes all your work and all factory sounds, and the official guide says factory sounds cannot be recovered. It is not a quick reset.</p>
+      <p><b>Avoid it by accident:</b> Switch the K.O. II on with your hands off the buttons. Before ever doing it, back up your projects with the official EP sample tool.</p>
+      <p class="no-undo"><b>No undo.</b> Only your own backup brings your work back.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/erase-drive">Erase drive</a></p>
+    </section>
+    <section class="card risk" id="lock-mode" aria-labelledby="lock-mode-t">
+      <h3 id="lock-mode-t">Lock mode: hold MAIN while switching on</h3>
+      <p><b>What it does:</b> <samp class="lcd">LOK</samp> shows for about a second. Any changes you make are reset when you restart.</p>
+      <p><b>Avoid it by accident:</b> Switch on with your hands off the buttons. Switch off and on again, holding nothing, before you build anything you want to keep, and check that <samp class="lcd">LOK</samp> does not appear.</p>
+      <p class="step-undo"><b>Undo:</b> Restart without holding anything. Changes made in lock mode are not kept.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/system">System (lock mode)</a></p>
+    </section>
+    <h2 id="safe">Safe</h2>
+    <section class="card risk" id="system-settings" aria-labelledby="system-settings-t">
+      <h3 id="system-settings-t">System settings: SHIFT + ERASE while the K.O. II is on</h3>
+      <p>Pressing <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> while the K.O. II is already on only opens system settings. None of the codes in the <a href="./cheat-sheet.html#settings-codes">settings table</a> erases music.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/system">System</a></p>
+    </section>
+  </main>
+  <footer class="page reading site-foot">
+    <p>Unofficial. Not affiliated with or endorsed by teenage engineering. EP-133 and K.O. II are trademarks of teenage engineering.</p>
+    <p>No hardware connection, official factory audio, accounts or analytics. Progress stays in this browser. External guides require internet.</p>
+    <p><a id="report" href="https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml" target="_blank" rel="noopener noreferrer">Report a wrong instruction<span class="sr"> (opens in a new tab)</span></a> · <a href="https://github.com/efosamark/koii-coach" target="_blank" rel="noopener noreferrer">Source code<span class="sr"> (opens in a new tab)</span></a></p>
+  </footer>
+  <div class="toast hidden" id="toast" role="status"></div>
+</body>
+</html>

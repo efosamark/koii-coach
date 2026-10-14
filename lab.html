@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Rhythm lab / K.O. II Coach</title>
+  <meta name="description" content="Rhythm lab, in K.O. II Coach: a one-bar drum grid in the browser to hear a rhythm before you write it on the EP-133 K.O. II.">
+  <meta name="theme-color" content="#FFFEF8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161E19" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="K.O. II Coach">
+  <meta property="og:title" content="Rhythm lab / K.O. II Coach">
+  <meta property="og:description" content="Rhythm lab, in K.O. II Coach: a one-bar drum grid in the browser to hear a rhythm before you write it on the EP-133 K.O. II.">
+  <meta property="og:url" content="https://efosamark.github.io/koii-coach/lab.html">
+  <meta property="og:image" content="https://efosamark.github.io/koii-coach/icons/icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://efosamark.github.io/koii-coach/lab.html">
+  <link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="coach.css">
+  <script src="audio.js" defer></script>
+  <script src="lab.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+  <script src="site.js"></script>
+  <script src="progress.js"></script>
+  <script src="shell.js"></script>
+  <main id="main" class="page" tabindex="-1">
+    <header class="page-head">
+      <p class="eyebrow">Tools</p>
+      <h1>Rhythm lab</h1>
+      <p class="lead">Hear a small change before you write it. A one-bar teaching sequencer: tap cells to add or remove hits, then play it.</p>
+    </header>
+    <section class="card lab">
+      <div class="row"><button type="button" class="btn" id="recipe">Load first-beat recipe</button><button type="button" class="btn" id="clear">Clear grid</button></div>
+      <div class="row toolbar"><button type="button" id="audio-play" class="btn primary"><svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-play"></use></svg>Play lab</button><label class="meta">Volume <input id="volume" type="range" min="0" max="25" value="18"></label><label class="meta">Tempo <span id="bpm-text">90</span> BPM <input id="bpm" type="range" min="50" max="160" value="90"></label><span id="audio-status" class="meta" role="status">Stopped</span></div>
+      <p class="meta hint">No sound? Turn your phone volume up. On iPhone, also switch off Silent mode or use headphones.</p>
+      <div class="scroll"><div id="beat" class="beat"><noscript><p>The Rhythm lab needs JavaScript.</p></noscript></div></div>
+      <h2 class="sub">Copy it to your K.O. II</h2>
+      <div id="lab-positions"></div>
+      <p class="meta">To write each note: stop playback, press <span class="nobr"><kbd class="key">MAIN</kbd>,</span> select the group, use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows the position, then hold <kbd class="key">RECORD</kbd> and tap the pad.</p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
+      <h2 class="sub">Small challenges</h2>
+      <ul id="goals"></ul>
+      <div class="notice info">Synthesised practice sounds, not a K.O. II emulator. Change one thing at a time and listen.</div>
+    </section>
+  </main>
+  <footer class="page site-foot">
+    <p>Unofficial. Not affiliated with or endorsed by teenage engineering. EP-133 and K.O. II are trademarks of teenage engineering.</p>
+    <p>No hardware connection, official factory audio, accounts or analytics. Progress stays in this browser. External guides require internet.</p>
+    <p><a id="report" href="https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml" target="_blank" rel="noopener noreferrer">Report a wrong instruction<span class="sr"> (opens in a new tab)</span></a> · <a href="https://github.com/efosamark/koii-coach" target="_blank" rel="noopener noreferrer">Source code<span class="sr"> (opens in a new tab)</span></a></p>
+  </footer>
+  <div class="toast hidden" id="toast" role="status"></div>
+</body>
+</html>

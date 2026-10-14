@@ -3,24 +3,26 @@
    page load. shell.js builds the overlay's frame (<dialog id="site-search-dialog"> with #site-search, the type chips
    [data-type] and #site-results) so the phone keyboard can open inside the tap; mount() below takes it over.
 
-   The index is built in the browser, once per page load, from what the site already holds:
-     course.js globals   steps of 01 and 02, Learn lessons, help topics, controls, glossary. Pages that do not
-                         have course.js get it here with a script tag (index.html already has it).
-     chapter pages       fetch()ed (they are precached, so this works offline) and read with DOMParser: every
-                         .steps ol > li[data-step] and every section heading.
-   Chapter steps have no title yet, so their id stands in for one: "record-first-sample" shows as "Record first sample".
+   The index is built in the browser, once per page load, from the pages themselves: each one is fetch()ed (they are
+   precached, so this works offline) and read with DOMParser.
+     chapter pages       every .steps ol > li[data-step] and every part (<details> with its summary). A step's title is
+                         its h3.step-title (01, 02); other steps have none yet, so their id stands in for one:
+                         "record-first-sample" shows as "Record first sample".
+     help.html           every details[data-topic], with its group heading
+     learn.html          every details[data-lesson]
+     glossary.html       every .term (dt and dd)
+     controls.html       every control explained under "Every control" ([data-key])
+     safety.html         every .risk card
    A source that fails to load is skipped, and tried again the next time the overlay opens.
 
    Where a result goes:
-     chapter step         <page>.html#s-<step id>      (chapter.js opens that section, scrolls to the step and marks it)
-     chapter section      <page>.html#s-<its first step id>
-     01 and 02 steps      ./index.html#first/<step id>, ./index.html#song/<step id>
-     Learn lesson         ./index.html#manual/<lesson id>   (lessonIds as in index.html: the explicit id, else slug(title))
-     help topic           ./index.html#help/<topic id>      (an explicit help[i][3].id, else slug(title) with - and + spelled out,
-                                                            as topicIds in index.html)
-     control              ./index.html#controls
-     glossary word        no link: the definition is shown in the result itself
-   slug(), lessonId() and topicId() below must stay the same as in index.html, because the app routes these ids.
+     chapter step         <page>.html#s-<step id>      (the player opens that step)
+     chapter part         <page>.html#s-<its first step id>
+     help topic           ./help.html#<topic id>       (opened and focused there)
+     Learn lesson         ./learn.html#<lesson id>
+     glossary word        ./glossary.html#term-<word>  (the definition is shown in the result as well)
+     control              ./controls.html#control-<name>
+     safety entry         ./safety.html#<id>
 
    Matching (docs/overhaul-plan.md 4.7): whole words, with a prefix match on the last one while it is being typed
    ("hat" finds "hats" and "hi-hat", never "that"); case and accents folded; plurals and -ing/-ed folded; a few synonyms;
@@ -32,7 +34,7 @@ const site=window.COACH_SITE;
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clean=s=>String(s==null?'':s).replace(/\s+/g,' ').trim();
 const slug=t=>String(t).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
-const HELP='<a href="./index.html#help">Help &amp; reference</a>';
+const HELP='<a href="./help.html">Troubleshooting</a>';
 
 // ---------- Words ----------
 const fold=s=>s.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase();
@@ -93,77 +95,77 @@ const label=id=>{
   return t[0].toUpperCase()+t.slice(1);
 };
 
-function fromCourse(){
-  const opt=s=>s&&s[7]&&typeof s[7]==='object'?s[7]:{};
-  const chapter=v=>site.chapters.find(c=>c.view===v);
-  const steps=(list,v)=>{const c=chapter(v);return list.map((s,i)=>doc({type:'step',title:s[0],body:clean(s.slice(1,5).join(' ')),crumb:[c.num+' '+c.title,`Step ${i+1} of ${list.length}`],href:'./index.html#'+v+(opt(s).id?'/'+opt(s).id:'')}));};
-  const lessonId=(m,i)=>(m[4]&&typeof m[4]==='object'&&m[4].id)||slug(m[0])||'lesson-'+i;
-  const topicId=h=>(h[3]&&typeof h[3]==='object'&&h[3].id)||slug(String(h[0]).replace(/−/g,' minus ').replace(/\+/g,' plus '));
-  const cap={MINUS:'−',PLUS:'+'};
-  /* global first, song, manual, help, controls, glossary */
-  return{
-    first:steps(first,'first'),
-    song:steps(song,'song'),
-    help:[
-      ...help.map(h=>doc({type:'help',title:h[0],body:h[1],crumb:['Help','Troubleshooting'],href:'./index.html#help/'+topicId(h)})),
-      ...Object.entries(controls).map(([k,c])=>doc({type:'help',title:c[0],body:c[1],cap:cap[k]||k,keys:[k],crumb:['Help','Controls'],href:'./index.html#controls'}))
-    ],
-    learn:manual.map((m,i)=>doc({type:'learn',title:m[0],body:clean(m[1]+' '+m[2]),crumb:['Learn',`Lesson ${i+1} of ${manual.length}`],href:'./index.html#manual/'+lessonId(m,i)})),
-    word:glossary.map(g=>doc({type:'word',title:g[0],body:g[1],crumb:['Words'],href:''}))
-  };
+async function fetchDoc(href){
+  const res=await fetch(href,{signal:AbortSignal.timeout?AbortSignal.timeout(10000):undefined});
+  if(!res.ok)return null;
+  const dom=new DOMParser().parseFromString(await res.text(),'text/html');
+  dom.querySelectorAll('br,p,li,div,td,th,h2,h3,dt,dd,summary').forEach(n=>n.after(' '));   // so neighbouring words do not run together
+  return dom;
 }
-function loadCourse(){
-  const build=()=>{try{return fromCourse();}catch(e){return null;}};
-  if(typeof first!=='undefined')return Promise.resolve(build());
-  return new Promise(done=>{
-    const s=document.createElement('script');
-    s.src='./course.js';
-    s.onload=()=>done(build());
-    s.onerror=()=>{s.remove();done(null);};
-    document.head.append(s);
-  });
-}
+const text=n=>clean(n?n.textContent:'');
 async function loadChapter(c){
   try{
-    const res=await fetch(c.href,{signal:AbortSignal.timeout?AbortSignal.timeout(10000):undefined});
-    if(!res.ok)return null;
-    const dom=new DOMParser().parseFromString(await res.text(),'text/html');
-    dom.querySelectorAll('br,p,li,div,td,th,h2,h3,summary').forEach(n=>n.after(' '));   // so neighbouring words do not run together
+    const dom=await fetchDoc(c.href);if(!dom)return null;
     const book=c.num+' '+c.title,out=[];
     let n=0;   // step numbers run through the whole chapter, as chapter.js numbers the lists
-    dom.querySelectorAll('.steps details').forEach(d=>{
-      const head=clean(d.querySelector('summary')&&d.querySelector('summary').textContent),m=/^(\d+)\s*\/\s*(.*)$/.exec(head),no=m?m[1]:'',name=m?m[2]:head;
+    dom.querySelectorAll('.steps > details').forEach(d=>{
+      const head=text(d.querySelector('summary')),m=/^(\d+)\s*\/\s*(.*)$/.exec(head),no=m?m[1]:'',name=m?m[2]:head;
       const lis=[...d.querySelectorAll('ol>li')],ids=lis.map(li=>li.dataset.step).filter(Boolean);
       const intro=[...d.children].filter(e=>e.tagName!=='SUMMARY'&&e.tagName!=='OL'&&!/^\s*Official guide/.test(e.textContent)).map(e=>e.textContent).join(' ');
-      out.push(doc({type:'step',title:name,body:clean(intro),crumb:[book,no?'Section '+no:'Section'],href:c.href+(ids[0]?'#s-'+ids[0]:'')}));
+      out.push(doc({type:'step',title:name,body:clean(intro),crumb:[book,no?'Part '+no:'Part'],href:c.href+(ids[0]?'#s-'+ids[0]:'')}));
       lis.forEach(li=>{
         n++;
-        const id=li.dataset.step;
-        if(id)out.push(doc({type:'step',title:label(id),body:clean(li.textContent),crumb:[book,[no,name].filter(Boolean).join(' '),'Step '+n],href:c.href+'#s-'+id}));
+        const id=li.dataset.step;if(!id)return;
+        const t=li.querySelector('.step-title');
+        if(t)t.remove();
+        li.querySelectorAll('.step-source').forEach(x=>x.remove());
+        out.push(doc({type:'step',title:t?text(t):label(id),body:text(li),crumb:[book,[no,name].filter(Boolean).join(' '),'Step '+n],href:c.href+'#s-'+id}));
       });
     });
     return out;
   }catch(e){return null;}
 }
+// The tool pages: [file, how to read one of its entries]
+const TOOLS=[
+  ['./help.html',dom=>[...dom.querySelectorAll('details[data-topic]')].map(d=>{
+    const g=d.closest('section'),h=g&&g.querySelector('h2');
+    const s=d.querySelector('summary'),title=text(s);s.remove();d.querySelectorAll('.step-source').forEach(x=>x.remove());
+    return doc({type:'help',title,body:text(d),crumb:['Troubleshooting',text(h)].filter(Boolean),href:'./help.html#'+d.id});
+  })],
+  ['./learn.html',dom=>{const all=[...dom.querySelectorAll('details[data-lesson]')];return all.map((d,i)=>{
+    const t=d.querySelector('summary h2'),n=t&&t.querySelector('.lesson-n');if(n)n.remove();
+    const title=text(t);d.querySelector('summary').remove();d.querySelectorAll('.step-source,h3,button').forEach(x=>x.remove());
+    return doc({type:'learn',title,body:text(d),crumb:['Learn',`Lesson ${i+1} of ${all.length}`],href:'./learn.html#'+d.id});
+  });}],
+  ['./glossary.html',dom=>[...dom.querySelectorAll('.term[id]')].map(t=>doc({type:'word',title:text(t.querySelector('dt')),body:text(t.querySelector('dd')),crumb:['Glossary'],href:'./glossary.html#'+t.id}))],
+  ['./controls.html',dom=>[...dom.querySelectorAll('#every-control [data-key]')].map(e=>{
+    const k=e.dataset.key,b=e.querySelector('dd b');e.querySelectorAll('.step-source').forEach(x=>x.remove());
+    const title=text(b);if(b)b.remove();
+    return doc({type:'help',title,body:text(e.querySelector('dd')),cap:{MINUS:'−',PLUS:'+',PAD:'0–9'}[k]||k,keys:[k],crumb:['Control map',text(e.querySelector('dt'))],href:'./controls.html#'+e.id});
+  })],
+  ['./safety.html',dom=>[...dom.querySelectorAll('.risk[id]')].map(e=>{
+    const h=e.querySelector('h3'),title=text(h);h.remove();e.querySelectorAll('.step-source').forEach(x=>x.remove());
+    return doc({type:'help',title,body:text(e),crumb:['Safety and erasing'],href:'./safety.html#'+e.id});
+  })]
+];
+async function loadTool([href,read]){
+  try{const dom=await fetchDoc(href);return dom?read(dom):null;}catch(e){return null;}
+}
 
 // ---------- The index ----------
-const parts=new Map();   // 'course' or a chapter's slug -> its documents, once that source has loaded
+const parts=new Map();   // a chapter's slug or a tool page -> its documents, once that source has loaded
 let all=[],missing=0,ready=false,building=null,view=null;
 function assemble(){
-  const course=parts.get('course');
   all=[];
-  site.chapters.forEach(c=>{
-    if(c.slug)all.push(...(parts.get(c.slug)||[]));
-    else if(course&&course[c.view])all.push(...course[c.view]);   // the views of 01 and 02
-  });
-  if(course)all.push(...course.help,...course.learn,...course.word);
-  missing=1+site.chapters.filter(c=>c.slug).length-parts.size;
+  site.chapters.forEach(c=>all.push(...(parts.get(c.slug)||[])));
+  TOOLS.forEach(t=>all.push(...(parts.get(t[0])||[])));
+  missing=site.chapters.length+TOOLS.length-parts.size;
 }
 function fill(){
   if(building)return building;
   const jobs=[];
-  if(!parts.has('course'))jobs.push(loadCourse().then(d=>{if(d)parts.set('course',d);}));
-  site.chapters.forEach(c=>{if(c.slug&&!parts.has(c.slug))jobs.push(loadChapter(c).then(d=>{if(d)parts.set(c.slug,d);}));});
+  site.chapters.forEach(c=>{if(!parts.has(c.slug))jobs.push(loadChapter(c).then(d=>{if(d)parts.set(c.slug,d);}));});
+  TOOLS.forEach(t=>{if(!parts.has(t[0]))jobs.push(loadTool(t).then(d=>{if(d)parts.set(t[0],d);}));});
   building=Promise.all(jobs).then(()=>{building=null;ready=true;assemble();});
   return building;
 }
@@ -258,7 +260,7 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
   function item(r){
     const {d,alt}=r,m=matcher(alt);
     const title=(d.cap?`<kbd class="key">${esc(d.cap)}</kbd> `:'')+marked(d.title,m);
-    if(d.type==='word')return`<li class="search-word"><span class="search-hit-title">${title}</span><span class="search-hit-snip">${marked(d.body,m)}</span></li>`;
+    if(d.type==='word')return`<li><a class="search-hit search-word" href="${esc(d.href)}"><span class="search-hit-title">${title}</span><span class="search-hit-snip">${marked(d.body,m)}</span></a></li>`;
     return`<li><a class="search-hit" href="${esc(d.href)}"><span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span>${d.body?`<span class="search-hit-snip">${snippet(d.body,m)}</span>`:''}</a></li>`;
   }
   function render(){

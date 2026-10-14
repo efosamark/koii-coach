@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Settings / K.O. II Coach</title>
+  <meta name="description" content="Settings, in K.O. II Coach: your K.O. II’s OS version, keeping the screen on while you practise, your progress file and the offline copy.">
+  <meta name="theme-color" content="#FFFEF8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#161E19" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="K.O. II Coach">
+  <meta property="og:title" content="Settings / K.O. II Coach">
+  <meta property="og:description" content="Settings, in K.O. II Coach: your K.O. II’s OS version, keeping the screen on while you practise, your progress file and the offline copy.">
+  <meta property="og:url" content="https://efosamark.github.io/koii-coach/settings.html">
+  <meta property="og:image" content="https://efosamark.github.io/koii-coach/icons/icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://efosamark.github.io/koii-coach/settings.html">
+  <link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="coach.css">
+  <script src="settings.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+  <script src="site.js"></script>
+  <script src="progress.js"></script>
+  <script src="shell.js"></script>
+  <main id="main" class="page reading" tabindex="-1">
+    <header class="page-head">
+      <p class="eyebrow">Settings</p>
+      <h1>Settings</h1>
+      <p class="lead">Your K.O. II’s OS version, the screen while you practise, your progress file and the offline copy.</p>
+    </header>
+    <div class="settings">
+    <section class="card section" id="firmware-card" aria-labelledby="firmware-title">
+      <h2 id="firmware-title">Your K.O. II’s OS version</h2>
+      <p>This course is written for OS 2.5.x, the latest release. Choose the version on your K.O. II: steps that need a newer OS than the one you choose show a “Needs OS …+” badge. The browser cannot detect or update it.</p>
+      <div class="row"><label class="lbl" for="firmware">OS version</label><select id="firmware"><option value="2.5">OS 2.5.x (latest)</option><option value="2">OS 2.0.x (2.0 to 2.0.5)</option><option value="older">Older than OS 2.0</option><option value="unknown">Not sure</option></select></div>
+      <p class="notice info" id="version-note" aria-live="polite"></p>
+      <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/whats-new">What’s new</a></p>
+    </section>
+    <section class="card section" aria-labelledby="wake-title">
+      <h2 id="wake-title">While practising</h2>
+      <fieldset class="choice"><legend>Keep the screen on while practising</legend><div class="row"><label class="choice-opt"><input type="radio" name="wake" value="auto" checked><span>Auto</span></label><label class="choice-opt"><input type="radio" name="wake" value="off"><span>Off</span></label></div></fieldset>
+      <p class="meta" id="wake-note">Auto keeps the screen awake while you work through the steps, so a propped-up phone stays readable between presses. Off leaves it to your device’s own screen timeout.</p>
+    </section>
+    <section class="card section" aria-labelledby="progress-title">
+      <h2 id="progress-title">Your progress</h2>
+      <p id="progress-summary">Progress stays in this browser.</p>
+      <p>Progress stays in this browser, without cloud sync. Clearing browser data, or some phones’ storage clean-up, can remove it. Save a progress file now and then; it covers every chapter.</p>
+      <div class="row"><button type="button" class="btn" id="export">Save progress file</button><input id="import-file" class="sr" type="file" accept="application/json,.json"><label class="btn" for="import-file">Load progress file</label><button type="button" class="btn danger" id="reset">Reset all progress…</button></div>
+      <p class="notice caution" id="progress-alert" role="alert" hidden></p>
+    </section>
+    <section class="card section" aria-labelledby="offline-title">
+      <h2 id="offline-title">Offline and version</h2>
+      <p class="offline-status"></p>
+      <p id="course-info"></p>
+      <p>Offline use needs one complete visit to the online site first; external guides still need internet.</p>
+    </section>
+    <section class="card section" aria-labelledby="sources-title">
+      <h2 id="sources-title">Sources and privacy</h2>
+      <p id="guide-checked">Original teaching text based on the official guide. Rhythm, melody and arrangement choices are creative suggestions, not manufacturer presets.</p>
+      <div class="links"><a class="source" href="https://teenage.engineering/guides/ep-133/get-started" target="_blank" rel="noopener noreferrer">Official get started guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/modes" target="_blank" rel="noopener noreferrer">Official modes guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/play-and-record" target="_blank" rel="noopener noreferrer">Official play and record guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/functions" target="_blank" rel="noopener noreferrer">Official functions guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/effects" target="_blank" rel="noopener noreferrer">Official effects guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/system" target="_blank" rel="noopener noreferrer">Official system guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/guides/ep-133/whats-new" target="_blank" rel="noopener noreferrer">Official what’s new guide<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a><a class="source" href="https://teenage.engineering/apps/ep-sample-tool" target="_blank" rel="noopener noreferrer">Official EP sample tool<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-external"></use></svg><span class="sr"> (opens in a new tab)</span></a></div>
+      <p>No accounts and no analytics: your progress stays in this browser, and the coach never connects to your K.O. II or touches its music.</p>
+    </section>
+    </div>
+  </main>
+  <footer class="page reading site-foot">
+    <p>Unofficial. Not affiliated with or endorsed by teenage engineering. EP-133 and K.O. II are trademarks of teenage engineering.</p>
+    <p>No hardware connection, official factory audio, accounts or analytics. Progress stays in this browser. External guides require internet.</p>
+    <p><a id="report" href="https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml" target="_blank" rel="noopener noreferrer">Report a wrong instruction<span class="sr"> (opens in a new tab)</span></a> · <a href="https://github.com/efosamark/koii-coach" target="_blank" rel="noopener noreferrer">Source code<span class="sr"> (opens in a new tab)</span></a></p>
+  </footer>
+  <div class="toast hidden" id="toast" role="status"></div>
+</body>
+</html>

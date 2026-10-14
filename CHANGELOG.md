@@ -1,8 +1,48 @@
 # Changelog
 
-What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`, with `.2`, `.3` and so on for another release on the same day). The same value is used for `VERSION` in `sw.js` and `courseInfo.version` in `course.js`.
+What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`, with `.2`, `.3` and so on for another release on the same day). The same value is used for `VERSION` in `sw.js` and `version` in `site.js` (`courseInfo.version` in `course.js` before 2026.10.14.2).
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
+
+## 2026.10.14.2
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed. The changes to the text of 01 and 02 are listed below.
+
+Every chapter runs in the step player, and the tools are pages of their own (phases 3 and 4 of the overhaul; phase 3 shipped earlier the same day without an entry here). The single-page app is gone. Your progress carries over, and old links still work.
+
+### The step player
+
+- **One step at a time.** Every chapter opens on a start screen (time, project, OS, parts and, where it matters, what can't be undone), then shows one step at a time, large enough to read with the phone propped beside the K.O. II. **Done · Next** sits under your thumb, with **Back** and **Steps** (the whole chapter, with your ticks, to jump anywhere). → and Enter also work.
+- Each part ends with a checkpoint card, and the chapter with a "Chapter done" screen that lists any steps you haven't ticked.
+- **All steps** shows the chapter as a list, for reading ahead or printing. Your choice is remembered per chapter.
+- Steps that clear notes are tagged "Clears notes". A step that deletes or overwrites something with no undo stays folded until you confirm "Yes, I have checked". Steps that change a system setting say which code. Each of these tags links to the new Safety and erasing page.
+- Every step has its own address, and a "This step doesn't match my K.O. II" link that fills in the report form for it.
+
+### 01 and 02
+
+- **01 First beat** and **02 Make it a song** are now chapter pages (`first-beat.html`, `song.html`) in the same player, in named parts: 01 has 6 and 02 has 6. Each step shows what to do first, then what you should hear or see, with "Why" and "Not working?" folded away and the official guide page it follows.
+- **01: the bass is no longer optional.** Chapter 02 builds on it. "Optional: choose one bass sound" is now "Choose one bass sound", and four sentences that called it optional or offered to skip it were changed to match.
+- **01: a new optional step, "Make scene changes wait for the bar"** (system setting 411). It used to be hidden in the "If stuck" text of "Turn the loop into a tiny performance"; the key sequence is unchanged. 01 now has 23 steps.
+- **Warnings come before the press:** in 01 "Give the bass a shorter tail" the warning about holding SHIFT + SOUND on the trim page, and in 02 "Make the breakdown: clear kick and bass" the check that you are in BREAK, moved from "If stuck" to a "Before you press" box. The undo (SHIFT + B) now follows the press in that step and in "Make the intro: remove the bass".
+- 01 shows the target rhythm in the steps that place notes, with a placement helper that walks you through that step's positions one at a time and "Hear this recipe" to play it. The recaps show their moves as a list, and 02's song map is part of the part that builds the song list.
+
+### Tools, Home and links
+
+- **The tools are pages:** Learn, Control map, Rhythm lab, Troubleshooting (symptom first, in five groups, with its own search), and three new ones: **Glossary** (106 words, A to Z), **Cheat sheet** (the moves of 01 and 02, the song map and the system settings the course uses) and **Safety and erasing** (every action that erases or overwrites something, how to avoid it, and its undo or "no undo"). Settings is a page too.
+- **Home** is a page of its own and works without JavaScript. Links to the old app (`index.html#first`, `#song`, `#manual`, `#controls`, `#lab`, `#help/<topic>`, `#settings`, and links to one step or lesson) open the new pages.
+- Search covers every chapter and tool page; a word opens its glossary entry.
+- An address that isn't part of the coach shows a "Page not found" page with the course and the tools, online and offline.
+- Settings: Reset all progress can be undone for 10 seconds, and a progress file that can't be loaded says so next to the button.
+
+### Progress
+
+- Your place in 01 and 02 becomes ticks: every step before your place is ticked, and you continue where you were. The chapter says so once, so you can untick a step you skipped. Moves in 01 and 02 are still written to the old key, so going back to an older version finds you where you are now.
+- Your OS choice, the lessons you marked and your Rhythm lab pattern are kept where they were.
+
+### Repository
+
+- `course.js` and the app script in `index.html` were removed; their content is now in the pages. New scripts: `progress.js` (shared progress), `audio.js`, `first-beat.js`, `home.js`, `tools.js`, `lab.js` and `settings.js`. The release version moved from `course.js` to `site.js`.
+- New test `tests/test_progress.py` checks that progress carries over from older versions and that a progress file loads.
 
 ## 2026.10.14
 

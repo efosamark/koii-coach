@@ -1,5 +1,5 @@
 'use strict';
-/* The step player for the chapter pages (00 and 07-11): a start screen, one step at a time with a fixed action bar, a
+/* The step player for every chapter page (00, 01, 02 and 07-11): a start screen, one step at a time with a fixed action bar, a
    checkpoint card after each part and a chapter-complete screen. Load it straight after chapter.js:
      <script src="player.js" defer></script>
    It reads the page's own markup and never re-renders it: other steps, parts and page sections are only hidden
@@ -10,10 +10,13 @@
    Markup it reads (section.steps > details, one per part):
      summary "NN / Part title"; p with <b>Goal:</b> and other notes; p.checkpoint; the p starting <b>If it doesn't:</b>
      ol > li[data-step]: the step. Inside it, when the chapter has been marked up:
+       h3.step-title the step's name (01 and 02; other steps are named by their first line)
        p.preflight   the check that keeps a risky press safe (shown first, in a caution box)
        p.step-do     the instruction (large); a step without one is a stage-1 step: its whole text is shown large
        p.step-check  what you should hear or see (its own block, with an ear or an eye)
-     li[data-risk="erase"]              recoverable clear: amber "Clears notes" tag, no gate
+       p.step-undo   how to undo the step (after the instruction); p.step-source names the official guide page
+     li[data-risk="erase"]              recoverable clear: amber "Clears notes" tag, no gate (each risk tag links to
+                                        its entry on safety.html)
      li[data-risk="delete"|"overwrite"] no undo: red tag, and the rest of the step stays folded until
                                         "Yes, I have checked" is pressed (per visit, never saved)
      li[data-setting="401"]             neutral "System setting 401" tag
@@ -31,10 +34,13 @@
    read-modify-write, so the other preferences stay. Only the switch saves it; a #all link does not.
 
    Elements it adds (all marked .pl-own): #player-bar (where you are and the chapter meter), #player-actions (Back,
-   Steps, Done · Next), #player-steps (the Steps sheet, a <dialog>), #player-check, #player-done, the start screen's
+   Steps, Done · Next), #player-steps (the Steps sheet, a <dialog>), #player-check, #player-done, #player-report (the
+   "This step doesn't match my K.O. II" link, moved into the step on screen and pre-filled for it), the start screen's
    chips, safety summary and parts list, .player-modes (the Player / All steps switch), and inside each step
    a .step-head (step number and tags) and, for a delete or overwrite step, a .gate. coach.css, "Step player",
-   draws them. <html data-player="start|step|check|done"> is set while the player shows one of its views. */
+   draws them. <html data-player="start|step|check|done"> is set while the player shows one of its views.
+   After every change of view it fires a "coach:view" event on document, detail {view: 'start'|'step'|'check'|'done'|
+   'list', step: the id on screen or null}; a page's own script (first-beat.js) uses it for its helpers. */
 (()=>{
 const C=window.CoachChapter,main=document.getElementById('main'),wrap=document.querySelector('.steps');
 if(!C||!main||!wrap)return;
@@ -74,8 +80,10 @@ const parts=partEls.map((d,i)=>{
 const byId=new Map(steps.map(li=>[li.dataset.step,li]));
 const partOf=li=>parts.find(p=>p.steps.includes(li));
 const num=li=>C.steps().indexOf(li)+1;   // the list's own numbering (chapter.js numbers every step on the page)
-// One line of a step for the Steps sheet and the "not ticked yet" list.
+// One line of a step for the Steps sheet and the "not ticked yet" list: its title, else its first words.
 function gist(li){
+  const title=li.querySelector(':scope > .step-title');
+  if(title)return clean(title.textContent);
   const src=li.querySelector(':scope > .step-do')||li;let t='';
   src.childNodes.forEach(n=>{if(n.nodeType===1&&n.matches('.check,.here-tag,.step-head,.gate,.preflight'))return;t+=n.textContent;});
   return clean(t);
@@ -107,13 +115,13 @@ function setMode(m){
 }
 
 // ---------- Inside each step: the head (number and tags), the check's sense, the gate ----------
-const RISK={erase:['caution','Clears notes'],delete:['danger','Deletes · no undo'],overwrite:['danger','Overwrites · no undo']};
+const RISK={erase:['caution','Clears notes','recoverable'],delete:['danger','Deletes · no undo','delete-sample'],overwrite:['danger','Overwrites · no undo','crop-sample']};
 const gates=new Map();
 steps.forEach(li=>{
   const risk=RISK[li.dataset.risk]||null,setting=clean(li.dataset.setting);
   const isCheck=/^Checkpoint\b/.test(firstBold(li.querySelector(':scope > .step-do')||li));
   if(isCheck)li.classList.add('is-checkpoint');
-  const tags=[risk?`<span class="tag ${risk[0]}">${risk[1]}</span>`:'',setting?`<span class="tag info">System setting ${esc(setting)}</span>`:'',
+  const tags=[risk?`<a class="tag ${risk[0]}" href="./safety.html#${risk[2]}">${risk[1]}</a>`:'',setting?`<span class="tag info">System setting ${esc(setting)}</span>`:'',
     'optional' in li.dataset?'<span class="tag">Optional</span>':'',isCheck?'<span class="tag done">Checkpoint</span>':''].join('');
   const head=el('div','step-head pl-own'+(tags?'':' bare'),`<span class="step-num"><span class="sr">Step </span>${num(li)}</span>${tags}`);
   li.prepend(head);
@@ -210,6 +218,20 @@ const sheet=el('dialog','sheet player-sheet pl-own',
 sheet.id='player-steps';sheet.setAttribute('aria-labelledby','player-steps-title');
 document.body.append(sheet);
 const sheetBody=sheet.querySelector('.sheet-body');
+// "This step doesn't match my K.O. II": one link, moved to the end of the step on screen and filled in for it
+// (the fields of .github/ISSUE_TEMPLATE/wrong-instruction.yml).
+const reportEl=el('p','step-report pl-own',`<a id="player-report" href="#" target="_blank" rel="noopener noreferrer">This step doesn’t match my K.O. II<span class="sr"> (opens in a new tab)</span></a>`);
+reportEl.hidden=true;
+function report(li){
+  const P=partOf(li),site=window.COACH_SITE||{},fw=window.CoachProgress?CoachProgress.v2().firmware:'',
+    title=li.querySelector(':scope > .step-title'),src=li.querySelector(':scope > .step-source a, :scope > .step-do a[href*="/guides/"]');
+  const said=['.preflight','.step-do','.step-undo','.step-check'].map(q=>li.querySelector(':scope > '+q)).filter(Boolean).map(e=>clean(e.textContent)).join(' ')||clean(gist(li));
+  const q={title:'[Wrong instruction] '+chNum+' '+chName+', step '+num(li),page:chNum+' '+chName,
+    step:'Step '+num(li)+' / '+(title?clean(title.textContent):'Part '+P.n+' · '+P.title)+' ['+li.dataset.step+']','app-says':said.slice(0,1500),
+    firmware:{'2.5':'2.5.x','2':'2.0.x',older:'older than 2.0',unknown:'not sure'}[fw]||'',guide:src?src.href:''};
+  reportEl.querySelector('a').href=(site.report||'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml')+Object.entries(q).filter(([,v])=>v).map(([k,v])=>'&'+k+'='+encodeURIComponent(v)).join('');
+  li.append(reportEl);
+}
 
 // ---------- State and rendering ----------
 let view='',cur=null,part=null,confirmed=null,printing=false,fixOpen=false;
@@ -255,7 +277,10 @@ function render(){
   listModes.hidden=v!=='list';
   listModes.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode==='all')));
   actions.hidden=v==='list'||!v;
+  reportEl.hidden=!(v==='step'&&cur);
+  if(v==='step'&&cur&&reportEl.parentElement!==cur)report(cur);
   paint();
+  document.dispatchEvent(new CustomEvent('coach:view',{detail:{view:v||'list',step:v==='step'&&cur?cur.dataset.step:null}}));
 }
 // Texts that follow the ticks: the bar, the main button.
 function paint(){
@@ -319,7 +344,8 @@ function showStep(li,opt){
   if(about.parentElement!==P.el)P.el.append(about);
   render();
   setUrl('#s-'+li.dataset.step);
-  document.title='Step '+(P.steps.indexOf(li)+1)+' of '+P.steps.length+' / Part '+P.n+' · '+P.title+' / '+baseTitle;
+  const named=li.querySelector(':scope > .step-title');
+  document.title=(named?clean(named.textContent)+' · ':'')+'Step '+(P.steps.indexOf(li)+1)+' of '+P.steps.length+' / Part '+P.n+' · '+P.title+' / '+baseTitle;
   if(moved){li.classList.remove('pl-in');void li.offsetWidth;li.classList.add('pl-in');}
   scrollTo(0,0);
   li.tabIndex=-1;

@@ -1,7 +1,7 @@
 'use strict';
 /* Keeps the screen on while someone works at the unit, so a propped-up phone does not dim between steps.
    A plain script: it defines window.CoachWake and mounts one sun button in the app bar's #appbar-actions, so any
-   page can load it (the chapter pages do; index.html loads it itself and guards its calls).
+   page can load it (every chapter page does).
 
    window.CoachWake:
      poke()       call it whenever the learner does something (a tick, Next). The first call asks the browser to keep
@@ -32,7 +32,7 @@ let lock=null,      // the WakeLockSentinel while the screen is held
 
 const sync=()=>{if(btn)btn.setAttribute('aria-pressed',lock?'true':'false');};
 
-// A short message in the page's toast. index.html has one; a chapter page gets its own the first time it is needed.
+// A short message in the page's toast; a page without one gets its own the first time it is needed.
 function say(text){
   let el=document.getElementById('toast');
   if(!el){el=document.createElement('div');el.id='toast';el.className='toast hidden';el.setAttribute('role','status');document.body.append(el);}

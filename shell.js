@@ -1,14 +1,14 @@
 'use strict';
 /* The shared shell on every page: the app bar, the menu sheet (phones and tablets), the course rail (desktop) and
    the Search button with its overlay.
-   Load it as a plain, synchronous script straight after the page's static <header class="appbar" id="appbar">
-   and after site.js. It runs while the page is still loading, so the course and tool links exist before any
-   page script: index.html binds its own click handlers to "nav [data-view]" and marks the current view with
-   aria-current="page" itself. Without JavaScript the static header stays a plain link home.
+   Load it as a plain, synchronous script straight after the page's static <header class="appbar" id="appbar">,
+   after site.js and progress.js. It runs while the page is still loading, so the course and tool links exist before
+   any page script. The link to the page in front of us carries aria-current="page". Without JavaScript the static
+   header stays a plain link home.
 
    One set of links serves both layouts: under 1024px they live in the menu sheet (<dialog id="shell-menu">),
    from 1024px in the rail (#shell-rail) on the left, always visible. The nodes move; they are never copied,
-   so page selectors such as nav [data-view="lab"] match exactly one element.
+   so a page selector such as nav a[href="./lab.html"] matches exactly one element.
 
    The right-hand side of the bar is <div class="appbar-actions" id="appbar-actions">. It holds the Search button
    (.search-btn); a page script may append (or prepend) its own .icon-btn there, as shell.js has run before it.
@@ -24,8 +24,11 @@
      openSearch(query)      opens the Search overlay, with the text field already holding query if one is given
      setTitle(name, kicker) sets the title in the app bar (kicker is the small line above, e.g. "Chapter 07")
      refresh()              re-reads saved progress and the offline status; call it after saving progress
-   Progress is only read here, never written: koii-coach-ch-<slug> ({v:1,done:[ids],n}), the legacy checklist
-   keys named in site.js, and koii-coach-v2 (step/finished for 01, song/songFinished for 02). */
+   Progress is only read here, never written (CoachProgress.chapters(): koii-coach-ch-<slug> and the legacy keys).
+
+   The shell also registers the service worker (sw.js) for every page, once the page has loaded, and reports the
+   offline copy: a short line in the menu, and a sentence in any #offline or .offline-status element on the page
+   ("Offline ready: the coach and all its chapters open without internet." once every file is saved). */
 (()=>{
 const site=window.COACH_SITE,bar=document.getElementById('appbar');
 if(!site||!bar){console.error('shell.js: load site.js first and put <header class="appbar" id="appbar"> before shell.js');return;}
@@ -34,16 +37,13 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 const icon=n=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-${n}"></use></svg>`;
 const read=k=>{try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}};
 
-// Where are we? index.html is the single-page app that holds 01, 02 and the tools as hash views.
+// Where are we? A chapter page names itself in <body data-chapter>; a tool page is found by its file name.
 const file=(p=>{try{return decodeURIComponent(p);}catch(e){return p;}})(location.pathname.split('/').pop()||'index.html');
-const app=file==='index.html';
 const slug=body.dataset.chapter||'';
 const items=[...site.chapters,...site.tools];
-const current=slug?site.chapters.find(c=>c.slug===slug):items.find(i=>!i.view&&i.href.replace(/^\.\//,'')===file);
+const current=slug?site.chapters.find(c=>c.slug===slug):items.find(i=>i.href.replace(/^\.\//,'')===file);
 if(slug&&!current)console.warn('shell.js: <body data-chapter="'+slug+'"> is not in site.js');
-// Inside the app a view link is a bare hash with data-view (the app routes it); elsewhere it opens index.html.
-const href=i=>app&&i.view?'#'+i.view:i.href;
-const attrs=i=>`href="${esc(href(i))}"`+(app&&i.view?` data-view="${i.view}"`:'')+(i===current?' aria-current="page"':'');
+const attrs=i=>`href="${esc(i.href)}"`+(i===current?' aria-current="page"':'');
 
 // App bar
 bar.innerHTML=`<button class="icon-btn menu-btn" type="button" aria-label="Menu" aria-haspopup="dialog" aria-controls="shell-menu" aria-expanded="false">${icon('menu')}</button>`+
@@ -87,12 +87,6 @@ function place(){
 }
 place();
 if(wide.addEventListener)wide.addEventListener('change',place);else if(wide.addListener)wide.addListener(place);
-
-// On index.html the app marks the current view; the bar title follows it.
-if(app)new MutationObserver(()=>{
-  const a=nav.querySelector('[data-view][aria-current="page"]'),i=a&&items.find(x=>x.view===a.dataset.view);
-  if(i)titleFor(i);
-}).observe(nav,{subtree:true,attributes:true,attributeFilter:['aria-current']});
 
 // Dialogs (the menu sheet and the search overlay). Opening one adds a history entry so a phone's Back button closes
 // it; however it closes (Back, Esc, the backdrop, its close button) that entry is removed again. Following a link
@@ -182,7 +176,7 @@ function loadSearch(){
   };
   s.onerror=()=>{
     loading=false;early=false;s.remove();
-    document.getElementById('site-results').innerHTML='<p class="search-note"><b>Search could not load.</b> Check your connection and try again. <a href="./index.html#help">Help &amp; reference</a> has its own search.</p>';
+    document.getElementById('site-results').innerHTML='<p class="search-note"><b>Search could not load.</b> Check your connection and try again. <a href="./help.html">Troubleshooting</a> has its own search.</p>';
   };
   document.head.append(s);
 }
@@ -208,31 +202,21 @@ document.addEventListener('keydown',e=>{
 });
 
 // Progress counts (read-only) and LED states
-function doneCount(c,total){
-  if(c.slug){
-    const v=read('koii-coach-ch-'+c.slug);
-    if(v&&Array.isArray(v.done))return Number.isInteger(v.n)?v.n:v.done.length;
-    const old=c.legacy?read(c.legacy):null;
-    return Array.isArray(old)?old.length:0;
-  }
-  const v=read('koii-coach-v2');
-  if(!v||typeof v!=='object')return 0;
-  if(c.view==='first')return v.finished===true?total:Number.isInteger(v.step)?v.step:0;
-  if(c.view==='song')return v.songFinished===true?total:Number.isInteger(v.song)?v.song:0;
-  return 0;
+function doneCount(c){
+  const v=read('koii-coach-ch-'+c.slug);
+  if(v&&Array.isArray(v.done))return Number.isInteger(v.n)?v.n:v.done.length;
+  const old=c.legacy?read(c.legacy):null;
+  return Array.isArray(old)?old.length:0;
 }
 // The page in front of us knows its real step count; site.js is only a fallback for the other chapters.
 function liveTotal(c){
   if(c===current&&c.slug){const n=document.querySelectorAll('.steps ol>li[data-step]').length;if(n)return n;}
-  /* global first, song */
-  if(app&&c.view==='first'&&typeof first!=='undefined'&&Array.isArray(first))return first.length;
-  if(app&&c.view==='song'&&typeof song!=='undefined'&&Array.isArray(song))return song.length;
   return c.steps;
 }
 function counts(){
   site.chapters.forEach((c,i)=>{
     const li=nav.querySelectorAll('.course-nav li')[i];if(!li||!c.steps)return;
-    const total=liveTotal(c),x=Math.max(0,Math.min(total,doneCount(c,total)||0));
+    const total=liveTotal(c),x=Math.max(0,Math.min(total,doneCount(c)||0));
     li.dataset.state=x>=total?'done':x>0?'doing':'todo';
     li.querySelector('.count').innerHTML=x>=total?icon('check')+'Done':x+'/'+total;
     li.querySelector('.state').textContent=x>=total?', done':x>0?`, ${x} of ${total} steps done`:', not started';
@@ -245,23 +229,29 @@ function checkCounts(){
   site.chapters.forEach(c=>{const n=liveTotal(c);if(n!==c.steps)console.warn(`shell.js: site.js says chapter ${c.num} has ${c.steps} steps, but it has ${n}. Update "steps" in site.js.`);});
 }
 
-// Offline status, asked of the service worker the page registers (the shell never registers one itself).
+// Offline status: the menu's short line (#shell-offline) and the page's own sentence (#offline, .offline-status).
 const offEl=nav.querySelector('#shell-offline');
-function setOffline(text,ready){offEl.innerHTML=text?icon(ready?'check':'offline')+`<span>${esc(text)}</span>`:'';offEl.classList.toggle('ready',Boolean(ready));}
+let failed=false;
+function setOffline(text,ready,long){
+  offEl.innerHTML=text?icon(ready?'check':'offline')+`<span>${esc(text)}</span>`:'';offEl.classList.toggle('ready',Boolean(ready));
+  document.querySelectorAll('#offline,.offline-status').forEach(e=>{e.textContent=long||(text?text+'.':'');});
+}
+const secure=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
 function offline(){
   const sw=navigator.serviceWorker;
-  if(location.protocol==='file:')return setOffline('Offline use needs the online site, not a local file');
-  if(!sw)return setOffline('This browser cannot keep an offline copy');
+  if(location.protocol==='file:')return setOffline('Offline use needs the online site, not a local file','','Offline caching needs the online site, not a local file.');
+  if(!sw||!secure)return setOffline('This browser cannot keep an offline copy');
+  if(failed)return setOffline('Offline copy incomplete','','Offline copy incomplete. Reload while online to retry.');
   sw.getRegistration().then(reg=>{
-    if(!reg)return setOffline('Not saved for offline use yet');
-    if(!reg.active)return setOffline('Saving an offline copy…');
+    if(!reg)return setOffline('Not saved for offline use yet','','Preparing offline copy…');
+    if(!reg.active)return setOffline('Saving an offline copy…','','Preparing offline copy…');
     let done=false;
     const on=e=>{
       if(done||!e.data||e.data.type!=='koii-coach-status')return;
       done=true;sw.removeEventListener('message',on);
       const {cached,total}=e.data;
-      if(cached>=total)setOffline('Available offline',true);
-      else setOffline('Saving an offline copy: '+Math.round(100*cached/Math.max(1,total))+'%');
+      if(cached>=total)setOffline('Available offline',true,'Offline ready: the coach and all its chapters open without internet.');
+      else setOffline('Saving an offline copy: '+Math.round(100*cached/Math.max(1,total))+'%','','Offline copy incomplete. Reload while online to retry.');
     };
     sw.addEventListener('message',on);
     if(sw.startMessages)sw.startMessages();
@@ -269,7 +259,14 @@ function offline(){
     setTimeout(()=>{if(!done){done=true;sw.removeEventListener('message',on);}},3000);
   },()=>setOffline(''));
 }
-if(navigator.serviceWorker){
+// Every page registers the service worker, once it has loaded (so the precache never competes with the page itself).
+// An install that fails (one file missing) leaves no active worker: the status says so.
+if(navigator.serviceWorker&&secure){
+  const register=()=>navigator.serviceWorker.register('./sw.js').then(reg=>{
+    const w=reg.installing||reg.waiting;
+    if(w)w.addEventListener('statechange',()=>{if(w.state==='redundant'&&!reg.active){failed=true;offline();}});
+  },()=>{failed=true;offline();});
+  if(document.readyState==='complete')register();else addEventListener('load',register,{once:true});
   navigator.serviceWorker.ready.then(offline,()=>{});
   navigator.serviceWorker.addEventListener('controllerchange',offline);
 }

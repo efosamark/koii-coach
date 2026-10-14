@@ -9,7 +9,7 @@ Fails (exit 1) when:
 - a page links to a local file that is not in the site, or a stylesheet's url() does (a missing font fails silently),
 - sw.js precaches a file that is not in the site (one 404 stops the offline install),
 - a page, script, stylesheet, font or SVG in the site is not precached by sw.js (it would not work offline),
-- VERSION in sw.js, courseInfo.version in course.js and the newest CHANGELOG.md heading differ.
+- VERSION in sw.js, version in site.js and the newest CHANGELOG.md heading differ.
 Standard library only, so it runs anywhere Python 3.8+ does.
 """
 import json, pathlib, re, shutil, sys
@@ -18,7 +18,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 # App files only. README, CHANGELOG, tests/ and .github/ are never published.
 INCLUDE = ['*.html', '*.js', '*.css', 'manifest.webmanifest', 'icon.svg', 'icons.svg', 'icons/*.png', 'icons/*.svg',
            'fonts/*.woff2', 'fonts/OFL.txt']
-REQUIRED = ['index.html', 'course.js', 'sw.js', 'manifest.webmanifest', 'icon.svg']
+REQUIRED = ['index.html', '404.html', 'site.js', 'sw.js', 'manifest.webmanifest', 'icon.svg']
 MIN_BYTES = {'.html': 2000, '.js': 500, '.css': 200, '.woff2': 1000}
 PRECACHED = ('.html', '.js', '.css', '.woff2', '.svg')  # every one of these in the site must be in sw.js ASSETS
 SKIP_LINK = re.compile(r'^(?:[a-z][a-z0-9+.-]*:|//|#)', re.I)  # http:, mailto:, data:, //host, #anchor
@@ -43,7 +43,7 @@ def local_path(ref):
     ref = ref.strip()
     if not ref or SKIP_LINK.match(ref) or '${' in ref or '{{' in ref:
         return None
-    ref = re.split(r'[?#]', ref, 1)[0]
+    ref = re.split(r'[?#]', ref, maxsplit=1)[0]
     if ref.startswith('./'):
         ref = ref[2:]
     if ref in ('', '.', '/'):
@@ -84,7 +84,8 @@ def main():
     # Local links in every page
     for name in [f for f in files if f.endswith('.html')]:
         text = (out / name).read_text(encoding='utf-8')
-        for ref in re.findall(r'''\b(?:href|src)\s*=\s*["']([^"']*)["']''', text, re.I):
+        # 404.html sets <base href="/koii-coach/"> (the live site's root) so its links work at any depth; it is not a file.
+        for ref in re.findall(r'''\b(?:href|src)\s*=\s*["']([^"']*)["']''', re.sub(r'<base\b[^>]*>', '', text, flags=re.I), re.I):
             p = local_path(ref)
             if p and p not in have:
                 errors.append(f'{name} links to {ref}, which is not in the site')
@@ -119,13 +120,13 @@ def main():
             if name.endswith(PRECACHED) and name != 'sw.js' and name not in precached:
                 errors.append(f'{name} is not in the sw.js ASSETS list, so it will not work offline')
 
-    # One release version everywhere: the service worker cache name, the app footer and the changelog.
+    # One release version everywhere: the service worker cache name, Home and Settings (site.js) and the changelog.
     versions = {}
     m = re.search(r'''\bVERSION\s*=\s*['"]([^'"]+)['"]''', sw)
     versions['VERSION in sw.js'] = m.group(1) if m else None
-    course = (out / 'course.js').read_text(encoding='utf-8') if 'course.js' in have else ''
-    m = re.search(r'''courseInfo\s*=\s*\{[^}]*?\bversion\s*:\s*['"]([^'"]+)['"]''', course)
-    versions['courseInfo.version in course.js'] = m.group(1) if m else None
+    registry = (out / 'site.js').read_text(encoding='utf-8') if 'site.js' in have else ''
+    m = re.search(r'''COACH_SITE\s*=\s*\{.*?\bversion\s*:\s*['"]([^'"]+)['"]''', registry, re.S)
+    versions['version in site.js'] = m.group(1) if m else None
     changelog = ROOT / 'CHANGELOG.md'
     text = changelog.read_text(encoding='utf-8') if changelog.is_file() else ''
     m = re.search(r'^## +(\S+)', text, re.M)
