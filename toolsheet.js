@@ -17,7 +17,9 @@
    - once the glossary has loaded (after the page, when the browser is idle), the first use of a beginner word
      (glossary.html .term[data-beginner]) in a step's Before you press and Do lines gets a dotted underline, at most two
      per step. It is a link to the glossary; with this file it opens the Words tab at that word.
-   A pad named with its group (A2) lights only the group button on the map: the map is a schematic, not the layout.
+   A pad named with its group (B1) lights the group button and the pad printed with that number, as the course defines
+   it ("tap B, then pad 1 (B1)"); the pads are named by the numbers printed on them, which the official guide also uses
+   ("hold MAIN and select pads 1 - 9 to change project"). The map is a schematic, not the exact layout.
 
    window.CoachTools.open(opener, {tab: 'step'|'map'|'fixes'|'words'|'cheat', topic: <help id>, term: <term id>}) */
 (()=>{
@@ -110,7 +112,7 @@ function keysOf(li){
     const t=clean(k.textContent),u=t.toUpperCase();let key=null;
     if(/^(MAIN|SOUND|TEMPO|TIMING|SAMPLE|KEYS|FX|SHIFT|ERASE|RECORD|PLAY|ENTER|FADER|X|Y|A|B|C|D)$/.test(u))key=u;
     else if(t==='−'||t==='-')key='MINUS';else if(t==='+')key='PLUS';
-    else if(/^[A-D]\d{1,2}$/.test(u))key=u[0];   // a pad named with its group: the group button
+    else if(/^[A-D][1-9]$/.test(u)){out.push({key:u[0],pad:'PAD'+u[1],label:t});return;}   // B1: group B, then pad 1
     else{const m=/^(?:pad\s*)?([0-9.])$/i.exec(t);if(m)key='PAD'+m[1];}
     if(key)out.push({key,label:t});
   });
@@ -123,7 +125,7 @@ const stepText=li=>[...li.querySelectorAll(':scope > :is(.step-title,.preflight,
 function mapHTML(d,lit,interactive){
   if(!d.device)return'';
   const c=strip(d.device),order=new Map();
-  lit.forEach((k,i)=>{if(!order.has(k.key))order.set(k.key,i+1);});
+  lit.forEach((k,i)=>[k.key,k.pad].forEach(x=>{if(x&&!order.has(x))order.set(x,i+1);}));
   c.querySelectorAll('[role]').forEach(x=>x.removeAttribute('role'));
   c.querySelectorAll('.control').forEach(b=>{
     b.removeAttribute('aria-checked');b.removeAttribute('tabindex');
