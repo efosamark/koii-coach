@@ -287,7 +287,8 @@ document.addEventListener('keydown',e=>{
   const typing=t&&(t.isContentEditable||/^(?:TEXTAREA|SELECT)$/.test(t.tagName)||t.tagName==='INPUT'&&!/^(?:checkbox|radio|button|submit|reset|range|color|file)$/.test(t.type));
   if(key==='k'&&(e.ctrlKey||e.metaKey)&&!document.querySelector('dialog[open]')){e.preventDefault();openSearch();return;}
   if(e.ctrlKey||e.metaKey||typing||!keysOn()||document.querySelector('dialog[open]'))return;
-  if(t&&t.closest&&t.closest('[role="tablist"],[role="radiogroup"],[role="grid"],[role="listbox"],[role="dialog"]'))return;
+  // Widgets that use letters or arrows themselves: tabs, radio groups (native radios too), grids, lists, dialogs.
+  if(t&&t.closest&&(t.closest('[role="tablist"],[role="radiogroup"],[role="grid"],[role="listbox"],[role="dialog"]')||t.matches('input[type="radio"]')))return;
   const s=shortcuts.find(x=>x.run&&x.key===(e.key==='?'?'?':key));
   if(!s)return;
   e.preventDefault();s.run();
@@ -353,19 +354,22 @@ function offline(){
   if(failed)return setOffline('Offline copy incomplete','','Offline copy incomplete. Retry while online.');
   sw.getRegistration().then(reg=>{
     if(!reg)return setOffline('Not saved for offline use yet','','Preparing offline copy…');
-    if(!reg.active)return setOffline('Saving an offline copy…','','Preparing offline copy…');
+    const installing=!reg.active&&(reg.installing||reg.waiting);
+    if(!reg.active&&!installing)return setOffline('Saving an offline copy…','','Preparing offline copy…');
+    // The worker counts what it has saved (sw.js): while installing that is the progress of the first save.
     let done=false;
     const on=e=>{
       if(done||!e.data||e.data.type!=='koii-coach-status')return;
       done=true;sw.removeEventListener('message',on);
-      const {cached,total}=e.data;
-      if(cached>=total)setOffline('Available offline',true,'Offline ready: the coach and all its chapters open without internet.');
-      else setOffline('Saving an offline copy: '+Math.round(100*cached/Math.max(1,total))+'%','','Offline copy incomplete. Reload while online to retry.');
+      const {cached,total}=e.data,pc=Math.round(100*cached/Math.max(1,total));
+      if(installing){if(!failed){setOffline('Saving an offline copy: '+pc+'%','','Preparing offline copy: '+pc+'%.');setTimeout(offline,1000);}}
+      else if(cached>=total)setOffline('Available offline',true,'Offline ready: the coach and all its chapters open without internet.');
+      else setOffline('Saving an offline copy: '+pc+'%','','Offline copy incomplete. Reload while online to retry.');
     };
     sw.addEventListener('message',on);
     if(sw.startMessages)sw.startMessages();
-    reg.active.postMessage({type:'koii-coach-status'});
-    setTimeout(()=>{if(!done){done=true;sw.removeEventListener('message',on);}},3000);
+    (reg.active||installing).postMessage({type:'koii-coach-status'});
+    setTimeout(()=>{if(!done){done=true;sw.removeEventListener('message',on);if(installing)setOffline('Saving an offline copy…','','Preparing offline copy…');}},3000);
   },()=>setOffline(''));
 }
 // Every page registers the service worker, once it has loaded (so the precache never competes with the page itself).

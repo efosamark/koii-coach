@@ -1,6 +1,6 @@
 'use strict';
 // Bump VERSION on every release (same value as version in site.js and the newest CHANGELOG.md heading).
-const VERSION='2026.10.14.20',CACHE='koii-coach-'+VERSION,TIMEOUT=1500;
+const VERSION='2026.10.14.21',CACHE='koii-coach-'+VERSION,TIMEOUT=1500;
 // Every page, script, stylesheet, font and icon. CI (.github/scripts/build_site.py) fails if one is missing or a page is left out.
 const ASSETS=['./','./index.html','./404.html',
   './setup.html','./first-beat.html','./song.html','./sampling.html','./perform.html','./hiphop.html','./tech-house.html','./thodorakis-house.html',
@@ -8,8 +8,11 @@ const ASSETS=['./','./index.html','./404.html',
   './coach.css','./site.js','./progress.js','./shell.js','./search.js','./wake.js','./chapter.js','./player.js','./toolsheet.js','./audio.js','./first-beat.js',
   './home.js','./tools.js','./lab.js','./settings.js',
   './manifest.webmanifest','./icon.svg','./icons.svg','./fonts/IBMPlexMono-SemiBold.woff2','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
-// Install only succeeds when every asset is cached, so navigator.serviceWorker.ready means "works offline".
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS.map(u=>new Request(u,{cache:'reload'})))).then(()=>self.skipWaiting())));
+// Install only succeeds when every asset is cached, so navigator.serviceWorker.ready means "works offline". Assets are
+// stored one by one, so the status message below can report progress while installing; one failure removes the
+// half-filled cache and fails the install, as addAll would.
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>Promise.all(ASSETS.map(u=>fetch(new Request(u,{cache:'reload'})).then(r=>{if(!r.ok||r.redirected)throw new Error(u+' '+r.status);return c.put(u,r);}))))
+  .catch(err=>caches.delete(CACHE).then(()=>{throw err;})).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('koii-coach-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 // Pages can ask {type:'koii-coach-status'} to show the version and whether everything is cached.
 self.addEventListener('message',e=>{if(!e.data||e.data.type!=='koii-coach-status'||!e.source)return;e.waitUntil(caches.open(CACHE).then(c=>Promise.all(ASSETS.map(u=>c.match(u)))).then(hits=>e.source.postMessage({type:'koii-coach-status',version:VERSION,cached:hits.filter(Boolean).length,total:ASSETS.length})));});

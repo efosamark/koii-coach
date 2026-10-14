@@ -183,8 +183,11 @@ def test_forced_colours_keep_every_state(run):
     assert outline != 'none', 'A lit key keeps an outline'
     page.screenshot(path=run.artifacts / 'forced-colours-step.png')
     run.go('./first-beat.html#all')
-    tick = page.evaluate("() => { const i = document.querySelector('li[data-step=\"beat-empty-project\"] .check input'); return i && i.checked; }")
-    assert tick, 'The ticked step shows as ticked'
+    state = page.evaluate("""() => { const i = document.querySelector('li[data-step="beat-empty-project"] .check input'), m = document.querySelector('.meter-fill');
+        const s = m && getComputedStyle(m);
+        return {tick: Boolean(i && i.checked && getComputedStyle(i).appearance === 'auto'),
+                meter: Boolean(s && s.forcedColorAdjust === 'none' && s.backgroundColor !== getComputedStyle(m.parentElement).backgroundColor && m.getBoundingClientRect().width > 0)}; }""")
+    assert state == {'tick': True, 'meter': True}, f'The ticked step is a native checked box and the meter fill shows ({state})'
     page.screenshot(path=run.artifacts / 'forced-colours-list.png')
     run.go('./lab.html')
     hit = page.evaluate("() => { const b = document.querySelector('#beat button.on'); const s = getComputedStyle(b); return [s.backgroundColor, s.color]; }")

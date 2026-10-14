@@ -1224,10 +1224,10 @@ Performance is not the problem today: 45 KB gzipped and a 19ms re-render. The bu
 | Item | Budget |
 |---|---|
 | HTML per page (gzipped) | ≤35 KB (Chapter 7, 79 steps, is the largest) |
-| CSS total | ≤16 KB gz |
-| JS total, all modules | ≤30 KB gz; ≤25 KB executed on any page |
+| CSS total | ≤16 KB gz; ≤17 KB (decision 19) |
+| JS total, all modules | ≤30 KB gz; ≤25 KB executed on any page. Decision 19: ≤68 KB and ≤48 KB |
 | Mono font | ≤18 KB |
-| Icon sprite | ≤6 KB; device.svg ≤12 KB |
+| Icon sprite | ≤6 KB; device.svg ≤12 KB (decision 20: the schematic is HTML) |
 | Search index | ≤50 KB gz |
 | Per page, excluding the font and search index | ≤60 KB gz; a chapter page ≤80 KB gz (decision 19). As built: Home and tools 33–42 KB, chapter pages 66–76 KB |
 | Precache total | ≤600 KB gz, about 40 files (plus the N−1 hashed carry-over) |
@@ -1633,7 +1633,10 @@ Each has a recommended default. If you say nothing, the default applies.
 | 16 | When to remove the dual-write and legacy keys | **At least 8 weeks after P5b, and not before the P8 cleanup release** |
 | 17 | Store learners' scene and sample numbers | **Yes, in P8** (`koii-coach-notes`), with paper still working. Alternative: paper only |
 | 18 | Working pace | **Plan at 3 focused days a week** (about 32–38 calendar weeks in total). State the real figure, and the calendar windows in §9 are re-derived from it |
-| 19 | Page weight of a chapter page (added in P8, 2026.10.14.19) | **80 KB gzipped for a chapter page, 60 KB for every other page.** Measured with minified CSS and JS: Home and the tools 33–42 KB; chapter pages 66–76 KB (HTML 9–18 KB, CSS 17 KB, JS 41 KB). The JS budget below assumed fewer features than P4–P8 delivered (the player with checkpoints and Get back in, notes, the keys panel and schematic, split migrations). Deferring the Tools sheet to idle, loading the one-time migration data only when needed, splitting the CSS and tighter minification would save about 13 KB and still leave the largest chapters at 61–62 KB. Alternative: a P9 rewrite of the shared scripts to the 25 KB JS budget |
+| 19 | Page weight and the CSS and JS budgets (added in P8, 2026.10.14.19; budgets made explicit in 2026.10.14.21) | **80 KB gzipped for a chapter page, 60 KB for every other page; CSS ≤17 KB, all JS ≤68 KB and one page's JS ≤48 KB gzipped** (the §7.8 table had 16, 30 and 25). Measured with minified CSS and JS: Home and the tools 33–42 KB, chapter pages 66–76 KB; CSS 16.6 KB; all JS 64.3 KB; one page's JS at most 46.4 KB (Chapter 1, with its placement helper and practice sounds). The §7.8 JS budget assumed fewer features than P4–P8 delivered (the player with checkpoints and Get back in, notes, the keys panel and schematic, split migrations, the Tools sheet). Deferring the Tools sheet to idle, loading the one-time migration data only when needed, splitting the CSS and tighter minification would save about 13 KB and still leave the largest chapters at 61–62 KB. The build enforces these figures, with HTML ≤35 KB, the sprite ≤6 KB and the font ≤18 KB as planned. Alternative: a P9 rewrite of the shared scripts to the 25 KB JS budget |
+| 20 | The device schematic (P8, 2026.10.14.18) | **Positioned HTML, not `device.svg`:** the control map's 32 controls are real buttons in a `role=radiogroup`, placed by percentages taken from teenage engineering's top-view photo over CSS line art, and the same drawing serves the control map, the keys panel and the Tools sheet, scaling with container queries. Each control stays focusable and labelled, which an SVG would need extra markup for. Still to do: the owner confirms every control position (P8 exit) |
+| 21 | Desktop navigation (P3) | **The course menu as a rail from 1024px**, beside the content, instead of the app bar's chapter switcher popover: the same course and tools list as the phone menu, always in view, with per-chapter progress. The app bar keeps the wordmark, search and the chapter's actions |
+| 22 | Where provenance sits (§6.7) | **Source names the official guide pages for every step** (its own `p.step-source`, or in the step player its part's "Official guide" links); **quotes from the guide and owners' reports stay in Why**, next to the explanation they support, with a link where they come from outside the guide. Moving every quote into Source would separate each reason from its evidence |
 
 ---
 

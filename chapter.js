@@ -237,8 +237,9 @@ function update(){
     el.classList.toggle('all',c>0&&c===n);
   });
   steps.forEach(li=>li.classList.toggle('is-skipped',isOff(li.dataset.step)));
-  const msg=[note,saved?'':'This browser is not saving your ticks (storage is blocked or full, or this is a private window). They will be lost when you close the page.'].filter(Boolean).join(' '),p=$('progress-note');
+  const msg=[note,saved?'':'This browser is not saving your ticks (storage is blocked or full, or this is a private window). They will be lost when you close the page. Install the coach (add it to your home screen: an installed site keeps its storage), or export a progress file in Settings once ticks save again.'].filter(Boolean).join(' '),p=$('progress-note');
   p.textContent=msg;p.hidden=!msg;
+  if(saved)p.removeAttribute('role');else p.setAttribute('role','alert');   // plan 5.10: storage blocked is an alert
   p.className='notice '+(saved?'info':'caution');   // a note about rewritten steps is information; ticks that cannot be saved need care
 }
 
