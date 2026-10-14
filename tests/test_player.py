@@ -69,10 +69,11 @@ def test_risky_steps_check_before_the_press_and_undo_after(name):
 # Chapters rewritten to the glance budget (plan 5.3, P7). Each step: a title of at most 48 characters; Do at most 26
 # words in at most 3 sentences (a risk step: Before you press and Do together at most 40); Check at most 15 words; undo
 # at most 12. Add a chapter here when it is rewritten.
-STRUCTURED = ['sampling']
+STRUCTURED = ['sampling', 'perform']
 
 
 def _words(h):
+    h = re.sub(r'</kbd>\s*\+\s*<kbd', '</kbd> <kbd', h)   # SHIFT + B is one chord
     text = re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', h)))
     return [w for w in text.split() if re.search(r'[\w−+]', w)]
 

@@ -4,6 +4,16 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.6
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.
+
+Chapter 4 · Play & perform, rewritten for a glance, like Chapter 3 (64 steps became 110). Your ticks and links carry over.
+
+- Each step has a title, at most three moves and one short Check; reasons and fixes are under "Why" and "Not working?".
+- Erasing a scene is now three steps, so the two presses that cannot be undone each ask "Yes, I have checked" first: copy a throwaway scene as TRASH, clear it, then delete it.
+- Changed wording: "Wrong pad? Press SHIFT + B at once, while the umbrella is lit." (was "Cleared the wrong pad? …"); "You should hear your backbeat and ghost notes repeat …" (was "and the soft ghost notes"); "You should hear the notes one at a time …" (was "the notes play"); "The change lands at the end of the pattern, though you chose it early." (was "should happen exactly at the end of the pattern, even though"); "To go back to instant scene changes, press SHIFT + ERASE, type 4, 1, 0 …" then "Or keep 412 …" (the same sentence, turned round); "Aim for this:" became the Check itself; "Only notes from that scale play now …" (was "they now offer only notes from that scale"); and the asides in brackets after "pad 1", "not key", "if it is still armed" and the punch-in ideas while recording moved to Why or a note.
+
 ## 2026.10.14.5
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No button sequence changed: steps were split and their sentences moved; the few words that changed are listed.
