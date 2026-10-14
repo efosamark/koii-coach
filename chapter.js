@@ -375,4 +375,52 @@ window.CoachChapter={
   route(fn){router=typeof fn==='function'?fn:null;},
   routed:()=>routed   // true once the first route has run (a router added later should then route the page itself)
 };
+
+// ---------- Your notes: scene and sample numbers (koii-coach-notes, docs/overhaul-plan.md 7.7) ----------
+// A step with data-note="DRUMS" (several: "V1|V2|V3", and data-note-kind="sample" for sample numbers) asks you to
+// write a number down; it gets LCD-style fields under its Do lines for them. Paper still works: the fields are
+// optional. Numbers are kept per project, so Chapters 1, 2 and 4 (all in project 6) share theirs:
+// koii-coach-notes = {v:1, values:{'project-6/DRUMS':'3', 'tech-house/GROOVE':'5', …}}. A later step that names a
+// noted scene or sample in its Before you press or Do lines shows "Your notes: GROOVE 5" there, and "Get back in"
+// (player.js) lists every note of the project. Export, import and Reset all progress include the key (progress.js).
+const NOTES='koii-coach-notes',book=({'first-beat':'project-6',song:'project-6',perform:'project-6'})[slug]||slug;
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const readNotes=()=>{try{const v=JSON.parse(localStorage.getItem(NOTES)||'null');if(v&&v.v===1&&v.values&&typeof v.values==='object'&&!Array.isArray(v.values))return v;}catch(e){}return{v:1,values:{}};};
+const noted=()=>{const v=readNotes().values;return Object.keys(v).filter(k=>k.startsWith(book+'/')&&/^\d{1,3}$/.test(String(v[k]))).map(k=>[k.slice(book.length+1),String(v[k])]);};
+const namesOf=li=>(li.dataset.note||'').split('|').map(s=>s.trim()).filter(Boolean);
+const listHTML=list=>list.map(([n,v])=>`<span class="note-pair">${esc(n)} <samp class="lcd">${esc(v)}</samp></span>`).join(' · ');
+const mentions=(text,name)=>new RegExp('(^|[^A-Z0-9])'+name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![A-Z0-9])').test(text);
+function recall(){
+  const all=noted();
+  steps.forEach(li=>{
+    li.querySelectorAll(':scope > .note-recall').forEach(e=>e.remove());
+    if(!all.length)return;
+    const own=namesOf(li),pre=li.querySelector(':scope > .preflight'),dos=[...li.querySelectorAll(':scope > .step-do')];
+    if(!dos.length)return;
+    const preText=pre?pre.textContent:'',doText=dos.map(d=>d.textContent).join(' ');
+    const hits=all.filter(([n])=>!own.includes(n)&&(mentions(preText,n)||mentions(doText,n)));
+    if(!hits.length)return;
+    const p=document.createElement('p');p.className='note-recall pl-own';
+    p.innerHTML='Your notes: '+listHTML(hits);
+    (pre&&hits.some(([n])=>mentions(preText,n))?pre:dos[dos.length-1]).after(p);
+  });
+}
+function setNote(name,val){
+  const n=readNotes(),k=book+'/'+name;
+  if(val)n.values[k]=val;else delete n.values[k];
+  try{localStorage.setItem(NOTES,JSON.stringify(n));}catch(e){}
+  recall();
+}
+steps.forEach(li=>{
+  const names=namesOf(li);if(!names.length)return;
+  const kind=li.dataset.noteKind==='sample'?'sample':'scene',vals=Object.fromEntries(noted());
+  const box=document.createElement('div');box.className='note-fields pl-own';
+  box.innerHTML=`<p class="note-hint">Keep ${names.length>1?'them':'it'} here too, if you like (paper works as well):</p>`+
+    names.map(n=>`<label class="note-field"><span class="note-name">${esc(n)}</span><input class="lcd-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" autocomplete="off" spellcheck="false" data-note-name="${esc(n)}" aria-label="${esc(n)}, ${kind} number" value="${esc(vals[n]||'')}"></label>`).join('');
+  box.querySelectorAll('input').forEach(i=>i.addEventListener('input',()=>{const v=i.value.replace(/\D/g,'').slice(0,3);if(v!==i.value)i.value=v;setNote(i.dataset.noteName,v);}));
+  const dos=li.querySelectorAll(':scope > .step-do');(dos[dos.length-1]||li.querySelector(':scope > .step-title')||li.firstElementChild).after(box);
+});
+recall();
+addEventListener('storage',e=>{if(e.key===NOTES)recall();});
+window.CoachNotes={book,list:noted,html:()=>{const l=noted();return l.length?'<p class="note-recall">Your notes: '+listHTML(l)+'</p>':'';}};
 })();

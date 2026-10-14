@@ -369,3 +369,27 @@ def test_device_panel_landscape_and_desktop(run):
     assert panel.bounding_box()['x'] > 900
     panel.locator('.control[data-key="SOUND"]').click()
     assert 'SOUND' in panel.locator('.map-info').text_content()
+
+
+@pytest.mark.browser
+def test_notes_scene_numbers(run):
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./first-beat.html#s-beat-performance')
+    field = page.locator('li[data-step="beat-performance"] input[data-note-name="BEAT"]')
+    field.fill('4x')
+    assert field.input_value() == '4', 'Only digits'
+    assert run.get('koii-coach-notes') == {'v': 1, 'values': {'project-6/BEAT': '4'}}, 'Kept per project'
+    # Chapter 2 is in the same project: a step that names BEAT shows the number.
+    run.go('./song.html#s-song-select-beat')
+    recall = page.locator('li[data-step="song-select-beat"] .note-recall')
+    assert recall.is_visible() and 'BEAT 4' in recall.text_content()
+    # Another project does not see it: Chapter 6's notes are its own.
+    run.go('./tech-house.html#s-commit-groove')
+    assert page.locator('.note-recall').count() == 0
+    # Get back in lists the notes after a break.
+    page.evaluate("() => localStorage.setItem('koii-coach-ch-song', JSON.stringify({v: 1, done: ['song-find-beat'], last: 'song-find-beat', n: 1, at: new Date(Date.now() - 3 * 3600e3).toISOString()}))")
+    run.go('./song.html')
+    box = page.locator('.getback')
+    box.wait_for()
+    assert 'BEAT 4' in box.text_content(), 'Get back in shows your notes'

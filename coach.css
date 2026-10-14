@@ -1027,6 +1027,17 @@ html[data-hand="left"] .pa-more{right:auto;left:var(--gutter)}
   .pa-hint .key{font-size:12px}
   html[data-player] .toast{bottom:calc(var(--bar-h) + var(--sp-6))}
 }
+/* Your notes (chapter.js): LCD-style fields for the scene or sample numbers a step asks you to write down, and the
+   numbers recalled, small, where a later step names them. */
+.note-fields{margin:var(--sp-2) 0 var(--sp-3)}
+.note-hint{margin:0 0 var(--sp-2);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.note-field{display:inline-flex;align-items:center;gap:var(--sp-2);margin:0 var(--sp-4) var(--sp-2) 0;font:600 var(--t-body)/1.2 var(--font-ui)}
+input.lcd-input{width:4.6ch;min-height:44px;padding:0 .35em;border:1.5px solid var(--lcd-line);border-radius:var(--r-chip);background:var(--lcd-bg);color:var(--lcd-ink);font:600 20px/1 var(--font-mono);letter-spacing:.06em;text-align:center}
+input.lcd-input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.note-recall{margin:var(--sp-1) 0 var(--sp-2);color:var(--ink-2);font-size:var(--t-cap);line-height:1.9}
+.note-recall .note-pair{white-space:nowrap;color:var(--ink);font-weight:600}
+.note-recall .lcd{font-size:14px}
+.getback-notes .note-recall{margin:0 0 var(--sp-3);font-size:var(--t-body)}
 /* The device panel (toolsheet.js, plan 5.5): the step's keys lit and numbered beside the card, in the step view only.
    A short landscape screen gives it the left 40% (controls and pads side by side) and sets Do at 20/28; from 1200px it
    is a column on the right with a fixed-height box that explains a tapped control. */

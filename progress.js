@@ -15,6 +15,8 @@
                            owns it; m is the last split migration applied to it, below)
      koii-coach-prefs      settings, {v:1, setup, wake, modes, keys, text, hand}: Reset and loading a file keep it
      koii-coach-meta       {v:1, lastChapter, appAt, setupReason, notices:[{chapter, text}]}
+     koii-coach-notes      {v:1, values:{'<project>/<NAME>': '<number>'}}: scene and sample numbers typed in a chapter
+                           (chapter.js); in the progress file, and cleared with Reset all progress
 
    01 First beat and 02 Make it a song were views of the old app, which saved a position (step, song) instead of ticks.
    Their records (koii-coach-ch-first-beat, koii-coach-ch-song) are derived from that position: every step before it

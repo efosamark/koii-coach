@@ -257,13 +257,12 @@ listModes.setAttribute('role','group');listModes.setAttribute('aria-label','Show
 wrap.before(listModes);
 // Above the step card: the way back to the step to continue at, and "Get back in" after a break.
 const pill=el('button','back-pill pl-own');pill.type='button';pill.hidden=true;
+// It shows perform's "How every section starts" (.reentry) and the scene and sample numbers on your notes (chapter.js).
 const getback=el('section','getback pl-own');getback.hidden=true;getback.setAttribute('aria-labelledby','getback-title');
-if(reentry){
-  const c=copy(reentry);c.querySelectorAll('h2').forEach(h=>h.remove());
-  getback.innerHTML='<h2 id="getback-title">Get back in</h2><p class="meta">It has been a while since your last tick. Before you go on:</p><div class="getback-body"></div><p><button class="btn" type="button" data-getback>Got it</button></p>';
-  getback.querySelector('.getback-body').append(...c.childNodes);
-  getback.querySelector('[data-getback]').addEventListener('click',()=>{getback.hidden=true;if(cur)focusStep(cur);});
-}
+getback.innerHTML='<h2 id="getback-title">Get back in</h2><p class="meta">It has been a while since your last tick. Before you go on:</p><div class="getback-body"></div><div class="getback-notes"></div><p><button class="btn" type="button" data-getback>Got it</button></p>';
+if(reentry){const c=copy(reentry);c.querySelectorAll('h2').forEach(h=>h.remove());getback.querySelector('.getback-body').append(...c.childNodes);}
+getback.querySelector('[data-getback]').addEventListener('click',()=>{getback.hidden=true;if(cur)focusStep(cur);});
+const notesHTML=()=>window.CoachNotes?CoachNotes.html():'';
 wrap.before(pill,getback);
 pill.addEventListener('click',()=>{const li=byId.get(C.current());if(li)showStep(li);});
 // Checkpoint card and chapter-complete card.
@@ -660,9 +659,10 @@ function openDefault(welcome){
   showStep(li);
   if(!welcome)return;
   C.say('Welcome back. '+C.count()+' of '+C.total()+' done; you continue at step '+num(li)+'.');
-  // "Get back in" (perform's "How every section starts") when the last tick was more than 30 minutes ago.
+  // "Get back in" (perform's "How every section starts", your notes) when the last tick was more than 30 minutes ago.
   const at=Date.parse(C.lastAt()||'');
-  if(reentry&&Number.isFinite(at)&&Date.now()-at>30*60*1000)getback.hidden=false;
+  const notes=notesHTML();
+  if((reentry||notes)&&Number.isFinite(at)&&Date.now()-at>30*60*1000){getback.querySelector('.getback-notes').innerHTML=notes;getback.hidden=false;}
 }
 function routeTo(hash){
   const was=first;first=false;

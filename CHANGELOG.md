@@ -4,6 +4,13 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.16
+
+**Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No instruction changed.
+
+- **Your notes.** Where a step asks you to write a scene or sample number down (DRUMS, INTRO, GROOVE, V1 to V5 and so on: 37 steps in Chapters 1 to 7), a small LCD-style field under the step keeps it in the coach too. Paper still works; the fields are optional. Later steps that name that scene or sample show "Your notes: GROOVE 5", and "Get back in" lists them after a break, in every chapter now, not only Chapter 4.
+- Notes are kept per project, so Chapters 1, 2 and 4 (all in project 6) share theirs, and an INTRO in Chapter 6 is not the INTRO of Chapter 2. They are saved in this browser as `koii-coach-notes` (a new key), go into the progress file, and Reset all progress clears them with the rest (and its Undo brings them back).
+
 ## 2026.10.14.15
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.13.2. **Written for:** OS 2.5.1. No instruction changed.
