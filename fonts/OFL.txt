@@ -1,8 +1,13 @@
-Copyright © 2017 IBM Corp. with Reserved Font Name "Plex"
+Copyright 2020-2024 The Atkinson Hyperlegible Next Project Authors (https://github.com/googlefonts/atkinson-hyperlegible-next)
+Copyright 2020-2024 The Atkinson Hyperlegible Mono Project Authors (https://github.com/googlefonts/atkinson-hyperlegible-next-mono)
+
+The files in this folder are modified versions of Atkinson Hyperlegible Next (Regular, SemiBold, Bold) and
+Atkinson Hyperlegible Mono (Medium): single weights, subset to Latin, with the slash removed from the zero.
+.github/scripts/make_fonts.py makes them from the published variable fonts.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
-
-This license is copied below, and is also available with a FAQ at: http://scripts.sil.org/OFL
+This license is copied below, and is also available with a FAQ at:
+https://openfontlicense.org
 
 
 -----------------------------------------------------------

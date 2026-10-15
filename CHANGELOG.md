@@ -4,6 +4,29 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.15
+
+**Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence changed.
+
+New type and colour. The course no longer looks like a generic template (cream and sage, monospace capitals, terracotta and lime). It now looks like a printed equipment manual.
+- **Type.** All text and every keycap use Atkinson Hyperlegible Next. What the K.O. II's display shows (`1.1.1`, `P 7`) uses Atkinson Hyperlegible Mono. The Braille Institute designed both to keep similar characters apart (1, l and I; 0 and O; B and 8), which helps with pad names and display values read at arm's length. The zero is redrawn without its slash, so "0 of 8 done" doesn't read as code. These fonts replace your device's system font and IBM Plex Mono. Headings are bold (700), not extra bold (800).
+- **Labels.** Small headings, tags and the menu's section names use the page font in sentence case, not spaced-out monospace capitals.
+- **Colour.** Neutral greys and black ink replace cream and sage.
+  - Keys to press are yellow with black labels. They were orange.
+  - Done, ticks and "You are here" are green with white text. They were pale lime.
+  - Careful-but-recoverable notices ("Before you press", "Clears notes") are orange. They were amber, which was too close to the new yellow keys.
+  - Irreversible actions stay red. Dark mode follows the same scheme.
+  - The control map draws the power switch with an orange edge, like the unit's switch. It used to borrow the orange key colour, which is now yellow.
+  - Every pair still meets the plan's contrast targets: text at least 4.5:1, controls and states at least 3:1.
+- **App icon.** Recoloured to match: yellow lit pads and grey unlit pads on black. The browser bar uses white in light mode and #1B1B1A in dark.
+
+**Wording that changed (letter case only):**
+- Chapter page eyebrows, all eight: "CHAPTER 3 / ABOUT 2–3 HOURS" is now "Chapter 3 · About 2–3 hours". The minutes chapters follow the same pattern, for example "Chapter 1 · About 30–50 minutes" (was "CHAPTER 1 / ABOUT 30–50 MINUTES").
+- Wordmark: "K.O. II / COACH" is now "K.O. II / Coach".
+- Labels the stylesheet used to set in capitals now show as written. For example, "NEXT · CHAPTER 1" is now "Next · Chapter 1", and "YOU ARE HERE" is now "You are here". The same applies to "Before you press", "Clears notes", "Optional", "Checkpoint", "Course" and "Tools" in the menu, search group names, and Tools sheet subheadings. Only the letter case changed.
+
+**For maintainers:** `fonts/` holds four files of about 12 KB each (46 KB in all, was 15 KB). `.github/scripts/make_fonts.py` makes them from the published variable fonts (plan decision 25). The token values are in plan section 6.2.
+
 ## 2026.10.14.34
 
 **Checked against:** the official EP-133 guide on 13 October 2026, and the owners' reports cited in 2026.10.14.33. **Written for:** OS 2.5.1. No button sequence changed.

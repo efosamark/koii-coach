@@ -148,7 +148,7 @@ These seven principles decide future arguments. When two conflict, the earlier o
 1. **The words are load-bearing.** Structure, layout and styling can change freely. A button sequence or OS claim changes only through the key-sequence lock, a dated `reviewed` record and an on-device walk-through on OS 2.5.1. A wrong press is the worst bug this product can have.
 2. **Safety before action.** A check that prevents loss always appears above the press. Irreversible presses (delete a sample, crop or overwrite a file, erase a scene until its undo is proven) are gated. The undo, or an explicit "No undo", follows the press immediately. Red means irreversible and nothing else.
 3. **Pass the glance test.** On a 360×740 phone, after a 34px safe-area allowance, a standard step's Do, its Check and the Next button fit between the app bar and the action bar without scrolling. On a risk step, the preflight and every Do move fit. Do lines are at least 24px, and nothing instructional or interactive is below 14px. If a step does not fit, the step is too long: split it, do not shrink it.
-4. **Orange means "press this on the hardware".** Each colour has one meaning: orange = a physical control to press now, ink = the on-screen action, lime = done / you are here, amber = careful but recoverable, red = irreversible. There is never orange text and never more than one primary button per view.
+4. **Yellow means "press this on the hardware".** Each colour has one meaning: yellow = a physical control to press now, ink = the on-screen action, green = done / you are here, orange = careful but recoverable, red = irreversible. There is never yellow text and never more than one primary button per view. (Until 2026.10.14.34 the key colour was orange, done was lime and caution amber; decision 25.)
 5. **Never lose the learner's place.** Progress is stored as step ids, never as a position. Every step has a URL. Lookups (troubleshooting, glossary, control map, search) open over the step, and Back closes them. Reset always asks first, keeps your settings and can be undone for 10 seconds.
 6. **One of everything.** One shell, one token file, one component library, one Step component, one progress module, one search and one build. If a pattern exists twice, delete one of them. Nothing that a manifest can generate is typed by hand.
 7. **Ship small and keep everything working.** Every phase deploys on its own. Old URLs, storage keys, offline install and no-JS reading survive every release. Every release is tagged, and redeploying the previous tag rolls it back without losing a tick.
@@ -361,7 +361,7 @@ Chapter 0 then shows on the map as "Optional · set-up checks". The "never infer
 |  Sample, chop & resample                 |  h2 24
 |  Part 2 · Build a drum kit               |  17 ink
 |  Step 4 of 8 · Record the snare          |  17 ink-2
-|  [========------------]  23 of 57 done   |  8px meter (lime fill on surface-3)
+|  [========------------]  23 of 57 done   |  8px meter (green fill on surface-3)
 |  [Project 7] [OS 2.5+]                   |  LCD-style chips
 |  +------------------------------------+  |
 |  |           Continue  ->             |  |  56 primary (#resume)
@@ -371,7 +371,7 @@ Chapter 0 then shows on the map as "Optional · set-up checks". The "never infer
 |  [*] 0  Set up your K.O. II   36/36 DONE |  LED filled + text "DONE"
 |  [*] 1  First beat            22/22 DONE |
 |  [*] 2  Make it a song        24/24 DONE |
-|  [o] 3  Sample, chop & resample          |  lime 4px rule + "You are here"
+|  [o] 3  Sample, chop & resample          |  green 4px rule + "You are here"
 |         23/57 · Project 7 · 2-3 h        |
 |  [ ] 4  Play & perform  Project 6 · 2-3 h|
 |  [ ] 5  Full hip-hop beat ...            |
@@ -509,7 +509,7 @@ It always goes to the **next step in order**, never "the next unticked step", wh
 **Screen wake lock:**
 - Requested on the first Done tap in a session and re-acquired on `visibilitychange`.
 - Released on `pagehide` or after 15 minutes without a tap, with the toast "Screen can sleep again · Keep on".
-- The sun icon carries a lime LED dot while it is held. The toggle is hidden where the API is missing.
+- The sun icon carries a green LED dot while it is held. The toggle is hidden where the API is missing.
 
 **Gestures.** There is no swipe-to-advance, because a propped phone gets brushed.
 
@@ -629,7 +629,7 @@ The gate guards the press on the device. It does not block Next after the fact, 
 +------------------------------------------+
 ```
 
-- **Course tab:** a Continue row, then the 8 chapters with LED state (ring = not started, half = in progress, filled lime with ✓ and "DONE" = done) and x/N, then Tools (unnumbered rows with icons), Settings, "Available offline ✓" (with "Saving offline copy 64%" while installing; the existing `koii-coach-status` message already returns `cached`/`total`) and Install (`beforeinstallprompt`, or a one-line iOS share-sheet hint).
+- **Course tab:** a Continue row, then the 8 chapters with LED state (ring = not started, half = in progress, filled green with ✓ and "Done" = done) and x/N, then Tools (unnumbered rows with icons), Settings, "Available offline ✓" (with "Saving offline copy 64%" while installing; the existing `koii-coach-status` message already returns `cached`/`total`) and Install (`beforeinstallprompt`, or a one-line iOS share-sheet hint).
 - **Behaviour:** a native `<dialog>`, with the page behind it inert. It pushes a history entry, so Back, Esc, a scrim tap or the close button all close it. Focus returns to ≡.
 
 ### 5.7 Tools sheet and tool pages
@@ -716,7 +716,7 @@ The gate guards the press on the device. It does not block Next after the fact, 
   - From P8, phone portrait: instrument tabs (Kick ● · Snare ■ · Hat ▲ · Bass ◆, 48px). One 4×4 grid per instrument: rows = beats 1–4 and columns = sixteenths, so cell (2,3) is `1.2.3`, matching the display. Cells are about 76×64px. A 28px LCD beat counter.
   - Transport: Play/Stop 56px (`#audio-play`), BPM and volume as 48px −/+ steppers with LCD values, `#recipe` and `#clear`.
   - Landscape and desktop: a 4×16 grid with 44px cells.
-  - `#beat` keeps all 64 buttons with `aria-pressed` as `role=grid` (arrow keys, Space to toggle). The playhead is a full-column lime outline. Hits use ink plus a glyph, never orange.
+  - `#beat` keeps all 64 buttons with `aria-pressed` as `role=grid` (arrow keys, Space to toggle). The playhead is a full-column green outline. Hits use ink plus a glyph, never yellow.
 
 ### 5.12 Settings and 404
 
@@ -750,27 +750,27 @@ Each row has a storage or URL fixture in `test_progress.py` or `test_player.py`.
 
 ## 6. Design system
 
-**Concept.** Studio hardware, drawn as a schematic, not a replica. The olive/ink base palette stays, with one meaning per colour. There are two functional primitives, the **keycap** and the **LCD chip**, and everything else is quiet. No teenage engineering typefaces, colourways, photos, faceplate artwork or pixel icons.
+**Concept.** Studio hardware, drawn as a schematic, not a replica: a printed equipment manual, neutral greys and black ink, with one meaning per colour (decision 25; until 2026.10.14.34 an olive/ink palette). There are two functional primitives, the **keycap** and the **LCD chip**, and everything else is quiet. No teenage engineering typefaces, colourways, photos, faceplate artwork or pixel icons.
 
 ### 6.1 Typography
 
 - **Families.**
-  - UI: `system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`, with `font: inherit` on every form control (this fixes the Arial fallback in chapter inputs).
-  - Mono, for keycaps, LCD chips, eyebrows, step numbers and the wordmark: **IBM Plex Mono SemiBold 600** (SIL OFL), self-hosted as a Latin subset including `− + × · ✓ → ↻`. About 15 KB woff2, `font-display: swap`, precached. Fallback: `ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace`.
-  - The font ships in P1 so the existing key chips gain the vocabulary immediately. Deferring it to the end, as proposal C did, is rejected.
+  - UI, for all text, keycaps, eyebrows, step numbers and the wordmark: **Atkinson Hyperlegible Next** 400, 600 and 700 (SIL OFL), with `system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` behind it and `font: inherit` on every form control (this fixes the Arial fallback in chapter inputs). Numbers in counts and tallies use `tabular-nums`.
+  - Display values only (LCD chips, the readout, the placement helper, the device display): **Atkinson Hyperlegible Mono** Medium 500. Fallback: `ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace`.
+  - Both are self-hosted as one Latin-subset woff2 per weight (about 12 KB each, 46 KB in all), `font-display: swap`, precached; Regular and Bold are preloaded. The zero is redrawn without its slash (`.github/scripts/make_fonts.py`). Decision 25 replaced system-ui and IBM Plex Mono SemiBold (2026.10.15).
 - **Six sizes**, fluid between 390 and 1280px via `clamp()`. This replaces 17.
 
   | Token | Phone → desktop (size/line-height) | Use |
   |---|---|---|
-  | `--t-cap` | 14/20 | Eyebrows (mono 600, uppercase, +0.06em), captions, meta, badges. **The floor for anything instructional or interactive.** |
+  | `--t-cap` | 14/20 | Eyebrows (600, sentence case), captions, meta, badges. **The floor for anything instructional or interactive.** |
   | `--t-body` | 17/26 → 18/28 | Body, disclosure text, tables (tables never drop below 14) |
   | `--t-check` | 20/28 | Check text, step titles (h3), sheet titles, stage-1 prose, Do on short viewports from P8 |
   | `--t-do` | 24/32 → 28/36 | Do moves. The P8 "Larger" setting gives 30/40 |
   | `--t-h2` | 24/30 → 28/34 | Section headings, Continue card title |
   | `--t-h1` | 30/36 → 42/48 | Page title |
 
-- **Mono sizes:** keycap 0.8em (about 19px in Do lines, 14px in body); inline LCD chip 0.85em; LCD readout 28px (Check, runner); lab counter 28px.
-- **Weights:** 400, 600 and 800 only (mono 600 only). No negative tracking.
+- **Keycap and display sizes:** keycap 0.8em, bold (about 19px in Do lines, 14px in body); inline LCD chip 0.85em; LCD readout 28px (Check, runner); lab counter 28px.
+- **Weights:** 400, 600 and 700 only (mono 500 only). No negative tracking.
 - **Measure:** `p, li, dd { max-width: 65ch }`; Do lines run about 20–30 characters on a 360px phone.
 - **Why these sizes.** On a 390px-wide phone, 1 CSS px ≈ 0.166 mm. A 24px Do line has an x-height of about 2.1 mm, roughly 14 arcmin at 50 cm, which is comfortable reading. 17px body text (about 10 arcmin) is used only in disclosures you lean in to read.
 
@@ -780,34 +780,34 @@ Every ratio below was computed (WCAG 2.x) for this plan. Targets: text ≥ 4.5:1
 
 | Role | Token | Light | Dark | Measured (light / dark) |
 |---|---|---|---|---|
-| Page | `--bg` | `#EEF0E7` | `#060908` | — |
-| Card, sheet, bars | `--surface-1` | `#FFFEF8` | `#161E19` | vs bg 1.14 / 1.17 |
-| Insets, disclosures, info | `--surface-2` | `#F4F5EC` | `#232E27` | vs s1 1.09 / 1.21 |
-| Device body, meter track, empty cells, pressed | `--surface-3` | `#E1E5D6` | `#34413A` | vs s2 1.17 / 1.32 |
-| Decorative divider | `--line` | `#CBD3C2` | `#3E4F45` | on s1 1.52 / 1.95 |
-| Control outlines, quiet keycaps, secondary borders, ticks, cells | `--line-strong` | `#76846F` | `#80948A` | on s1 3.92 / 5.28; on s3 3.09 / 3.32 |
-| Text | `--ink` | `#18251E` | `#E8EEE0` | on s1 15.72 / 14.38; on s3 12.39 / 9.03 |
-| Muted text | `--ink-2` | `#4F5C4D` | `#AAB6A4` | on s1 7.00 / 8.05; on s3 5.51 / 5.06 |
-| **Screen action** (one per view) | `--primary` / `--on-primary` | `#18251E` / `#FFFFFF` | `#E8EEE0` / `#060908` | 15.88 / 16.89 |
-| **Hardware control to press** (only use) | `--key` / `--on-key` | `#C2410C` / `#FFFFFF` | `#FF8A5C` / `#1A0E08` | 5.18 / 8.14; key vs s1 5.13 / 7.33; vs s3 4.04 / 4.61 |
-| Keycap bottom edge (decorative) | `--key-edge` | `#8A2E08` | `#C2561F` | — |
-| Display readout | `--lcd-bg` / `--lcd-ink` | `#1A2420` / `#E4F5CF` | `#050806` / `#E4F5CF` (+1px line-strong border) | 13.86 / 17.49 |
-| **Done / you are here**, text and ticks | `--done-ink` | `#3F6212` | `#B9D67A` | on s1 7.00 / 10.51 |
-| Done fill (tags, LED) | `--done-fill` / `--on-done` | `#D8EF9A` / `#18251E` | `#A8C46A` / `#060908` | 12.66 / 10.25 |
-| Meter fill, "here" ring, playhead | `--here` | `#4D7C0F` | `#A8C46A` | vs s3 track 3.89 / 5.49; vs s1 4.94 / 8.73 |
-| **Irreversible only** | `--danger` | `#B0172F` | `#FF7D8E` | on s1 6.91 / 6.95 |
-| | `--danger-surface` | `#FDECEE` | `#2E1418` | danger on it 6.12 / 6.98; ink on it 13.92 / 14.43 |
-| **Careful, recoverable** | `--caution-ink` | `#7A4B00` | `#F2C46D` | on caution surface 6.70 / 9.64 |
-| | `--caution-surface` / `--caution-line` | `#FFF3D1` / `#A86A12` | `#2A2214` / `#C9962E` | line on s1 4.39 / 6.39 |
-| Info note | `--info-ink` / `--info-surface` | `#2F4A5C` / `#EAF0F2` | `#A9C3D6` / `#1B262D` | 8.09 / 8.42 |
-| Focus ring (keyboard only) | `--focus` | `#1F6FD1` | `#7FB2FF` | on s1 4.89 / 7.87; on bg 4.29 / 8.99 |
+| Page | `--bg` | `#ECECE9` | `#080808` | — |
+| Card, sheet, bars | `--surface-1` | `#FFFFFF` | `#1B1B1A` | vs bg 1.18 / 1.16 |
+| Insets, disclosures, info | `--surface-2` | `#F5F5F2` | `#252524` | vs s1 1.09 / 1.12 |
+| Device body, meter track, empty cells, pressed | `--surface-3` | `#E2E2DD` | `#363633` | vs s2 1.19 / 1.27 |
+| Decorative divider | `--line` | `#D3D3CD` | `#3D3D3A` | on s1 1.50 / 1.58 |
+| Control outlines, quiet keycaps, secondary borders, ticks, cells | `--line-strong` | `#76766F` | `#8A8A83` | on s1 4.57 / 4.96; on s3 3.52 / 3.49 |
+| Text | `--ink` | `#161616` | `#EDEDE8` | on s1 18.10 / 14.68; on s3 13.92 / 10.32 |
+| Muted text | `--ink-2` | `#55554F` | `#ACACA5` | on s1 7.50 / 7.55; on s3 5.77 / 5.31 |
+| **Screen action** (one per view) | `--primary` / `--on-primary` | `#161616` / `#FFFFFF` | `#EDEDE8` / `#080808` | 18.10 / 17.05 |
+| **Hardware control to press** (only use) | `--key` / `--on-key` | `#FFCB2E` / `#161616` | `#FFD044` / `#161616` | 11.92 / 12.37; the keycap's edge carries its outline: key-edge vs s1 5.22 / 5.43, vs s3 4.02 / 3.82 |
+| Keycap border and bottom edge | `--key-edge` | `#8A6700` | `#B38B00` | see above |
+| Display readout | `--lcd-bg` / `--lcd-ink` | `#1B1B1A` / `#F2F2EA` | `#050505` / `#F2F2EA` (+1px line-strong border) | 15.32 / 18.11 |
+| **Done / you are here**, text and ticks | `--done-ink` | `#1A6B3C` | `#6FD093` | on s1 6.54 / 9.13 |
+| Done fill (tags, LED, ticked boxes) | `--done-fill` / `--on-done` | `#1F7A45` / `#FFFFFF` | `#5CC584` / `#080808` | 5.35 / 9.32 |
+| Meter fill, "here" ring, playhead | `--here` | `#1F7A45` | `#5CC584` | vs s3 track 4.11 / 5.64; vs s1 5.35 / 8.02 |
+| **Irreversible only** | `--danger` | `#B3142A` | `#FF7A88` | on s1 6.88 / 6.89 |
+| | `--danger-surface` | `#FCECEC` | `#2E1517` | danger on it 6.02 / 6.79; ink on it 15.81 / 14.47 |
+| **Careful, recoverable** | `--caution-ink` | `#8A3B00` | `#F5A766` | on caution surface 6.82 / 8.17 |
+| | `--caution-surface` / `--caution-line` | `#FCEEE2` / `#C25E0F` | `#2B1E13` / `#D9823A` | line on s1 4.28 / 5.91 |
+| Info note | `--info-ink` / `--info-surface` | `#2C4859` / `#EBF0F3` | `#A9C3D6` / `#1A2329` | 8.40 / 8.71 |
+| Focus ring (keyboard only) | `--focus` | `#1F6FD1` | `#7FB2FF` | on s1 4.94 / 7.97; on bg 4.17 / 9.26 |
 
 **Rules:**
-- **Orange appears only** as a filled keycap in Do lines and as a lit control on the device. Everywhere else keycaps are quiet (surface-1 fill, line-strong border, ink text). Links are ink with a 1.5px underline at a 3px offset. Eyebrows are ink-2.
-- **Danger and key are separated by hue (351° vs 17°) and by shape.** Danger is always a stripe, an icon and a label; key is always a keycap.
-- **Dark mode:** the primary button inverts and becomes the brightest object on screen, so the action draws the eye, not a status counter. The 14:1 lime bar is gone. Every token is redefined in dark: today `--accent`, `--lime`, `--head` and `--bass` are not.
+- **Yellow appears only** as a filled keycap in Do lines and as a lit control on the device. Everywhere else keycaps are quiet (surface-1 fill, line-strong border, ink text). Links are ink with a 1.5px underline at a 3px offset. Eyebrows are ink-2.
+- **Key, caution and danger are separated by hue (yellow 45°, orange 26°, red 353°), by lightness (a key is the lightest of the three) and by shape.** Danger and caution are always a stripe, an icon and a label; key is always a keycap.
+- **Dark mode:** the primary button inverts and becomes the brightest object on screen, so the action draws the eye, not a status counter. Every token is redefined in dark: today `--accent`, `--lime`, `--head` and `--bass` are not.
 - **Theme selection:** dark tokens apply under `@media (prefers-color-scheme: dark)` guarded by `:root:not([data-theme="light"])`, and again under `:root[data-theme="dark"]`. There is no manual switch in this overhaul (out of scope); the hooks exist for tests.
-- **Theme metadata:** every page gets two `theme-color` metas, `#FFFEF8` and `#161E19` (today the chapter pages have one, `#18251e`). Manifest `theme_color` becomes `#FFFEF8` and `background_color` stays `#EEF0E7`. `icon.svg` is recoloured from the untokenised `#e55630` to `--key` on `--ink`.
+- **Theme metadata:** every page gets two `theme-color` metas, `#FFFFFF` and `#1B1B1A` (until 2026.10.14.34 `#FFFEF8` and `#161E19`). Manifest `theme_color` is `#FFFFFF` and `background_color` `#ECECE9`. `icon.svg` draws the display in `--bg`, the lit pads in `--key` and the unlit pads in grey, on `--ink`.
 - **Rhythm and pattern state:** hits are an ink fill plus an instrument glyph (≥12:1 on cells); empty cells are line-strong outlines. Colour alone never carries state.
 - **Forced colours (`@media (forced-colors: active)`):**
   - Lit keys and lit cells get a 3px `Highlight` outline plus their order-badge number.
@@ -1227,7 +1227,7 @@ Performance is not the problem today: 45 KB gzipped and a 19ms re-render. The bu
 | HTML per page (gzipped) | ≤35 KB (Chapter 7, 79 steps, is the largest) |
 | CSS total | ≤16 KB gz; ≤18 KB (decision 19) |
 | JS total, all modules | ≤30 KB gz; ≤25 KB executed on any page. Decision 19: ≤68 KB and ≤48 KB |
-| Mono font | ≤18 KB |
+| Each font file | ≤18 KB |
 | Icon sprite | ≤6 KB; device.svg ≤12 KB (decision 20: the schematic is HTML) |
 | Search index | ≤50 KB gz |
 | Per page, excluding the font and search index | ≤60 KB gz; a chapter page ≤80 KB gz (decision 19). As built: Home and tools 33–42 KB, chapter pages 66–76 KB |
@@ -1624,7 +1624,7 @@ Each has a recommended default. If you say nothing, the default applies.
 | 5 | What gets a blocking confirm gate | **Only irreversible presses** (delete a sample, crop or overwrite, and the scene erase until a device walk proves SHIFT + B restores it). Track and pattern clears get the fixed order (check first, undo after) without a gate. Settings get a neutral tag |
 | 6 | Screen wake lock | **On automatically after the first Done tap**, with a 15-minute idle release and a toggle |
 | 7 | Default chapter presentation | **Player on every device**, with "All steps" one tap away and remembered per chapter |
-| 8 | Mono typeface for keycaps and LCD | **IBM Plex Mono SemiBold** (OFL, about 15 KB subset). Alternative: JetBrains Mono |
+| 8 | Mono typeface for keycaps and LCD | **IBM Plex Mono SemiBold** (OFL, about 15 KB subset). Alternative: JetBrains Mono. **Superseded by decision 25 (2026.10.15):** keycaps use the page face, Atkinson Hyperlegible Next Bold, and only display values a mono, Atkinson Hyperlegible Mono |
 | 9 | Letter keyboard shortcuts | **On, with an off switch in Settings** |
 | 10 | Tools set | **Keep Learn and Rhythm lab as tools**, alongside Control map, Troubleshooting, Glossary, Cheat sheet and Safety |
 | 11 | Destination names | **"Set up your K.O. II"** (not "Start here"), **"Troubleshooting"** (not "Help & reference"), **"Learn"** (not "The friendly manual"), **"Control map"**, **"Cheat sheet"**, group label **"Tools"** |
@@ -1641,6 +1641,7 @@ Each has a recommended default. If you say nothing, the default applies.
 | 22 | Where provenance sits (§6.7; the quotes rule changed in 2026.10.14.30) | **Source names the official guide pages for every step** (its own `p.step-source`, or in the step player its part's "Official guide" links); **Why states the fact plainly and quotes the guide only where its exact words matter** (a warning such as "cannot be recovered"), so pages talk about the music and the K.O. II rather than about their sources (CONTRIBUTING §3 "Voice"); **owners' reports stay in Why, labelled and linked**, next to the explanation they support. Earlier releases quoted the guide in Why ("The official guide says …"); the owner found that read like a development note |
 | 23 | The search index (§4.7; recorded in 2026.10.14.23) | **Built in the browser from the pages themselves, not at deploy time into `search-index.<hash>.json`:** the first time Search opens, `search.js` (loaded only then) fetches the pages, which the service worker already keeps for offline use, and reads them with DOMParser. So the index adds nothing to download or precache, cannot drift from the pages, and the standard-library build needs no HTML-to-index stage. Measured on 14 October 2026: the first results for "hat" appear 0.2 s after the first keystroke on desktop Chromium and 1.1 s with the CPU slowed 4×; later searches are instant. Synonyms and plural folding live in `search.js` instead of `content/tools/synonyms.toml`. `tests/test_search.py` covers matching, cheat-sheet moves, offline use and the "pages not saved" message. Alternative: a deploy-time JSON index (≤50 KB gzipped) if first-search time on low-end phones turns out too slow |
 | 24 | The start screen on the smallest phone (§5.2; recorded in 2026.10.14.27, corrected in 2026.10.14.28 and 2026.10.14.29) | **On a first visit the safety box stays open and complete, and comes before "Before you start", so on the smallest phone it is the list and Parts, not the warnings, that need a scroll.** The box sits right after "You will make" (the §5.2 mock has it after "Before you start"): at 360×740 its last line ends at 493–602 px, above the action bar at 667 px, in every chapter with one. "One screen" holds at 390×844, the size of the mock: the Parts heading is above the action bar in every chapter with the box open, also with an installed app's 34px safe-area inset. It holds at 360×740 in the three chapters without a safety box, and in all eight once the box is closed, which happens once the chapter has a ticked or skipped step (until then the box opens on every visit). From 1024px the rail beside the page lists every part with its tally (decision 21), and "Before you start" takes two columns, so the safety box and the Parts heading are both on the first screen at 1024×768 and 1280×720; from 1360px the parts list also stands beside the rest. On a first visit at 360×740, in Chapters 0, 3, 4, 6 and 7, the end of "Before you start" and the Parts heading are below the action bar (the heading starts 52–104 px below its top edge), one short scroll. Cutting the box so that Parts fits too would drop an action that cannot be undone or the drive-format warning, and moving Parts above it would put Start before the warnings. `test_player.py` checks each of these sizes |
+| 25 | Type and colour (§6.1, §6.2; 2026.10.15) | **Atkinson Hyperlegible Next for all text and keycaps, Atkinson Hyperlegible Mono only for display values, on neutral greys and black ink, with yellow keycaps, green for done, orange for caution and red for irreversible.** The owner found the first look (system-ui, IBM Plex Mono capitals for every label, cream and sage, terracotta keys and a lime "You are here") read as a generic generated template. Atkinson Hyperlegible was drawn by the Braille Institute to keep similar characters apart (1/l/I, 0/O, B/8): the course's pad names and display values are read at arm's length, so the face earns its place, and it is self-hosted so every device shows the same text at the same width. Its slashed zero read as code in running text ("0 of 8 done"), so the zero is redrawn without the slash; width still tells 0 from O. Labels are sentence case in the page face, with no letter-spacing. Yellow keycaps with black labels read as lit hardware keys; caution moved from amber to orange so it is not mistaken for a key. Cost: 46 KB of fonts instead of 15 KB (each file ≤18 KB; the offline copy stays far under its 600 KB budget). Alternatives looked at: Schibsted Grotesk, Archivo, Hanken Grotesk, Public Sans and Overpass for type; blue keycaps, which would have clashed with the focus ring and the info note |
 
 ---
 

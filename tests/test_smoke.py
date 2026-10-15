@@ -316,7 +316,7 @@ def run_target(browser, artifacts_dir, name, url, results):
             no_overflow(page, f'{file} start screen at 390 px')
             page.goto(absolute('./' + file + '#all'), wait_until='networkidle')
             assert page.evaluate('() => document.body.dataset.chapter') == slug
-            assert_match(page.locator('header .eyebrow').text_content(), '^CHAPTER ' + num + ' /', message=f'{file} header says CHAPTER {num}')
+            assert_match(page.locator('header .eyebrow').text_content(), '^Chapter ' + num + ' · ', message=f'{file} header says Chapter {num}')
             assert page.locator('.steps ol>li[data-step]').count() > 0, f'{file} has steps'
             assert page.locator('footer a[href*="wrong-instruction.yml"]').count() == 1, f'{file} footer has the report link'
             assert page.locator('footer', has_text='Not affiliated with or endorsed by teenage engineering').count() > 0, \

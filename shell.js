@@ -69,7 +69,7 @@ if(slug)root.classList.add('on-chapter');
 
 // ---------- App bar ----------
 bar.innerHTML=`<button class="icon-btn menu-btn" type="button" aria-label="Menu" aria-haspopup="dialog" aria-controls="shell-menu" aria-expanded="false" aria-keyshortcuts="M">${icon('menu')}</button>`+
-  `<a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a>`+
+  `<a class="wordmark" href="./index.html"><span>K.O. II</span> <span class="wordmark-sep" aria-hidden="true">/</span> <span>Coach</span></a>`+
   `<p class="bar-title"><span class="bar-kicker"></span><span class="bar-name"></span><span class="bar-sub"></span></p>`+
   `<div class="appbar-actions" id="appbar-actions"><button class="icon-btn search-btn" type="button" aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-keyshortcuts="/">${icon('search')}<span class="search-btn-label" aria-hidden="true">Search the coach</span><kbd class="key" aria-hidden="true">/</kbd></button>`+
   `<a class="icon-btn settings-btn" href="./settings.html" aria-label="Settings"${file==='settings.html'?' aria-current="page"':''}>${icon('settings')}</a></div>`+

@@ -9,23 +9,24 @@
      <head>
        <meta charset="utf-8"> <meta name="viewport" content="width=device-width,initial-scale=1">
        <meta name="color-scheme" content="light dark">
-       <meta name="theme-color" content="#FFFEF8" media="(prefers-color-scheme: light)">
-       <meta name="theme-color" content="#161E19" media="(prefers-color-scheme: dark)">
+       <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+       <meta name="theme-color" content="#1B1B1A" media="(prefers-color-scheme: dark)">
        title, description, Open Graph and canonical as today; manifest, icon.svg and apple-touch-icon as today
-       <link rel="preload" href="fonts/IBMPlexMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+       <link rel="preload" href="fonts/AtkinsonHyperlegibleNext-Regular.woff2" as="font" type="font/woff2" crossorigin>
+       <link rel="preload" href="fonts/AtkinsonHyperlegibleNext-Bold.woff2" as="font" type="font/woff2" crossorigin>
        <link rel="stylesheet" href="coach.css">
        chapter pages only: <script src="chapter.js" defer></script>
      </head>
      <body>                                            chapter pages: <body data-chapter="<slug>"> (slug as in site.js)
        <a class="skip" href="#main">Skip to content</a>
        <header class="appbar" id="appbar"><a class="wordmark" href="./index.html"><span>K.O. II</span>
-         <span class="wordmark-sep" aria-hidden="true">/</span> <span>COACH</span></a></header>
+         <span class="wordmark-sep" aria-hidden="true">/</span> <span>Coach</span></a></header>
        <script src="site.js"></script>
        <script src="progress.js"></script>
        <script src="shell.js"></script>             plain, synchronous, straight after the header (see shell.js)
        <main id="main" class="page" tabindex="-1">    chapter pages: class="page reading"
          <header class="page-head">                   the page's own eyebrow and h1 (one .eyebrow per page head)
-           <p class="eyebrow">CHAPTER 07 / ABOUT 2–3 HOURS</p>
+           <p class="eyebrow">Chapter 3 · About 2–3 hours</p>
            <h1>Sample, chop &amp; resample</h1>
          </header>
          ...
@@ -50,7 +51,7 @@
    Components (class names):
      Buttons      .btn (secondary) .btn.primary .btn.ghost .btn.danger; .btn.lg = 56px; :disabled = dashed
      Icon button  .icon-btn (44px) .icon-btn.lg (56px), always with aria-label; icons: <svg class="icon">
-     Keycap       <kbd class="key">MAIN</kbd> quiet; .key.hot orange (Do lines and lit controls only);
+     Keycap       <kbd class="key">MAIN</kbd> quiet; .key.hot yellow (Do lines and lit controls only);
                   modifiers .hold (adds "HOLD"), .knob (round), .pad; <kbd class="chord">A + B</kbd> keeps a chord on one line
      LCD chip     <samp class="lcd">1.2.3</samp>; .lcd.readout = 28px block readout
      Tags         .tag .tag.done .tag.caution .tag.danger .tag.info; OS badge .badge.ok / .badge.warn (kept)
@@ -68,7 +69,7 @@
                   (.search-field > input#site-search) + .search-chips > .search-chip + .search-body >
                   .search-group > h2.search-group-title + ul.search-list > li > a.search-hit (.search-hit-title,
                   .search-hit-crumb, .search-hit-snip; <mark> is a matched word; a.search-hit.search-word for a word)
-     Text         .eyebrow (mono caps, ink-2) .meta (14px ink-2) .sr (visually hidden) .lead
+     Text         .eyebrow (14px semibold, ink-2) .meta (14px ink-2) .sr (visually hidden) .lead
      Layout       .page (1180px container) .page.reading (chapter reading column) .page-head .row .grid
                   (auto-fill tiles; .grid > div = inset tile) .split (two columns when wide) .sticky .section
      Chapter      .steps > details (section cards), .steps ol > li[data-step] rows, li.here, .tally (.all),
@@ -79,31 +80,38 @@
      that value, not with 0. From 1024px the menu button is hidden and the same links sit in the rail.
      Theme hooks for tests: <html data-theme="light|dark"> overrides the system setting.
      Offline: sw.js ASSETS must list ./coach.css ./site.js ./shell.js ./search.js ./icons.svg
-     ./fonts/IBMPlexMono-SemiBold.woff2; build_site.py must copy icons.svg and fonts/ (woff2 and OFL.txt).
+     and the four ./fonts/Atkinson*.woff2; build_site.py must copy icons.svg and fonts/ (woff2 and OFL.txt).
    ====================================================================================================== */
 
-/* ---------- Font: IBM Plex Mono SemiBold, Latin subset (SIL OFL 1.1, fonts/OFL.txt) ---------- */
-/* Used for keycaps, LCD chips, eyebrows, step numbers and the wordmark. Weight 600 only. */
-@font-face{font-family:"IBM Plex Mono";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/IBMPlexMono-SemiBold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+/* ---------- Fonts: Atkinson Hyperlegible Next and Mono, Latin subsets (SIL OFL 1.1, fonts/OFL.txt) ---------- */
+/* Built for telling similar characters apart (1/l/I, 0/O, B/8), which matters for pad names and display values read
+   at arm's length. Next is the page face in 400, 600 and 700, keycaps included; Mono (one Medium file) is only for
+   what the K.O. II's display shows. Mono's weight range stops a browser from faking a bold of it. */
+@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-Regular.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-SemiBold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-Bold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Atkinson Hyperlegible Mono";font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/AtkinsonHyperlegibleMono-Medium.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
 
 /* ---------- Tokens (plan 6.1-6.5) ---------- */
 :root{
   color-scheme:light dark;
-  /* Colour, light. Every value is from the plan's token table; one meaning per colour. */
-  --bg:#EEF0E7; --surface-1:#FFFEF8; --surface-2:#F4F5EC; --surface-3:#E1E5D6; --surface-raised:#FFFEF8;
-  --line:#CBD3C2; --line-strong:#76846F; --ink:#18251E; --ink-2:#4F5C4D;
-  --primary:#18251E; --on-primary:#FFFFFF;
-  --key:#C2410C; --on-key:#FFFFFF; --key-edge:#8A2E08;
-  --lcd-bg:#1A2420; --lcd-ink:#E4F5CF; --lcd-line:#1A2420;
-  --done-ink:#3F6212; --done-fill:#D8EF9A; --on-done:#18251E; --here:#4D7C0F;
-  --danger:#B0172F; --danger-surface:#FDECEE;
-  --caution-ink:#7A4B00; --caution-surface:#FFF3D1; --caution-line:#A86A12;
-  --info-ink:#2F4A5C; --info-surface:#EAF0F2;
+  /* Colour, light: neutral greys, black ink, one signal colour per meaning (plan 6.2, decision 25). */
+  --bg:#ECECE9; --surface-1:#FFFFFF; --surface-2:#F5F5F2; --surface-3:#E2E2DD; --surface-raised:#FFFFFF;
+  --line:#D3D3CD; --line-strong:#76766F; --ink:#161616; --ink-2:#55554F;
+  --primary:#161616; --on-primary:#FFFFFF;
+  --key:#FFCB2E; --on-key:#161616; --key-edge:#8A6700;
+  --lcd-bg:#1B1B1A; --lcd-ink:#F2F2EA; --lcd-line:#1B1B1A;
+  --done-ink:#1A6B3C; --done-fill:#1F7A45; --on-done:#FFFFFF; --here:#1F7A45;
+  --danger:#B3142A; --danger-surface:#FCECEC;
+  --caution-ink:#8A3B00; --caution-surface:#FCEEE2; --caution-line:#C25E0F;
+  --info-ink:#2C4859; --info-surface:#EBF0F3;
   --focus:#1F6FD1;
-  --e1:0 1px 2px rgb(24 37 30/.06); --e2:0 8px 24px rgb(24 37 30/.08); --e3:0 -16px 48px rgb(0 0 0/.24);
+  --e1:0 1px 2px rgb(0 0 0/.06); --e2:0 8px 24px rgb(0 0 0/.08); --e3:0 -16px 48px rgb(0 0 0/.24);
+  /* The tick inside a done checkbox is drawn in --on-done: white on green here, near-black on light green in dark. */
+  --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
   /* Type. Six sizes, fluid between 390 and 1280px; rem so the reader's own text size still counts. */
-  --font-ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --font-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;
+  --font-ui:"Atkinson Hyperlegible Next",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono:"Atkinson Hyperlegible Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;  /* display values only */
   --t-cap:.875rem; --t-cap-lh:1.25rem;                                                    /* 14/20: the floor */
   --t-body:clamp(1.0625rem,1.0351rem + .1124vw,1.125rem); --t-body-lh:clamp(1.625rem,1.5702rem + .2247vw,1.75rem); /* 17/26 -> 18/28 */
   --t-check:1.25rem; --t-check-lh:1.75rem;                                                /* 20/28 */
@@ -126,38 +134,38 @@
   --i-erase:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 20.5h11'/%3E%3Cpath d='M4.9 13.9l8.5-8.5a2 2 0 0 1 2.8 0l3.4 3.4a2 2 0 0 1 0 2.8L11 20.2a1 1 0 0 1-.7.3H8.2a1 1 0 0 1-.7-.3l-2.6-2.6a2 2 0 0 1 0-2.8z'/%3E%3Cpath d='M9 9.8l5.2 5.2'/%3E%3C/svg%3E");
   --i-check:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E");
   --i-undo:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 14L4 9l5-5'/%3E%3Cpath d='M4 9h10.5a5.5 5.5 0 0 1 0 11H11'/%3E%3C/svg%3E");
-  /* The tick inside a done checkbox is drawn in --on-done, which is near-black in both themes. */
-  --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2318251E' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
 }
 /* Colour, dark. Applied when the system is dark, unless a page or test sets data-theme="light"; and always
    for data-theme="dark". Keep the two blocks identical. Elevated surfaces step up a level in dark.
    Screen only: paper always starts from the light tokens (see Print), even when the system is dark. */
 @media screen and (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#060908; --surface-1:#161E19; --surface-2:#232E27; --surface-3:#34413A; --surface-raised:#232E27;
-  --line:#3E4F45; --line-strong:#80948A; --ink:#E8EEE0; --ink-2:#AAB6A4;
-  --primary:#E8EEE0; --on-primary:#060908;
-  --key:#FF8A5C; --on-key:#1A0E08; --key-edge:#C2561F;
-  --lcd-bg:#050806; --lcd-ink:#E4F5CF; --lcd-line:#80948A;
-  --done-ink:#B9D67A; --done-fill:#A8C46A; --on-done:#060908; --here:#A8C46A;
-  --danger:#FF7D8E; --danger-surface:#2E1418;
-  --caution-ink:#F2C46D; --caution-surface:#2A2214; --caution-line:#C9962E;
-  --info-ink:#A9C3D6; --info-surface:#1B262D;
+  --bg:#080808; --surface-1:#1B1B1A; --surface-2:#252524; --surface-3:#363633; --surface-raised:#252524;
+  --line:#3D3D3A; --line-strong:#8A8A83; --ink:#EDEDE8; --ink-2:#ACACA5;
+  --primary:#EDEDE8; --on-primary:#080808;
+  --key:#FFD044; --on-key:#161616; --key-edge:#B38B00;
+  --lcd-bg:#050505; --lcd-ink:#F2F2EA; --lcd-line:#8A8A83;
+  --done-ink:#6FD093; --done-fill:#5CC584; --on-done:#080808; --here:#5CC584;
+  --danger:#FF7A88; --danger-surface:#2E1517;
+  --caution-ink:#F5A766; --caution-surface:#2B1E13; --caution-line:#D9823A;
+  --info-ink:#A9C3D6; --info-surface:#1A2329;
   --focus:#7FB2FF;
   --e1:0 1px 2px rgb(0 0 0/.4); --e2:0 8px 24px rgb(0 0 0/.5); --e3:0 -16px 48px rgb(0 0 0/.5);
+  --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23080808' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
 }}
 @media screen{:root[data-theme="dark"]{
   color-scheme:dark;
-  --bg:#060908; --surface-1:#161E19; --surface-2:#232E27; --surface-3:#34413A; --surface-raised:#232E27;
-  --line:#3E4F45; --line-strong:#80948A; --ink:#E8EEE0; --ink-2:#AAB6A4;
-  --primary:#E8EEE0; --on-primary:#060908;
-  --key:#FF8A5C; --on-key:#1A0E08; --key-edge:#C2561F;
-  --lcd-bg:#050806; --lcd-ink:#E4F5CF; --lcd-line:#80948A;
-  --done-ink:#B9D67A; --done-fill:#A8C46A; --on-done:#060908; --here:#A8C46A;
-  --danger:#FF7D8E; --danger-surface:#2E1418;
-  --caution-ink:#F2C46D; --caution-surface:#2A2214; --caution-line:#C9962E;
-  --info-ink:#A9C3D6; --info-surface:#1B262D;
+  --bg:#080808; --surface-1:#1B1B1A; --surface-2:#252524; --surface-3:#363633; --surface-raised:#252524;
+  --line:#3D3D3A; --line-strong:#8A8A83; --ink:#EDEDE8; --ink-2:#ACACA5;
+  --primary:#EDEDE8; --on-primary:#080808;
+  --key:#FFD044; --on-key:#161616; --key-edge:#B38B00;
+  --lcd-bg:#050505; --lcd-ink:#F2F2EA; --lcd-line:#8A8A83;
+  --done-ink:#6FD093; --done-fill:#5CC584; --on-done:#080808; --here:#5CC584;
+  --danger:#FF7A88; --danger-surface:#2E1517;
+  --caution-ink:#F5A766; --caution-surface:#2B1E13; --caution-line:#D9823A;
+  --info-ink:#A9C3D6; --info-surface:#1A2329;
   --focus:#7FB2FF;
   --e1:0 1px 2px rgb(0 0 0/.4); --e2:0 8px 24px rgb(0 0 0/.5); --e3:0 -16px 48px rgb(0 0 0/.5);
+  --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23080808' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
 }}
 :root[data-theme="light"]{color-scheme:light}
 @media (min-width:600px){:root{--gutter:24px}}
@@ -171,8 +179,8 @@
 html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--sticky-top) + 16px);scroll-padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
 body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:400 var(--t-body)/var(--t-body-lh) var(--font-ui);overflow-wrap:break-word}
 h1,h2,h3,h4{margin:0 0 var(--sp-3);color:var(--ink)}
-h1{font-size:var(--t-h1);line-height:var(--t-h1-lh);font-weight:800}
-h2{font-size:var(--t-h2);line-height:var(--t-h2-lh);font-weight:800}
+h1{font-size:var(--t-h1);line-height:var(--t-h1-lh);font-weight:700}
+h2{font-size:var(--t-h2);line-height:var(--t-h2-lh);font-weight:700}
 h3{font-size:var(--t-check);line-height:var(--t-check-lh);font-weight:600}
 h4{font-size:var(--t-body);line-height:var(--t-body-lh);font-weight:600}
 p{margin:0 0 var(--sp-4)}
@@ -183,12 +191,13 @@ b,strong{font-weight:600}
 small{font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 hr{border:0;border-top:1px solid var(--line);margin:var(--sp-5) 0}
 img,svg,video{max-width:100%}
-/* Links are ink, never orange: orange means "press this". */
+/* Links are ink, never yellow: yellow means "press this". */
 a{color:var(--ink);text-decoration-line:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 a:hover{text-decoration-thickness:2.5px}
 button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
 button{cursor:pointer;touch-action:manipulation}
-code,kbd,samp,pre{font-family:var(--font-mono);font-weight:600}
+code,samp,pre{font-family:var(--font-mono);font-weight:500}
+kbd{font-family:var(--font-ui);font-weight:700}
 code{padding:.05em .35em;border-radius:var(--r-chip);background:var(--surface-3);font-size:max(.85em,14px);overflow-wrap:anywhere}
 /* Focus ring: keyboard only, 3px with a gap showing the surface behind. */
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
@@ -218,7 +227,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 .icon{width:24px;height:24px;flex:none;vertical-align:middle;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---------- Text helpers ---------- */
-.eyebrow{display:block;margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.eyebrow{display:block;margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 .meta,.tiny{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
 .lead{font-size:var(--t-check);line-height:var(--t-check-lh)}
 
@@ -243,8 +252,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 .icon-btn.lg{width:56px;height:56px}
 
 /* ---------- Keycaps and LCD chips: the two hardware primitives ---------- */
-/* Quiet by default. .hot (orange) only in Do lines and for a lit control on the device map. */
-.key{display:inline-block;min-width:1.9em;margin:0 .1em;padding:.05em .45em;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);box-shadow:0 2px 0 var(--line-strong);font:600 max(.8em,14px)/1.5 var(--font-mono);letter-spacing:.02em;text-align:center;white-space:nowrap;vertical-align:.1em}
+/* Quiet by default. .hot (yellow) only in Do lines and for a lit control on the device map. */
+.key{display:inline-block;min-width:1.9em;margin:0 .1em;padding:.05em .45em;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);box-shadow:0 2px 0 var(--line-strong);font:700 max(.8em,14px)/1.5 var(--font-ui);letter-spacing:.02em;text-align:center;white-space:nowrap;vertical-align:.1em}
 .key.hot{background:var(--key);border-color:var(--key-edge);color:var(--on-key);box-shadow:0 2px 0 var(--key-edge)}
 .key.hold::before{content:"HOLD";margin-right:.45em;padding-right:.45em;border-right:1px solid currentColor;color:var(--ink-2)}
 .key.hot.hold::before{color:inherit}
@@ -252,11 +261,11 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 .key.pad{min-width:2.4em}
 .chord{font:inherit;white-space:nowrap}
 .nobr{white-space:nowrap}   /* punctuation that must stay on the line of the keycap or chip it touches */
-.lcd{display:inline-block;padding:.05em .4em;border:1px solid var(--lcd-line);border-radius:var(--r-chip);background:var(--lcd-bg);color:var(--lcd-ink);font:600 max(.85em,14px)/1.5 var(--font-mono);letter-spacing:.04em;white-space:nowrap}
+.lcd{display:inline-block;padding:.05em .4em;border:1px solid var(--lcd-line);border-radius:var(--r-chip);background:var(--lcd-bg);color:var(--lcd-ink);font:500 max(.85em,14px)/1.5 var(--font-mono);letter-spacing:0;white-space:nowrap}
 .lcd.readout{display:block;width:max-content;max-width:100%;margin:var(--sp-2) 0;padding:var(--sp-2) var(--sp-4);border-radius:var(--r-control);font-size:28px;line-height:36px;white-space:normal}
 
 /* ---------- Tags and badges ---------- */
-.tag{display:inline-flex;align-items:center;gap:var(--sp-1);min-height:24px;padding:0 var(--sp-2);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1.4 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;vertical-align:.1em}
+.tag{display:inline-flex;align-items:center;gap:var(--sp-1);min-height:24px;padding:0 var(--sp-2);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1.4 var(--font-ui);white-space:nowrap;vertical-align:.1em}
 .tag.done{background:var(--done-fill);border-color:var(--done-ink);color:var(--on-done)}
 .tag.caution{background:var(--caution-surface);border-color:var(--caution-line);color:var(--caution-ink)}
 .tag.danger{background:var(--danger-surface);border-color:var(--danger);color:var(--danger)}
@@ -321,7 +330,7 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .check input:checked + span{color:var(--ink);font-weight:600}
 .check:hover input:not(:checked){border-color:var(--ink)}
 /* Section tally in a chapter <summary> ("3 of 8 done"); .all when the section is complete. */
-.tally{flex:none;margin-left:auto;padding:0 var(--sp-2);border:1.5px solid var(--line);border-radius:var(--r-chip);background:var(--surface-2);color:var(--ink-2);font:600 var(--t-cap)/1.6 var(--font-mono);white-space:nowrap}
+.tally{flex:none;margin-left:auto;padding:0 var(--sp-2);border:1.5px solid var(--line);border-radius:var(--r-chip);background:var(--surface-2);color:var(--ink-2);font:600 var(--t-cap)/1.6 var(--font-ui);font-variant-numeric:tabular-nums;white-space:nowrap}
 .tally.all{border-color:var(--done-ink);background:var(--done-fill);color:var(--on-done)}
 
 /* ---------- Toast ---------- */
@@ -357,7 +366,7 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .steps ol{margin:var(--sp-3) 0;padding-left:2.25em}
 .steps ol > li{max-width:none;margin:0;padding:var(--sp-3) 0;border-bottom:1px solid var(--line)}
 .steps ol > li:last-child{border-bottom:0}
-.steps ol > li::marker{font-family:var(--font-mono);font-weight:600;color:var(--ink-2)}
+.steps ol > li::marker{font-family:var(--font-ui);font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .steps li,.steps details{scroll-margin-top:72px}
 /* "You are here": the step after the last one ticked. */
 .steps li.here{border-bottom:0;padding-bottom:calc(var(--sp-3) + 1px);border-radius:var(--r-control);background:var(--surface-2);box-shadow:0 0 0 6px var(--surface-2);outline:2px solid var(--here);outline-offset:6px}
@@ -367,7 +376,7 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .chapters{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3);margin:0 0 var(--sp-5)}
 .chapters a{display:block;min-height:48px;padding:var(--sp-3) var(--sp-4);border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);box-shadow:var(--e1);font-size:var(--t-body);line-height:var(--t-body-lh);font-weight:600;text-decoration:none}
 .chapters a:hover{border-color:var(--line-strong)}
-.chapters a span{display:block;font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.chapters a span{display:block;font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 .chapters .next{grid-column:2;text-align:right}
 @media (max-width:599px){.chapters{grid-template-columns:1fr}.chapters .next{grid-column:auto;text-align:left}}
 
@@ -377,18 +386,18 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .appbar .menu-btn{margin-left:-10px}
 /* Without JavaScript the bar is the wordmark and a Search link to Troubleshooting (plan 5.8); shell.js replaces both. */
 .appbar .static-search{margin:0 -10px 0 auto}
-.wordmark{display:inline-flex;flex-direction:column;flex:none;color:var(--ink);font:600 14px/16px var(--font-mono);letter-spacing:.06em;text-decoration:none;white-space:nowrap}
+.wordmark{display:inline-flex;flex-direction:column;flex:none;color:var(--ink);font:700 15px/18px var(--font-ui);text-decoration:none;white-space:nowrap}
 .wordmark-sep{display:none}
 .wordmark:hover{text-decoration:underline;text-decoration-thickness:1.5px}
 .bar-title{display:flex;flex-direction:column;justify-content:center;min-width:0;margin:0;max-width:none;padding-left:var(--sp-3);border-left:1px solid var(--line)}
 .bar-title:not(.has-name){display:none}
-.bar-kicker{overflow:hidden;font:600 var(--t-cap)/18px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);text-overflow:ellipsis;white-space:nowrap}
+.bar-kicker{overflow:hidden;font:600 var(--t-cap)/18px var(--font-ui);color:var(--ink-2);text-overflow:ellipsis;white-space:nowrap}
 /* A chapter page on a phone: the menu holds the way home, so the title gets the wordmark's room. */
 @media (max-width:599px){html.on-chapter .appbar .wordmark{display:none}html.on-chapter .bar-title{padding-left:0;border-left:0}}
 .bar-kicker:empty{display:none}
 .bar-name{overflow:hidden;font-size:15px;line-height:20px;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
 /* In a chapter's player: the name over where you are ("Part 2 · Build a drum kit · Step 4 of 8"). */
-.bar-sub{overflow:hidden;font:600 var(--t-cap)/18px var(--font-mono);color:var(--ink-2);text-overflow:ellipsis;white-space:nowrap}
+.bar-sub{overflow:hidden;font:600 var(--t-cap)/18px var(--font-ui);color:var(--ink-2);text-overflow:ellipsis;white-space:nowrap}
 .bar-title:not(.has-sub) .bar-sub,.bar-title.has-sub .bar-kicker{display:none}
 .bar-title.has-sub .bar-name{font-size:14px;line-height:18px}
 /* The chapter's progress, 4px along the bottom of the bar. */
@@ -402,7 +411,7 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 /* ---------- Shell: course and tools lists (in the menu sheet, or the rail on desktop) ---------- */
 .shell-nav{padding-bottom:var(--sp-4)}
 .shell-nav nav + nav{margin-top:var(--sp-3)}
-.nav-label{margin:var(--sp-4) var(--sp-3) var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.nav-label{margin:var(--sp-4) var(--sp-3) var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 .shell-nav ol,.shell-nav ul{margin:0;padding:0;list-style:none}
 .shell-nav li{max-width:none;margin:0}
 .shell-nav nav a{display:grid;grid-template-columns:12px 2em minmax(0,1fr) auto;align-items:center;gap:0 var(--sp-3);min-height:48px;padding:var(--sp-2) var(--sp-3);border-radius:var(--r-control);color:var(--ink);font-weight:600;line-height:1.3;text-decoration:none}
@@ -410,8 +419,8 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .shell-nav nav a:hover{background:var(--surface-2)}
 .shell-nav nav a:hover .name{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .shell-nav nav a[aria-current="page"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--here)}
-.shell-nav .num{font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2)}
-.shell-nav .count{display:inline-flex;align-items:center;gap:var(--sp-1);font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2);white-space:nowrap}
+.shell-nav .num{font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.shell-nav .count{display:inline-flex;align-items:center;gap:var(--sp-1);font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2);white-space:nowrap}
 .shell-nav .count .icon{width:16px;height:16px;stroke-width:2.5}
 .shell-nav [data-state="done"] .count{color:var(--done-ink)}
 .shell-nav .tools-nav .icon{color:var(--ink-2)}
@@ -431,7 +440,7 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .menu-continue{display:flex;align-items:center;gap:var(--sp-3);min-height:56px;margin:var(--sp-3) 0 var(--sp-1);padding:var(--sp-2) var(--sp-3);border:1.5px solid var(--here);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);text-decoration:none}
 .menu-continue:hover{background:var(--surface-2)}
 .menu-continue > span{display:grid;min-width:0}
-.mc-kicker{font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.mc-kicker{font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 .mc-name{overflow:hidden;font-weight:600;line-height:1.3;text-overflow:ellipsis;white-space:nowrap}
 .menu-continue-row{max-width:none;margin:0}
 .menu-tabs{position:sticky;top:0;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:var(--sp-3) 0 0;padding:3px;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2)}
@@ -452,9 +461,9 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 html:has(.sheet[open]){overflow:hidden}
 .sheet{width:100%;max-width:100%;max-height:88vh;max-height:88dvh;margin:auto 0 0;padding:0;border:0;border-radius:var(--r-card) var(--r-card) 0 0;background:var(--surface-raised);color:var(--ink);box-shadow:var(--e3);overflow:hidden}
 .sheet[open]{display:flex;flex-direction:column;animation:sheet-up var(--dur-sheet) var(--ease)}
-.sheet::backdrop{background:rgb(6 9 8/.5)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sheet::backdrop{background:rgb(6 9 8/.7)}}
-:root[data-theme="dark"] .sheet::backdrop{background:rgb(6 9 8/.7)}
+.sheet::backdrop{background:rgb(8 8 8/.5)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sheet::backdrop{background:rgb(8 8 8/.7)}}
+:root[data-theme="dark"] .sheet::backdrop{background:rgb(8 8 8/.7)}
 .sheet[open]::backdrop{animation:fade var(--dur-sheet) var(--ease)}
 .sheet-box{display:flex;flex-direction:column;min-height:0;flex:1}
 .sheet-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-5);border-bottom:1px solid var(--line)}
@@ -499,17 +508,17 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .device.schem{position:relative;container-type:inline-size;width:min(100%,calc(60dvh * 522 / 712));aspect-ratio:522/712;margin:0 auto;padding:0;border-width:2px;border-radius:2.5cqw;background:var(--surface-2)}
 .schem-art,.schem-keys{position:absolute;inset:0}
 .schem-art > *,.device.schem .schem-keys > .control{position:absolute;box-sizing:border-box}
-.schem-port{display:grid;place-items:center;border:1px solid var(--line-strong);border-top:0;border-radius:0 0 1cqw 1cqw;color:var(--ink-2);font:600 2.1cqw/1 var(--font-mono);letter-spacing:.03em}
-.schem-power{border-color:var(--key-edge)}
-.schem-lid{display:flex;align-items:flex-end;padding:2cqw 2.5cqw;border:1px solid var(--line);border-radius:1.2cqw;background:var(--surface-1);color:var(--ink-2);font:600 2.6cqw/1.2 var(--font-mono)}
-.schem-speaker{display:flex;align-items:flex-end;justify-content:flex-end;padding:1.5cqw 2cqw;border-radius:1.2cqw;background:radial-gradient(circle,var(--line-strong) 26%,transparent 30%) 0 0/3.4cqw 3.4cqw;color:var(--ink-2);font:600 2.4cqw/1 var(--font-mono)}
-.schem-mic{display:grid;place-items:center;border-radius:999px;background:var(--surface-1);color:var(--ink);font:600 1.9cqw/1 var(--font-mono)}
+.schem-port{display:grid;place-items:center;border:1px solid var(--line-strong);border-top:0;border-radius:0 0 1cqw 1cqw;color:var(--ink-2);font:700 2.1cqw/1 var(--font-ui);letter-spacing:.03em}
+.schem-power{border-color:var(--caution-line)}  /* the unit's power switch is orange (Setup: "Slide the orange power switch") */
+.schem-lid{display:flex;align-items:flex-end;padding:2cqw 2.5cqw;border:1px solid var(--line);border-radius:1.2cqw;background:var(--surface-1);color:var(--ink-2);font:600 2.6cqw/1.2 var(--font-ui)}
+.schem-speaker{display:flex;align-items:flex-end;justify-content:flex-end;padding:1.5cqw 2cqw;border-radius:1.2cqw;background:radial-gradient(circle,var(--line-strong) 26%,transparent 30%) 0 0/3.4cqw 3.4cqw;color:var(--ink-2);font:700 2.4cqw/1 var(--font-ui)}
+.schem-mic{display:grid;place-items:center;border-radius:999px;background:var(--surface-1);color:var(--ink);font:700 1.9cqw/1 var(--font-ui)}
 .schem-volume{border:1.5px solid var(--line-strong);border-radius:50%;background:var(--surface-1);box-shadow:inset 0 0 0 4cqw var(--surface-2)}
 .schem-fader{border-radius:999px;background:var(--line-strong)}
 .schem-fader::after{content:"";position:absolute;left:-180%;right:-180%;top:44%;height:14%;border:1.5px solid var(--line-strong);border-radius:1cqw;background:var(--surface-1)}
-.schem-label{display:grid;place-items:center;color:var(--ink-2);font:600 1.9cqw/1 var(--font-mono);letter-spacing:.02em;white-space:nowrap}
-.device.schem .display.schem-display{display:grid;place-items:center;margin:0;padding:1.5cqw;border-radius:1cqw;font:600 3.6cqw/1.3 var(--font-mono);text-align:center;overflow:hidden}
-.device.schem .schem-keys > .control{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5cqw;min-height:0;padding:0;border-radius:1.4cqw;box-shadow:0 .7cqw 0 var(--line-strong);font:600 2.15cqw/1 var(--font-mono);letter-spacing:-.02em;overflow-wrap:normal;white-space:nowrap}
+.schem-label{display:grid;place-items:center;color:var(--ink-2);font:700 1.9cqw/1 var(--font-ui);letter-spacing:.02em;white-space:nowrap}
+.device.schem .display.schem-display{display:grid;place-items:center;margin:0;padding:1.5cqw;border-radius:1cqw;font:500 3.6cqw/1.3 var(--font-mono);text-align:center;overflow:hidden}
+.device.schem .schem-keys > .control{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5cqw;min-height:0;padding:0;border-radius:1.4cqw;box-shadow:0 .7cqw 0 var(--line-strong);font:700 2.15cqw/1 var(--font-ui);letter-spacing:-.02em;overflow-wrap:normal;white-space:nowrap}
 .device.schem .schem-keys > .control small{font-size:1.6cqw;font-weight:600;color:var(--ink-2)}
 .device.schem .schem-keys > .control.hot small{color:inherit}
 .device.schem .schem-keys > .control.knob{border-radius:50%;font-size:3.6cqw}
@@ -518,13 +527,13 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .device.schem .schem-keys > .control[data-key^="PAD"]{font-size:4.2cqw}
 .device.schem .schem-keys > .control.chosen{outline:3px solid var(--ink);outline-offset:2px}
 .schem-note{margin:var(--sp-2) 0 0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh);text-align:center}
-.display{margin-bottom:var(--sp-3);padding:var(--sp-3) var(--sp-4);border:1px solid var(--lcd-line);border-radius:var(--r-control);background:var(--lcd-bg);color:var(--lcd-ink);font:600 15px/1.4 var(--font-mono);letter-spacing:.04em}
+.display{margin-bottom:var(--sp-3);padding:var(--sp-3) var(--sp-4);border:1px solid var(--lcd-line);border-radius:var(--r-control);background:var(--lcd-bg);color:var(--lcd-ink);font:500 15px/1.4 var(--font-mono);letter-spacing:0}
 .display small{display:block;font-size:var(--t-cap)}
 .device .info{margin:0 0 var(--sp-3);padding:var(--sp-3) var(--sp-4);box-shadow:none}
 .device .info h3{margin:var(--sp-1) 0}
 .hint{margin:0 0 var(--sp-2)}
 .controls:not(.schem-keys){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-2)}
-.control{min-height:48px;padding:var(--sp-1);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);box-shadow:0 3px 0 var(--line-strong);font:600 var(--t-cap)/1.2 var(--font-mono);overflow-wrap:anywhere}
+.control{min-height:48px;padding:var(--sp-1);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);box-shadow:0 3px 0 var(--line-strong);font:700 var(--t-cap)/1.2 var(--font-ui);overflow-wrap:anywhere}
 .control:active{transform:translateY(1px)}
 .control.hot{border-color:var(--key-edge);background:var(--key);color:var(--on-key);box-shadow:0 3px 0 var(--key-edge)}
 .control.chosen{outline:3px solid var(--ink);outline-offset:2px}
@@ -533,7 +542,7 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .scroll{overflow-x:auto;padding:var(--sp-2) var(--sp-1)}
 /* Rhythm lab (lab.js). A phone shows one sound at a time as 4×4, a row per beat, cells about 64px tall; wider screens
    show four rows of 16 44px cells. A hit is ink with its sound's glyph (Kick ●, Snare ■, Hat ▲, Bass ◆), so it never
-   depends on colour; the playhead is a lime ring round every cell of its column. */
+   depends on colour; the playhead is a green ring round every cell of its column. */
 .lab-transport{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-3) var(--sp-4)}
 .lab-play{min-height:56px;padding-inline:var(--sp-5)}
 .lab-now{display:inline-flex;align-items:center;gap:var(--sp-2)}
@@ -541,7 +550,7 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .lab-steppers{display:flex;flex-wrap:wrap;gap:var(--sp-3) var(--sp-5);margin:var(--sp-4) 0 var(--sp-2)}
 .stepper{display:inline-flex;align-items:center;gap:var(--sp-2)}
 .stepper-label{min-width:4.5em;font-weight:600}
-.step-btn{width:48px;height:48px;padding:0;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 22px/1 var(--font-mono)}
+.step-btn{width:48px;height:48px;padding:0;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 22px/1 var(--font-ui)}
 .step-btn:disabled{opacity:.4;cursor:default}
 .stepper-value{min-width:3.5ch;font-size:20px;text-align:center}
 .lab-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-1);margin:var(--sp-4) 0 var(--sp-2)}
@@ -549,7 +558,7 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .lab-tabs [role="tab"]{min-height:48px;padding:var(--sp-1) 2px;white-space:nowrap;font-size:15px;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font-weight:600;line-height:1.2}
 .lab-tabs [role="tab"] .glyph{margin-right:.25em}
 .lab-tabs [role="tab"][aria-selected="true"]{border-color:var(--ink);background:var(--surface-2);box-shadow:inset 0 0 0 1.5px var(--ink)}
-.lab-tabs .tab-count{display:block;font:600 var(--t-cap)/1.2 var(--font-mono);color:var(--ink-2)}
+.lab-tabs .tab-count{display:block;font:600 var(--t-cap)/1.2 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .beat{display:grid;gap:5px;width:max-content}
 .beat-row{display:grid;gap:5px;align-items:center}
 .beat.wide{gap:4px}
@@ -559,8 +568,8 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .beat.compact{width:100%}
 .beat.compact .inst{display:grid;gap:6px}
 .beat.compact .beat-row{grid-template-columns:56px repeat(4,minmax(0,1fr));gap:6px}
-.beat.compact .beat-cols span{font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2);text-align:center}
-.beat button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;height:44px;padding:0;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1 var(--font-mono)}
+.beat.compact .beat-cols span{font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2);text-align:center}
+.beat button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;height:44px;padding:0;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:700 var(--t-cap)/1 var(--font-ui)}
 .beat.compact button{height:64px}
 .beat button:disabled{cursor:default}
 .beat button.on{border-color:var(--ink);background:var(--ink);color:var(--surface-1)}
@@ -577,7 +586,7 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .beat button.now{box-shadow:0 0 0 3px var(--here)}
 .beat .label{font-size:var(--t-cap);font-weight:600;line-height:1.15}
 .beat .beathead{grid-column:span 4;padding-left:5px;border-left:3px solid var(--ink-2);font-size:var(--t-cap);font-weight:600;line-height:1.25}
-.beat .beathead small{display:block;font:600 var(--t-cap)/1.25 var(--font-mono);color:var(--ink-2)}
+.beat .beathead small{display:block;font:600 var(--t-cap)/1.25 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .search{width:100%;margin:var(--sp-2) 0 var(--sp-2)}
 .lbl{font-weight:600}
 .inside{padding:0 var(--sp-5) var(--sp-4)}
@@ -628,7 +637,8 @@ dl.gloss dt{margin-top:var(--sp-3)}
 /* ---------- Print ---------- */
 /* The whole chapter on paper: no shell, no buttons, ink on white, every section open (chapter.js opens them). */
 @media print{
-  :root{color-scheme:light;--bg:#fff;--surface-1:#fff;--surface-2:#fff;--surface-3:#fff;--ink:#000;--ink-2:#333;--line:#bbb;--line-strong:#666;--lcd-bg:#fff;--lcd-ink:#000;--lcd-line:#000;--key:#fff;--on-key:#000;--key-edge:#000;--e1:none;--e2:none;--e3:none}
+  :root{color-scheme:light;--bg:#fff;--surface-1:#fff;--surface-2:#fff;--surface-3:#fff;--ink:#000;--ink-2:#333;--line:#bbb;--line-strong:#666;--lcd-bg:#fff;--lcd-ink:#000;--lcd-line:#000;--key:#fff;--on-key:#000;--key-edge:#000;--done-ink:#000;--done-fill:#fff;--on-done:#000;--here:#000;--e1:none;--e2:none;--e3:none;
+    --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E")}
   html.shell-on body{padding-left:0}
   body{background:#fff;color:#000}
   .appbar,.rail,.sheet,.skip,.toast,.status-bar,#progress-note,.check,.tally,.chapters,.menu-btn,.row button,.device,.strip-tools,.runner{display:none!important}
@@ -647,7 +657,7 @@ dl.gloss dt{margin-top:var(--sp-3)}
 .path li{display:grid;grid-template-columns:12px minmax(0,1fr) auto;align-items:center;gap:var(--sp-1) var(--sp-3);min-height:48px;max-width:none;margin:0;padding:var(--sp-2) 0;border-bottom:1px solid var(--line)}
 .path li:last-child{border-bottom:0}
 .path a{font-weight:600}
-.path .num{margin-right:var(--sp-1);font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2)}
+.path .num{margin-right:var(--sp-1);font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .path li > .meta{text-align:right}
 /* Phones: the status goes under the name, and the LED lines up with the name's first line. */
 @media (max-width:599px){.path li{grid-template-columns:12px minmax(0,1fr);align-items:start}.path .led{margin-top:7px}.path li > .meta{grid-column:2;text-align:left}}
@@ -686,7 +696,7 @@ dl.gloss dt{margin-top:var(--sp-3)}
 html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-4))}
 .steps li,.steps details{scroll-margin-top:var(--sp-2)}
 
-/* "You are here": a panel behind the whole row, number included, with a lime tag above the text. chapter.js adds
+/* "You are here": a panel behind the whole row, number included, with a green tag above the text. chapter.js adds
    .here, aria-current="step" and the .here-tag span. The panel is a pseudo-element so that it can reach back over the
    list number, which sits outside the row's own box. */
 .steps li.here{--reach:var(--sp-2);position:relative;z-index:0;margin:var(--sp-2) 0;background:none;box-shadow:none;outline:none}
@@ -707,7 +717,7 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 @media print{.here-tag,.steps li.here::before{display:none}.steps li.here{margin:0}}
 
 /* ---------- Chapter extras: the keep-awake button (wake.js) and a step opened from a link (chapter.js) ---------- */
-/* The sun joins the app bar's actions. While the screen is held it gets a lime dot as well as aria-pressed="true",
+/* The sun joins the app bar's actions. While the screen is held it gets a green dot as well as aria-pressed="true",
    so the state is never colour alone. */
 .wake-btn{position:relative;color:var(--ink-2)}
 .wake-btn[aria-pressed="true"]{background:var(--surface-2);color:var(--ink)}
@@ -737,12 +747,12 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .continue-count{display:flex;align-items:center;gap:var(--sp-3);margin:0 0 var(--sp-3);font-weight:600}
 .continue-count .meter{flex:1 1 auto;max-width:20rem;margin:0}
 .chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:0 0 var(--sp-3);padding:0;list-style:none}
-.chips li{max-width:none;margin:0;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono)}
+.chips li{max-width:none;margin:0;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui)}
 /* Course complete: every chapter and what it made. */
 .made-list{margin:0 0 var(--sp-4);padding:0;list-style:none}
 .made-list li{margin:0 0 var(--sp-2)}
 .made-list .sub{display:block}
-/* The chapter Continue opens: a lime rule and "You are here". */
+/* The chapter Continue opens: a green rule and "You are here". */
 .path li.here{box-shadow:inset 4px 0 0 var(--here);padding-left:var(--sp-2)}
 .path .here-tag{display:inline-flex;margin:0 0 0 var(--sp-2);vertical-align:.1em}
 .home-foot p{margin:0 0 var(--sp-2)}
@@ -812,8 +822,8 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .search-empty .meta{margin:0 0 var(--sp-3)}
 .search-empty .eyebrow{margin-bottom:var(--sp-2)}
 .search-try{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
-/* Results: a group heading (mono caps, like an eyebrow) and 56px rows: title, breadcrumb, one clipped line of text. */
-.search-group-title{display:flex;align-items:baseline;gap:var(--sp-2);margin:var(--sp-4) var(--sp-2) var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+/* Results: a group heading (like an eyebrow) and 56px rows: title, breadcrumb, one clipped line of text. */
+.search-group-title{display:flex;align-items:baseline;gap:var(--sp-2);margin:var(--sp-4) var(--sp-2) var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 .search-count{font-weight:600}
 .search-list{margin:0;padding:0;list-style:none}
 .search-list li{max-width:none;margin:0}
@@ -836,7 +846,7 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .search-preview .preview-title:focus{outline:none}
 html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .preview-body > .preflight{padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-left-width:4px;border-radius:var(--r-control);background:var(--caution-surface)}
-.preview-body > .preflight::before{content:"Before you press";display:block;margin-bottom:var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--caution-ink)}
+.preview-body > .preflight::before{content:"Before you press";display:block;margin-bottom:var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--caution-ink)}
 .preview-body > .step-do{font-size:var(--t-check);line-height:var(--t-check-lh)}
 .preview-body > :is(.step-check,.step-undo){padding:var(--sp-2) var(--sp-3);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-2)}
 .preview-body > .step-undo{border-left-color:var(--line-strong)}
@@ -878,7 +888,7 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
    sheet), #player-check, #player-done, .player-modes, .player-chips, .player-safety, .player-reference,
    .player-parts, .part-about, .back-pill, .getback, .led-row; inside a step: .step-head (.step-num and tags),
    .skip-box, .preflight, .gate, .step-do, .step-check[data-sense="hear|see"], li.is-current, li.is-checkpoint,
-   li.is-skipped, li[data-risk]. Orange stays for keycaps: in the player the keys of the step on screen are hot,
+   li.is-skipped, li[data-risk]. Yellow stays for keycaps: in the player the keys of the step on screen are hot,
    except inside its check. */
 :root{
   --bar-h:72px;   /* the action bar, without the safe area; a 48px row on short viewports */
@@ -890,7 +900,7 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
 .step-head{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);margin:0 0 var(--sp-2)}
 .step-head.bare,.step-num{display:none}
 .steps li > .preflight{margin:0 0 var(--sp-3);padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-left-width:4px;border-radius:var(--r-control);background:var(--caution-surface);color:var(--ink)}
-.steps li > .preflight::before{content:"Before you press";display:block;margin-bottom:var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--caution-ink)}
+.steps li > .preflight::before{content:"Before you press";display:block;margin-bottom:var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--caution-ink)}
 .steps li > .step-do{margin:0 0 var(--sp-2)}
 .steps li > .step-check{position:relative;margin:var(--sp-3) 0 var(--sp-2);padding:var(--sp-2) var(--sp-3) var(--sp-2) calc(var(--sp-3) + 30px);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-2)}
 .steps li > .step-check::before{content:"";position:absolute;left:var(--sp-3);top:calc(var(--sp-2) + 3px);width:22px;height:22px;background:var(--done-ink);-webkit-mask:var(--i-eye) center/contain no-repeat;mask:var(--i-eye) center/contain no-repeat}
@@ -932,7 +942,7 @@ html[data-player="step"].pl-kbd .steps ol > li.is-current:focus-visible{outline:
 html[data-player="step"] .steps ol > li.is-current:is([data-risk="delete"],[data-risk="overwrite"],[data-risk="erase-scene"]){border-left:4px solid var(--danger)}
 html[data-player="step"] .steps ol > li.is-current.is-checkpoint{border-left:4px solid var(--here)}
 html[data-player="step"] li.is-current > .step-head{display:flex;min-height:48px;margin:0 0 var(--sp-3);padding-right:56px}
-html[data-player="step"] li.is-current .step-num{display:inline-flex;align-items:center;justify-content:center;min-width:2.5em;height:32px;padding:0 var(--sp-2);border-radius:var(--r-chip);background:var(--surface-3);color:var(--ink);font:600 var(--t-cap)/1 var(--font-mono)}
+html[data-player="step"] li.is-current .step-num{display:inline-flex;align-items:center;justify-content:center;min-width:2.5em;height:32px;padding:0 var(--sp-2);border-radius:var(--r-chip);background:var(--surface-3);color:var(--ink);font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums}
 html[data-player="step"] li.is-current > .check{position:absolute;top:var(--sp-3);right:var(--sp-3);justify-content:center;min-width:48px;margin:0}
 html[data-player="step"] li.is-current > .check span{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
 @media (min-width:600px){html[data-player="step"] li.is-current > .check{top:var(--sp-4);right:var(--sp-4)}}
@@ -955,7 +965,7 @@ html[data-player="step"] .steps ol > li.is-current.pl-in{animation:pl-in var(--d
 .player-card:focus,.player-card h2:focus{outline:none}
 html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .player-card > :last-child{margin-bottom:0}
-.pl-eyebrow{margin:0 0 var(--sp-3);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--done-ink)}
+.pl-eyebrow{margin:0 0 var(--sp-3);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--done-ink)}
 .player-check{border-left:4px solid var(--here)}
 .pc-q{max-width:var(--measure);margin:0 0 var(--sp-4);font-size:var(--t-do);line-height:var(--t-do-lh)}
 .pc-fix{margin-top:var(--sp-4);padding:var(--sp-3) var(--sp-4);border-radius:var(--r-control);background:var(--surface-2)}
@@ -969,7 +979,7 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .pd-open li{max-width:none;margin:0}
 .pd-open a{display:grid;grid-template-columns:2.5ch minmax(0,1fr);align-items:center;gap:var(--sp-3);min-height:48px;padding:var(--sp-2) var(--sp-3);border-radius:var(--r-control);color:var(--ink);text-decoration:none}
 .pd-open a:hover{background:var(--surface-2)}
-.pd-n,.pp-n,.ps-n,.ps-pn{font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2);text-align:right}
+.pd-n,.pp-n,.ps-n,.ps-pn{font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2);text-align:right}
 .pd-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 /* LED rows: the parts of the chapter on a checkpoint (lit when done), all sixteen on the complete screen. */
 .led-row{display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:middle}
@@ -983,12 +993,12 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .pd-leds .led-row .led{width:12px;height:12px}
 .pc-leds .meta{margin:0}
 .pd-made{max-width:var(--measure);font-size:var(--t-check);line-height:var(--t-check-lh)}
-.pd-moves-title{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.pd-moves-title{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 .pd-actions{flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-4)}
 .pd-actions .btn .icon{width:20px;height:20px}
 /* Start screen: chips, the safety summary (copies of the page's danger notices), the parts */
 .player-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-1);margin:0 0 var(--sp-3);padding:0;list-style:none}
-.player-chips li{max-width:none;margin:0;padding:2px 6px;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono)}
+.player-chips li{max-width:none;margin:0;padding:2px 6px;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui)}
 /* The chapter needs a newer OS than the one chosen in Settings: a caution chip with the way to update. */
 .player-chips li.warn{display:inline-flex;align-items:center;gap:var(--sp-2);border-color:var(--caution-line);background:var(--caution-surface);color:var(--caution-ink)}
 .player-chips li.warn .icon{width:18px;height:18px}
@@ -1050,7 +1060,7 @@ html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
 .padgrid{margin:0;min-width:0}
 .padgrid figcaption{margin:0 0 var(--sp-1);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .pads{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;max-width:156px}
-.pads span{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border:1px solid var(--line-strong);border-radius:5px;color:var(--ink-2);font:600 14px/1 var(--font-mono)}
+.pads span{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border:1px solid var(--line-strong);border-radius:5px;color:var(--ink-2);font:700 14px/1 var(--font-ui)}
 .pads .on{border-color:var(--ink);background:var(--ink);color:var(--bg)}
 .pads .enter{letter-spacing:-.12em}
 .pad-legend{max-width:none;margin:var(--sp-1) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
@@ -1101,7 +1111,7 @@ html[data-hand="left"] .pa-more{right:auto;left:var(--gutter)}
 .note-fields{margin:var(--sp-2) 0 var(--sp-3)}
 .note-hint{margin:0 0 var(--sp-2);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .note-field{display:inline-flex;align-items:center;gap:var(--sp-2);margin:0 var(--sp-4) var(--sp-2) 0;font:600 var(--t-body)/1.2 var(--font-ui)}
-input.lcd-input{width:4.6ch;min-height:44px;padding:0 .35em;border:1.5px solid var(--lcd-line);border-radius:var(--r-chip);background:var(--lcd-bg);color:var(--lcd-ink);font:600 20px/1 var(--font-mono);letter-spacing:.06em;text-align:center}
+input.lcd-input{width:4.6ch;min-height:44px;padding:0 .35em;border:1.5px solid var(--lcd-line);border-radius:var(--r-chip);background:var(--lcd-bg);color:var(--lcd-ink);font:500 20px/1 var(--font-mono);letter-spacing:.02em;text-align:center}
 input.lcd-input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .note-recall{margin:var(--sp-1) 0 var(--sp-2);color:var(--ink-2);font-size:var(--t-cap);line-height:1.9}
 :is(.note-recall,.pd-notes) .note-pair{white-space:nowrap;color:var(--ink);font-weight:600}
@@ -1130,7 +1140,7 @@ html[data-text="larger"][data-player="step"] li.is-current > .step-check{margin-
    A short landscape screen gives it the left 40% (controls and pads side by side) and sets Do at 20/28; from 1200px it
    is a column on the right with a fixed-height box that explains a tapped control. */
 .player-device{display:none}
-.device-title{margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.device-title{margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 .player-device .press-order{margin:var(--sp-2) 0 0}
 .player-device .control{overflow-wrap:normal;letter-spacing:0}
 :is(.tools-panel,.player-device) span.control{display:flex;align-items:center;justify-content:center;text-align:center}
@@ -1261,12 +1271,12 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 /* Target rhythm (first-beat.js): a read-only grid, ink squares for hits and outlines for empty steps, beats 4px apart.
    The figure's text list says the same for screen readers and without JavaScript. */
 .pattern{margin:var(--sp-3) 0;padding:var(--sp-3);border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-2)}
-.pattern figcaption{margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.pattern figcaption{margin:0 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 .pattern-text{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:1.9}
 .pattern-text .lcd{font-size:14px}
 .pattern-lab{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .strip{display:grid;grid-template-columns:3.4em repeat(16,minmax(0,1fr));gap:3px;align-items:center}
-.strip-beat{grid-column:span 4;font:600 14px/1.2 var(--font-mono);color:var(--ink-2)}
+.strip-beat{grid-column:span 4;font:600 14px/1.2 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .strip-name{font-size:var(--t-cap);font-weight:600;line-height:1.2}
 .strip-cell{height:22px;border:1.5px solid var(--line-strong);border-radius:4px;background:var(--surface-1)}
 .strip-cell.beatstart{margin-left:4px}
@@ -1275,12 +1285,12 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .strip-tools{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin-top:var(--sp-3)}
 .strip-tip{flex-basis:100%;margin:0}
 .strip-status:empty{display:none}
-/* Placement helper: the step's positions as LCD chips (done dim with a tick, the current one outlined in orange),
+/* Placement helper: the step's positions as LCD chips (done dim with a tick, the current one outlined in yellow),
    then "Placed · next position". */
 .runner{margin:var(--sp-3) 0;padding:var(--sp-3) var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1)}
 .runner-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-2)}
 .runner-head .eyebrow{margin:0}
-#placement{font:600 var(--t-check)/var(--t-check-lh) var(--font-mono)}
+#placement{font:500 var(--t-check)/var(--t-check-lh) var(--font-mono)}
 .runner-list{display:flex;flex-wrap:wrap;gap:var(--sp-2);max-width:none;margin:0 0 var(--sp-3)}
 .runner-pos .lcd{font-size:15px}
 .runner-pos.done .lcd{border-color:var(--line);background:var(--surface-2);color:var(--ink-2)}   /* placed: muted, still 4.5:1 */
@@ -1312,17 +1322,17 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .tools-panel{padding:0 var(--sp-2)}
 .tools-panel:focus{outline:none}
 html.pl-kbd .tools-panel:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.tools-panel h3.sub,.tools-panel h4.sub{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.tools-panel h3.sub,.tools-panel h4.sub{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 .tools-eyebrow{margin:0 0 var(--sp-2);font-weight:600}
 .tools-panel .device.schem{width:min(100%,calc(60dvh * 522 / 712))}
 .tools-panel .control,.player-device .control{position:relative;min-height:36px;padding:2px 6px;box-shadow:0 2px 0 var(--line-strong)}
 .tools-panel .control.hot,.player-device .control.hot{box-shadow:0 2px 0 var(--key-edge)}
 .tools-panel .controls,.player-device .controls{gap:6px}
-.tools-panel .control .order,.player-device .control .order{position:absolute;top:-8px;right:-6px;display:grid;place-items:center;min-width:22px;height:22px;padding:0 4px;border:2px solid var(--surface-1);border-radius:999px;background:var(--ink);color:var(--surface-1);font:600 12px/1 var(--font-mono)}
+.tools-panel .control .order,.player-device .control .order{position:absolute;top:-8px;right:-6px;display:grid;place-items:center;min-width:22px;height:22px;padding:0 4px;border:2px solid var(--surface-1);border-radius:999px;background:var(--ink);color:var(--surface-1);font:600 12px/1 var(--font-ui);font-variant-numeric:tabular-nums}
 .tools-panel .control[aria-pressed="true"],.player-device .control[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
 .press-order{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-4);margin:var(--sp-3) 0;padding:0;max-width:none;list-style:none}
 .press-order li{display:inline-flex;align-items:center;gap:var(--sp-1);margin:0}
-.po-n{font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2)}
+.po-n{font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .map-info{min-height:7rem;margin:var(--sp-3) 0;box-shadow:none}
 .map-info h3{margin:0 0 var(--sp-2);font-size:var(--t-check);line-height:var(--t-check-lh)}
 .tools-topic{margin:var(--sp-2) 0}
@@ -1373,8 +1383,8 @@ a.term-link:hover{text-decoration-color:var(--ink)}
 .lesson{margin:0}
 .lesson > summary{padding:var(--sp-2) var(--sp-5);min-height:56px}
 .lesson-title{flex:1 1 auto;margin:0;font-size:var(--t-check);line-height:var(--t-check-lh)}
-.lesson-n{margin-right:var(--sp-2);font:600 var(--t-cap)/1 var(--font-mono);color:var(--ink-2)}
-.lesson > .inside h3{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.lesson-n{margin-right:var(--sp-2);font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.lesson > .inside h3{margin:var(--sp-4) 0 var(--sp-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 @media (max-width:599px){.lesson > summary{padding:var(--sp-2) var(--sp-4)}}
 /* 02's song map, in the part that builds the song list */
 .map-title{margin:var(--sp-3) 0 0}
@@ -1404,11 +1414,11 @@ details[id],.term[id],.risk[id],.card[id]{scroll-margin-top:calc(var(--sticky-to
 .control-list dd p{margin:0 0 var(--sp-2)}
 /* Glossary: a sticky row of letters, then the words. A word opened from a link is marked. */
 .az{position:sticky;top:var(--sticky-top);z-index:4;display:flex;gap:2px;margin:0 0 var(--sp-3);padding:var(--sp-1);overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-1);scrollbar-width:thin}
-.az a{display:inline-grid;flex:none;place-items:center;min-width:40px;min-height:44px;border-radius:var(--r-chip);font:600 var(--t-cap)/1 var(--font-mono);text-decoration:none}
+.az a{display:inline-grid;flex:none;place-items:center;min-width:40px;min-height:44px;border-radius:var(--r-chip);font:700 var(--t-cap)/1 var(--font-ui);text-decoration:none}
 .az a:hover{background:var(--surface-3)}
 .gloss-letter h2.sub,.gloss .term{scroll-margin-top:calc(var(--sticky-top) + 72px)}
 .gloss .term:target{margin:0 calc(var(--sp-3) * -1);padding:var(--sp-1) var(--sp-3);border-radius:var(--r-control);background:var(--surface-3);box-shadow:inset 3px 0 0 var(--here)}
-/* Safety and erasing: a danger stripe on the actions with no undo, amber on the careful ones. */
+/* Safety and erasing: a danger stripe on the actions with no undo, orange on the careful ones. */
 .risk h3{margin-top:0}
 .risk.danger{border-left:6px solid var(--danger)}
 .risk.caution{border-left:6px solid var(--caution-line)}

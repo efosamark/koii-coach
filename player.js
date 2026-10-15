@@ -18,7 +18,7 @@
        p.step-check  what you hear or see afterwards (its own block, with an ear or an eye); every step has one,
                      except li[data-kind="info"|"recap"]
        p.step-note   more about the step, at body size; p.step-source names the official guide page
-     li[data-risk="erase"]              recoverable clear: amber "Clears notes" tag, no gate
+     li[data-risk="erase"]              recoverable clear: orange "Clears notes" tag, no gate
      li[data-risk="delete"|"overwrite"|"erase-scene"]  no undo: red tag ("Deletes", "Overwrites", "Erases the scene"),
                                         and the rest of the step stays folded until
                                         "Yes, I have checked" is pressed (per visit, never saved)
@@ -29,7 +29,7 @@
      li[data-kind="recap"]              the chapter's recap: ticked by itself on the chapter-complete screen once
                                         every other step is done; its ul.step-moves show there as "New moves"
      a step whose text starts with a bold "Checkpoint." gets the checkpoint styling
-     kbd.key inside the current step render hot (orange) in the player, except inside p.step-check
+     kbd.key inside the current step render hot (yellow) in the player, except inside p.step-check
    Around the steps: p.makes ("You will make: …": the start screen, and "You made" when the chapter is complete),
    .reference cards (folded into "Reference for this chapter" on the start screen) and .reentry (perform's "How every
    section starts": a "Get back in" card above the step when the last tick is more than 30 minutes old).
@@ -245,7 +245,7 @@ const isSafety=e=>e.matches('.notice.danger')||(e.matches('.notice.caution')&&/^
 const shortSafety=main.querySelector(':scope > .safety-short');
 const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!==pageHead&&!e.classList.contains('pl-own')&&(shortSafety||!isSafety(e))&&!e.matches('.promise,.needs,.makes,.reference,.safety-short')):[];
 (()=>{
-  const time=eyebrow?clean(eyebrow.textContent.split('/').slice(1).join('/')).toLowerCase():'';
+  const time=eyebrow?clean(eyebrow.textContent.replace(/^[^·\/]*[·\/]/,'')).toLowerCase():'';  // "Chapter 3 · About 2–3 hours"
   // Text nodes joined with spaces, so "<b>Your project</b><br>Project 6" reads "Your project Project 6".
   const words=e=>{const w=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),out=[];while(w.nextNode())out.push(w.currentNode.nodeValue);return out.join(' ');};
   const text=preSteps().filter(e=>e!==pageHead&&!e.classList.contains('reference')).map(words).join(' ');

@@ -402,7 +402,7 @@ def test_renumbered_course(run):
     """The course reads Chapter 0-7 in teaching order; a renumbered chapter says what it was, and search still finds it."""
     page = run.page
     run.go('./sampling.html#start')
-    assert page.locator('header .eyebrow').text_content().startswith('CHAPTER 3 /')
+    assert page.locator('header .eyebrow').text_content().startswith('Chapter 3 · ')
     assert 'Formerly' not in page.locator('.player-chips').text_content(), 'A first-time learner never knew the old numbers'
     run.seed({'koii-coach-ch-first-beat': {'v': 1, 'done': ['beat-empty-project'], 'last': 'beat-empty-project', 'n': 1}})
     run.go('./sampling.html#start')
