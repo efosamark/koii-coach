@@ -4,6 +4,76 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.33
+
+**Checked against:** the official EP-133 guide on 13 October 2026 (functions 10.3 chop, effects 11.9.1 sidechain, what's new for OS 2.5: "LEG and KEY play modes"), and owners' reports found on 15 October 2026 (below). **Written for:** OS 2.5.1. **No button sequence changed:** every step's keys are as in 2026.10.14.29; two display readings are corrected (below), with their source.
+
+The owner asked to fix every dangling problem: the smaller points left open by the reviews, and the details that waited on a source.
+
+**Sources found (a second, wider search of the guide, its release notes, teenage engineering's support pages, Elektronauts, Reddit and owners' tools):**
+- **Leaving KEYS mode:** owners report that pressing KEYS again leaves it ([Reddit, r/teenageengineering, February 2024](https://www.reddit.com/r/teenageengineering/comments/1alfa5i/comment/kpekfwd/): "Anytime the keys icon is on screen, you can press the keys button to exit it."). Chapter 4 "Switch KEYS off" says so in its Why, with the link, and its Not working? no longer suggests the unsourced "try MAIN, then tap A".
+- **Live chop:** owners report that chop starts the sample by itself and that, after one full play-through, the first pad starts it again from the top ([Elektronauts, November 2024](https://www.elektronauts.com/t/teenage-engineering-ep-133-k-o-ii/203660/5593); [Reddit, April 2024](https://www.reddit.com/r/teenageengineering/comments/1ccv6qu/)). These reports predate OS 2.0, and Chapter 3 "Optional: try live chop" says so; its note now reads "Let the sample play through once, then tap."
+- **Play-mode readings:** the display shows the play modes as one, key and leg ([owner report, Reddit, September 2026](https://www.reddit.com/r/teenageengineering/comments/1wc6mrf/comment/p8vlpgw/): "The screen should say "one" "key" or "leg""; the OS 2.5 notes write "LEG and KEY play modes"). The course said the display shows "oneshot" and "legato": Chapter 4 "Set C2 to oneshot or legato" and Chapter 7 "D1: set oneshot" (Do), Chapter 5's two oneshot Checks, the Chapter 7 and cheat-sheet move lists and the glossary now give the reading and its meaning, "one (oneshot)".
+- **Still no source:** how to remove a sidechain destination. Every source, official and owners', only describes adding one. Chapter 4 keeps saying so; it waits for the owner's device check (README).
+
+**One numbering everywhere** (plan 4: "Part 2 · …", "Step 4 of 8"). Steps are now counted within their part wherever a number shows; before, the step card and app bar did, but the rail, the menu, the Tools sheet, Continue, "Back to step", the All-steps banner, the tick boxes, search and the lists counted across the whole chapter (Part 2's second step read "2 of 5" on the card and "12" beside it):
+- Rail and menu rows, the done screen's open steps (now with their part) and each part's list in All steps, print and without JavaScript start at 1 in every part (the `<ol start>` attributes are gone, and the build checks it).
+- "Continue at Part 3, step 2" (was "Continue at step 26"); "Back to step 2", or "Back to Part 3, step 2" from another part (was "Back to step 26"); "You’re on Part 3, step 2 of 13" (was "… step 26 of 89", in Chapter 3); "For Part 2, step 2: …" in Tools (was "For step 12: …"); tick boxes "Mark step 2 done" (was "Mark step 12 done"); search crumbs "Step 2"; the report form's step field "Part 2, step 2 / …"; the welcome-back announcement "… you continue at Part 3, step 2."
+- Screen readers hear the step's place once, from its title ("Step 2 of 5: …"); the "2 of 5" chip is now hidden from them (they heard it twice).
+
+**Smaller fixes:**
+- **"Formerly 07"** shows only to learners with progress somewhere in the course; a first-time learner never knew the old numbers and found it puzzling. Search still finds the old numbers (decision 1 updated).
+- **Step by step / All steps** are the two views' names everywhere (the switch said "Player", the rail "One step at a time"; Settings "Player in every chapter").
+- **Settings' OS notes** are short: "OS 2.5.x is the latest release, and the course is written for it." (was "… It has the OS 2.0 features (song mode, resampling, hands-free sampling and sidechain) plus the OS 2.5 additions: USB audio, sample reverse, a choice of recording sample rates, mono samples up to 40 seconds, equal-length auto chop, an arpeggiator in KEYS, and key and scale selection (hold KEYS, turn X for key and Y for scale)."); "OS 2.0.x lacks USB audio, reverse, the arpeggiator, and scales in KEYS. Update first: Chapter 0 · Set up your K.O. II shows how." (was "OS 2.0.x has song mode, resampling, hands-free sampling and sidechain, but none of the OS 2.5 additions: … This course is written for OS 2.5.x, so update first: …"); "An OS older than 2.0 lacks song mode, resampling and sidechain, and much more. Update first: …" (was "… lacks song mode, resampling, hands-free sampling and sidechain, and all of the OS 2.5 additions. This course is written for OS 2.5.x, so update first: …").
+- **Desktop:** below the docked action bar, the keyboard-hint row no longer sits on top of the card's text; the bar has the page's background behind it.
+- **Content:** Chapter 7's "Move" line keeps hands off the pads again ("… with RECORD off and no pad held", since a held pad turns − / + into a nudge); three Checks no longer repeat the next step's (Chapter 5 "Clear INTRO’s bass", Chapters 6 and 7 "Set the threshold low"); the last semicolons in Why and notes are full stops or commas (table cells keep theirs).
+
+**Docs:** decision 1; CONTRIBUTING (numbering within parts); README (the "Formerly" chip, the sources found and the one detail still without one).
+
+**Tests:** `test_step_numbers_within_part`; the renumbered-course test checks the chip for a first-time and a returning learner; the build rejects `<ol start>` in a chapter.
+
+**Step by step** ("was" gives the old text):
+
+- **Chapter 1** (9 steps):
+  - “A3: load a closed hi-hat”: Why: “Choose a short “ts” sound. Factory hi-hats are at 200–299. Avoid a long open cymbal for this first beat.” (was “Choose a short “ts” sound. Factory hi-hats are stored at 200–299; avoid a long open cymbal for this first beat.”).
+  - “Learn the placement move once”: Why: “A lit pad means a note is written on this step: here, the kick at bar 1, beat 1, step 1 (1.1.1). Tapping a pad without RECORD only plays it, and nothing is written.” (was “This writes the kick at bar 1, beat 1, step 1 (1.1.1), and a lit pad means a note is written on this step. Tapping a pad without RECORD only auditions it; nothing is written.”).
+  - “Place all four kicks”: Why: “These are grid steps 1, 7, 9 and 15: a steady foundation with two off-beat pickups. 1.1.1 is already done, so don’t add it twice.” (was “These are grid steps 1, 7, 9 and 15: a steady foundation with two off-beat pickups. 1.1.1 is already done; do not add it twice.”).
+  - “Listen to your finished drum beat”: Note: ““Hear it” plays a rough reference. Kick at 1.1.1, 1.2.3, 1.3.1 and 1.4.3. Snare at 1.2.1 and 1.4.1. Hats on every .1 and .3. That is a complete drum beat.” (was ““Hear it” plays a rough reference. Kick at 1.1.1, 1.2.3, 1.3.1 and 1.4.3; snare at 1.2.1 and 1.4.1; hats on every .1 and .3. That is a complete drum beat.”).
+  - “Give the bass a shorter tail if needed”: Why: “A long bass tail can muddy a small loop. Trim changes how the sound plays, not the stored sample file.” (was “A long bass tail can muddy a small loop. Trim changes how the sound plays; the stored sample file stays unchanged unless you crop it.”).
+  - “Optional: a little room, not a wash”: Why: “There is one shared effect, and each group chooses how much to send to it. A small amount adds space without blurring the rhythm.” (was “There is one shared effect; each group chooses how much to send to it. A small amount adds space without blurring the rhythm.”).
+  - “Turn the loop into a tiny performance”: Why: “A hand-made intro, main section and outro, with the loops counted by you. Chapter 2’s song mode plays scenes in order by itself.” (was “A hand-made intro, main section and outro. You count the loops yourself; Chapter 2 teaches song mode, which plays scenes in order automatically.”).
+  - “Optional: make a practice copy”: Why: “So far you placed every note by hand. Live recording is faster: you play the pads while the loop runs, and practising first costs nothing.” (was “So far you placed every note by hand; live recording is the faster way, playing pads while the loop runs. Practising first costs nothing.”).
+  - “Optional: tap the snare near each loop’s end”: Why: “Quantize (the − you chose in TIMING) snaps each tap to the nearest step, so a slightly early or late tap still lands on the grid. A metronome clicks while you record, and TEMPO Y sets its volume.” (was “Quantize (the − you chose in TIMING) snaps each tap to the nearest step, so a slightly early or late tap still lands on the grid. A metronome clicks while you record; TEMPO Y sets its volume.”).
+- **Chapter 2** (1 step):
+  - “Add positions 7–10”: Why: “Repeating MELODY gives each melody section four bars, and the final BREAK works as a soft ending.” (was “Repeating MELODY gives each melody section four bars; the final BREAK works as a soft ending.”).
+- **Chapter 3** (1 step):
+  - “Optional: try live chop”: Note: “Let the sample play through once, then tap. Press MAIN when done: the next steps overwrite group C anyway.” (was “Whatever happens, press MAIN when done. The next steps overwrite group C anyway.”); Why: “Each pad you press while the sample plays starts a new slice at that moment. Owners report, from before OS 2.0, that chop starts the sample by itself and that after one full play-through your first pad starts it again from the top (Elektronauts (opens in a new tab), Reddit (opens in a new tab)).” (was “In live chop, each pad you press while the sample plays starts a new slice at that moment. What starts playback isn’t documented, so treat this as an experiment.”).
+- **Chapter 4** (4 steps):
+  - “Switch KEYS off”: Why: “Owners report that pressing KEYS again leaves KEYS mode (Reddit (opens in a new tab)). The piano icon goes out.” (was “How KEYS switches off isn’t documented, so this step tries KEYS again. The piano icon and the pads show whether it worked.”); Not working?: “Piano icon still lit, or one sound at many pitches? Press KEYS once more. Still stuck? Report it with “This step doesn’t match my K.O. II”.” (was “Piano icon still lit, or one sound at many pitches? Try MAIN, then tap A again, though this isn’t documented either. Whatever works, report it with “This step doesn’t match my K.O. II”.”).
+  - “Set C2 to oneshot or legato”: Do: “Turn X until the display shows one (oneshot) or leg (legato), not key. Press MAIN.” (was “Turn X until the display shows oneshot or legato, not key. Press MAIN.”); Why: “The display shortens the modes to one, key and leg, as owners report (Reddit (opens in a new tab)). This changes C2 only.” (was “Legato may show as LEG. This changes C2 only.”).
+  - “Write a running order”: Why: “INTRO and BEAT are one bar long. MELODY and BREAK are two, so one pass of them lasts two bars.” (was “INTRO and BEAT are one bar long; MELODY and BREAK are two, so one pass of them lasts two bars.”).
+  - “Rehearse with the loop”: Note: “Practise punch-in FX at the section changes. Press PLAY to stop: the song goes back to the position you started from.” (was “Practise punch-in FX at the section changes. Press PLAY to stop; the song goes back to the position you started from.”).
+- **Chapter 5** (3 steps):
+  - “C2: set oneshot”: Check: “The display shows one (oneshot), not key or leg.” (was “The display shows oneshot, not key or legato.”).
+  - “C1: set oneshot”: Check: “The display shows one for C1 too.” (was “The display shows oneshot for C1 too.”).
+  - “Clear INTRO’s bass”: Check: “Tap B1: it still plays its bass sound.” (was “Press PLAY: drums only, no bass. Stop.”).
+- **Chapter 6** (1 step):
+  - “Set the threshold low”: Check: “Nothing records until you hold a pad.” (was “The pads still blink.”).
+- **Chapter 7** (2 steps):
+  - “Set the threshold low”: Check: “Nothing records until you hold a pad.” (was “The lights still blink: nothing records until you hold a pad.”).
+  - “D1: set oneshot”: Do: “Select D1 in SOUND, briefly press SHIFT + SOUND and press − / + to reach the sound page. Turn X until the display shows one (oneshot).” (was “Select D1 in SOUND, briefly press SHIFT + SOUND and press − / + to reach the sound page. Turn X until the display shows oneshot.”).
+
+**Outside the steps** ("was" gives the old text):
+
+- **cheat-sheet.html**:
+  - “Play to the end: on the sound page, turn X to one (oneshot).” (was “Play to the end: on the sound page, turn X to oneshot.”)
+- **glossary.html**:
+  - “How a pad plays its sample: oneshot, key or legato, shown as one, key or leg (owners report, Reddit (opens in a new tab)). X on the sound page of sound edit.” (was “How a pad plays its sample: oneshot, key or legato. X on the sound page of sound edit.”)
+- **settings.html**:
+  - “Reset settings restores the defaults: screen Auto, shortcuts On, text Default, Done · Next on the right, step by step in every chapter, set-up not answered. Your progress and OS choice stay.” (was “Reset settings restores the defaults: screen Auto, shortcuts On, text Default, Done · Next on the right, Player in every chapter, set-up not answered. Your progress and OS choice stay.”)
+- **thodorakis-house.html**:
+  - “Move: in MAIN, − / + moves one step and SHIFT + − / + one bar, with RECORD off and no pad held.” (was “Move: in MAIN, − / + moves one step and SHIFT + − / + one bar, with RECORD off.”)
+
 ## 2026.10.14.32
 
 **Checked against:** the official EP-133 guide on 13 October 2026, as for 2026.10.14.23. **Written for:** OS 2.5.1. No button sequence changed.

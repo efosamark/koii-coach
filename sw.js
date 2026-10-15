@@ -1,6 +1,6 @@
 'use strict';
 // Bump VERSION on every release (same value as version in site.js and the newest CHANGELOG.md heading).
-const VERSION='2026.10.14.32',CACHE='koii-coach-'+VERSION,TIMEOUT=1500;
+const VERSION='2026.10.14.33',CACHE='koii-coach-'+VERSION,TIMEOUT=1500;
 // Every page, script, stylesheet, font and icon. CI (.github/scripts/build_site.py) fails if one is missing or a page is left out.
 const ASSETS=['./','./index.html','./404.html',
   './setup.html','./first-beat.html','./song.html','./sampling.html','./perform.html','./hiphop.html','./tech-house.html','./thodorakis-house.html',
