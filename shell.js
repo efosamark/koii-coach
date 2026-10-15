@@ -9,7 +9,7 @@
    App bar: [≡] wordmark, the title, then <div class="appbar-actions" id="appbar-actions"> with Search (.search-btn; a
    search field from 1024px) and, from 1024px, Settings. A page script may add its own .icon-btn there (chapter pages
    add the sun and ⋮). On chapter pages under 1024px the Search button is left out: the Tools sheet holds search, and
-   "/" opens it from anywhere. The title is two lines: a kicker over the name ("CHAPTER 3" over "Sample, chop &
+   "/" opens it from anywhere. The title is two lines: a kicker over the name ("Chapter 3" over "Sample, chop &
    resample"), or, in a chapter's player, the name over where you are ("Part 2 · Build a drum kit · Step 4 of 8").
    Under the bar of a chapter page runs a 4px meter of the chapter's progress (setMeter).
 

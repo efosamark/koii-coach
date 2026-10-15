@@ -8,7 +8,8 @@
 Each weight is cut from the variable font as its own file (about 12 KB each), then subset to Latin. The zero is
 redrawn without its slash: the outer ring stays, and the two half-counters the slash leaves are replaced by one
 counter (their convex hull, with the intact arcs mirrored left to right). A slashed zero reads as code in running
-text ("0 of 8 done"); width still tells 0 from O.
+text ("0 of 8 done"). In Next, width still tells 0 from O; in Mono the two end up nearly the same
+width, which is fine while no display value mixes them.
 """
 import subprocess
 import sys

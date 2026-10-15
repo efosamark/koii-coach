@@ -19,7 +19,7 @@ Owner: efosamark · Status: final plan for decision (revised after review) · Da
 **What changes.** One product with one shell, one design system and one Step component, generated from one content model:
 
 - **Home is a course map** with a single "Continue: Chapter 3 · Step 4 of 8" card. For a new learner, Chapter 0 stays the default first step until it is done or the learner chooses to skip it. Learners who already have progress are never sent back to it.
-- **Every chapter runs in one step player.** One step fills the screen. Do lines are 24px with orange keycaps, the Check is a dark LCD-style readout, Why / Not working? / Source are folded away, and a fixed 56px "Done · Next" sits under the thumb. The screen stays awake. A one-tap "All steps" view keeps the whole chapter readable and printable.
+- **Every chapter runs in one step player.** One step fills the screen. Do lines are 24px with yellow keycaps, the Check is a dark LCD-style readout, Why / Not working? / Source are folded away, and a fixed 56px "Done · Next" sits under the thumb. The screen stays awake. A one-tap "All steps" view keeps the whole chapter readable and printable.
 - **Steps that can lose work have a fixed order**: check first, then the press, then the undo. Each one is rewritten into that order when its chapter converts. Irreversible presses are gated.
 - **Tools** (Control map, Troubleshooting, Glossary, Cheat sheet, Learn, Rhythm lab, Safety) are unnumbered. They open as a sheet over the current step, so looking something up never loses your place. One offline search covers everything.
 - **The course is renumbered 0–7 in teaching order** once every cross-reference is generated rather than typed.
@@ -318,10 +318,10 @@ The wireframes show phone portrait at 390×844, in the end state with Chapter 0�
 
 ```
 +------------------------------------------+
-| [=]  K.O. II / COACH             [Search]|  56  app bar (wordmark: mono 600 16)
+| [=]  K.O. II / Coach             [Search]|  56  app bar (wordmark: 700 16)
 +------------------------------------------+
 |  WELCOME                                 |  cap 14 mono, ink-2
-|  Learn the K.O. II with it               |  h1 30/36 800
+|  Learn the K.O. II with it               |  h1 30/36 700
 |  in your hands.                          |
 |  8 chapters · about 12-18 hours ·        |  body 17/26
 |  works offline · no account              |
@@ -355,7 +355,7 @@ Chapter 0 then shows on the map as "Optional · set-up checks". The "never infer
 
 ```
 +------------------------------------------+
-| [=]  K.O. II / COACH             [Search]|  56
+| [=]  K.O. II / Coach             [Search]|  56
 +------------------------------------------+
 |  CONTINUE · CHAPTER 3                    |  cap 14
 |  Sample, chop & resample                 |  h2 24
@@ -457,8 +457,8 @@ The example is real content: `beat-load-snare`, rewritten to the step budget.
 |  STEP 4 OF 6                     ( v )   |  .step-pos mono 14 · 48px tick (label.check input)
 |  A2: load the snare                      |  h3 20/28 600
 |                                          |
-|  1  Stay in [SOUND]. With [A] selected,  |  Do 24/32; hot keycaps (orange fill,
-|     tap [A2].                            |  mono 600 19)
+|  1  Stay in [SOUND]. With [A] selected,  |  Do 24/32; hot keycaps (yellow fill,
+|     tap [A2].                            |  bold 19)
 |  2  [HOLD SOUND], type [1][0][0],        |
 |     release [SOUND].                     |
 |  3  Tap [A2].                            |
@@ -531,7 +531,7 @@ Variants are chosen by data, never by the author's layout.
 | [=] 2 · Make it a song           [sun][:]|
 |     Part 4 · Breakdown · Step 2 of 3     |
 |==============================------------|
-|  STEP 2 OF 3   [CLEARS TRACKS]   ( v )   |  amber tag (caution), links safety.html
+|  Step 2 of 3   [Clears tracks]   ( v )   |  orange tag (caution), links safety.html
 |  Clear kick and bass in BREAK            |
 | +-(!) BEFORE YOU PRESS ----------------+ |  caution surface, 1.5px caution line
 | | Hold [MAIN]: the display shows your  | |  20/28
@@ -575,7 +575,7 @@ The gate guards the press on the device. It does not block Next after the fact, 
 |  1  In stopped [MAIN] with [A], use      |
 |     [-] / [+] to reach each position.    |
 |  2  At each one, [HOLD RECORD]+[A1].     |
-|   1.1.1 ✓   [ 1.2.3 ]   1.3.1   1.4.3    |  current: 28px LCD chip, orange outline
+|   1.1.1 ✓   [ 1.2.3 ]   1.3.1   1.4.3    |  current: 28px LCD chip, yellow outline
 |  +------------------------------------+  |
 |  |      Placed · next position        |  |  48 secondary (#note-next)
 |  +------------------------------------+  |
@@ -839,11 +839,11 @@ Every component has default, hover, pressed (translateY 1px, 120ms), focus-visib
 | **ActionBar** | player: Back · Tools · Done · Next; start: one primary; short: one 48px row | Done states: "Done · Next" / "Next" (already done) / "Done · Checkpoint" / "Confirm first" (dashed, blocked). Always after the step content in DOM order |
 | **Button** | primary (filled `--primary`) · secondary (1.5px `--line-strong` outline) · ghost (text + underline) · danger (outline `--danger`, **never filled**) | 48px default, 56px in bars and CTAs, radius 12, weight 600; at most one primary per view; disabled = dashed outline + ink-2 + a reason, never an opacity fade |
 | **IconButton** | 44 / 56 | Always `aria-label`; desktop tooltip; labelled in the action bar |
-| **Keycap** `<kbd class="key" data-k>` | kinds: function (MAIN, SOUND…) · pad (A1) · digit (7) · group (A–D) · knob (X/Y, round, ↻/↺) · fader (pill); modifiers: chord (`+`), HOLD (tab above the cap), hold-until (HOLD … until LCD chip), type (digit sequence), turn | **hot** (orange, only in Do lines and on the device) · **quiet** (everywhere else); 2px bottom edge |
-| **LCD chip** `<samp class="lcd">` | inline · readout (28px) · runner (done: dim ✓ / current: orange outline / upcoming: small) | Mono 600; `--lcd-bg`/`--lcd-ink` |
+| **Keycap** `<kbd class="key" data-k>` | kinds: function (MAIN, SOUND…) · pad (A1) · digit (7) · group (A–D) · knob (X/Y, round, ↻/↺) · fader (pill); modifiers: chord (`+`), HOLD (tab above the cap), hold-until (HOLD … until LCD chip), type (digit sequence), turn | **hot** (yellow with a dark ochre edge, only in Do lines and on the device) · **quiet** (everywhere else); 2px bottom edge; the page face, bold |
+| **LCD chip** `<samp class="lcd">` | inline · readout (28px) · runner (done: dim ✓ / current: yellow outline / upcoming: small) | Atkinson Hyperlegible Mono 500; `--lcd-bg`/`--lcd-ink` |
 | **StepCard** | standard · erase (preflight first, consequence, undo) · irreversible (gate) · placement (runner + pattern strip) · optional (skip group) · info · recap · checkpoint · stage-1 | States: current, done (✓ tick filled), skipped (⊘), You are here (list mode badge + `aria-current="step"`). Head is a `<div class="step-head">` with `.step-pos`, never a `<header>` |
 | **Tick** `label.check > input` | 48px circle; done = `--done-fill` + ✓ | Accessible name "Mark step 4 done: <title>" (not "I tried step 12"); `aria-describedby` = step title |
-| **Badge / Tag** | OPTIONAL · NEEDS OS 2.5 (`.badge.ok` / `.badge.warn`) · CLEARS TRACKS (caution) · DELETES A SAMPLE / ERASES THE SCENE / OVERWRITES THE FILE (danger) · SYSTEM SETTING (info) · DONE | 14px mono; always text, never colour-only |
+| **Badge / Tag** | Optional · Needs OS 2.5 (`.badge.ok` / `.badge.warn`) · Clears tracks (caution) · Deletes a sample / Erases the scene / Overwrites the file (danger) · System setting (info) · Done | 14px semibold in the page face, sentence case; always text, never colour-only |
 | **Notice** | tip (bulb) · info (i) · caution (triangle, "Careful") · danger (erase icon, a heading naming the consequence, e.g. "Erases every sound on the unit") | 4px stripe; danger only for irreversible actions; danger and caution link to safety.html |
 | **Sheet** | menu · tools · search · step preview | Native `<dialog>`; bottom sheet on phone at 88dvh; side panel 440px on desktop; pushes history; focus trap; inert background |
 | **Tabs / Segmented** | 44px | Roving tabindex, arrow keys |
@@ -1641,7 +1641,7 @@ Each has a recommended default. If you say nothing, the default applies.
 | 22 | Where provenance sits (§6.7; the quotes rule changed in 2026.10.14.30) | **Source names the official guide pages for every step** (its own `p.step-source`, or in the step player its part's "Official guide" links); **Why states the fact plainly and quotes the guide only where its exact words matter** (a warning such as "cannot be recovered"), so pages talk about the music and the K.O. II rather than about their sources (CONTRIBUTING §3 "Voice"); **owners' reports stay in Why, labelled and linked**, next to the explanation they support. Earlier releases quoted the guide in Why ("The official guide says …"); the owner found that read like a development note |
 | 23 | The search index (§4.7; recorded in 2026.10.14.23) | **Built in the browser from the pages themselves, not at deploy time into `search-index.<hash>.json`:** the first time Search opens, `search.js` (loaded only then) fetches the pages, which the service worker already keeps for offline use, and reads them with DOMParser. So the index adds nothing to download or precache, cannot drift from the pages, and the standard-library build needs no HTML-to-index stage. Measured on 14 October 2026: the first results for "hat" appear 0.2 s after the first keystroke on desktop Chromium and 1.1 s with the CPU slowed 4×; later searches are instant. Synonyms and plural folding live in `search.js` instead of `content/tools/synonyms.toml`. `tests/test_search.py` covers matching, cheat-sheet moves, offline use and the "pages not saved" message. Alternative: a deploy-time JSON index (≤50 KB gzipped) if first-search time on low-end phones turns out too slow |
 | 24 | The start screen on the smallest phone (§5.2; recorded in 2026.10.14.27, corrected in 2026.10.14.28 and 2026.10.14.29) | **On a first visit the safety box stays open and complete, and comes before "Before you start", so on the smallest phone it is the list and Parts, not the warnings, that need a scroll.** The box sits right after "You will make" (the §5.2 mock has it after "Before you start"): at 360×740 its last line ends at 493–602 px, above the action bar at 667 px, in every chapter with one. "One screen" holds at 390×844, the size of the mock: the Parts heading is above the action bar in every chapter with the box open, also with an installed app's 34px safe-area inset. It holds at 360×740 in the three chapters without a safety box, and in all eight once the box is closed, which happens once the chapter has a ticked or skipped step (until then the box opens on every visit). From 1024px the rail beside the page lists every part with its tally (decision 21), and "Before you start" takes two columns, so the safety box and the Parts heading are both on the first screen at 1024×768 and 1280×720; from 1360px the parts list also stands beside the rest. On a first visit at 360×740, in Chapters 0, 3, 4, 6 and 7, the end of "Before you start" and the Parts heading are below the action bar (the heading starts 52–104 px below its top edge), one short scroll. Cutting the box so that Parts fits too would drop an action that cannot be undone or the drive-format warning, and moving Parts above it would put Start before the warnings. `test_player.py` checks each of these sizes |
-| 25 | Type and colour (§6.1, §6.2; 2026.10.15) | **Atkinson Hyperlegible Next for all text and keycaps, Atkinson Hyperlegible Mono only for display values, on neutral greys and black ink, with yellow keycaps, green for done, orange for caution and red for irreversible.** The owner found the first look (system-ui, IBM Plex Mono capitals for every label, cream and sage, terracotta keys and a lime "You are here") read as a generic generated template. Atkinson Hyperlegible was drawn by the Braille Institute to keep similar characters apart (1/l/I, 0/O, B/8): the course's pad names and display values are read at arm's length, so the face earns its place, and it is self-hosted so every device shows the same text at the same width. Its slashed zero read as code in running text ("0 of 8 done"), so the zero is redrawn without the slash; width still tells 0 from O. Labels are sentence case in the page face, with no letter-spacing. Yellow keycaps with black labels read as lit hardware keys; caution moved from amber to orange so it is not mistaken for a key. Cost: 46 KB of fonts instead of 15 KB (each file ≤18 KB; the offline copy stays far under its 600 KB budget). Alternatives looked at: Schibsted Grotesk, Archivo, Hanken Grotesk, Public Sans and Overpass for type; blue keycaps, which would have clashed with the focus ring and the info note |
+| 25 | Type and colour (§6.1, §6.2; 2026.10.15) | **Atkinson Hyperlegible Next for all text and keycaps, Atkinson Hyperlegible Mono only for display values, on neutral greys and black ink, with yellow keycaps, green for done, orange for caution and red for irreversible.** The owner found the first look (system-ui, IBM Plex Mono capitals for every label, cream and sage, terracotta keys and a lime "You are here") read as a generic generated template. Atkinson Hyperlegible was drawn by the Braille Institute to keep similar characters apart (1/l/I, 0/O, B/8): the course's pad names and display values are read at arm's length, so the face earns its place, and it is self-hosted so every device shows the same text at the same width. Its slashed zero read as code in running text ("0 of 8 done"), so the zero is redrawn without the slash; in Next, width still tells 0 from O (528 against 626 units). In Mono the two are now nearly the same width (542 against 555), which is accepted because no display value mixes them. Labels are sentence case in the page face, with no letter-spacing. Yellow keycaps with black labels read as lit hardware keys; caution moved from amber to orange so it is not mistaken for a key. Cost: 46 KB of fonts instead of 15 KB (each file ≤18 KB; the offline copy stays far under its 600 KB budget). Alternatives looked at: Schibsted Grotesk, Archivo, Hanken Grotesk, Public Sans and Overpass for type; blue keycaps, which would have clashed with the focus ring and the info note |
 
 ---
 
