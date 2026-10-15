@@ -543,6 +543,8 @@ def test_device_panel_landscape_and_desktop(run):
     assert sheet.is_visible() and check.is_visible()
     page.keyboard.press('Escape')
     sheet.wait_for(state='hidden')
+    # The rail comes back on the dialog's close event, which the browser fires as a task after the sheet hides.
+    page.locator('.rail').wait_for(state='visible', timeout=2000)
     assert page.locator('.rail').is_visible(), 'The rail is back when Tools closes'
 
 

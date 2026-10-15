@@ -25,7 +25,7 @@ New type and colour. The course no longer looks like a generic template (cream a
 - Wordmark: "K.O. II / COACH" is now "K.O. II / Coach".
 - Labels the stylesheet used to set in capitals now show as written. For example, "NEXT · CHAPTER 1" is now "Next · Chapter 1", and "YOU ARE HERE" is now "You are here". The same applies to "Before you press", "Clears notes", "Optional", "Checkpoint", "Course" and "Tools" in the menu, search group names, and Tools sheet subheadings. Only the letter case changed.
 
-**For maintainers:** `fonts/` holds four files of about 12 KB each (46 KB in all, was 15 KB). `.github/scripts/make_fonts.py` makes them from the published variable fonts (plan decision 25). The token values are in plan section 6.2.
+**For maintainers:** `fonts/` holds four files of about 12 KB each (46 KB in all, was 15 KB). `.github/scripts/make_fonts.py` makes them from the published variable fonts (plan decision 25). The token values are in plan section 6.2. `test_device_panel_landscape_and_desktop` now waits for the rail to come back after Tools closes. The rail returns on the dialog's close event, which can land after the sheet is hidden, and the old check failed once in a full run.
 
 ## 2026.10.14.34
 
