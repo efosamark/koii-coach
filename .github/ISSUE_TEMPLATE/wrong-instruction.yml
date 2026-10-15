@@ -21,8 +21,8 @@ body:
     id: step
     attributes:
       label: Step
-      description: The step number and title as the app shows them.
-      placeholder: "Step 5 / Copy the beat into a new scene"
+      description: The part, the step number and the title as the app shows them.
+      placeholder: "Part 2, step 5 / Copy the beat into a new scene"
     validations:
       required: true
   - type: textarea

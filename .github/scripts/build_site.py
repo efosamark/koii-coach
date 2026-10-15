@@ -16,7 +16,7 @@ Fails (exit 1) when:
 - a step with data-os has no "Needs OS x or newer" fallback badge,
 - a page loads shell.js without site.js and progress.js before it (progress and migrations would not run there),
 - a page with its stylesheets and scripts weighs more than its budget, gzipped (plan 7.8): 60 KB for Home and the tool
-  pages, 80 KB for a chapter page (docs/overhaul-plan.md decision 19; today they weigh 66-76 KB),
+  pages, 80 KB for a chapter page (docs/overhaul-plan.md decision 19; today they weigh 67-79 KB),
 - another budget of plan 7.8 and decision 19 is broken: a page's HTML over 35 KB gzipped, the CSS over 18 KB, all the
   JavaScript over 72 KB or one page's over 48 KB (gzipped), the icon sprite over 6 KB, the font over 18 KB, or what
   sw.js saves for offline use over 600 KB gzipped,
@@ -217,11 +217,13 @@ def main():
                 errors.append(f'{name} names {what}: "…{text[max(0, m.start() - 30):m.end() + 20].strip()}…"')
 
     # Page weight: the page plus the stylesheets and scripts it loads, gzipped (the font and icons are shared and cached).
+    # Each file counts once: 404.html names coach.css twice (written in by a script, and again for readers without
+    # JavaScript), but a browser loads it once.
     gz = lambda f: len(gzip.compress((out / f).read_bytes(), 9))
     weights = {}
     for name in [f for f in files if f.endswith('.html')]:
         src = (out / name).read_text(encoding='utf-8')
-        deps = [local_path(d) for d in re.findall(r'<script src="([^"]+)"', src) + re.findall(r'<link rel="stylesheet" href="([^"]+)"', src)]
+        deps = dict.fromkeys(local_path(d) for d in re.findall(r'<script src="([^"]+)"', src) + re.findall(r'<link rel="stylesheet" href="([^"]+)"', src))
         weights[name] = gz(name) + sum(gz(d) for d in deps if d in have)
         budget = 80 if 'data-chapter=' in src.split('<main', 1)[0] else 60
         if weights[name] > budget * 1024:
@@ -242,7 +244,7 @@ def main():
         src = (out / name).read_text(encoding='utf-8')
         if gz(name) > 35 * 1024:
             errors.append(f'{name} weighs {gz(name) / 1024:.1f} KB gzipped (budget 35 KB of HTML)')
-        own = sum(gz(d) for d in (local_path(x) for x in re.findall(r'<script src="([^"]+)"', src)) if d in have)
+        own = sum(gz(d) for d in dict.fromkeys(local_path(x) for x in re.findall(r'<script src="([^"]+)"', src)) if d in have)
         if own > 48 * 1024:
             errors.append(f'{name} loads {own / 1024:.1f} KB of JavaScript gzipped (budget 48 KB)')
 

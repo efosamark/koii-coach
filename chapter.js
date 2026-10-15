@@ -1,7 +1,7 @@
 'use strict';
-/* Shared checklist, progress and resume logic for the chapter pages: setup.html (00), first-beat.html (01),
-   song.html (02), sampling.html (07), perform.html (08), hiphop.html (09), tech-house.html (10) and
-   thodorakis-house.html (11).
+/* Shared checklist, progress and resume logic for the chapter pages, Chapters 0 to 7: setup.html, first-beat.html,
+   song.html, sampling.html, perform.html, hiphop.html, tech-house.html and thodorakis-house.html (site.js lists them
+   with the numbers they had before the renumber).
    Each page sets <body data-chapter="slug"> and gives every step <li> inside .steps a stable data-step id.
    Progress is stored per chapter as {v:1,done:[stepId,...],last:stepId,n} under 'koii-coach-ch-<slug>', plus the
    optional fields cur (the step Continue points at), at (ISO time of the last tick), skip and m (the last split

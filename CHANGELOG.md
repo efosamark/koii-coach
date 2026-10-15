@@ -4,6 +4,20 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.15.3
+
+**Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence changed, and no step's wording changed.
+
+A review of the repository for text that had fallen behind the code.
+- **Cheat sheet:** its description for search engines and link previews said it held "the moves of the first chapters"; it has held every chapter's moves since 2026.10.14.23, and their pad plans since 2026.10.14.25. It now says so.
+- **Report form:** the Step field's example reads "Part 2, step 5 / …", the way the app fills it in since steps were numbered within their part (2026.10.14.33). The field's hint names the part too.
+
+**For maintainers:**
+- README: `beat.js` has its row in the file table and `first-beat.js` is only the placement helper (both since 2026.10.15.2); Chapter 1's button is "Hear it", not "Hear this recipe"; the example release tag is `?v=<release>`; the Testing section lists the newer static checks of `test_player.py` (voice, the "You will make" lines, target beats, glued punctuation, report by email).
+- `build_site.py` counts a stylesheet or script once in a page's weight: 404.html names `coach.css` twice (once written in by a script, once for readers without JavaScript) and was reported at 53 KB; it weighs 35 KB. Its docstring gives today's chapter-page weights (67–79 KB).
+- `chapter.js`'s header names the chapters by their current numbers. `pytest.ini` points at the README section that exists ("Testing"). The workflow step that runs every test file is called "Browser tests", not "Browser smoke test".
+- The plan records what was built where it differs from the plan: no TOML content model or generator (decision 4, §7.1), the test files that exist (§8.1), and the §7.8 table's measured sizes.
+
 ## 2026.10.15.2
 
 **Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence changed.

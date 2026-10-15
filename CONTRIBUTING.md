@@ -1,6 +1,6 @@
 # Changing the course
 
-How to add, change or split a step in K.O. II Coach, and release it. The chapters are plain HTML pages; there is no build step beyond the check in `.github/scripts/build_site.py`. Read the README's **Testing** and **Deploying** sections too.
+How to add, change or split a step in K.O. II Coach, and release it. The chapters are plain HTML pages; the only build step is `.github/scripts/build_site.py`, which copies the app files, minifies the CSS and JavaScript, tags them with the release and checks everything. Read the README's **Testing** and **Deploying** sections too.
 
 ## 1. Before you change an instruction
 

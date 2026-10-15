@@ -909,6 +909,8 @@ Every component has default, hover, pressed (translateY 1px, 120ms), focus-visib
 
 ### 7.1 Stack and build decision
 
+> **As built:** the TOML content model and generator of §7.1–7.3 were not made (decision 4, scope note). The pages are hand-written HTML with plain scripts (no modules), `site.js` is the registry, and `.github/scripts/build_site.py` with `minify.py` is the whole build: copy, minify, tag with the release and check. §7.4–7.9 describe what shipped.
+
 **Decision:**
 - **Build:** a Python 3.12 **standard-library-only** generator (`tomllib`, `html`, `json`, `hashlib`, `gzip`, `http.server`).
 - **Content:** TOML.
@@ -1225,13 +1227,13 @@ Performance is not the problem today: 45 KB gzipped and a 19ms re-render. The bu
 
 | Item | Budget |
 |---|---|
-| HTML per page (gzipped) | ≤35 KB (Chapter 7, 79 steps, is the largest) |
+| HTML per page (gzipped) | ≤35 KB (Chapter 6, 109 steps, is the largest: 18.9 KB in 2026.10.15.2) |
 | CSS total | ≤16 KB gz; ≤18 KB (decision 19) |
 | JS total, all modules | ≤30 KB gz; ≤25 KB executed on any page. Decision 19: ≤68 KB and ≤48 KB; ≤72 KB in all from 2026.10.15.2, for the target beats (beat.js) |
 | Each font file | ≤18 KB |
 | Icon sprite | ≤6 KB; device.svg ≤12 KB (decision 20: the schematic is HTML) |
-| Search index | ≤50 KB gz |
-| Per page, excluding the font and search index | ≤60 KB gz; a chapter page ≤80 KB gz (decision 19). As built: Home and tools 33–42 KB, chapter pages 66–76 KB |
+| Search index | ≤50 KB gz (none is built: decision 23, the index is made in the browser from the pages) |
+| Per page, excluding the font and search index | ≤60 KB gz; a chapter page ≤80 KB gz (decision 19). As built (2026.10.15.2): Home and tools 36–43 KB, chapter pages 67–79 KB |
 | Precache total | ≤600 KB gz, about 40 files (plus the N−1 hashed carry-over) |
 | Done · Next → next step painted | ≤100ms at 4× CPU throttle |
 | Layout shift on a control-map or sheet tap | CLS 0 |
@@ -1261,6 +1263,8 @@ Performance is not the problem today: 45 KB gzipped and a 19ms re-render. The bu
 ## 8. Testing and release
 
 ### 8.1 Tests (`tests/smoke.mjs` → pytest)
+
+> **As built:** `tests/` holds `test_smoke.py`, `test_progress.py`, `test_urls.py`, `test_player.py`, `test_fold.py`, `test_search.py`, `test_a11y.py`, `test_behaviour.py` and `test_perf.py` (README, "Testing"). `test_offline.py` is folded into `test_smoke.py` and `test_urls.py`; `test_content.py`'s checks live in `build_site.py` and the static tests of `test_player.py`; there is no `test_visual.py` (scope note).
 
 **P0** ports `smoke.mjs` line for line to `tests/test_smoke.py`. It keeps the same 1280×900 and 390×844 contexts, the same audio init-script instrumentation, the same `artifacts/results.json` shape and the same screenshots and traces. **Both suites run on the same commit and both must be green** before `smoke.mjs`, `setup-node` and the npm step are removed.
 - Python Playwright is pinned to the same version as CI's `PLAYWRIGHT_VERSION` (1.64.0, if it is on PyPI; P0 checks, and the local scratch venv has 1.63.0).
@@ -1621,7 +1625,7 @@ Each has a recommended default. If you say nothing, the default applies.
 | 1 | Renumber the course in teaching order on screen | **Yes: Chapter 0–7, flipped in P6** once all references are tokens; files and slugs unchanged; "Formerly 07" for at least 90 days. Since 2026.10.14.33 the chip shows only to learners with progress somewhere in the course: a first-time learner never knew the old numbers and found the chip puzzling. Search finds the old numbers for everyone |
 | 2 | Rename `thodorakis-house.html` | **No: keep the file as canonical** and call the chapter "Vocal house" everywhere visible. A `vocal-house.html` alias can come later if wanted |
 | 3 | Chapter 1's "optional" bass (steps 14–16), which Chapter 2 requires | **Make it required** in 01, and add `required_by` lint so this cannot recur |
-| 4 | Content format | **TOML + standard-library build** (no virtual environment to build). Alternative: YAML + Jinja2 (nicer templates, adds pinned dependencies) |
+| 4 | Content format | **TOML + standard-library build** (no virtual environment to build). Alternative: YAML + Jinja2 (nicer templates, adds pinned dependencies). **Not built (scope note):** P2 was to happen only if copying by hand started to hurt, and it did not. The chapters and tools are hand-written HTML pages; `site.js` is the one registry (chapters, tools, version), `build_site.py` copies, minifies, tags and checks them, and CONTRIBUTING.md describes the step markup |
 | 5 | What gets a blocking confirm gate | **Only irreversible presses** (delete a sample, crop or overwrite, and the scene erase until a device walk proves SHIFT + B restores it). Track and pattern clears get the fixed order (check first, undo after) without a gate. Settings get a neutral tag |
 | 6 | Screen wake lock | **On automatically after the first Done tap**, with a 15-minute idle release and a toggle |
 | 7 | Default chapter presentation | **Player on every device**, with "All steps" one tap away and remembered per chapter |

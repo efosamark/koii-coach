@@ -44,7 +44,7 @@ jobs:
             sleep 1
           done
           curl -fsS http://127.0.0.1:8080/koii-coach/ > /dev/null
-      - name: Browser smoke test (local copy only, never the live site)
+      - name: Browser tests (local copy only, never the live site)
         env:
           LOCAL_URL: http://127.0.0.1:8080/koii-coach/
           LIVE_URL: ''
