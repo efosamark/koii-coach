@@ -167,6 +167,7 @@ async function fill(k){
   else if(k==='fixes')box.innerHTML=d.groups?groupsHTML(d,3):failed('Troubleshooting','./help.html');
   else if(k==='words')box.innerHTML=d.terms?`<dl class="gloss tools-gloss">${d.terms.map(termHTML).join('')}</dl>`:failed('The glossary','./glossary.html');
   else if(k==='cheat')box.innerHTML=d.cheat?cheatHTML(d):failed('The cheat sheet','./cheat-sheet.html');
+  if(window.CoachShell&&CoachShell.glue)CoachShell.glue(box);   // punctuation stays with its keycap (shell.js)
   filled[k]=true;
   after(k);
 }

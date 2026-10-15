@@ -315,6 +315,7 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
     }
     previewing=null;
     list.innerHTML=html;
+    if(window.CoachShell&&CoachShell.glue)CoachShell.glue(list);   // punctuation stays with its keycap
     status.textContent=say;
   }
   // A step's preview: its text as in the chapter, read-only, with the way there as the second action.
@@ -326,6 +327,7 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
       `<p class="search-hit-crumb">${esc(d.crumb.join(' · '))}</p><h2 class="preview-title" id="site-preview-title" tabindex="-1">${esc(d.title)}</h2>${tag?`<p>${tag}</p>`:''}`+
       `<div class="preview-body">${d.html}</div><p class="row"><a class="btn" href="${esc(d.href)}">${d.part?'Go to this part':'Go to this step'}<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-next"></use></svg></a></p>`+
       `<p class="meta">A preview: nothing is ticked, and your place in the chapter stays where it is.</p></div>`;
+    if(window.CoachShell&&CoachShell.glue)CoachShell.glue(list);
     status.textContent='Preview: '+d.title;
     body.scrollTop=0;
     list.querySelector('.preview-title').focus();

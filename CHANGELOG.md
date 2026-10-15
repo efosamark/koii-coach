@@ -9,26 +9,26 @@ Each release records the date its instructions were checked against the [officia
 **Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence changed.
 
 **Hear the beat in every chapter.** Until now only Chapter 1 could play the beat you are building. Now, 21 steps in Chapters 2, 3, 5, 6 and 7 have a "Hear the beat" disclosure where you listen to a scene you just built.
-- Each one shows a grid of the scene's drums and bass, every bar side by side, plays them at the chapter's tempo with practice sounds, and lists every position.
+- Each one shows a grid of the scene's drums and bass, every bar side by side (headed "Bar 1" to "Bar 4" for four-bar scenes), plays them at the chapter's tempo with practice sounds, and lists every position.
 - The practice sounds now include clap, open hat, rim, shaker and a second bass note, alongside kick, snare, hat and bass.
-- Each beat holds only notes the steps themselves place: never a live-played fill, a vocal or a melody. Where a scene has those too, a note under the grid says what is left out.
+- Each beat holds only drum and bass notes that the steps themselves place: never a live-played fill, a vocal or a melody. Where the scene has those too, a note under the caption says what is left out.
 - Every position was checked against the steps that write and erase it, and Chapter 6's against its pattern sheet.
 - Chapter 4 has none: its beats are played live or shifted off the grid on purpose. Chapter 7's BUILD has none either, because its kicks are played live.
 - Chapter 1's target rhythms are drawn by the same code. They look the same, and Hear it now sits right under the grid.
 
 **Polish**
 - **Symbols match the text.** ← → ✓ and the Rhythm lab's ● ■ ▲ ◆ are now part of the font, drawn to match each weight. They used to come from your device's own font. This covers "2 → 4 → 8 bars", Chapter 6's moves table, the player's key hints and the control map's "→ FX".
-- **No line starts with a comma.** A keycap or display chip now stays on the same line as the punctuation after it, for example ", 0 ." in Chapter 3.
-- **No jump while the font loads.** On a first visit, text shows in Arial or Roboto, scaled to Atkinson's width and line height, until Atkinson arrives. Page heights now differ by at most 0.5% when it does.
+- **No line starts with a comma.** A keycap or display chip now stays on the same line as the punctuation after it, for example ", 0 ." in Chapter 3. This holds on the pages, in search previews and in the Tools sheet.
+- **Less jump while the font loads.** On a first visit, text shows in Arial or Roboto, scaled to Atkinson's width and line height, until Atkinson arrives. The text column width is now set in em, not by the width of the "0", so it no longer changes with the font. Measured on ten pages at 390 and 1280 px, page heights change by at most one wrapped line when Atkinson arrives: under 1% on most pages, 2.8% on the shortest.
 - **Done is teal green.** The green for done, ticks and "You are here" moved toward teal (#0D7868 light, #40C4AE dark). Learners with red-green colour blindness can now tell it from danger red. In simulated deuteranopia in dark mode the two had been nearly identical (ΔE 2.2); now they differ by ΔE 25.
-- **Fewer coloured boxes.** Notices, "Before you press", "can't be undone" boxes, checkpoints, risky step cards and the Safety page now use a full border in their colour instead of a thick left stripe. The Check ("what you'll see or hear") is now a line under a thin rule with its eye or ear icon, not a tinted box.
+- **Fewer coloured boxes.** Notices, "Before you press", "can't be undone" boxes (including the start screen's safety box), checkpoints, risky step cards and the Safety page now use a full border in their colour instead of a thick left stripe. Danger borders are 2px and the others 1px, and in forced colours a risky step card has a 3px border. The Check ("what you'll see or hear") is now a line under a thin rule with its eye or ear icon, not a tinted box.
 
-**Report by email (off for now).** Setting `reportEmail` in `site.js` adds "or by email" to every report link, prefilled with the chapter, the step, its text and the OS, for learners without a GitHub account. It is empty, so nothing changes on the site yet. See the README.
+**Report by email (off for now).** Setting `reportEmail` in `site.js` adds "or by email" to every report link, for learners without a GitHub account. From a step, the email is filled in with the chapter, the step, its text and the OS. From Home, Troubleshooting, Settings and 404, it opens a short form to fill in. The address is empty, so nothing changes on the site yet. See the README.
 
 **Wording added** (no existing wording changed):
 - The disclosure title "Hear the beat", and each beat's caption and note:
   - Chapter 2, Part 1, “Check the intro and your original”: “INTRO: drums only, one bar at 90 BPM”
-  - Chapter 2, Part 4, “Make the breakdown: clear kick and bass”: “BREAK: snare and hats, one bar at 90 BPM”
+  - Chapter 2, Part 4, “Make the breakdown: clear kick and bass”: “BREAK: snare and hats, one bar at 90 BPM” and “Without the melody.”
   - Chapter 3, Part 2, “Listen to your voice kit”: “VOICE KIT, one bar at 90 BPM” and “Your kit is your own voice. The preview plays its rhythm with practice sounds.”
   - Chapter 5, Part 1, “Checkpoint: the rebuilt beat”: “Your beat, one bar at 90 BPM”
   - Chapter 5, Part 2, “Checkpoint: HOOK sounds like VERSE”: “VERSE and HOOK: drums and bass, one bar at 90 BPM”

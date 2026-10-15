@@ -47,8 +47,11 @@ const figures=[...document.querySelectorAll('figure.pattern')].map(fig=>{
   tools.innerHTML=`<button class="btn hear-btn" type="button">${icon('play')}<span>Hear it</span></button><span class="meta strip-status" role="status"></span>`+
     '<p class="meta strip-tip">No sound? Turn your phone volume up. On iPhone, also switch off Silent mode or use headphones. The practice sounds are made by your browser, not your K.O. II’s samples.</p>';
   // The grid, then Hear it, then the written positions (which can run long for four bars).
-  const cap=fig.querySelector('figcaption');
-  if(cap)cap.after(strip);else fig.prepend(strip);
+  // A note on what the beat leaves out goes under the caption.
+  const cap=fig.querySelector('figcaption'),note=fig.querySelector('.pattern-note');
+  if(cap&&note)cap.after(note);
+  const top=note||cap;
+  if(top)top.after(strip);else fig.prepend(strip);
   strip.after(tools);
   const btn=tools.querySelector('.hear-btn'),status=tools.querySelector('.strip-status'),cells=[...strip.querySelectorAll('.strip-cell')];
   const play=window.CoachAudio?CoachAudio.player({

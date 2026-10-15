@@ -54,7 +54,7 @@ You can add the coach to your phone's home screen from the browser's share or me
 
 If a step doesn't match what your EP-133 does, please [open a "Wrong instruction" report](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml). Every page has the same link in its footer.
 
-The report form needs a GitHub account. To also let learners report by email, set `reportEmail` in `site.js` to an address: every report link then offers "or by email", with the chapter, the step, its text and the OS filled in. The address is public on every page, so use one meant for it. It is empty by default. The form asks for the page, the step, what the app says, what the device did, and your firmware version. You need a free GitHub account to send it. Reports from people with the device in front of them are the best way to keep the course correct.
+To also let learners without a GitHub account report by email, set `reportEmail` in `site.js` to an address. Every report link then offers "or by email": from a step, the email is filled in with the chapter, the step, its text and the OS; elsewhere it opens a short form to fill in. The address is public on every page, so use one meant for it. It is empty by default. The form asks for the page, the step, what the app says, what the device did, and your firmware version. You need a free GitHub account to send it. Reports from people with the device in front of them are the best way to keep the course correct.
 
 ## Accuracy
 

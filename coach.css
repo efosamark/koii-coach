@@ -128,7 +128,7 @@
   --t-do:clamp(1.5rem,1.3905rem + .4494vw,1.75rem); --t-do-lh:clamp(2rem,1.8905rem + .4494vw,2.25rem);           /* 24/32 -> 28/36 */
   --t-h2:clamp(1.5rem,1.3905rem + .4494vw,1.75rem); --t-h2-lh:clamp(1.875rem,1.7655rem + .4494vw,2.125rem);      /* 24/30 -> 28/34 */
   --t-h1:clamp(1.875rem,1.5464rem + 1.3483vw,2.625rem); --t-h1-lh:clamp(2.25rem,1.9214rem + 1.3483vw,3rem);      /* 30/36 -> 42/48 */
-  --measure:65ch;
+  --measure:42.1em;   /* 65 of Atkinson's 0; in em, not ch, so the line length does not change with the fallback font's 0 */
   /* Space, radii, layout */
   --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px; --sp-7:48px; --sp-8:64px;
   --r-chip:6px; --r-control:12px; --r-card:20px;
@@ -283,7 +283,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 /* "Needs OS x+" on a step (chapter.js): .ok when the OS chosen in Settings has it, .warn when it does not. */
 .badge{margin:var(--sp-2) 0 var(--sp-3)}
 .badge.ok{display:inline-block;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
-.badge.warn{padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-left-width:4px;border-radius:var(--r-control);background:var(--caution-surface);color:var(--ink)}
+.badge.warn{padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-radius:var(--r-control);background:var(--caution-surface);color:var(--ink)}
 .badge.warn b{color:var(--caution-ink)}
 
 /* ---------- Notices ---------- */
@@ -302,7 +302,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 .notice.caution{border-color:var(--caution-line);background:var(--caution-surface)}
 .notice.caution::before{background:var(--caution-ink);-webkit-mask-image:var(--i-warning);mask-image:var(--i-warning)}
 .notice.caution > b:first-child,.notice.caution > strong:first-child{color:var(--caution-ink)}
-.notice.danger{border:1.5px solid var(--danger);background:var(--danger-surface)}
+.notice.danger{border:2px solid var(--danger);background:var(--danger-surface)}
 .notice.danger::before{background:var(--danger);-webkit-mask-image:var(--i-erase);mask-image:var(--i-erase)}
 .notice.danger > b:first-child,.notice.danger > strong:first-child{color:var(--danger)}
 /* Checkpoint: what you should now hear or see at the end of a section. */
@@ -856,7 +856,7 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .search-preview .preview-title{margin:var(--sp-1) 0 var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
 .search-preview .preview-title:focus{outline:none}
 html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.preview-body > .preflight{padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-left-width:4px;border-radius:var(--r-control);background:var(--caution-surface)}
+.preview-body > .preflight{padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-radius:var(--r-control);background:var(--caution-surface)}
 .preview-body > .preflight::before{content:"Before you press";display:block;margin-bottom:var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--caution-ink)}
 .preview-body > .step-do{font-size:var(--t-check);line-height:var(--t-check-lh)}
 .preview-body > :is(.step-check,.step-undo){padding:var(--sp-2) 0 0;border-top:1px solid var(--line)}
@@ -918,7 +918,7 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
 .steps li > .step-check[data-sense="hear"]::before{-webkit-mask-image:var(--i-ear);mask-image:var(--i-ear)}
 /* The gate of a delete or overwrite step (player only): "Yes, I have checked", then a small "Checked" chip. */
 .gate{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-3)}
-.gate-note{flex-basis:100%;max-width:none;margin:0;padding:var(--sp-3) var(--sp-4);border:1.5px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
+.gate-note{flex-basis:100%;max-width:none;margin:0;padding:var(--sp-3) var(--sp-4);border:2px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
 .gate .gate-btn{border-color:var(--danger)}
 .gate-hint{margin:0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .gate-ok{min-height:32px}
@@ -950,7 +950,7 @@ html[data-player="step"] .steps ol > li.is-current{position:relative;max-width:n
 html[data-player="step"] .steps ol > li.is-current::before,html[data-player="step"] .steps ol > li.is-current::after,html[data-player="step"] li.is-current > .here-tag{display:none}
 html[data-player="step"] .steps ol > li.is-current:focus{outline:none}
 html[data-player="step"].pl-kbd .steps ol > li.is-current:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-html[data-player="step"] .steps ol > li.is-current:is([data-risk="delete"],[data-risk="overwrite"],[data-risk="erase-scene"]){border:1.5px solid var(--danger)}
+html[data-player="step"] .steps ol > li.is-current:is([data-risk="delete"],[data-risk="overwrite"],[data-risk="erase-scene"]){border:2px solid var(--danger)}
 html[data-player="step"] .steps ol > li.is-current.is-checkpoint{border:1.5px solid var(--here)}
 html[data-player="step"] li.is-current > .step-head{display:flex;min-height:48px;margin:0 0 var(--sp-3);padding-right:56px}
 html[data-player="step"] li.is-current .step-num{display:inline-flex;align-items:center;justify-content:center;min-width:2.5em;height:32px;padding:0 var(--sp-2);border-radius:var(--r-chip);background:var(--surface-3);color:var(--ink);font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums}
@@ -1036,7 +1036,7 @@ html[data-player="start"] main > .needs{display:block;margin:var(--sp-3) 0}
 .player-reference > summary .icon{color:var(--ink-2)}
 .player-reference .ref-part > h2{margin-top:var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
 .player-reference .inside > :last-child{margin-bottom:0}
-.player-safety{margin:var(--sp-3) 0;border:1px solid var(--danger);border-left-width:6px;border-radius:var(--r-control);background:var(--danger-surface)}
+.player-safety{margin:var(--sp-3) 0;border:2px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
 .player-safety > summary{padding:var(--sp-2) var(--sp-3);color:var(--danger)}
 .player-safety > summary .icon{width:22px;height:22px}
 .player-safety > .inside{padding:0 var(--sp-3) var(--sp-2)}
@@ -1229,7 +1229,8 @@ html[data-text="larger"][data-player="step"] li.is-current > .step-check{margin-
 @media (forced-colors:active){
   html[data-player="step"] li.is-current .key{outline:2px solid Highlight;outline-offset:1px}
   html[data-player="step"] li.is-current .step-check .key{outline:0}
-  html[data-player="step"] .steps ol > li.is-current{border:2px solid CanvasText}
+  html[data-player="step"] .steps ol > li.is-current,html[data-player="step"] .steps ol > li.is-current.is-checkpoint{border:2px solid CanvasText}
+  html[data-player="step"] .steps ol > li.is-current:is([data-risk="delete"],[data-risk="overwrite"],[data-risk="erase-scene"]){border:3px solid CanvasText}
   .steps li > .step-check::before{forced-color-adjust:none;background:CanvasText}
   .ps-step[aria-current="step"],.player-modes button[aria-pressed="true"]{outline:3px solid Highlight;outline-offset:-3px}
   .ps-mark{forced-color-adjust:none;border-color:CanvasText;background:Canvas}
@@ -1312,7 +1313,7 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .runner-list{display:flex;flex-wrap:wrap;gap:var(--sp-2);max-width:none;margin:0 0 var(--sp-3)}
 .runner-pos .lcd{font-size:15px}
 .runner-pos.done .lcd{border-color:var(--line);background:var(--surface-2);color:var(--ink-2)}   /* placed: muted, still 4.5:1 */
-.runner-pos.done .lcd::after{content:" ✓"}
+.runner-pos.done .lcd::after{content:" ✓";font-family:var(--font-ui)}   /* the display face has no ✓ */
 .runner-pos.now .lcd{font-size:22px;line-height:1.4;outline:3px solid var(--key);outline-offset:2px}
 .runner-row{gap:var(--sp-2)}
 @keyframes pa-pulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 6px var(--here)}}
@@ -1438,7 +1439,7 @@ details[id],.term[id],.risk[id],.card[id]{scroll-margin-top:calc(var(--sticky-to
 .gloss .term:target{margin:0 calc(var(--sp-3) * -1);padding:var(--sp-1) var(--sp-3);border-radius:var(--r-control);background:var(--surface-3);box-shadow:inset 3px 0 0 var(--here)}
 /* Safety and erasing: a red border on the actions with no undo, orange on the careful ones. */
 .risk h3{margin-top:0}
-.risk.danger{border:1.5px solid var(--danger)}
+.risk.danger{border:2px solid var(--danger)}
 .risk.caution{border:1px solid var(--caution-line)}
 .risk .no-undo{padding:var(--sp-2) var(--sp-3);border-radius:var(--r-control);background:var(--danger-surface)}
 .risk .no-undo b{color:var(--danger)}
