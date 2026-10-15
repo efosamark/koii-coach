@@ -4,6 +4,24 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.15.5
+
+**Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence and no step wording changed.
+
+**A second look: Settings › Look › Minimal.** Studio, the look of 2026.10.15.4, stays the default. Minimal is flat and quiet, after the product pages of studio equipment, and is drawn with the course's own parts.
+- **Titles** are large and light (Archivo Light). Steps, keycaps, display values and controls stay in Atkinson Hyperlegible at their usual sizes.
+- **Flat:** no shadows, glass or gradients. Keycaps keep their solid bottom edge, so a key still looks like a key.
+- **The frame** (app bar and, on a desktop, the course rail) is white in light mode and dark in dark mode, instead of graphite. The page is a little lighter. Home's welcome and Continue cards stay dark, now flat.
+- **Labels** such as "chapter 1 · about 30–50 minutes", "next · chapter 0" and the menu's "course" and "tools" are in lowercase. Screen readers read them as written. "K.O. II" keeps its capitals.
+- **Buttons, chips and tabs** are pill-shaped.
+- Both looks follow your device's light or dark setting, and the choice is kept with your other settings. Reset settings goes back to Studio.
+
+The step player is the same in both looks: every step still fits above Done · Next, and yellow still means only "press this".
+
+**Wording that changed:** Settings has a new "Look" card ("Style: Studio / Minimal") with a line on what each does. Home's line about Settings reads "your OS version, the look, the screen while practising and your progress file" (was "your OS version, the screen while practising and your progress file").
+
+**For maintainers:** `koii-coach-prefs.look` is a new field ('studio' | 'minimal'); shell.js applies it as `html[data-look]` before the page is drawn and `CoachShell.setLook` also sets the light `theme-color` (`#FFFFFF` in Minimal). Every Minimal rule is scoped to `html[data-look="minimal"]` at the end of `coach.css`. `fonts/Archivo-Light.woff2` (12.8 KB, SIL OFL 1.1) is cut by `make_fonts.py`, precached and not preloaded. Plan decision 27 records what was taken from studio-equipment design and what was left out (proprietary typefaces, logos, photos, accent palettes, window-scaled sizes). New tests: `test_minimal_look` and `test_axe_in_the_minimal_look`.
+
 ## 2026.10.15.4
 
 **Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence and no wording changed.

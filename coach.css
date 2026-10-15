@@ -99,6 +99,10 @@
    Atkinson, which falls in behind it for any character it lacks. */
 @font-face{font-family:"Archivo SemiExpanded";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/ArchivoSemiExpanded-Bold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
 
+/* Archivo Light (width 100, weight 300), the titles of the Minimal look (decision 27). Its weight range covers every
+   weight a title asks for, so the browser draws it as it is instead of faking a bold of it. Loaded only once used. */
+@font-face{font-family:"Archivo Light";font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/Archivo-Light.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
+
 /* While Atkinson loads (first visit only), text is drawn in Arial or Roboto scaled to Atkinson's average width and
    line metrics, so the page doesn't reflow when the real font arrives. Widths measured over the course's own text. */
 @font-face{font-family:"Atkinson Fallback Arial";font-weight:400;src:local("Arial"),local("ArialMT"),local("Liberation Sans"),local("Arimo");size-adjust:98.27%;ascent-override:100.14%;descent-override:32.16%;line-gap-override:0%}
@@ -1516,3 +1520,38 @@ details[id],.term[id],.risk[id],.card[id]{scroll-margin-top:calc(var(--sticky-to
 .risk .no-undo b{color:var(--danger)}
 @media (forced-colors:active){.risk.danger{border:3px solid CanvasText}.risk.caution{border:1px solid CanvasText}.control[aria-checked="true"]{outline:3px solid Highlight}}
 @media print{.az,.help-search,#result-count,.help-more,.lesson .complete{display:none!important}.lesson .inside,details.topic .inside{display:block}}
+
+/* ---------- Look: Minimal (Settings › Look, html[data-look="minimal"]; plan decision 27) ---------- */
+/* The second look, after the restraint of studio-equipment product pages, drawn with the course's own parts: flat
+   surfaces, large light titles (Archivo Light), labels in lowercase, pill buttons and a frame in the page's own colours.
+   Every colour, meaning and size of the step player stays as in Studio; only the finish changes. */
+html[data-look="minimal"]{--font-display:"Archivo Light",var(--font-ui);--e1:none;--e2:none;--glow:transparent;--cap-face:var(--surface-1);--key-face:var(--key);--panel:#121211;--r-card:18px}
+@media screen and (prefers-color-scheme:light){html[data-look="minimal"]:not([data-theme="dark"]){--bg:#F3F3F1}}
+html[data-look="minimal"][data-theme="light"]{--bg:#F3F3F1}
+/* The frame takes the page's own tokens back from the graphite scope: white in light, dark in dark. */
+html[data-look="minimal"] :is(.appbar,.rail){color-scheme:inherit;--bg:inherit;--surface-1:inherit;--surface-2:inherit;--surface-3:inherit;--surface-raised:inherit;--line:inherit;--line-strong:inherit;--ink:inherit;--ink-2:inherit;--primary:inherit;--on-primary:inherit;--key:inherit;--on-key:inherit;--key-edge:inherit;--lcd-bg:inherit;--lcd-ink:inherit;--lcd-line:inherit;--done-ink:inherit;--done-fill:inherit;--on-done:inherit;--here:inherit;--danger:inherit;--danger-surface:inherit;--caution-ink:inherit;--caution-surface:inherit;--caution-line:inherit;--info-ink:inherit;--info-surface:inherit;--focus:inherit;--e1:inherit;--e2:inherit;--cap-face:inherit;--key-face:inherit;--glow:inherit;--i-tick:inherit}
+html[data-look="minimal"] .appbar{background:var(--surface-1);-webkit-backdrop-filter:none;backdrop-filter:none}
+html[data-look="minimal"] .appbar.scrolled{box-shadow:0 1px 0 var(--line)}
+@media (max-width:1023px){html[data-look="minimal"] .player-actions{background:var(--surface-1);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}}
+/* Flat: no drop shadows, glass or lift; keycaps keep their solid bottom edge, the one depth that means "a key". */
+html[data-look="minimal"] :is(.btn.primary,.btn.orange,.card.welcome,.card.continue){box-shadow:none}
+html[data-look="minimal"] :is(.lcd,.display){box-shadow:none;text-shadow:none}
+html[data-look="minimal"] .device.schem{box-shadow:none}
+html[data-look="minimal"] .tile:hover{transform:none}
+/* Titles: light and large, set tight. Body, steps, keycaps and controls stay in Atkinson at their sizes. */
+html[data-look="minimal"] :is(h1,h2){letter-spacing:-.035em}
+html[data-look="minimal"] h1{font-size:clamp(2.5rem,2rem + 2.4vw,4.25rem);line-height:1.04}
+html[data-look="minimal"] .welcome h1{font-size:clamp(2.25rem,1.7rem + 2.4vw,3.75rem);line-height:1.04;letter-spacing:-.04em}
+html[data-look="minimal"][data-player="start"] .page-head h1{font-size:clamp(2.75rem,2rem + 3vw,4.75rem);line-height:1.02}
+html[data-look="minimal"] .page-head.compact h1{font-size:clamp(2rem,1.6rem + 1.6vw,3rem)}
+html[data-look="minimal"] :is(.card,.section,.needs,.player-parts,.player-more .inside,.player-reference .ref-part) > h2,html[data-look="minimal"] h2.sub{font-size:1.625rem;line-height:1.2;letter-spacing:-.02em}
+/* after the card-title rule above, which would otherwise match these two as well */
+html[data-look="minimal"] .card.continue > h2{font-size:clamp(2rem,1.6rem + 1.6vw,3rem);line-height:1.06}
+html[data-look="minimal"] .card.welcome > h2{font-size:var(--t-check);line-height:var(--t-check-lh);letter-spacing:0}
+html[data-look="minimal"] .wordmark{font-size:17px;letter-spacing:-.02em}
+/* Labels in lowercase, as small legends (the page keeps sentence case, so a screen reader reads it as written). */
+html[data-look="minimal"] :is(.eyebrow,.nav-label,.mc-kicker,.pd-moves-title,.search-group-title,.device-title){text-transform:lowercase}
+html[data-look="minimal"] .keep-case{text-transform:none}
+/* Pills */
+html[data-look="minimal"] :is(.btn,.chips li,.player-chips li,.tag,.search-chip,.tools-tabs button,.back-pill,.pa-btn,.pa-main){border-radius:999px}
+@media (min-width:1024px){html[data-look="minimal"] .pa-row{border-radius:999px}}

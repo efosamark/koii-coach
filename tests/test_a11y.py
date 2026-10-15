@@ -116,6 +116,23 @@ def test_axe_on_every_page_and_sheet(run, scheme):
     assert found == [], 'Serious or critical axe violations:\n' + '\n'.join(found)
 
 
+@pytest.mark.parametrize('scheme', ['light', 'dark'])
+def test_axe_in_the_minimal_look(run, scheme):
+    # Settings › Look: the second look changes the frame, the titles and the surfaces, so the pages that show all three.
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready', 'look': 'minimal'}})
+    page.emulate_media(color_scheme=scheme)
+    found = []
+    for width, height in ((390, 844), (1280, 1200)):
+        page.set_viewport_size({'width': width, 'height': height})
+        for href in ('index.html', 'first-beat.html', 'first-beat.html#s-beat-kicks', 'learn.html', 'help.html', 'settings.html'):
+            run.go(href)
+            assert page.evaluate('document.documentElement.dataset.look') == 'minimal', f'{href} opens in the Minimal look'
+            page.wait_for_timeout(200)
+            found += run.axe(f'minimal {scheme} {width} {href}')
+    assert found == [], 'Serious or critical axe violations:\n' + '\n'.join(found)
+
+
 def test_tab_from_a_step_reaches_done_next_without_stray_stops(run):
     page = run.page
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})

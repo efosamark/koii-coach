@@ -1,4 +1,4 @@
-"""Make the five font files in fonts/ from the Atkinson Hyperlegible and Archivo variable fonts (SIL OFL 1.1, no
+"""Make the six font files in fonts/ from the Atkinson Hyperlegible and Archivo variable fonts (SIL OFL 1.1, no
 reserved names).
 
     pip install fonttools brotli
@@ -18,9 +18,9 @@ Next has no arrows, check mark or geometric shapes, so a page would draw them in
 added here (SYMBOLS): strokes as thick as each weight's hyphen, with round ends like the icons in icons.svg,
 centred on the hyphen's axis. The @font-face unicode-range in coach.css must list them too.
 
-Archivo is the display face for titles only (plan decision 26): one cut, SemiExpanded (width 112.5) Bold, subset to
-the same Latin range and left as drawn. Its zero keeps no slash already, and it has no arrows, so a title never uses
-them.
+Archivo is the display face for titles only, subset to the same Latin range and left as drawn: SemiExpanded (width
+112.5) Bold for the Studio look (plan decision 26) and Light (width 100, weight 300) for the Minimal look (decision 27).
+Its zero has no slash already, and it has no arrows, so a title never uses them.
 """
 import math
 import subprocess
@@ -40,7 +40,7 @@ SYMBOLS = 'U+2190,U+2192,U+2713,U+25A0,U+25B2,U+25C6,U+25CF'   # ← → ✓ ■
 FEATURES = 'kern,liga,calt,tnum,case,ccmp,locl,mark,mkmk'
 CUTS = [('next', 400, 'AtkinsonHyperlegibleNext-Regular'), ('next', 600, 'AtkinsonHyperlegibleNext-SemiBold'),
         ('next', 700, 'AtkinsonHyperlegibleNext-Bold'), ('mono', 500, 'AtkinsonHyperlegibleMono-Medium')]
-DISPLAY = ('ArchivoSemiExpanded-Bold', 'wdth=112.5', 'wght=700')
+DISPLAY = [('ArchivoSemiExpanded-Bold', 'wdth=112.5', 'wght=700'), ('Archivo-Light', 'wdth=100', 'wght=300')]
 
 
 class Flatten(BasePen):
@@ -184,14 +184,14 @@ def add_symbols(path):
 def main(next_ttf, mono_ttf, display_ttf, out_dir):
     out = Path(out_dir)
     with tempfile.TemporaryDirectory() as tmp:
-        name, *axes = DISPLAY
-        ttf = str(Path(tmp) / f'{name}.ttf')
-        subprocess.run([sys.executable, '-m', 'fontTools', 'varLib.instancer', display_ttf, *axes,
-                        '--update-name-table', '-q', '-o', ttf], check=True)
-        subprocess.run([sys.executable, '-m', 'fontTools', 'subset', ttf, f'--unicodes={UNICODES}',
-                        f'--layout-features={FEATURES}', '--flavor=woff2', f'--output-file={out / (name + ".woff2")}'],
-                       check=True)
-        print(out / f'{name}.woff2', (out / f'{name}.woff2').stat().st_size, 'bytes')
+        for name, *axes in DISPLAY:
+            ttf = str(Path(tmp) / f'{name}.ttf')
+            subprocess.run([sys.executable, '-m', 'fontTools', 'varLib.instancer', display_ttf, *axes,
+                            '--update-name-table', '-q', '-o', ttf], check=True)
+            subprocess.run([sys.executable, '-m', 'fontTools', 'subset', ttf, f'--unicodes={UNICODES}',
+                            f'--layout-features={FEATURES}', '--flavor=woff2', f'--output-file={out / (name + ".woff2")}'],
+                           check=True)
+            print(out / f'{name}.woff2', (out / f'{name}.woff2').stat().st_size, 'bytes')
         for family, weight, name in CUTS:
             src = next_ttf if family == 'next' else mono_ttf
             ttf = str(Path(tmp) / f'{name}.ttf')

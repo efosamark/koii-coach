@@ -540,6 +540,30 @@ def test_larger_text_and_left_hand(run):
 
 
 @pytest.mark.browser
+def test_minimal_look(run):
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    look = lambda: page.evaluate('document.documentElement.dataset.look')
+    bar = lambda: page.locator('#appbar').evaluate('e => getComputedStyle(e).getPropertyValue("--surface-1").trim()')
+    status = lambda: page.locator('meta[name="theme-color"][media*="light"]').get_attribute('content')
+    run.go('./first-beat.html')
+    assert (look(), bar(), status()) == ('studio', '#1B1B1A', '#1B1B1A'), 'Studio is the default: a graphite app bar and browser bar'
+    run.go('./settings.html')
+    page.locator('input[name="look"][value="minimal"]').check()
+    prefs = run.get('koii-coach-prefs')
+    assert look() == 'minimal' and (prefs['look'], prefs['setup']) == ('minimal', 'ready'), f'The choice applies at once and is saved, the rest kept ({prefs})'
+    run.go('./first-beat.html')
+    title = page.locator('main h1').first.evaluate('e => getComputedStyle(e).fontFamily')
+    assert look() == 'minimal' and 'Archivo Light' in title, f'Every page opens in the Minimal look, with light titles ({title})'
+    assert (bar(), status()) == ('#FFFFFF', '#FFFFFF'), 'Its app bar and browser bar take the page colour'
+    do = page.locator('main .steps li[data-step] > .step-do').first.evaluate('e => getComputedStyle(e).fontFamily')
+    assert 'Archivo' not in do, 'Steps stay in Atkinson'
+    run.go('./settings.html')
+    page.locator('#reset-settings').click()
+    assert page.locator('input[name="look"][value="studio"]').is_checked() and look() == 'studio', 'Reset settings puts Studio back'
+
+
+@pytest.mark.browser
 def test_rhythm_lab(run):
     page = run.page
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})

@@ -55,8 +55,11 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 const icon=n=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-${n}"></use></svg>`;
 const read=k=>{try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}};
 const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;};
+// Settings › Look: html[data-look] 'studio' | 'minimal' (decision 27). Minimal's app bar is the page's own colour, so the
+// browser bar in light mode is white there instead of graphite.
+const setLook=v=>{root.dataset.look=v==='minimal'?'minimal':'studio';document.querySelectorAll('meta[name="theme-color"][media*="light"]').forEach(m=>{m.content=root.dataset.look==='minimal'?'#FFFFFF':'#1B1B1A';});};
 // Settings › While practising, read by coach.css: text 'larger' sets Do at 30/40, hand 'left' puts Done · Next on the left.
-(p=>{p=p||{};root.dataset.text=p.text==='larger'?'larger':'default';root.dataset.hand=p.hand==='left'?'left':'right';})(window.CoachProgress?CoachProgress.prefs():read('koii-coach-prefs'));
+(p=>{p=p||{};root.dataset.text=p.text==='larger'?'larger':'default';root.dataset.hand=p.hand==='left'?'left':'right';setLook(p.look);})(window.CoachProgress?CoachProgress.prefs():read('koii-coach-prefs'));
 
 // Where are we? A chapter page names itself in <body data-chapter>; a tool page is found by its file name.
 const file=(p=>{try{return decodeURIComponent(p);}catch(e){return p;}})(location.pathname.split('/').pop()||'index.html');
@@ -461,5 +464,5 @@ document.addEventListener('change',e=>{if(e.target.closest&&e.target.closest('.c
 const shade=()=>bar.classList.toggle('scrolled',scrollY>4);
 addEventListener('scroll',shade,{passive:true});shade();
 
-window.CoachShell={open,close,toggle:()=>sheet.open?close():open(),openSearch,setTitle,setMeter,refresh,registerChapter,refreshChapter,modal,addShortcut,glue};
+window.CoachShell={open,close,toggle:()=>sheet.open?close():open(),openSearch,setTitle,setMeter,refresh,registerChapter,refreshChapter,modal,addShortcut,glue,setLook};
 })();

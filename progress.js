@@ -13,7 +13,7 @@
                            Writes keep all twelve fields: the old app rebuilt it from these and dropped anything else.
      koii-coach-ch-<slug>  a chapter's ticks, {v:1, done:[ids], last, n, cur?, at?, derivedFrom?, skip?, m?} (chapter.js
                            owns it; m is the last split migration applied to it, below)
-     koii-coach-prefs      settings, {v:1, setup, wake, modes, keys, text, hand}: Reset and loading a file keep it
+     koii-coach-prefs      settings, {v:1, setup, wake, modes, keys, text, hand, look}: Reset and loading a file keep it
      koii-coach-meta       {v:1, lastChapter, appAt, setupReason, notices:[{chapter, text}], since}
      koii-coach-notes      {v:1, values:{'<project>/<NAME>': '<number>'}}: scene and sample numbers typed in a chapter
                            (chapter.js); in the progress file, and cleared with Reset all progress
