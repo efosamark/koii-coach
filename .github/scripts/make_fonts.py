@@ -10,19 +10,26 @@ redrawn without its slash: the outer ring stays, and the two half-counters the s
 counter (their convex hull, with the intact arcs mirrored left to right). A slashed zero reads as code in running
 text ("0 of 8 done"). In Next, width still tells 0 from O; in Mono the two end up nearly the same
 width, which is fine while no display value mixes them.
+
+Next has no arrows, check mark or geometric shapes, so a page would draw them in the device's own font. They are
+added here (SYMBOLS): strokes as thick as each weight's hyphen, with round ends like the icons in icons.svg,
+centred on the hyphen's axis. The @font-face unicode-range in coach.css must list them too.
 """
+import math
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 from fontTools.pens.basePen import BasePen
+from fontTools.pens.ttGlyphPen import TTGlyphPen
 from fontTools.ttLib import TTFont
 from fontTools.ttLib.tables import ttProgram
 from fontTools.ttLib.tables._g_l_y_f import Glyph, GlyphCoordinates
 
 UNICODES = ('U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,'
             'U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD')
+SYMBOLS = 'U+2190,U+2192,U+2713,U+25A0,U+25B2,U+25C6,U+25CF'   # ← → ✓ ■ ▲ ◆ ●
 FEATURES = 'kern,liga,calt,tnum,case,ccmp,locl,mark,mkmk'
 CUTS = [('next', 400, 'AtkinsonHyperlegibleNext-Regular'), ('next', 600, 'AtkinsonHyperlegibleNext-SemiBold'),
         ('next', 700, 'AtkinsonHyperlegibleNext-Bold'), ('mono', 500, 'AtkinsonHyperlegibleMono-Medium')]
@@ -112,6 +119,60 @@ def unslash_zero(path):
     font.save(path)
 
 
+def capsule(a, b, r, n=12):
+    """A stroke from a to b, r thick on each side, with round ends, as one polygon."""
+    dx, dy = b[0] - a[0], b[1] - a[1]
+    ang = math.atan2(dy, dx)
+    pts = []
+    for end, start in ((b, ang - math.pi / 2), (a, ang + math.pi / 2)):
+        pts += [(end[0] + r * math.cos(start + math.pi * i / n), end[1] + r * math.sin(start + math.pi * i / n)) for i in range(n + 1)]
+    return pts
+
+
+def polygon(n, r, cx, cy, start):
+    return [(cx + r * math.cos(start + 2 * math.pi * i / n), cy + r * math.sin(start + 2 * math.pi * i / n)) for i in range(n)]
+
+
+def add_symbols(path):
+    font = TTFont(path)
+    glyf, cmap = font['glyf'], font.getBestCmap()
+    hy = glyf[cmap[0x2D]]
+    hy.recalcBounds(glyf)
+    t, cy = hy.yMax - hy.yMin, (hy.yMax + hy.yMin) / 2   # stroke and axis of the hyphen
+    r = t / 2
+    shapes = {   # name, code point, advance, contours
+        'arrowright': (0x2192, 760, [capsule((120, cy), (640, cy), r), capsule((640, cy), (440, cy + 200), r), capsule((640, cy), (440, cy - 200), r)]),
+        'arrowleft': (0x2190, 760, [capsule((640, cy), (120, cy), r), capsule((120, cy), (320, cy + 200), r), capsule((120, cy), (320, cy - 200), r)]),
+        'checkmark': (0x2713, 700, [capsule((90, 300), (270, 110), r), capsule((270, 110), (610, 560), r)]),
+        'filledbox': (0x25A0, 700, [[(90, 50), (90, 570), (610, 570), (610, 50)]]),
+        'triagup': (0x25B2, 700, [polygon(3, 330, 350, 270, math.pi / 2)]),
+        'blackdiamond': (0x25C6, 700, [polygon(4, 300, 350, 310, math.pi / 2)]),
+        'blackcircle': (0x25CF, 700, [polygon(96, 270, 350, 310, 0)]),
+    }
+    order = font.getGlyphOrder()
+    for name, (cp, adv, contours) in shapes.items():
+        pen = TTGlyphPen(None)
+        for c in contours:
+            c = [(round(x), round(y)) for x, y in c]
+            if area(c) > 0:   # TrueType outlines run clockwise
+                c.reverse()
+            pen.moveTo(c[0])
+            for p in c[1:]:
+                pen.lineTo(p)
+            pen.closePath()
+        g = pen.glyph()
+        if name not in order:
+            order.append(name)
+        glyf[name] = g
+        g.recalcBounds(glyf)
+        font['hmtx'][name] = (adv, g.xMin)
+        for table in font['cmap'].tables:
+            if table.isUnicode():
+                table.cmap[cp] = name
+    font.setGlyphOrder(order)
+    font.save(path)
+
+
 def main(next_ttf, mono_ttf, out_dir):
     out = Path(out_dir)
     with tempfile.TemporaryDirectory() as tmp:
@@ -121,7 +182,9 @@ def main(next_ttf, mono_ttf, out_dir):
             subprocess.run([sys.executable, '-m', 'fontTools', 'varLib.instancer', src, f'wght={weight}',
                             '--update-name-table', '-q', '-o', ttf], check=True)
             unslash_zero(ttf)
-            subprocess.run([sys.executable, '-m', 'fontTools', 'subset', ttf, f'--unicodes={UNICODES}',
+            if family == 'next':
+                add_symbols(ttf)
+            subprocess.run([sys.executable, '-m', 'fontTools', 'subset', ttf, f'--unicodes={UNICODES},{SYMBOLS}',
                             f'--layout-features={FEATURES}', '--flavor=woff2', f'--output-file={out / (name + ".woff2")}'],
                            check=True)
             print(out / f'{name}.woff2', (out / f'{name}.woff2').stat().st_size, 'bytes')

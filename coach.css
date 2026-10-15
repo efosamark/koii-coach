@@ -86,11 +86,21 @@
 /* ---------- Fonts: Atkinson Hyperlegible Next and Mono, Latin subsets (SIL OFL 1.1, fonts/OFL.txt) ---------- */
 /* Built for telling similar characters apart (1/l/I, 0/O, B/8), which matters for pad names and display values read
    at arm's length. Next is the page face in 400, 600 and 700, keycaps included; Mono (one Medium file) is only for
-   what the K.O. II's display shows. Mono's weight range stops a browser from faking a bold of it. */
-@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-Regular.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-SemiBold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-Bold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
+   what the K.O. II's display shows. Mono's weight range stops a browser from faking a bold of it. Next also carries
+   ← → ✓ ● ■ ▲ ◆, drawn by make_fonts.py to match each weight; its unicode-range lists them. */
+@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-Regular.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD,U+2190,U+2192,U+2713,U+25A0,U+25B2,U+25C6,U+25CF}
+@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-SemiBold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD,U+2190,U+2192,U+2713,U+25A0,U+25B2,U+25C6,U+25CF}
+@font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-Bold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD,U+2190,U+2192,U+2713,U+25A0,U+25B2,U+25C6,U+25CF}
 @font-face{font-family:"Atkinson Hyperlegible Mono";font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/AtkinsonHyperlegibleMono-Medium.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* While Atkinson loads (first visit only), text is drawn in Arial or Roboto scaled to Atkinson's average width and
+   line metrics, so the page doesn't reflow when the real font arrives. Widths measured over the course's own text. */
+@font-face{font-family:"Atkinson Fallback Arial";font-weight:400;src:local("Arial"),local("ArialMT"),local("Liberation Sans"),local("Arimo");size-adjust:98.27%;ascent-override:100.14%;descent-override:32.16%;line-gap-override:0%}
+@font-face{font-family:"Atkinson Fallback Arial";font-weight:600;src:local("Arial Bold"),local("Arial-BoldMT"),local("Liberation Sans Bold"),local("Arimo Bold");size-adjust:97.16%;ascent-override:101.27%;descent-override:32.52%;line-gap-override:0%}
+@font-face{font-family:"Atkinson Fallback Arial";font-weight:700;src:local("Arial Bold"),local("Arial-BoldMT"),local("Liberation Sans Bold"),local("Arimo Bold");size-adjust:99.33%;ascent-override:99.06%;descent-override:31.81%;line-gap-override:0%}
+@font-face{font-family:"Atkinson Fallback Roboto";font-weight:400;src:local("Roboto"),local("Roboto-Regular");size-adjust:99.77%;ascent-override:98.62%;descent-override:31.67%;line-gap-override:0%}
+@font-face{font-family:"Atkinson Fallback Roboto";font-weight:600;src:local("Roboto Bold"),local("Roboto-Bold");size-adjust:103.49%;ascent-override:95.08%;descent-override:30.53%;line-gap-override:0%}
+@font-face{font-family:"Atkinson Fallback Roboto";font-weight:700;src:local("Roboto Bold"),local("Roboto-Bold");size-adjust:105.80%;ascent-override:93.01%;descent-override:29.87%;line-gap-override:0%}
 
 /* ---------- Tokens (plan 6.1-6.5) ---------- */
 :root{
@@ -101,7 +111,7 @@
   --primary:#161616; --on-primary:#FFFFFF;
   --key:#FFCB2E; --on-key:#161616; --key-edge:#8A6700;
   --lcd-bg:#1B1B1A; --lcd-ink:#F2F2EA; --lcd-line:#1B1B1A;
-  --done-ink:#1A6B3C; --done-fill:#1F7A45; --on-done:#FFFFFF; --here:#1F7A45;
+  --done-ink:#0A6A5C; --done-fill:#0D7868; --on-done:#FFFFFF; --here:#0D7868;
   --danger:#B3142A; --danger-surface:#FCECEC;
   --caution-ink:#8A3B00; --caution-surface:#FCEEE2; --caution-line:#C25E0F;
   --info-ink:#2C4859; --info-surface:#EBF0F3;
@@ -110,7 +120,7 @@
   /* The tick inside a done checkbox is drawn in --on-done: white on green here, near-black on light green in dark. */
   --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
   /* Type. Six sizes, fluid between 390 and 1280px; rem so the reader's own text size still counts. */
-  --font-ui:"Atkinson Hyperlegible Next",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-ui:"Atkinson Hyperlegible Next","Atkinson Fallback Arial","Atkinson Fallback Roboto",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --font-mono:"Atkinson Hyperlegible Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;  /* display values only */
   --t-cap:.875rem; --t-cap-lh:1.25rem;                                                    /* 14/20: the floor */
   --t-body:clamp(1.0625rem,1.0351rem + .1124vw,1.125rem); --t-body-lh:clamp(1.625rem,1.5702rem + .2247vw,1.75rem); /* 17/26 -> 18/28 */
@@ -144,7 +154,7 @@
   --primary:#EDEDE8; --on-primary:#080808;
   --key:#FFD044; --on-key:#161616; --key-edge:#B38B00;
   --lcd-bg:#050505; --lcd-ink:#F2F2EA; --lcd-line:#8A8A83;
-  --done-ink:#6FD093; --done-fill:#5CC584; --on-done:#080808; --here:#5CC584;
+  --done-ink:#62D4BE; --done-fill:#40C4AE; --on-done:#080808; --here:#40C4AE;
   --danger:#FF7A88; --danger-surface:#2E1517;
   --caution-ink:#F5A766; --caution-surface:#2B1E13; --caution-line:#D9823A;
   --info-ink:#A9C3D6; --info-surface:#1A2329;
@@ -159,7 +169,7 @@
   --primary:#EDEDE8; --on-primary:#080808;
   --key:#FFD044; --on-key:#161616; --key-edge:#B38B00;
   --lcd-bg:#050505; --lcd-ink:#F2F2EA; --lcd-line:#8A8A83;
-  --done-ink:#6FD093; --done-fill:#5CC584; --on-done:#080808; --here:#5CC584;
+  --done-ink:#62D4BE; --done-fill:#40C4AE; --on-done:#080808; --here:#40C4AE;
   --danger:#FF7A88; --danger-surface:#2E1517;
   --caution-ink:#F5A766; --caution-surface:#2B1E13; --caution-line:#D9823A;
   --info-ink:#A9C3D6; --info-surface:#1A2329;
@@ -277,25 +287,26 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 .badge.warn b{color:var(--caution-ink)}
 
 /* ---------- Notices ---------- */
-/* Four tones, each with a stripe, an icon and (from the page) a label. Danger only for irreversible actions. */
-.notice{position:relative;max-width:none;margin:var(--sp-4) 0;padding:var(--sp-3) var(--sp-4);border:1px solid var(--line);border-left:4px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2);color:var(--ink)}
+/* Four tones, each with a border, an icon and (from the page) a label. Danger only for irreversible actions.
+   A full hairline in the tone, never a thick left stripe (decision 25). */
+.notice{position:relative;max-width:none;margin:var(--sp-4) 0;padding:var(--sp-3) var(--sp-4);border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-2);color:var(--ink)}
 .notice:empty{display:none}
 .notice > :last-child{margin-bottom:0}
 .notice ul{margin:var(--sp-2) 0 0;padding-left:1.1em}.notice li{margin:var(--sp-1) 0 0}.notice > p{margin:var(--sp-2) 0 0}
 .notice.tip,.notice.info,.notice.caution,.notice.danger,.checkpoint{padding-left:calc(var(--sp-4) + 28px)}
 .notice.tip::before,.notice.info::before,.notice.caution::before,.notice.danger::before,.checkpoint::before{content:"";position:absolute;left:var(--sp-3);top:calc(var(--sp-3) + 3px);width:22px;height:22px;background:currentColor;-webkit-mask:var(--i-info) center/contain no-repeat;mask:var(--i-info) center/contain no-repeat}
-.notice.tip{color:var(--ink)}
+.notice.tip{border-color:var(--line);background:transparent;color:var(--ink)}
 .notice.tip::before{background:var(--ink-2);-webkit-mask-image:var(--i-tip);mask-image:var(--i-tip)}
-.notice.info{border-color:var(--info-surface);border-left-color:var(--info-ink);background:var(--info-surface)}
+.notice.info{border-color:var(--info-surface);background:var(--info-surface)}
 .notice.info::before{background:var(--info-ink)}
-.notice.caution{border-color:var(--caution-surface);border-left-color:var(--caution-line);background:var(--caution-surface)}
+.notice.caution{border-color:var(--caution-line);background:var(--caution-surface)}
 .notice.caution::before{background:var(--caution-ink);-webkit-mask-image:var(--i-warning);mask-image:var(--i-warning)}
 .notice.caution > b:first-child,.notice.caution > strong:first-child{color:var(--caution-ink)}
-.notice.danger{border-color:var(--danger);border-left-width:6px;background:var(--danger-surface)}
+.notice.danger{border:1.5px solid var(--danger);background:var(--danger-surface)}
 .notice.danger::before{background:var(--danger);-webkit-mask-image:var(--i-erase);mask-image:var(--i-erase)}
 .notice.danger > b:first-child,.notice.danger > strong:first-child{color:var(--danger)}
 /* Checkpoint: what you should now hear or see at the end of a section. */
-.checkpoint{position:relative;max-width:none;margin:var(--sp-4) 0;padding-top:var(--sp-3);padding-bottom:var(--sp-3);padding-right:var(--sp-4);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-2)}
+.checkpoint{position:relative;max-width:none;margin:var(--sp-4) 0;padding-top:var(--sp-3);padding-bottom:var(--sp-3);padding-right:var(--sp-4);border:1.5px solid var(--here);border-radius:var(--r-control);background:var(--surface-1)}
 .checkpoint::before{background:var(--done-ink);-webkit-mask-image:var(--i-check);mask-image:var(--i-check)}
 .notice a,.checkpoint a{font-weight:600}
 
@@ -628,7 +639,7 @@ dl.gloss dt{margin-top:var(--sp-3)}
   .steps li.here{outline:3px solid Highlight;outline-offset:4px}
   .check input{-webkit-appearance:auto;appearance:auto;width:28px;height:28px}
   summary::before,.notice.tip::before,.notice.info::before,.notice.caution::before,.notice.danger::before,.checkpoint::before{forced-color-adjust:none;background:CanvasText}
-  .notice.danger{border:2px solid CanvasText;border-left-width:6px}
+  .notice.danger,.gate-note{border:3px solid CanvasText}
   .lcd,.display,.tag,.badge.ok,code{border:1px solid CanvasText}
   .sheet{border:2px solid CanvasText}
   input[type=range]{-webkit-appearance:auto;appearance:auto}
@@ -848,9 +859,9 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
 .preview-body > .preflight{padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-left-width:4px;border-radius:var(--r-control);background:var(--caution-surface)}
 .preview-body > .preflight::before{content:"Before you press";display:block;margin-bottom:var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--caution-ink)}
 .preview-body > .step-do{font-size:var(--t-check);line-height:var(--t-check-lh)}
-.preview-body > :is(.step-check,.step-undo){padding:var(--sp-2) var(--sp-3);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-2)}
+.preview-body > :is(.step-check,.step-undo){padding:var(--sp-2) 0 0;border-top:1px solid var(--line)}
 .preview-body > .step-undo{border-left-color:var(--line-strong)}
-.preview-body > .step-noundo{padding:var(--sp-2) var(--sp-3);border-left:4px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
+.preview-body > .step-noundo{padding:var(--sp-2) var(--sp-3);border:1px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
 .preview-body > .step-source,.preview-body > .step-note{color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .search-hit-crumb{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
 .search-hit-snip{display:block;overflow:hidden;font-size:var(--t-cap);line-height:var(--t-cap-lh);text-overflow:ellipsis;white-space:nowrap}
@@ -899,15 +910,15 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
 /* A step in both modes: the tag row (the step number shows in the player only), Before you press, the check. */
 .step-head{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);margin:0 0 var(--sp-2)}
 .step-head.bare,.step-num{display:none}
-.steps li > .preflight{margin:0 0 var(--sp-3);padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-left-width:4px;border-radius:var(--r-control);background:var(--caution-surface);color:var(--ink)}
+.steps li > .preflight{margin:0 0 var(--sp-3);padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-radius:var(--r-control);background:var(--caution-surface);color:var(--ink)}
 .steps li > .preflight::before{content:"Before you press";display:block;margin-bottom:var(--sp-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--caution-ink)}
 .steps li > .step-do{margin:0 0 var(--sp-2)}
-.steps li > .step-check{position:relative;margin:var(--sp-3) 0 var(--sp-2);padding:var(--sp-2) var(--sp-3) var(--sp-2) calc(var(--sp-3) + 30px);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-2)}
-.steps li > .step-check::before{content:"";position:absolute;left:var(--sp-3);top:calc(var(--sp-2) + 3px);width:22px;height:22px;background:var(--done-ink);-webkit-mask:var(--i-eye) center/contain no-repeat;mask:var(--i-eye) center/contain no-repeat}
+.steps li > .step-check{position:relative;margin:var(--sp-4) 0 var(--sp-2);padding:var(--sp-3) 0 0 30px;border-top:1px solid var(--line)}
+.steps li > .step-check::before{content:"";position:absolute;left:0;top:calc(var(--sp-3) + 3px);width:22px;height:22px;background:var(--done-ink);-webkit-mask:var(--i-eye) center/contain no-repeat;mask:var(--i-eye) center/contain no-repeat}
 .steps li > .step-check[data-sense="hear"]::before{-webkit-mask-image:var(--i-ear);mask-image:var(--i-ear)}
 /* The gate of a delete or overwrite step (player only): "Yes, I have checked", then a small "Checked" chip. */
 .gate{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-3)}
-.gate-note{flex-basis:100%;max-width:none;margin:0;padding:var(--sp-3) var(--sp-4);border:1px solid var(--danger);border-left-width:4px;border-radius:var(--r-control);background:var(--danger-surface)}
+.gate-note{flex-basis:100%;max-width:none;margin:0;padding:var(--sp-3) var(--sp-4);border:1.5px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
 .gate .gate-btn{border-color:var(--danger)}
 .gate-hint{margin:0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .gate-ok{min-height:32px}
@@ -917,7 +928,7 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
 .back-pill{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:44px;margin:0 0 var(--sp-3);padding:0 var(--sp-4) 0 var(--sp-3);border:1.5px solid var(--here);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1 var(--font-ui)}
 .back-pill:hover{background:var(--surface-2)}
 .back-pill .icon{width:18px;height:18px}
-.getback{margin:0 0 var(--sp-4);padding:var(--sp-4) var(--sp-5);border:1px solid var(--line);border-left:4px solid var(--here);border-radius:var(--r-card);background:var(--surface-1)}
+.getback{margin:0 0 var(--sp-4);padding:var(--sp-4) var(--sp-5);border:1.5px solid var(--here);border-radius:var(--r-card);background:var(--surface-1)}
 .getback h2{margin:0 0 var(--sp-1);font-size:var(--t-check);line-height:var(--t-check-lh)}
 .getback > :last-child{margin-bottom:0}
 .skip-box{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-3);padding:var(--sp-2) var(--sp-3);border:1px dashed var(--line-strong);border-radius:var(--r-control);font-size:var(--t-body);line-height:var(--t-body-lh)}
@@ -939,8 +950,8 @@ html[data-player="step"] .steps ol > li.is-current{position:relative;max-width:n
 html[data-player="step"] .steps ol > li.is-current::before,html[data-player="step"] .steps ol > li.is-current::after,html[data-player="step"] li.is-current > .here-tag{display:none}
 html[data-player="step"] .steps ol > li.is-current:focus{outline:none}
 html[data-player="step"].pl-kbd .steps ol > li.is-current:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-html[data-player="step"] .steps ol > li.is-current:is([data-risk="delete"],[data-risk="overwrite"],[data-risk="erase-scene"]){border-left:4px solid var(--danger)}
-html[data-player="step"] .steps ol > li.is-current.is-checkpoint{border-left:4px solid var(--here)}
+html[data-player="step"] .steps ol > li.is-current:is([data-risk="delete"],[data-risk="overwrite"],[data-risk="erase-scene"]){border:1.5px solid var(--danger)}
+html[data-player="step"] .steps ol > li.is-current.is-checkpoint{border:1.5px solid var(--here)}
 html[data-player="step"] li.is-current > .step-head{display:flex;min-height:48px;margin:0 0 var(--sp-3);padding-right:56px}
 html[data-player="step"] li.is-current .step-num{display:inline-flex;align-items:center;justify-content:center;min-width:2.5em;height:32px;padding:0 var(--sp-2);border-radius:var(--r-chip);background:var(--surface-3);color:var(--ink);font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums}
 html[data-player="step"] li.is-current > .check{position:absolute;top:var(--sp-3);right:var(--sp-3);justify-content:center;min-width:48px;margin:0}
@@ -966,7 +977,7 @@ html[data-player="step"] .steps ol > li.is-current.pl-in{animation:pl-in var(--d
 html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .player-card > :last-child{margin-bottom:0}
 .pl-eyebrow{margin:0 0 var(--sp-3);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--done-ink)}
-.player-check{border-left:4px solid var(--here)}
+.player-check{border:1.5px solid var(--here)}
 .pc-q{max-width:var(--measure);margin:0 0 var(--sp-4);font-size:var(--t-do);line-height:var(--t-do-lh)}
 .pc-fix{margin-top:var(--sp-4);padding:var(--sp-3) var(--sp-4);border-radius:var(--r-control);background:var(--surface-2)}
 .pc-fix > :last-child{margin-bottom:0}
@@ -1066,7 +1077,7 @@ html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
 .pad-legend{max-width:none;margin:var(--sp-1) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 @media (forced-colors:active){.pads .on{forced-color-adjust:none;background:CanvasText;color:Canvas}}
 /* All steps: "You're on Part 3, step 31 of 61 · Continue", under the chapter's title. */
-.list-resume{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--sp-2) var(--sp-4);max-width:none;margin:0 0 var(--sp-4);padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4);border:1px solid var(--line);border-left:4px solid var(--here);border-radius:var(--r-control);background:var(--surface-1);font-weight:600}
+.list-resume{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--sp-2) var(--sp-4);max-width:none;margin:0 0 var(--sp-4);padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4);border:1.5px solid var(--here);border-radius:var(--r-control);background:var(--surface-1);font-weight:600}
 .list-resume[hidden]{display:none}
 @media print{.list-resume{display:none!important}}
 /* Player | All steps: two 44px choices, the chosen one outlined in ink as well as filled */
@@ -1257,7 +1268,7 @@ html:not([data-player="step"]) .steps li > .part-source{display:none}
 .backup-steps .step-title{margin:0 0 var(--sp-2);font-size:var(--t-body)}
 /* A risk step's consequence (plan 5.4): what the press clears or deletes, between Before you press and the Do lines. */
 .steps li > .step-consequence{margin:0 0 var(--sp-3);font-weight:600}
-.steps li > .step-noundo,.risk .step-noundo{margin:var(--sp-3) 0;padding:var(--sp-2) var(--sp-3);border-left:4px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
+.steps li > .step-noundo,.risk .step-noundo{margin:var(--sp-3) 0;padding:var(--sp-2) var(--sp-3);border:1px solid var(--danger);border-radius:var(--r-control);background:var(--danger-surface)}
 /* Focus lands on a titled step's title in the player; its ring shows only for keyboard users (.pl-kbd). */
 .steps li > .step-title:focus{outline:none}
 html.pl-kbd .steps li > .step-title:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:4px}
@@ -1275,7 +1286,14 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .pattern-text{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:1.9}
 .pattern-text .lcd{font-size:14px}
 .pattern-lab{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
-.strip{display:grid;grid-template-columns:3.4em repeat(16,minmax(0,1fr));gap:3px;align-items:center}
+.strip{display:grid;grid-template-columns:max-content repeat(var(--cols,16),minmax(0,1fr));gap:3px;align-items:center}
+/* Longer beats (beat.js): every bar side by side, thinner cells, a wider gap between bars. */
+.strip.multi{gap:3px 1px}
+.strip.multi .strip-cell{height:18px;border:0;border-radius:2px;background:var(--surface-3)}
+.strip.multi .strip-cell.on{background:var(--ink)}
+.strip.multi .strip-cell.beatstart{margin-left:2px}
+.strip-cell.barstart{margin-left:6px}
+.strip-name{padding-right:var(--sp-1)}
 .strip-beat{grid-column:span 4;font:600 14px/1.2 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .strip-name{font-size:var(--t-cap);font-weight:600;line-height:1.2}
 .strip-cell{height:22px;border:1.5px solid var(--line-strong);border-radius:4px;background:var(--surface-1)}
@@ -1300,7 +1318,7 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 @keyframes pa-pulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 6px var(--here)}}
 #player-next.pulse{animation:pa-pulse 1.2s var(--ease) 2}
 @media (forced-colors:active){
-  .strip-cell{border:1px solid CanvasText}
+  .strip-cell,.strip.multi .strip-cell{border:1px solid CanvasText}
   .strip-cell.on{forced-color-adjust:none;background:CanvasText}
   .strip-cell.now{outline:3px solid Highlight}
   .runner-pos.now .lcd{outline-color:Highlight}
@@ -1418,11 +1436,11 @@ details[id],.term[id],.risk[id],.card[id]{scroll-margin-top:calc(var(--sticky-to
 .az a:hover{background:var(--surface-3)}
 .gloss-letter h2.sub,.gloss .term{scroll-margin-top:calc(var(--sticky-top) + 72px)}
 .gloss .term:target{margin:0 calc(var(--sp-3) * -1);padding:var(--sp-1) var(--sp-3);border-radius:var(--r-control);background:var(--surface-3);box-shadow:inset 3px 0 0 var(--here)}
-/* Safety and erasing: a danger stripe on the actions with no undo, orange on the careful ones. */
+/* Safety and erasing: a red border on the actions with no undo, orange on the careful ones. */
 .risk h3{margin-top:0}
-.risk.danger{border-left:6px solid var(--danger)}
-.risk.caution{border-left:6px solid var(--caution-line)}
+.risk.danger{border:1.5px solid var(--danger)}
+.risk.caution{border:1px solid var(--caution-line)}
 .risk .no-undo{padding:var(--sp-2) var(--sp-3);border-radius:var(--r-control);background:var(--danger-surface)}
 .risk .no-undo b{color:var(--danger)}
-@media (forced-colors:active){.risk.danger,.risk.caution{border-left:6px solid CanvasText}.control[aria-checked="true"]{outline:3px solid Highlight}}
+@media (forced-colors:active){.risk.danger{border:3px solid CanvasText}.risk.caution{border:1px solid CanvasText}.control[aria-checked="true"]{outline:3px solid Highlight}}
 @media print{.az,.help-search,#result-count,.help-more,.lesson .complete{display:none!important}.lesson .inside,details.topic .inside{display:block}}

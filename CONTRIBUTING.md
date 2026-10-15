@@ -40,6 +40,17 @@ Every step needs `h3.step-title`, one or more `p.step-do` and exactly one `p.ste
 | Another chapter | "Chapter 3 · Sample, chop & resample", and its parts as "Part 4". Never an old two-digit number ("07", "section 03"): the build check fails on it |
 | A step on the same or another page | `<a href="./song.html#s-song-plan">…</a>`. The build check fails if the step does not exist |
 
+**Target beats.** A step where the learner listens to a beat they have just built can offer "Hear the beat": a `details.step-more.step-hear` first in its `div.step-extras`, holding a `figure.pattern`:
+
+```html
+<details class="step-more step-hear"><summary>Hear the beat</summary><figure class="pattern" data-bpm="128">
+  <figcaption>INTRO: drums only, four bars at 128 BPM</figcaption>
+  <p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.1</samp> …<br>Clap (A2): …</p>
+  <p class="pattern-note meta">Without the vocal hook.</p></figure></details>
+```
+
+`beat.js` draws the grid and plays it from the text list alone, so write every note of the scene as it stands after that step, not just the new ones, and only what the steps themselves place (never a live-played fill or the learner's own vocal). The sound comes from the name: kick, snare, clap, closed hat, open hat, rim, shaker, tom, bass, and "answer" for a second bass pad. Load `audio.js` and `beat.js` on the page. `tests/test_player.py::test_target_beats_match_their_text` checks that each grid matches its list.
+
 Steps are numbered within their part ("Part 2, step 4"), everywhere a learner reads a number, and each part's `<ol>` starts at 1 (the build checks it). A number in the text ("go back to step 3") changes whenever a step before it in that part is split: prefer a link to the step, or its title.
 
 **Step attributes**

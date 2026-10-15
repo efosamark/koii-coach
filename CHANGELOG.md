@@ -4,6 +4,61 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.15.2
+
+**Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence changed.
+
+**Hear the beat in every chapter.** Until now only Chapter 1 could play the beat you are building. Now, 21 steps in Chapters 2, 3, 5, 6 and 7 have a "Hear the beat" disclosure where you listen to a scene you just built.
+- Each one shows a grid of the scene's drums and bass, every bar side by side, plays them at the chapter's tempo with practice sounds, and lists every position.
+- The practice sounds now include clap, open hat, rim, shaker and a second bass note, alongside kick, snare, hat and bass.
+- Each beat holds only notes the steps themselves place: never a live-played fill, a vocal or a melody. Where a scene has those too, a note under the grid says what is left out.
+- Every position was checked against the steps that write and erase it, and Chapter 6's against its pattern sheet.
+- Chapter 4 has none: its beats are played live or shifted off the grid on purpose. Chapter 7's BUILD has none either, because its kicks are played live.
+- Chapter 1's target rhythms are drawn by the same code. They look the same, and Hear it now sits right under the grid.
+
+**Polish**
+- **Symbols match the text.** ← → ✓ and the Rhythm lab's ● ■ ▲ ◆ are now part of the font, drawn to match each weight. They used to come from your device's own font. This covers "2 → 4 → 8 bars", Chapter 6's moves table, the player's key hints and the control map's "→ FX".
+- **No line starts with a comma.** A keycap or display chip now stays on the same line as the punctuation after it, for example ", 0 ." in Chapter 3.
+- **No jump while the font loads.** On a first visit, text shows in Arial or Roboto, scaled to Atkinson's width and line height, until Atkinson arrives. Page heights now differ by at most 0.5% when it does.
+- **Done is teal green.** The green for done, ticks and "You are here" moved toward teal (#0D7868 light, #40C4AE dark). Learners with red-green colour blindness can now tell it from danger red. In simulated deuteranopia in dark mode the two had been nearly identical (ΔE 2.2); now they differ by ΔE 25.
+- **Fewer coloured boxes.** Notices, "Before you press", "can't be undone" boxes, checkpoints, risky step cards and the Safety page now use a full border in their colour instead of a thick left stripe. The Check ("what you'll see or hear") is now a line under a thin rule with its eye or ear icon, not a tinted box.
+
+**Report by email (off for now).** Setting `reportEmail` in `site.js` adds "or by email" to every report link, prefilled with the chapter, the step, its text and the OS, for learners without a GitHub account. It is empty, so nothing changes on the site yet. See the README.
+
+**Wording added** (no existing wording changed):
+- The disclosure title "Hear the beat", and each beat's caption and note:
+  - Chapter 2, Part 1, “Check the intro and your original”: “INTRO: drums only, one bar at 90 BPM”
+  - Chapter 2, Part 4, “Make the breakdown: clear kick and bass”: “BREAK: snare and hats, one bar at 90 BPM”
+  - Chapter 3, Part 2, “Listen to your voice kit”: “VOICE KIT, one bar at 90 BPM” and “Your kit is your own voice. The preview plays its rhythm with practice sounds.”
+  - Chapter 5, Part 1, “Checkpoint: the rebuilt beat”: “Your beat, one bar at 90 BPM”
+  - Chapter 5, Part 2, “Checkpoint: HOOK sounds like VERSE”: “VERSE and HOOK: drums and bass, one bar at 90 BPM”
+  - Chapter 5, Part 7, “Play INTRO”: “INTRO: drums only, one bar at 90 BPM”
+  - Chapter 5, Part 7, “Checkpoint: play BREAK”: “BREAK: kick and two hats, one bar at 90 BPM”
+  - Chapter 5, Part 8, “Play END”: “END: one kick, snare and hats, one bar at 90 BPM”
+  - Chapter 6, Part 3, “Double again to four bars”: “Your drums, four bars at 128 BPM”
+  - Chapter 6, Part 4, “A5: rim clicks”: “Your drums, four bars at 128 BPM”
+  - Chapter 6, Part 5, “B2: the answer at 4.4.3”: “Drums and bass, four bars at 128 BPM” and “Without the live tom fill.”
+  - Chapter 6, Part 8, “Clear the open hats, rim and tom”: “OUTRO, four bars at 128 BPM”
+  - Chapter 6, Part 8, “Clear INTRO’s bass”: “INTRO: drums only, four bars at 128 BPM”
+  - Chapter 6, Part 8, “A2: a clap roll in bar 4”: “BUILD, four bars at 128 BPM” and “Without the vocal hook and the live tom fill.”
+  - Chapter 6, Part 8, “Clear the kick, clap and tom”: “BREAK: rim and shaker, four bars at 128 BPM” and “Without the vocal hook.”
+  - Chapter 6, Part 8, “Remove the last kick”: “PEAK, four bars at 128 BPM” and “Without the vocal hook, the synth answer and the live tom fill.”
+  - Chapter 7, Part 5, “A3: off-beat hats”: “Your drums, one bar at 128 BPM”
+  - Chapter 7, Part 6, “Play the drum loop”: “Your drums, four bars at 128 BPM”
+  - Chapter 7, Part 7, “Checkpoint: drums and bass”: “Drums and bass, four bars at 128 BPM”
+  - Chapter 7, Part 11, “Listen to INTRO, GROOVE and PEAK”: “INTRO: drums only, four bars at 128 BPM”
+  - Chapter 7, Part 12, “Listen to BREAK”: “BREAK: hats only, four bars at 128 BPM” and “Without the vocals.”
+- Shown only once `reportEmail` is set: "or by email" after each report link, and "Report this step by email" in the ⋮ sheet.
+
+**For maintainers:**
+- `beat.js` is new and precached. `audio.js` takes `kinds()` and patterns of any length.
+- `first-beat.js` keeps only the placement helper.
+- The JavaScript budget is 72 KB, up from 68 KB (plan decision 19).
+- `make_fonts.py` draws the added symbols, and the font faces list them in their unicode-range.
+- `shell.js` glues punctuation. `chapter.js` calls it first, before the player copies any step.
+- New tests: `test_target_beats_match_their_text`, `test_punctuation_stays_with_its_keycap` and `test_report_by_email_only_when_an_address_is_set`.
+- CONTRIBUTING explains how to add a target beat.
+
 ## 2026.10.15
 
 **Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence changed.

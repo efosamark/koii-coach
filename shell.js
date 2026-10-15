@@ -426,10 +426,33 @@ document.addEventListener('click',e=>{
   (p.userChoice||Promise.resolve()).then(install,install);
 });
 
+// Punctuation that follows a keycap, a chord or a display chip stays on its line, so no line starts with ", 0 .":
+// the element and the punctuation go into a span.nobr, as some chapters do by hand. Safe to run twice. chapter.js
+// runs it first on chapter pages (before player.js copies anything); every other page gets it on DOMContentLoaded.
+function glue(root){
+  root.querySelectorAll('.key,.lcd,.chord').forEach(el=>{
+    const up=el.parentElement;
+    if(!up||up.closest('.chord')||up.classList.contains('nobr'))return;   // a key inside a chord, or already glued
+    const t=el.nextSibling,m=t&&t.nodeType===3?/^[.,;:!?)\]…’”]+/.exec(t.nodeValue):null;
+    if(!m)return;
+    const span=document.createElement('span');
+    span.className='nobr';el.before(span);span.append(el,m[0]);
+    t.nodeValue=t.nodeValue.slice(m[0].length);
+  });
+}
+
 // Keep the counts current: on load, when another tab saves, when the page comes back from the
 // back/forward cache, and when a chapter tick changes on this page.
 counts();
-document.addEventListener('DOMContentLoaded',()=>{refresh();checkCounts();});
+// "Report a wrong instruction" (Home, Troubleshooting, Settings, 404): with site.reportEmail set, "or by email" follows it.
+function reportByMail(){
+  const to=site&&typeof site.reportEmail==='string'&&/^[^\s@]+@[^\s@]+$/.test(site.reportEmail)?site.reportEmail:'';
+  const a=document.getElementById('report');
+  if(!to||!a||a.nextElementSibling&&a.nextElementSibling.classList.contains('report-mail'))return;
+  const body='Chapter and step: \n\nWhat the coach says: \n\nWhat my K.O. II did instead: \n\nOS version: ';
+  a.insertAdjacentHTML('afterend',`<span class="report-mail"> or <a href="mailto:${to}?subject=${encodeURIComponent('[Wrong instruction]')}&amp;body=${encodeURIComponent(body)}">by email</a></span>`);
+}
+document.addEventListener('DOMContentLoaded',()=>{glue(document);reportByMail();refresh();checkCounts();});
 addEventListener('pageshow',e=>{if(e.persisted)refresh();});
 addEventListener('storage',e=>{if(!e.key||e.key.startsWith('koii'))refresh();});
 document.addEventListener('change',e=>{if(e.target.closest&&e.target.closest('.check'))refresh();});
@@ -438,5 +461,5 @@ document.addEventListener('change',e=>{if(e.target.closest&&e.target.closest('.c
 const shade=()=>bar.classList.toggle('scrolled',scrollY>4);
 addEventListener('scroll',shade,{passive:true});shade();
 
-window.CoachShell={open,close,toggle:()=>sheet.open?close():open(),openSearch,setTitle,setMeter,refresh,registerChapter,refreshChapter,modal,addShortcut};
+window.CoachShell={open,close,toggle:()=>sheet.open?close():open(),openSearch,setTitle,setMeter,refresh,registerChapter,refreshChapter,modal,addShortcut,glue};
 })();

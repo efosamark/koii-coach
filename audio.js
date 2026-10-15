@@ -1,10 +1,12 @@
 'use strict';
-/* Practice sounds made in the browser (Web Audio), for the Rhythm lab (lab.js) and the target rhythm of 01 (first-beat.js).
-   They are synthesised: a kick, a snare, a hat and a bass note, not the K.O. II's factory samples.
+/* Practice sounds made in the browser (Web Audio), for the Rhythm lab (lab.js) and the target beats of the chapters (beat.js).
+   They are synthesised, not the K.O. II's factory samples: kick, snare, clap, hat, open hat, rim, shaker, tom, bass and
+   a second bass note a fourth higher (bass2, for an "answer" pad).
    A plain script: it defines window.CoachAudio. Load it before the page script that uses it.
 
    CoachAudio.player({grid, bpm, volume, onStep, onState}) returns {toggle(), stop(), playing()}:
-     grid()    4 rows (kick, snare, hat, bass) of 16 booleans, read on every step, so edits play at once
+     grid()    rows of 16 × bars booleans, read on every step, so edits play at once
+     kinds()   the voice of each row (names above); without it the rows are kick, snare, hat, bass (the lab's order)
      bpm()     tempo; volume() 0 to 0.25
      onStep(c) the column that is sounding now (for a playhead), or -1 when playback stops
      onState(text, playing, failed)  a status line for a role="status" element; failed when audio could not start
@@ -29,17 +31,39 @@ function noiseBuffer(){
   }
   return noise;
 }
-// kind: 0 kick, 1 snare, 2 hat, 3 bass
+// A voice by name, or by the lab's row number (0 kick, 1 snare, 2 hat, 3 bass).
+const ROW=['kick','snare','hat','bass'];
+function out(t,peak,d,attack){
+  const g=ctx.createGain();g.connect(ctx.destination);
+  g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(peak,t+(attack||.003));g.gain.exponentialRampToValueAtTime(.001,t+d);
+  return g;
+}
+function tone(t,volume,{type='triangle',f0,f1,glide=.12,d,level}){
+  const g=out(t,volume*level,d),n=ctx.createOscillator();
+  n.type=type;n.frequency.setValueAtTime(f0,t);if(f1)n.frequency.exponentialRampToValueAtTime(f1,t+glide);
+  n.connect(g);n.start(t);n.stop(t+d+.02);n.onended=()=>{n.disconnect();g.disconnect();};
+}
+function hiss(t,volume,{filter,freq,d,level,attack,q}){
+  const g=out(t,volume*level,d,attack),n=ctx.createBufferSource(),f=ctx.createBiquadFilter();
+  n.buffer=noiseBuffer();n.loop=d>.11;f.type=filter;f.frequency.value=freq;if(q)f.Q.value=q;
+  n.connect(f);f.connect(g);n.start(t);n.stop(t+d+.02);n.onended=()=>{n.disconnect();f.disconnect();g.disconnect();};
+}
+const VOICES={
+  kick:(t,v)=>tone(t,v,{f0:140,f1:45,d:.18,level:.8}),
+  bass:(t,v)=>tone(t,v,{f0:65.41,d:.24,level:.45}),
+  bass2:(t,v)=>tone(t,v,{f0:87.31,d:.24,level:.45}),
+  tom:(t,v)=>tone(t,v,{type:'sine',f0:190,f1:110,glide:.15,d:.22,level:.6}),
+  rim:(t,v)=>{tone(t,v,{f0:1700,d:.035,level:.22});hiss(t,v,{filter:'bandpass',freq:2600,d:.03,level:.12});},
+  snare:(t,v)=>hiss(t,v,{filter:'bandpass',freq:1700,d:.09,level:.25}),
+  clap:(t,v)=>{for(const k of [0,.011,.022])hiss(t+k,v,{filter:'bandpass',freq:1200,q:1.2,d:k===.022?.14:.012,level:.3});},
+  hat:(t,v)=>hiss(t,v,{filter:'highpass',freq:7000,d:.09,level:.25}),
+  ohat:(t,v)=>hiss(t,v,{filter:'highpass',freq:6500,d:.34,level:.18}),
+  shaker:(t,v)=>hiss(t,v,{filter:'highpass',freq:5000,d:.07,level:.13,attack:.012})
+};
 function sound(kind,t,volume){
   if(!ctx||volume<=0)return;
-  const d=kind===3?.24:kind===0?.18:.09,g=ctx.createGain();
-  g.connect(ctx.destination);
-  g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(volume*(kind===0?.8:kind===3?.45:.25),t+.003);g.gain.exponentialRampToValueAtTime(.001,t+d);
-  let n,f;
-  if(kind===0||kind===3){n=ctx.createOscillator();n.type='triangle';n.frequency.setValueAtTime(kind===0?140:65.41,t);if(kind===0)n.frequency.exponentialRampToValueAtTime(45,t+.12);n.connect(g);}
-  else{n=ctx.createBufferSource();n.buffer=noiseBuffer();f=ctx.createBiquadFilter();f.type=kind===1?'bandpass':'highpass';f.frequency.value=kind===1?1700:7000;n.connect(f);f.connect(g);}
-  n.start(t);n.stop(t+d+.02);
-  n.onended=()=>{n.disconnect();if(f)f.disconnect();g.disconnect();};
+  const play=VOICES[typeof kind==='number'?ROW[kind]:kind];
+  if(play)play(t,volume);
 }
 function player(o){
   let timer=null,token=0,starting=false,index=0,next=0;
@@ -49,13 +73,13 @@ function player(o){
   function tick(){
     timer=null;
     if(!ctx)return;
-    const len=60/o.bpm()/4,grid=o.grid();
-    while(next<ctx.currentTime-.03){next+=len;index=(index+1)%16;}
+    const len=60/o.bpm()/4,grid=o.grid(),kinds=o.kinds?o.kinds():ROW,steps=grid[0]?grid[0].length:16;
+    while(next<ctx.currentTime-.03){next+=len;index=(index+1)%steps;}
     while(next<ctx.currentTime+.12){
       const c=index,t=next,vol=o.volume();
-      grid.forEach((row,i)=>{if(row[c])sound(i,t,vol);});
+      grid.forEach((row,i)=>{if(row[c])sound(kinds[i],t,vol);});
       const id=setTimeout(()=>{ui.delete(id);step(c);},Math.max(0,(t-ctx.currentTime)*1000));
-      ui.add(id);next+=len;index=(index+1)%16;
+      ui.add(id);next+=len;index=(index+1)%steps;
     }
     timer=setTimeout(tick,25);
   }

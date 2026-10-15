@@ -39,6 +39,8 @@
      route(fn)             fn(location.hash) runs for the first route and on every hashchange; it returns true when it
                            handled the hash, false to let the list handle it (#s-<id> and section anchors, as below)
      routed()              true once the first route has run */
+// Keep punctuation on the line of the keycap or chip before it, before player.js copies any step (shell.js).
+if(window.CoachShell&&CoachShell.glue)CoachShell.glue(document);
 (()=>{
 // Step ids in the order the pages had when ticks were still saved by list position.
 // Used once to migrate those ticks. Frozen history: do not edit when steps change.

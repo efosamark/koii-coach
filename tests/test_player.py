@@ -228,6 +228,59 @@ STEP = "(document.activeElement && document.activeElement.closest('li[data-step]
 
 
 @pytest.mark.browser
+def test_punctuation_stays_with_its_keycap(run):
+    """No line starts with the comma or full stop after a keycap, chord or display chip: shell.js glues them."""
+    find = r"""() => [...document.querySelectorAll('.key,.lcd,.chord')].filter(el => {
+        const up = el.parentElement;
+        if (!up || up.closest('.chord') || up.classList.contains('nobr')) return false;
+        const t = el.nextSibling;
+        return t && t.nodeType === 3 && /^[.,;:!?)\]…’”]/.test(t.nodeValue);
+    }).map(el => el.closest('[data-step]') ? el.closest('[data-step]').dataset.step : el.textContent)"""
+    for name in CHAPTERS + ['cheat-sheet', 'safety', 'glossary']:
+        run.go(f'./{name}.html')
+        assert run.page.evaluate(find) == [], f'{name}: punctuation not kept with its keycap'
+
+
+@pytest.mark.browser
+def test_report_by_email_only_when_an_address_is_set(run):
+    """site.js reportEmail empty: GitHub only. Set: each step and "Report a wrong instruction" also offer "by email"."""
+    run.go('./sampling.html#s-record-kick')
+    page = run.page
+    page.wait_for_function("() => document.documentElement.dataset.player === 'step'")
+    assert not page.locator('#player-report-mail').is_visible()
+    page.evaluate("() => { window.COACH_SITE.reportEmail = 'learner@example.org'; }")
+    page.locator('#player-next').click()
+    mail = page.locator('#player-report-mail')
+    mail.wait_for(state='visible')
+    href = mail.get_attribute('href')
+    assert href.startswith('mailto:learner@example.org?subject=') and 'Chapter%203' in href and 'What%20my%20K.O.%20II%20did%20instead' in href
+    run.go('./help.html')
+    assert page.locator('#report + .report-mail').count() == 0, 'No email link while reportEmail is empty'
+
+
+@pytest.mark.browser
+def test_target_beats_match_their_text(run):
+    """beat.js draws every figure.pattern from its own text list: one lit cell per written position, a grid as long as
+    the highest bar, and a Hear it button. Chapter 1 keeps its figures; Chapters 2, 3, 5, 6 and 7 gain them."""
+    count = r"""() => [...document.querySelectorAll('figure.pattern')].map(f => {
+        const written = f.querySelectorAll('.pattern-text samp').length;
+        const lit = f.querySelectorAll('.strip-cell.on').length;
+        const bars = Math.max(...[...f.querySelectorAll('.pattern-text samp')].map(s => Number(s.textContent.split('.')[0])));
+        return {written, lit, cells: f.querySelectorAll('.strip-cell').length / Math.max(1, f.querySelectorAll('.strip-name').length),
+                bars, button: !!f.querySelector('.hear-btn')};
+    })"""
+    seen = 0
+    for name in ['first-beat', 'song', 'sampling', 'hiphop', 'tech-house', 'thodorakis-house']:
+        run.go(f'./{name}.html#all')
+        figs = run.page.evaluate(count)
+        assert figs, f'{name} has target beats'
+        for f in figs:
+            assert f['lit'] == f['written'] and f['cells'] == 16 * f['bars'] and f['button'], f'{name}: {f}'
+        seen += len(figs)
+    assert seen >= 21 + 6, f'only {seen} target beats'
+
+
+@pytest.mark.browser
 def test_skip_a_run_of_optional_steps(run):
     page = run.page
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})

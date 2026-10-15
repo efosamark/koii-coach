@@ -26,9 +26,12 @@
               Keep it in step with that line. */
 window.COACH_SITE={
   name:'K.O. II Coach',
-  version:'2026.10.15',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
+  version:'2026.10.15.2',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
   repo:'https://github.com/efosamark/koii-coach',
   report:'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml',
+  // An address here adds "or by email" to every report link (no GitHub account needed), prefilled with the chapter,
+  // the step, its text and the OS. Empty: GitHub only. The address is public on every page.
+  reportEmail:'',
   chapters:[
     {num:'0',title:'Set up your K.O. II',short:'Set up',oldTitle:'Start here',href:'./setup.html',slug:'setup',steps:54,minutes:[45,60],made:'a K.O. II on OS 2.5.1, backed up, with your course project chosen'},
     {num:'1',title:'First beat',short:'First beat',href:'./first-beat.html',slug:'first-beat',steps:40,minutes:[30,50],made:'a one-bar drum and bass loop at 90 BPM, kept as two scenes, DRUMS and BEAT'},

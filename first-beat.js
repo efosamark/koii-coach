@@ -1,8 +1,6 @@
 'use strict';
-/* The practice helpers of 01 First beat (first-beat.html), on top of chapter.js and player.js:
-   - the target rhythm: each figure.pattern[data-rows="N"] gets the first N rows of the recipe (kick, snare, hat, bass)
-     drawn as a read-only grid (hidden from screen readers: the figure's text list says the same) and a
-     "Hear it" button that plays those rows at 90 BPM (audio.js). Playback stops when the step changes.
+/* The placement helper of Chapter 1 First beat (first-beat.html), on top of chapter.js and player.js. (Its target
+   rhythms, figure.pattern, are drawn and played by beat.js, like every chapter's.)
    - the placement helper: on a step with data-place="<pad> <position> <position> …" the player shows one position at a
      time (#placement says "1.2.3 · A1") and "Placed · next position" (#note-next) moves on. Positions in data-placed
      were written in an earlier step and start ticked. It never runs on into the next instrument; the last position
@@ -12,40 +10,10 @@
 (()=>{
 const ROWS=[['Kick','A1',[0,6,8,14]],['Snare','A2',[4,12]],['Hat','A3',[0,2,4,6,8,10,12,14]],['Bass','B1',[0,8]]];
 const pos=c=>`1.${Math.floor(c/4)+1}.${c%4+1}`;
-const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const icon=n=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-${n}"></use></svg>`;
 const P=window.CoachProgress;
 
-// ---------- Target rhythm ----------
-const figures=[...document.querySelectorAll('figure.pattern[data-rows]')].map(fig=>{
-  const rows=Math.max(1,Math.min(4,parseInt(fig.dataset.rows,10)||1));
-  const grid=ROWS.map((r,i)=>Array.from({length:16},(_,c)=>i<rows&&r[2].includes(c)));
-  const strip=document.createElement('div');
-  strip.className='strip';strip.setAttribute('aria-hidden','true');
-  strip.innerHTML='<span></span>'+[1,2,3,4].map(b=>`<span class="strip-beat">Beat ${b}</span>`).join('')+
-    ROWS.slice(0,rows).map(([name],i)=>`<span class="strip-name">${name}</span>`+grid[i].map((on,c)=>`<span class="strip-cell${on?' on':''}${c%4===0?' beatstart':''}" data-c="${c}"></span>`).join('')).join('');
-  const tools=document.createElement('div');
-  tools.className='strip-tools';
-  tools.innerHTML=`<button class="btn hear-btn" type="button">${icon('play')}<span>Hear it</span></button><span class="meta strip-status" role="status"></span>`+
-    '<p class="meta strip-tip">No sound? Turn your phone volume up. On iPhone, also switch off Silent mode or use headphones. The practice sounds are made by your browser, not your K.O. II’s samples.</p>';
-  const cap=fig.querySelector('figcaption');
-  if(cap)cap.after(strip);else fig.prepend(strip);
-  fig.append(tools);
-  const btn=tools.querySelector('.hear-btn'),status=tools.querySelector('.strip-status');
-  const cells=[...strip.querySelectorAll('.strip-cell')];
-  const play=window.CoachAudio?CoachAudio.player({
-    grid:()=>grid,bpm:()=>90,volume:()=>.18,
-    onStep:c=>cells.forEach(x=>x.classList.toggle('now',Number(x.dataset.c)===c)),
-    onState:(t,on,failed)=>{status.textContent=t==='Stopped'?'':t;btn.innerHTML=icon(on?'stop':'play')+`<span>${on?'Stop':'Hear it'}</span>`;if(failed)say('Audio could not start. The written positions still work.');}
-  }):null;
-  if(play)btn.addEventListener('click',play.toggle);else btn.hidden=true;
-  return{fig,play};
-});
 const stopAll=()=>{if(window.CoachAudio)CoachAudio.stopAll();};
-
-function say(text){
-  if(window.CoachChapter&&CoachChapter.say)CoachChapter.say(text);
-}
 
 // ---------- Placement helper ----------
 const flat=ROWS.flatMap(([,pad,cols])=>cols.map(c=>({pad,c})));   // koii-coach-v2.note indexes this list
@@ -113,5 +81,5 @@ document.addEventListener('coach:view',e=>{
   else{runner.hidden=true;here=null;}
 });
 addEventListener('beforeprint',stopAll);
-window.CoachFirstBeat={figures};
+window.CoachFirstBeat={};
 })();

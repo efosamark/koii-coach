@@ -1,11 +1,11 @@
 'use strict';
 // Bump VERSION on every release (same value as version in site.js and the newest CHANGELOG.md heading).
-const VERSION='2026.10.15',CACHE='koii-coach-'+VERSION,TIMEOUT=1500;
+const VERSION='2026.10.15.2',CACHE='koii-coach-'+VERSION,TIMEOUT=1500;
 // Every page, script, stylesheet, font and icon. CI (.github/scripts/build_site.py) fails if one is missing or a page is left out.
 const ASSETS=['./','./index.html','./404.html',
   './setup.html','./first-beat.html','./song.html','./sampling.html','./perform.html','./hiphop.html','./tech-house.html','./thodorakis-house.html',
   './learn.html','./controls.html','./lab.html','./help.html','./glossary.html','./cheat-sheet.html','./safety.html','./settings.html',
-  './coach.css','./site.js','./progress.js','./shell.js','./search.js','./wake.js','./chapter.js','./player.js','./toolsheet.js','./audio.js','./first-beat.js',
+  './coach.css','./site.js','./progress.js','./shell.js','./search.js','./wake.js','./chapter.js','./player.js','./toolsheet.js','./audio.js','./beat.js','./first-beat.js',
   './home.js','./tools.js','./lab.js','./settings.js',
   './manifest.webmanifest','./icon.svg','./icons.svg','./fonts/AtkinsonHyperlegibleNext-Regular.woff2','./fonts/AtkinsonHyperlegibleNext-SemiBold.woff2','./fonts/AtkinsonHyperlegibleNext-Bold.woff2','./fonts/AtkinsonHyperlegibleMono-Medium.woff2','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
 // Install only succeeds when every asset is cached, so navigator.serviceWorker.ready means "works offline". Assets are

@@ -343,15 +343,28 @@ if(Shell){const later=()=>(window.requestIdleCallback||(f=>setTimeout(f,200)))((
 if(Shell)Shell.addShortcut('t','Tools, in a chapter',()=>toolsBtn.click());
 // "This step doesn't match my K.O. II": one link, moved to the end of the step on screen and filled in for it
 // (the fields of .github/ISSUE_TEMPLATE/wrong-instruction.yml).
-const reportEl=el('p','step-report pl-own',`<a id="player-report" href="#" target="_blank" rel="noopener noreferrer">This step doesn’t match my K.O. II<span class="sr"> (opens in a new tab)</span></a>`);
+// With site.reportEmail set, an email link follows it ("or by email"), for learners without a GitHub account.
+const reportEl=el('p','step-report pl-own',`<a id="player-report" href="#" target="_blank" rel="noopener noreferrer">This step doesn’t match my K.O. II<span class="sr"> (opens in a new tab)</span></a><span class="report-mail" hidden> or <a id="player-report-mail" href="#">by email</a></span>`);
 reportEl.hidden=true;
-function reportUrl(li){
+const mailTo=()=>site&&typeof site.reportEmail==='string'&&/^[^\s@]+@[^\s@]+$/.test(site.reportEmail)?site.reportEmail:'';
+function reportFields(li){
   const P=partOf(li),title=li.querySelector(':scope > .step-title'),src=li.querySelector(':scope > .step-source a, :scope > .step-do a[href*="/guides/"]');
   const said=['.preflight','.step-do','.step-undo','.step-check'].map(q=>[...li.querySelectorAll(':scope > '+q)]).flat().map(e=>clean(e.textContent)).join(' ')||gist(li);
   const q={title:'[Wrong instruction] Chapter '+chNum+' · '+chName+', '+where(li).toLowerCase(),page:'Chapter '+chNum+' · '+chName,
     step:where(li)+' / '+(title?gist(li):'Part '+P.n+' · '+P.title)+' ['+li.dataset.step+']','app-says':said.slice(0,1500),
     firmware:{'2.5':'2.5.x','2':'2.0.x',older:'older than 2.0',unknown:'not sure'}[fw]||'',guide:src?src.href:''};
+  return q;
+}
+function reportUrl(li){
+  const q=reportFields(li);
   return ((site&&site.report)||'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml')+Object.entries(q).filter(([,v])=>v).map(([k,v])=>'&'+k+'='+encodeURIComponent(v)).join('');
+}
+// The same fields as an email, with a line left for what the K.O. II did instead.
+function reportMail(li){
+  const q=reportFields(li);
+  const body=['Chapter: '+q.page,'Step: '+q.step,'','The coach says: '+q['app-says'].slice(0,600),'','What my K.O. II did instead: ','',
+    'OS version: '+(q.firmware||'not sure')].concat(q.guide?['Guide page: '+q.guide]:[]).join('\n');
+  return 'mailto:'+mailTo()+'?subject='+encodeURIComponent(q.title)+'&body='+encodeURIComponent(body);
 }
 // The chapter actions: ⋮ in the app bar opens a sheet with the switch, About, Print, Report this step, Restart.
 const moreBtn=el('button','icon-btn chapter-actions-btn pl-own',icon('more'));
@@ -369,7 +382,8 @@ if(Shell&&barActions){
     actSheet.querySelector('.sheet-body').innerHTML=`<div class="player-modes" role="group" aria-label="Show the steps">${modesHTML}</div>`+
       `<ul class="ps-links"><li><a href="#start">${icon('info')}About this chapter</a></li>`+
       `<li><button type="button" data-act="print">${icon('print')}Print all steps</button></li>`+
-      (view==='step'&&cur?`<li><a href="${esc(reportUrl(cur))}" target="_blank" rel="noopener noreferrer">${icon('external')}Report this step<span class="sr"> (opens in a new tab)</span></a></li>`:'')+
+      (view==='step'&&cur?`<li><a href="${esc(reportUrl(cur))}" target="_blank" rel="noopener noreferrer">${icon('external')}Report this step<span class="sr"> (opens in a new tab)</span></a></li>`+
+        (mailTo()?`<li><a href="${esc(reportMail(cur))}">${icon('external')}Report this step by email</a></li>`:''):'')+
       `</ul><p><button class="btn danger" type="button" data-act="restart">${icon('undo')}Restart this chapter</button></p>`;
     pressModes(actSheet);
   });
@@ -454,7 +468,12 @@ function render(){
   actions.hidden=v==='list'||!v;
   if(v!=='step')getback.hidden=true;
   reportEl.hidden=!(v==='step'&&cur);
-  if(v==='step'&&cur){reportEl.querySelector('a').href=reportUrl(cur);if(reportEl.parentElement!==cur)cur.append(reportEl);}
+  if(v==='step'&&cur){
+    reportEl.querySelector('a').href=reportUrl(cur);
+    const mail=reportEl.querySelector('.report-mail');mail.hidden=!mailTo();
+    if(mailTo())mail.querySelector('a').href=reportMail(cur);
+    if(reportEl.parentElement!==cur)cur.append(reportEl);
+  }
   // Desktop start screen: the parts list is a second column beside everything above it (coach.css).
   if(v==='start')main.style.setProperty('--start-rows',String(kids().concat([chips,safety,refBox]).filter(e=>!e.hidden&&e!==partsBox).length||1));
   paint();
