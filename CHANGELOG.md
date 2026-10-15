@@ -4,6 +4,26 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.14.34
+
+**Checked against:** the official EP-133 guide on 13 October 2026, and the owners' reports cited in 2026.10.14.33. **Written for:** OS 2.5.1. No button sequence changed.
+
+An independent review rated 2026.10.14.33 COMPLETE and listed four small points; three are fixed here.
+- **Chapter 3 "Optional: try live chop"** says to let the sample play once in the Do itself, before the taps (the note said it after them).
+- **Search** names a step's part "Part 3 · Hands-free sampling…" in its crumb (it showed "3 Hands-free sampling…").
+- **Chapter 3, Part 1's "If it doesn’t"** names the step it means, “Check that project 7 is empty”, instead of "step 1" (it meant the second step).
+- Not changed: the reading "one" is labelled as an owner report where it is first taught (Chapter 4) and in the glossary, not again at each later use.
+
+**Step by step** ("was" gives the old text):
+
+- **Chapter 3** (1 step):
+  - “Optional: try live chop”: Do: “In MAIN tap D, tap D2, tap C and press SHIFT + SAMPLE. Let it play once, then tap C pads in time with the words.” (was “In MAIN tap D, tap D2, tap C, press SHIFT + SAMPLE and tap C pads in time with the words.”); Note: “Press MAIN when done: the next steps overwrite group C anyway.” (was “Let the sample play through once, then tap. Press MAIN when done: the next steps overwrite group C anyway.”).
+
+**Outside the steps** ("was" gives the old text):
+
+- **sampling.html**:
+  - “If it doesn’t: D1 still blinks? Nothing was recorded: turn Y down, check the source is mic and keep holding the pad while you make the sound. D1 lit but silent? Press SOUND, tap D1 and check X (amplitude) isn’t at zero. In MAIN, check the fader isn’t at the bottom. Pads made sounds at “Check that project 7 is empty”? You are still in your old project: hold MAIN and pad 7 together until the display shows P 7. See help “My sample will not start recording”.” (was “If it doesn’t: D1 still blinks? Nothing was recorded: turn Y down, check the source is mic and keep holding the pad while you make the sound. D1 lit but silent? Press SOUND, tap D1 and check X (amplitude) isn’t at zero. In MAIN, check the fader isn’t at the bottom. Pads made sounds in step 1? You are still in your old project: hold MAIN and pad 7 together until the display shows P 7. See help “My sample will not start recording”.”)
+
 ## 2026.10.14.33
 
 **Checked against:** the official EP-133 guide on 13 October 2026 (functions 10.3 chop, effects 11.9.1 sidechain, what's new for OS 2.5: "LEG and KEY play modes"), and owners' reports found on 15 October 2026 (below). **Written for:** OS 2.5.1. **No button sequence changed:** every step's keys are as in 2026.10.14.29; two display readings are corrected (below), with their source.

@@ -127,7 +127,7 @@ async function loadChapter(c){
         if(t)t.remove();
         const shown=li.cloneNode(true);shown.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));   // the preview
         li.querySelectorAll('.step-source').forEach(x=>x.remove());
-        out.push(doc({type:'step',title:t?text(t):label(id),body:text(li),html:shown.innerHTML,risk:li.dataset.risk||'',crumb:[book,[no,name].filter(Boolean).join(' '),'Step '+(lis.indexOf(li)+1)],href:c.href+'#s-'+id}));
+        out.push(doc({type:'step',title:t?text(t):label(id),body:text(li),html:shown.innerHTML,risk:li.dataset.risk||'',crumb:[book,(no?'Part '+no+' · ':'')+name,'Step '+(lis.indexOf(li)+1)],href:c.href+'#s-'+id}));
       });
     });
     return out;
