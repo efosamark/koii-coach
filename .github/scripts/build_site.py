@@ -52,7 +52,7 @@ BARE = [
     (re.compile(r'(?:\b[Tt]he |\()0\d\b(?![.:\d])'), 'a zero-padded old number ("the 07 recordings", "(03 update")'),
     (re.compile(r'\b(?:Start here|Tech House|House with your own vocal samples)\b'), 'an old chapter name'),
 ]
-ALLOW_OLD_NAME = {'thodorakis-house.html': ['House with your own vocal samples']}   # its subtitle
+ALLOW_OLD_NAME = {}   # page -> old names its visible text may still carry (none today; Chapter 7 lost its old subtitle)
 
 
 def visible_text(page):

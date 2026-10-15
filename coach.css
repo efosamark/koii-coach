@@ -355,7 +355,6 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .page-head h1{margin:0 0 var(--sp-3)}
 .page-head > p:not(.eyebrow){max-width:var(--measure)}
 /* A chapter's old tagline under its canonical name ("First beat" over "Your first beat"). */
-.page-head .subtitle{margin:calc(var(--sp-2) * -1) 0 0;color:var(--ink-2);font-size:var(--t-check);line-height:var(--t-check-lh)}
 .row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-3)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,16rem),1fr));gap:var(--sp-4);margin:0 0 var(--sp-4)}
 .grid > *,.split > *{margin:0}

@@ -18,6 +18,7 @@ A review of the repository for text that had fallen behind the code.
 - `build_site.py` counts a stylesheet or script once in a page's weight: 404.html names `coach.css` twice (once written in by a script, once for readers without JavaScript) and was reported at 53 KB; it weighs 35 KB. Its docstring gives today's chapter-page weights (67–79 KB).
 - `chapter.js`'s header names the chapters by their current numbers. `pytest.ini` points at the README section that exists ("Testing"). The workflow step that runs every test file is called "Browser tests", not "Browser smoke test".
 - The plan records what was built where it differs from the plan: no TOML content model or generator (decision 4, §7.1), the test files that exist (§8.1), and the §7.8 table's measured sizes.
+- CONTRIBUTING's example step names an official guide page that exists (`functions#10.1-sample`; the guide has no `/sampling` page).
 
 ## 2026.10.15.2
 

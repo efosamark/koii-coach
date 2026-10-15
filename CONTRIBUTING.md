@@ -22,7 +22,7 @@ Each chapter page has `section.steps`, one `<details>` per part (its `summary` h
   <p class="step-check"><span class="sr">Check: </span>What you hear or see.</p>
   <p class="step-note">A short visible note ("Stop.", a tip).</p>
   <div class="step-extras"><details class="step-more"><summary>Why</summary><p>…</p></details><details class="step-more"><summary>Not working?</summary><p>…</p></details></div>
-  <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/sampling">Sampling</a></p>
+  <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/functions#10.1-sample">Functions (sample)</a></p>
 </li>
 ```
 
