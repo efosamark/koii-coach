@@ -7,7 +7,7 @@ const ASSETS=['./','./index.html','./404.html',
   './learn.html','./controls.html','./lab.html','./help.html','./glossary.html','./cheat-sheet.html','./safety.html','./settings.html',
   './coach.css','./site.js','./progress.js','./shell.js','./search.js','./wake.js','./chapter.js','./player.js','./toolsheet.js','./audio.js','./beat.js','./first-beat.js',
   './home.js','./tools.js','./lab.js','./settings.js',
-  './manifest.webmanifest','./icon.svg','./icons.svg','./fonts/AtkinsonHyperlegibleNext-Regular.woff2','./fonts/AtkinsonHyperlegibleNext-SemiBold.woff2','./fonts/AtkinsonHyperlegibleNext-Bold.woff2','./fonts/AtkinsonHyperlegibleMono-Medium.woff2','./fonts/ArchivoSemiExpanded-Bold.woff2','./fonts/Archivo-Light.woff2','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
+  './manifest.webmanifest','./icon.svg','./icons.svg','./fonts/AtkinsonHyperlegibleNext-Regular.woff2','./fonts/AtkinsonHyperlegibleNext-SemiBold.woff2','./fonts/AtkinsonHyperlegibleNext-Bold.woff2','./fonts/AtkinsonHyperlegibleMono-Medium.woff2','./fonts/ArchivoSemiExpanded-Bold.woff2','./fonts/Archivo-Light.woff2','./fonts/Saira-Light.woff2','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-maskable-512.png','./icons/apple-touch-icon.png'];
 // Install only succeeds when every asset is cached, so navigator.serviceWorker.ready means "works offline". Assets are
 // stored one by one, so the status message below can report progress while installing; one failure removes the
 // half-filled cache and fails the install, as addAll would.

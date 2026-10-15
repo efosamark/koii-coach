@@ -128,6 +128,8 @@ const preSteps=()=>{const k=kids(),i=k.indexOf(progress&&progress.parentElement=
 const site=window.COACH_SITE,info=site&&Array.isArray(site.chapters)?site.chapters.find(c=>c.slug===slug):null;
 const chNum=(/CHAPTER\s+(\S+)/i.exec(eyebrow?eyebrow.textContent:'')||[])[1]||(info&&info.num)||'';
 const chName=info?info.title:clean(h1&&h1.textContent);
+// The Spec look draws the chapter's number as an outlined numeral beside its title (coach.css, decision 28).
+if(pageHead&&/^\d+$/.test(chNum))pageHead.dataset.num=chNum.padStart(2,'0');
 const baseTitle=document.title;
 const nextLink=document.querySelector('.chapters .next');
 const nextName=nextLink?clean([...nextLink.childNodes].filter(n=>!(n.nodeType===1&&n.tagName==='SPAN')).map(n=>n.textContent).join('')):'';

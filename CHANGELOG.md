@@ -8,19 +8,28 @@ Each release records the date its instructions were checked against the [officia
 
 **Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence and no step wording changed.
 
-**A second look: Settings › Look › Minimal.** Studio, the look of 2026.10.15.4, stays the default. Minimal is flat and quiet, after the product pages of studio equipment, and is drawn with the course's own parts.
+**Two more looks: Settings › Look › Studio, Minimal or Spec.** Studio, the look of 2026.10.15.4, stays the default. All three follow your device's light or dark setting, the choice is kept with your other settings, and Reset settings goes back to Studio. The step player is the same in every look: every step still fits above Done · Next, and yellow still means only "press this".
+
+**Minimal** is flat and quiet, after the product pages of studio equipment, and is drawn with the course's own parts.
 - **Titles** are large and light (Archivo Light). Steps, keycaps, display values and controls stay in Atkinson Hyperlegible at their usual sizes.
 - **Flat:** no shadows, glass or gradients. Keycaps keep their solid bottom edge, so a key still looks like a key.
-- **The frame** (app bar and, on a desktop, the course rail) is white in light mode and dark in dark mode, instead of graphite. The page is a little lighter. Home's welcome and Continue cards stay dark, now flat.
+- **The frame** (the app bar and, on a desktop, the course rail) is white in light mode and dark in dark mode, instead of graphite. The page is a little lighter. Home's welcome and Continue cards stay dark, now flat.
 - **Labels** such as "chapter 1 · about 30–50 minutes", "next · chapter 0" and the menu's "course" and "tools" are in lowercase. Screen readers read them as written. "K.O. II" keeps its capitals.
 - **Buttons, chips and tabs** are pill-shaped.
-- Both looks follow your device's light or dark setting, and the choice is kept with your other settings. Reset settings goes back to Studio.
 
-The step player is the same in both looks: every step still fits above Done · Next, and yellow still means only "press this".
+**Spec** reads like a technical datasheet, built only from the general vocabulary of equipment manuals and an open-source typeface.
+- **Square boxes ruled in ink.** Cards, buttons, fields, tabs and sheets have square corners, and circles are kept for round things: lights, ticks and knobs. The tools on Home are cells of one ruled grid.
+- **Two voices.** Facts are in tracked capitals: "CHAPTER 1 · ABOUT 30–50 MINUTES", "PROJECT 6", "8 OF 10", "10 STEPS", and section titles such as "BEFORE YOU START" and "PARTS". Ways around are in lowercase: the menu's "course" and "tools", the tool names and the wordmark's "coach".
+- **Titles** are light, in Saira SemiExpanded. The course list and a chapter's parts are numbered in the same face.
+- **A spec row** under each chapter's title: its time, project and OS as one ruled row of cells. The Continue card on Home has the same row.
+- **From tablet width up,** a large outlined chapter number sits behind the start screen's title, and Home's card carries a starburst with the OS the course is written for. Both repeat what the page says in words, so screen readers skip them.
+- **The frame is the page itself,** ruled off in ink. Home's welcome and Continue cards are white boxes.
 
-**Wording that changed:** Settings has a new "Look" card ("Style: Studio / Minimal") with a line on what each does. Home's line about Settings reads "your OS version, the look, the screen while practising and your progress file" (was "your OS version, the screen while practising and your progress file").
+**Fixes to Minimal** (it was only on the testing branch, never live): on a phone its larger titles pushed Chapter 3's Parts heading under Done · Next on the start screen, so its start-screen and section titles are now no larger than Studio's on a phone; and the control map kept a gradient body and a shadowed display, which are now flat.
 
-**For maintainers:** `koii-coach-prefs.look` is a new field ('studio' | 'minimal'); shell.js applies it as `html[data-look]` before the page is drawn and `CoachShell.setLook` also sets the light `theme-color` (`#FFFFFF` in Minimal). Every Minimal rule is scoped to `html[data-look="minimal"]` at the end of `coach.css`. `fonts/Archivo-Light.woff2` (12.8 KB, SIL OFL 1.1) is cut by `make_fonts.py`, precached and not preloaded. Plan decision 27 records what was taken from studio-equipment design and what was left out (proprietary typefaces, logos, photos, accent palettes, window-scaled sizes). New tests: `test_minimal_look` and `test_axe_in_the_minimal_look`.
+**Wording that changed:** Settings has a new "Look" card ("Style: Studio / Minimal / Spec") with a line on what each does. Home's line about Settings reads "your OS version, the look, the screen while practising and your progress file" (was "your OS version, the screen while practising and your progress file").
+
+**For maintainers:** `koii-coach-prefs.look` is a new field ('studio' | 'minimal' | 'spec'); shell.js applies it as `html[data-look]` before the page is drawn, and `CoachShell.setLook` also sets the light `theme-color` (`#1B1B1A`, `#FFFFFF` or `#F1F1EE`). The rules of both new looks are scoped to `html[data-look]` at the end of `coach.css`, shared ones first. `fonts/Archivo-Light.woff2` and `fonts/Saira-Light.woff2` (12.8 and 12.1 KB, SIL OFL 1.1, notices in `fonts/OFL.txt`) are cut by `make_fonts.py`, which now takes the Saira variable font too; both are precached and not preloaded. player.js puts the chapter number on the start screen's `.page-head` (`data-num`) and home.js the OS on Home's card (`data-os`), for Spec's numeral and starburst. Plan decisions 27 and 28 record what each look takes from studio-equipment design and what was left out. The CSS budget goes from 20 to 22 KB and a chapter page's from 82 to 84 KB (decision 19): the stylesheet is 20.9 KB gzipped and Chapter 6 weighs 82.6 KB. New and changed tests: `test_looks` (Minimal and Spec), `test_axe_in_the_other_looks` (both looks, light and dark, phone and desktop) and `test_start_screen_on_one_screen_and_list_banner`, which now runs in all three looks.
 
 ## 2026.10.15.4
 

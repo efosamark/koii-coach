@@ -58,7 +58,7 @@
      Tags         .tag .tag.done .tag.caution .tag.danger .tag.info; OS badge .badge.ok / .badge.warn (kept)
      Notices      .notice.tip .notice.info .notice.caution .notice.danger (danger = irreversible only);
                   a leading <b> is the notice's heading. .checkpoint = "you should now have" box
-     Cards        .card; .card.start (welcome card); .card.welcome and .card.continue are Home's dark panel (--panel)
+     Cards        .card; .card.start (welcome card); .card.welcome and .card.continue are Home's panel (--panel; dark, light in Spec)
      Disclosure   any <details>/<summary> gets the chevron and a 48px summary; details.card / .disclosure = boxed
      Progress     <span class="meter" aria-hidden="true"><span class="meter-fill" style="width:40%"></span></span>
                   next to visible text ("23 of 57 done"); .status-bar = sticky chapter bar under the app bar
@@ -102,6 +102,10 @@
 /* Archivo Light (width 100, weight 300), the titles of the Minimal look (decision 27). Its weight range covers every
    weight a title asks for, so the browser draws it as it is instead of faking a bold of it. Loaded only once used. */
 @font-face{font-family:"Archivo Light";font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/Archivo-Light.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* Saira Light (SemiExpanded width, weight 300), the titles of the Spec look (decision 28), declared over the weight range
+   100–900 like Archivo Light. Loaded only once used. */
+@font-face{font-family:"Saira Light";font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/Saira-Light.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
 
 /* While Atkinson loads (first visit only), text is drawn in Arial or Roboto scaled to Atkinson's average width and
    line metrics, so the page doesn't reflow when the real font arrives. Widths measured over the course's own text. */
@@ -1521,37 +1525,98 @@ details[id],.term[id],.risk[id],.card[id]{scroll-margin-top:calc(var(--sticky-to
 @media (forced-colors:active){.risk.danger{border:3px solid CanvasText}.risk.caution{border:1px solid CanvasText}.control[aria-checked="true"]{outline:3px solid Highlight}}
 @media print{.az,.help-search,#result-count,.help-more,.lesson .complete{display:none!important}.lesson .inside,details.topic .inside{display:block}}
 
-/* ---------- Look: Minimal (Settings › Look, html[data-look="minimal"]; plan decision 27) ---------- */
-/* The second look, after the restraint of studio-equipment product pages, drawn with the course's own parts: flat
-   surfaces, large light titles (Archivo Light), labels in lowercase, pill buttons and a frame in the page's own colours.
-   Every colour, meaning and size of the step player stays as in Studio; only the finish changes. */
-html[data-look="minimal"]{--font-display:"Archivo Light",var(--font-ui);--e1:none;--e2:none;--glow:transparent;--cap-face:var(--surface-1);--key-face:var(--key);--panel:#121211;--r-card:18px}
+/* ---------- Looks: Minimal and Spec (Settings › Look, html[data-look]; plan decisions 27 and 28) ---------- */
+/* Studio, the rules above, is the default look. Minimal and Spec change only the finish: every colour, meaning and size of
+   the step player stays as in Studio. First what the two share, then each one's own rules. */
+html:is([data-look="minimal"],[data-look="spec"]){--e1:none;--e2:none;--glow:transparent;--cap-face:var(--surface-1);--key-face:var(--key)}
+/* The frame (and in Spec, Home's panel) takes the page's own tokens back from the graphite scope. */
+html[data-look="minimal"] :is(.appbar,.rail),html[data-look="spec"] :is(.appbar,.rail,.card.welcome,.card.continue){color-scheme:inherit;--bg:inherit;--surface-1:inherit;--surface-2:inherit;--surface-3:inherit;--surface-raised:inherit;--line:inherit;--line-strong:inherit;--ink:inherit;--ink-2:inherit;--primary:inherit;--on-primary:inherit;--key:inherit;--on-key:inherit;--key-edge:inherit;--lcd-bg:inherit;--lcd-ink:inherit;--lcd-line:inherit;--done-ink:inherit;--done-fill:inherit;--on-done:inherit;--here:inherit;--danger:inherit;--danger-surface:inherit;--caution-ink:inherit;--caution-surface:inherit;--caution-line:inherit;--info-ink:inherit;--info-surface:inherit;--focus:inherit;--e1:inherit;--e2:inherit;--cap-face:inherit;--key-face:inherit;--glow:inherit;--i-tick:inherit}
+html:is([data-look="minimal"],[data-look="spec"]) .appbar{-webkit-backdrop-filter:none;backdrop-filter:none}
+@media (max-width:1023px){html:is([data-look="minimal"],[data-look="spec"]) .player-actions{background:var(--surface-1);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}}
+/* Flat: no drop shadows, glass, gradients or lift; keycaps keep their solid bottom edge, the one depth that means "a key". */
+html:is([data-look="minimal"],[data-look="spec"]) :is(.btn.primary,.btn.orange,.card.welcome,.card.continue,.device.schem){box-shadow:none}
+html:is([data-look="minimal"],[data-look="spec"]) .device.schem{background:var(--surface-2)}
+html:is([data-look="minimal"],[data-look="spec"]) :is(.lcd,.display,.device.schem .display.schem-display){box-shadow:none;text-shadow:none}
+html:is([data-look="minimal"],[data-look="spec"]) .tile:hover{transform:none}
+html:is([data-look="minimal"],[data-look="spec"]) .keep-case{text-transform:none}
+
+/* Minimal (decision 27): after the restraint of studio-equipment product pages. Large light titles (Archivo Light), labels
+   in lowercase, pill buttons and a white frame. */
+html[data-look="minimal"]{--font-display:"Archivo Light",var(--font-ui);--panel:#121211;--r-card:18px}
 @media screen and (prefers-color-scheme:light){html[data-look="minimal"]:not([data-theme="dark"]){--bg:#F3F3F1}}
 html[data-look="minimal"][data-theme="light"]{--bg:#F3F3F1}
-/* The frame takes the page's own tokens back from the graphite scope: white in light, dark in dark. */
-html[data-look="minimal"] :is(.appbar,.rail){color-scheme:inherit;--bg:inherit;--surface-1:inherit;--surface-2:inherit;--surface-3:inherit;--surface-raised:inherit;--line:inherit;--line-strong:inherit;--ink:inherit;--ink-2:inherit;--primary:inherit;--on-primary:inherit;--key:inherit;--on-key:inherit;--key-edge:inherit;--lcd-bg:inherit;--lcd-ink:inherit;--lcd-line:inherit;--done-ink:inherit;--done-fill:inherit;--on-done:inherit;--here:inherit;--danger:inherit;--danger-surface:inherit;--caution-ink:inherit;--caution-surface:inherit;--caution-line:inherit;--info-ink:inherit;--info-surface:inherit;--focus:inherit;--e1:inherit;--e2:inherit;--cap-face:inherit;--key-face:inherit;--glow:inherit;--i-tick:inherit}
-html[data-look="minimal"] .appbar{background:var(--surface-1);-webkit-backdrop-filter:none;backdrop-filter:none}
+html[data-look="minimal"] .appbar{background:var(--surface-1)}
 html[data-look="minimal"] .appbar.scrolled{box-shadow:0 1px 0 var(--line)}
-@media (max-width:1023px){html[data-look="minimal"] .player-actions{background:var(--surface-1);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}}
-/* Flat: no drop shadows, glass or lift; keycaps keep their solid bottom edge, the one depth that means "a key". */
-html[data-look="minimal"] :is(.btn.primary,.btn.orange,.card.welcome,.card.continue){box-shadow:none}
-html[data-look="minimal"] :is(.lcd,.display){box-shadow:none;text-shadow:none}
-html[data-look="minimal"] .device.schem{box-shadow:none}
-html[data-look="minimal"] .tile:hover{transform:none}
-/* Titles: light and large, set tight. Body, steps, keycaps and controls stay in Atkinson at their sizes. */
+/* Titles: light and large, set tight. On a phone the start screen's are no larger than Studio's, so its first screen
+   still holds the Parts heading (decision 24). Body, steps, keycaps and controls stay in Atkinson at their sizes. */
 html[data-look="minimal"] :is(h1,h2){letter-spacing:-.035em}
 html[data-look="minimal"] h1{font-size:clamp(2.5rem,2rem + 2.4vw,4.25rem);line-height:1.04}
 html[data-look="minimal"] .welcome h1{font-size:clamp(2.25rem,1.7rem + 2.4vw,3.75rem);line-height:1.04;letter-spacing:-.04em}
-html[data-look="minimal"][data-player="start"] .page-head h1{font-size:clamp(2.75rem,2rem + 3vw,4.75rem);line-height:1.02}
+html[data-look="minimal"][data-player="start"] .page-head h1{font-size:clamp(2.125rem,1.4rem + 3vw,4.75rem);line-height:1.04}
 html[data-look="minimal"] .page-head.compact h1{font-size:clamp(2rem,1.6rem + 1.6vw,3rem)}
-html[data-look="minimal"] :is(.card,.section,.needs,.player-parts,.player-more .inside,.player-reference .ref-part) > h2,html[data-look="minimal"] h2.sub{font-size:1.625rem;line-height:1.2;letter-spacing:-.02em}
+html[data-look="minimal"] :is(.card,.section,.needs,.player-parts,.player-more .inside,.player-reference .ref-part) > h2,html[data-look="minimal"] h2.sub{font-size:clamp(1.25rem,1rem + 1vw,1.625rem);line-height:1.2;letter-spacing:-.02em}
 /* after the card-title rule above, which would otherwise match these two as well */
 html[data-look="minimal"] .card.continue > h2{font-size:clamp(2rem,1.6rem + 1.6vw,3rem);line-height:1.06}
 html[data-look="minimal"] .card.welcome > h2{font-size:var(--t-check);line-height:var(--t-check-lh);letter-spacing:0}
 html[data-look="minimal"] .wordmark{font-size:17px;letter-spacing:-.02em}
 /* Labels in lowercase, as small legends (the page keeps sentence case, so a screen reader reads it as written). */
 html[data-look="minimal"] :is(.eyebrow,.nav-label,.mc-kicker,.pd-moves-title,.search-group-title,.device-title){text-transform:lowercase}
-html[data-look="minimal"] .keep-case{text-transform:none}
-/* Pills */
 html[data-look="minimal"] :is(.btn,.chips li,.player-chips li,.tag,.search-chip,.tools-tabs button,.back-pill,.pa-btn,.pa-main){border-radius:999px}
 @media (min-width:1024px){html[data-look="minimal"] .pa-row{border-radius:999px}}
+
+/* Spec (decision 28): a technical datasheet, from the general vocabulary of equipment manuals, drawn with the course's
+   own parts. Square boxes ruled in ink and circles only for round things (LEDs, ticks, knobs); two voices, capitals for
+   the facts about a thing and lowercase for the way around; light titles in Saira; a spec row under a chapter's title;
+   outlined numerals and a starburst label. */
+html[data-look="spec"]{--font-display:"Saira Light",var(--font-ui);--r-card:0px;--r-control:0px;--r-chip:3px}
+@media screen and (prefers-color-scheme:light){html[data-look="spec"]:not([data-theme="dark"]){--bg:#F1F1EE;--line:#C9C9C3;--line-strong:#161616}}
+html[data-look="spec"][data-theme="light"]{--bg:#F1F1EE;--line:#C9C9C3;--line-strong:#161616}
+@media screen and (prefers-color-scheme:dark){html[data-look="spec"]:not([data-theme="light"]){--line:#4A4A46;--line-strong:#EDEDE8}}
+html[data-look="spec"][data-theme="dark"]{--line:#4A4A46;--line-strong:#EDEDE8}
+/* The frame is the page itself, ruled off in ink. */
+html[data-look="spec"] :is(.appbar,.rail){background:var(--bg)}
+html[data-look="spec"] .appbar{border-bottom-color:var(--line-strong)}
+html[data-look="spec"] .appbar.scrolled{box-shadow:none}
+html[data-look="spec"] .rail{border-right-color:var(--line-strong)}
+@media (max-width:1023px){html[data-look="spec"] .player-actions{border-top-color:var(--line-strong)}}
+html[data-look="spec"] .home :is(.card.welcome,.card.continue){overflow:visible;border-color:var(--line-strong);background:var(--surface-1)}
+html[data-look="spec"] .home :is(.card.welcome,.card.continue)::after{content:none}
+html[data-look="spec"] .home :is(.card.welcome,.card.continue) .btn:not(.primary){background:transparent}
+html[data-look="spec"] .home :is(.card.welcome,.card.continue) .btn:not(.primary):hover{background:var(--surface-2)}
+html[data-look="spec"] .home .card.section{border-top-color:var(--line-strong)}
+html[data-look="spec"] :is(.chips li,.player-chips li,.tools-tabs button,.search-chip,.menu-tabs button,.player-modes button,.meter,.meter-fill),html[data-look="spec"][data-player="step"] li.is-current .step-num{border-radius:0}
+/* Two voices: capitals, tracked, for the facts (spec labels); lowercase, regular weight, for the way around. */
+html[data-look="spec"] :is(.eyebrow,.mc-kicker,.bar-kicker,.player-chips li,.chips li,.tag,.tally,.step-num,.device-title,.search-group-title,.pd-moves-title,.pl-eyebrow,.strip-bar-title,thead th){text-transform:uppercase;letter-spacing:.06em}
+html[data-look="spec"] :is(.nav-label,.tools-nav .name,.tile .t,.wordmark > :last-child){text-transform:lowercase}
+html[data-look="spec"] :is(.shell-nav nav a,.path a,.tile .t,.pp-list a,.mc-name){font-weight:400}
+/* Titles light; a card's or section's own title is a spec label. */
+html[data-look="spec"] h1{font-weight:300;letter-spacing:-.02em;line-height:1.05}
+html[data-look="spec"] .welcome h1{font-size:clamp(2.125rem,1.6rem + 2.2vw,3.5rem)}
+html[data-look="spec"][data-player="start"] .page-head h1{font-size:clamp(2.125rem,1.4rem + 2.2vw,3.5rem)}
+html[data-look="spec"] :is(.card,.section,.needs,.player-parts,.player-more .inside,.player-reference .ref-part) > h2,html[data-look="spec"] h2.sub{font:600 1rem/1.5rem var(--font-ui);letter-spacing:.08em;text-transform:uppercase}
+html[data-look="spec"] .home .card.welcome > h2{font:600 var(--t-check)/var(--t-check-lh) var(--font-ui);letter-spacing:0;text-transform:none}
+html[data-look="spec"] .home .card.continue > h2{font:300 clamp(1.75rem,1.4rem + 1.4vw,2.75rem)/1.08 var(--font-display);letter-spacing:-.02em;text-transform:none}
+html[data-look="spec"] .wordmark{font-size:17px;letter-spacing:-.01em}
+/* The spec row: a chapter's facts as one ruled row of cells (the start screen's chips, the Continue card's). */
+html[data-look="spec"] :is(.player-chips,.chips){gap:0;width:max-content;max-width:100%;border:1px solid var(--line-strong)}
+html[data-look="spec"] :is(.player-chips,.chips) li{padding:var(--sp-1) var(--sp-3);border:0;border-left:1px solid var(--line-strong);background:none}
+html[data-look="spec"] :is(.player-chips,.chips) li:first-child{border-left:0}
+html[data-look="spec"] .player-chips li.warn{background:var(--caution-surface)}
+/* Ruled lists: course rows and parts with light numerals; the tools as cells of one ruled grid. */
+html[data-look="spec"] .path li{border-radius:0;border-bottom:1px solid var(--line)}
+html[data-look="spec"] .path li:last-child{border-bottom:0}
+html[data-look="spec"] .path .num{min-width:1.4em;height:auto;margin-right:var(--sp-3);padding:0;border:0;background:none;font:300 1.75rem/1 var(--font-display);vertical-align:-.1em}
+html[data-look="spec"] .pp-list .pp-n{height:auto;border:0;background:none;font:300 1.5rem/1 var(--font-display)}
+html[data-look="spec"] .tiles{gap:1px;padding:1px;background:var(--line-strong)}
+html[data-look="spec"] .tile{border:0;background:var(--surface-1)}
+html[data-look="spec"] .tile:hover{background:var(--surface-2)}
+html[data-look="spec"] .tile .icon{margin-bottom:var(--sp-3);padding:0;background:none;box-shadow:none}
+/* From 600px: the chapter's number as a large outlined numeral behind its title, in the hairline grey, so the title keeps
+   its full width and the start screen its first screen (player.js sets data-num); and the OS this course is written for
+   as a starburst on Home's panel (home.js sets data-os). Both repeat what the page says in words. */
+@media (min-width:600px){
+  html[data-look="spec"][data-player="start"] .page-head{position:relative;isolation:isolate}
+  html[data-look="spec"][data-player="start"] .page-head[data-num]::after{content:attr(data-num);content:attr(data-num) / "";position:absolute;z-index:-1;top:-.15em;right:0;font:300 8rem/1 var(--font-display);letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.5px var(--line);pointer-events:none}
+  html[data-look="spec"] .home .card[data-os] > .eyebrow{margin-bottom:var(--sp-4)}
+  html[data-look="spec"] .home .card[data-os]::before{content:attr(data-os);content:attr(data-os) / "";position:absolute;top:calc(-1 * var(--sp-5));right:var(--sp-5);z-index:1;display:grid;place-items:center;width:5rem;height:5rem;padding:1.25rem;background:var(--ink);color:var(--surface-1);font:700 .875rem/1.15 var(--font-ui);letter-spacing:.04em;text-align:center;text-transform:uppercase;clip-path:polygon(50.0% 0.0%,58.2% 8.8%,69.1% 3.8%,73.3% 15.1%,85.4% 14.6%,84.9% 26.7%,96.2% 30.9%,91.2% 41.8%,100.0% 50.0%,91.2% 58.2%,96.2% 69.1%,84.9% 73.3%,85.4% 85.4%,73.3% 84.9%,69.1% 96.2%,58.2% 91.2%,50.0% 100.0%,41.8% 91.2%,30.9% 96.2%,26.7% 84.9%,14.6% 85.4%,15.1% 73.3%,3.8% 69.1%,8.8% 58.2%,0.0% 50.0%,8.8% 41.8%,3.8% 30.9%,15.1% 26.7%,14.6% 14.6%,26.7% 15.1%,30.9% 3.8%,41.8% 8.8%);transform:rotate(-10deg)}
+}

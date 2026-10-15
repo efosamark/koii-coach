@@ -1,12 +1,13 @@
-"""Make the six font files in fonts/ from the Atkinson Hyperlegible and Archivo variable fonts (SIL OFL 1.1, no
-reserved names).
+"""Make the seven font files in fonts/ from the Atkinson Hyperlegible, Archivo and Saira variable fonts (SIL OFL 1.1,
+no reserved names).
 
     pip install fonttools brotli
     curl -LO "https://raw.githubusercontent.com/google/fonts/main/ofl/atkinsonhyperlegiblenext/AtkinsonHyperlegibleNext%5Bwght%5D.ttf"
     curl -LO "https://raw.githubusercontent.com/google/fonts/main/ofl/atkinsonhyperlegiblemono/AtkinsonHyperlegibleMono%5Bwght%5D.ttf"
     curl -LO "https://raw.githubusercontent.com/google/fonts/main/ofl/archivo/Archivo%5Bwdth%2Cwght%5D.ttf"
+    curl -LO "https://raw.githubusercontent.com/google/fonts/main/ofl/saira/Saira%5Bwdth%2Cwght%5D.ttf"
     python .github/scripts/make_fonts.py "AtkinsonHyperlegibleNext[wght].ttf" "AtkinsonHyperlegibleMono[wght].ttf" \
-        "Archivo[wdth,wght].ttf" fonts
+        "Archivo[wdth,wght].ttf" "Saira[wdth,wght].ttf" fonts
 
 Each weight is cut from the variable font as its own file (about 12 KB each), then subset to Latin. The zero is
 redrawn without its slash: the outer ring stays, and the two half-counters the slash leaves are replaced by one
@@ -20,7 +21,8 @@ centred on the hyphen's axis. The @font-face unicode-range in coach.css must lis
 
 Archivo is the display face for titles only, subset to the same Latin range and left as drawn: SemiExpanded (width
 112.5) Bold for the Studio look (plan decision 26) and Light (width 100, weight 300) for the Minimal look (decision 27).
-Its zero has no slash already, and it has no arrows, so a title never uses them.
+Its zero has no slash already, and it has no arrows, so a title never uses them. Saira SemiExpanded (width 112.5) Light
+is the title face of the Spec look (decision 28), cut and subset the same way.
 """
 import math
 import subprocess
@@ -41,6 +43,7 @@ FEATURES = 'kern,liga,calt,tnum,case,ccmp,locl,mark,mkmk'
 CUTS = [('next', 400, 'AtkinsonHyperlegibleNext-Regular'), ('next', 600, 'AtkinsonHyperlegibleNext-SemiBold'),
         ('next', 700, 'AtkinsonHyperlegibleNext-Bold'), ('mono', 500, 'AtkinsonHyperlegibleMono-Medium')]
 DISPLAY = [('ArchivoSemiExpanded-Bold', 'wdth=112.5', 'wght=700'), ('Archivo-Light', 'wdth=100', 'wght=300')]
+SPEC = ('Saira-Light', 'wdth=112.5', 'wght=300')
 
 
 class Flatten(BasePen):
@@ -181,12 +184,12 @@ def add_symbols(path):
     font.save(path)
 
 
-def main(next_ttf, mono_ttf, display_ttf, out_dir):
+def main(next_ttf, mono_ttf, display_ttf, spec_ttf, out_dir):
     out = Path(out_dir)
     with tempfile.TemporaryDirectory() as tmp:
-        for name, *axes in DISPLAY:
+        for src, (name, *axes) in [(display_ttf, cut) for cut in DISPLAY] + [(spec_ttf, SPEC)]:
             ttf = str(Path(tmp) / f'{name}.ttf')
-            subprocess.run([sys.executable, '-m', 'fontTools', 'varLib.instancer', display_ttf, *axes,
+            subprocess.run([sys.executable, '-m', 'fontTools', 'varLib.instancer', src, *axes,
                             '--update-name-table', '-q', '-o', ttf], check=True)
             subprocess.run([sys.executable, '-m', 'fontTools', 'subset', ttf, f'--unicodes={UNICODES}',
                             f'--layout-features={FEATURES}', '--flavor=woff2', f'--output-file={out / (name + ".woff2")}'],
@@ -207,4 +210,4 @@ def main(next_ttf, mono_ttf, display_ttf, out_dir):
 
 
 if __name__ == '__main__':
-    main(*sys.argv[1:5])
+    main(*sys.argv[1:6])

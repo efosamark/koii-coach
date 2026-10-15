@@ -4,7 +4,7 @@
    on every poke(); this page loads no wake.js and holds no lock), keyboard shortcuts (koii-coach-prefs.keys: false switches the
    shell's letter shortcuts off), text size and which side Done · Next sits (koii-coach-prefs.text 'default' | 'larger'
    and .hand 'right' | 'left', applied by shell.js as html[data-text] and html[data-hand]), the look (koii-coach-prefs.look
-   'studio' | 'minimal', applied by shell.js as html[data-look] with CoachShell.setLook), whether the unit is set up (koii-coach-prefs.setup 'ready' | 'new': Home's Continue
+   'studio' | 'minimal' | 'spec', applied by shell.js as html[data-look] with CoachShell.setLook), whether the unit is set up (koii-coach-prefs.setup 'ready' | 'new': Home's Continue
    opens Chapter 0 until it is 'ready'), the progress file, Reset all progress and Reset settings. Loading a file and
    Reset all progress touch progress only: koii-coach-prefs and the OS choice stay. Reset settings clears
    koii-coach-prefs (progress.js sets setup again on the next page load for a learner with progress, as it does for
@@ -64,7 +64,7 @@ function choices(){
   $$('input[name="text"]').forEach(r=>{r.checked=r.value===text;});
   $$('input[name="hand"]').forEach(r=>{r.checked=r.value===hand;});
   document.documentElement.dataset.text=text;document.documentElement.dataset.hand=hand;
-  const look=pr.look==='minimal'?'minimal':'studio';
+  const look=['minimal','spec'].includes(pr.look)?pr.look:'studio';
   $$('input[name="look"]').forEach(r=>{r.checked=r.value===look;});
   if(window.CoachShell)CoachShell.setLook(look);
 }

@@ -85,6 +85,9 @@ function render(){
   rows(all);
 }
 render();
+// The Spec look shows the OS the course is written for as a starburst on the welcome or Continue card (decision 28).
+const panel=document.querySelector('.home .card.welcome,.home .card.continue');
+if(panel&&site.firmware)panel.dataset.os=site.firmware;
 const line=[site.version&&`Version ${site.version}`,site.firmware&&`written for ${site.firmware}`].filter(Boolean).join(' · ');
 const info=$('#course-info');if(info&&line)info.textContent=line+'.';
 // Back from a chapter (the back/forward cache keeps the old page): show the progress made since.

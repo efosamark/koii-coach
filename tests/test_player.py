@@ -540,24 +540,34 @@ def test_larger_text_and_left_hand(run):
 
 
 @pytest.mark.browser
-def test_minimal_look(run):
+@pytest.mark.parametrize('name, face, bar_colour, status_colour', [
+    ('minimal', 'Archivo Light', 'rgb(255, 255, 255)', '#FFFFFF'),
+    ('spec', 'Saira Light', 'rgb(241, 241, 238)', '#F1F1EE'),
+])
+def test_looks(run, name, face, bar_colour, status_colour):
     page = run.page
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
     look = lambda: page.evaluate('document.documentElement.dataset.look')
-    bar = lambda: page.locator('#appbar').evaluate('e => getComputedStyle(e).getPropertyValue("--surface-1").trim()')
+    graphite = lambda: page.locator('#appbar').evaluate('e => getComputedStyle(e).getPropertyValue("--surface-1").trim()')
+    bar = lambda: page.locator('#appbar').evaluate('e => getComputedStyle(e).backgroundColor')
     status = lambda: page.locator('meta[name="theme-color"][media*="light"]').get_attribute('content')
     run.go('./first-beat.html')
-    assert (look(), bar(), status()) == ('studio', '#1B1B1A', '#1B1B1A'), 'Studio is the default: a graphite app bar and browser bar'
+    assert (look(), graphite(), status()) == ('studio', '#1B1B1A', '#1B1B1A'), 'Studio is the default: a graphite app bar and browser bar'
     run.go('./settings.html')
-    page.locator('input[name="look"][value="minimal"]').check()
+    page.locator(f'input[name="look"][value="{name}"]').check()
     prefs = run.get('koii-coach-prefs')
-    assert look() == 'minimal' and (prefs['look'], prefs['setup']) == ('minimal', 'ready'), f'The choice applies at once and is saved, the rest kept ({prefs})'
+    assert look() == name and (prefs['look'], prefs['setup']) == (name, 'ready'), f'The choice applies at once and is saved, the rest kept ({prefs})'
     run.go('./first-beat.html')
     title = page.locator('main h1').first.evaluate('e => getComputedStyle(e).fontFamily')
-    assert look() == 'minimal' and 'Archivo Light' in title, f'Every page opens in the Minimal look, with light titles ({title})'
-    assert (bar(), status()) == ('#FFFFFF', '#FFFFFF'), 'Its app bar and browser bar take the page colour'
+    assert look() == name and face in title, f'Every page opens in the {name} look, with its title face ({title})'
+    assert (bar(), status()) == (bar_colour, status_colour), f'Its app bar and browser bar take the page colour ({bar()}, {status()})'
     do = page.locator('main .steps li[data-step] > .step-do').first.evaluate('e => getComputedStyle(e).fontFamily')
-    assert 'Archivo' not in do, 'Steps stay in Atkinson'
+    assert 'Archivo' not in do and 'Saira' not in do, 'Steps stay in Atkinson'
+    if name == 'spec':
+        assert page.locator('main > .page-head').get_attribute('data-num') == '01', 'The start screen carries the chapter number for its outlined numeral'
+        assert page.locator('#player-parts-title').evaluate('e => getComputedStyle(e).textTransform') == 'uppercase', 'Section titles are spec labels'
+        run.go('./index.html')
+        assert page.locator('.home .card[data-os]').get_attribute('data-os') == page.evaluate('COACH_SITE.firmware'), 'Home names the OS for its starburst'
     run.go('./settings.html')
     page.locator('#reset-settings').click()
     assert page.locator('input[name="look"][value="studio"]').is_checked() and look() == 'studio', 'Reset settings puts Studio back'
@@ -670,12 +680,13 @@ def test_device_panel_landscape_and_desktop(run):
 
 
 @pytest.mark.browser
-def test_start_screen_on_one_screen_and_list_banner(run):
+@pytest.mark.parametrize('look', ['studio', 'minimal', 'spec'])
+def test_start_screen_on_one_screen_and_list_banner(run, look):
     """Plan 5.2: a first visit shows the promise, the chips, "Before you start" rows and the parts; the long preamble
     waits in "About this chapter in full". Plan 5.10: All steps puts "You're on Part N, step X of M · Continue" in the
-    first screen."""
+    first screen. In every look (Settings › Look): their titles and labels must leave the first screen as it is."""
     page = run.page
-    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready', 'look': look}})
     for ch in ('setup', 'first-beat', 'song', 'sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house'):
         run.go(f'./{ch}.html')
         assert page.locator('main > .promise').is_visible() and 3 <= page.locator('.needs-list li:visible').count() <= 5, ch
