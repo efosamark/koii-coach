@@ -48,6 +48,9 @@ def run(browser, site_url):
             self.page, self.context, self.errors = page, context, errors
 
         def go(self, href):
+            # A sheet closed just before removes its history entry with history.back(), a moment later; a goto started
+            # before that lands is aborted by it. Wait until no sheet's entry is left.
+            page.wait_for_function("() => !(history.state && history.state.coachDialog) || !!document.querySelector('dialog[open]')")
             page.goto('about:blank')
             page.goto(urljoin(site_url, href), wait_until='networkidle')
 

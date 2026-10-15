@@ -426,6 +426,9 @@ def run_target(browser, artifacts_dir, name, url, results):
         topic.locator('summary').click()
         assert topic.evaluate('d => d.open') and topic.locator('a[href="./help.html#a-pad-is-silent"]').is_visible(), 'A help topic opens in place'
         page.keyboard.press('Escape')
+        # Closing the sheet removes its history entry with history.back(), which lands a moment later; a page.goto
+        # started before it lands is aborted by it (net::ERR_ABORTED). Wait until the entry is gone.
+        page.wait_for_function("() => !(history.state && history.state.coachDialog) || !!document.querySelector('dialog[open]')")
         result['checks'].append('Search finds chapter steps ("sidechain", "snare" in 01) and help topics (opened in place); a step opens as a preview, then the step')
 
         # After ticks in a chapter, Home's Continue opens that chapter at the next step to do.
