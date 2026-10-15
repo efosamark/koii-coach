@@ -1617,7 +1617,7 @@ Each has a recommended default. If you say nothing, the default applies.
 
 | # | Decision | Recommended default |
 |---|---|---|
-| 1 | Renumber the course in teaching order on screen | **Yes: Chapter 0–7, flipped in P6** once all references are tokens; files and slugs unchanged; "Formerly 07" for at least 90 days |
+| 1 | Renumber the course in teaching order on screen | **Yes: Chapter 0–7, flipped in P6** once all references are tokens; files and slugs unchanged; "Formerly 07" for at least 90 days. Since 2026.10.14.33 the chip shows only to learners with progress somewhere in the course: a first-time learner never knew the old numbers and found the chip puzzling. Search finds the old numbers for everyone |
 | 2 | Rename `thodorakis-house.html` | **No: keep the file as canonical** and call the chapter "Vocal house" everywhere visible. A `vocal-house.html` alias can come later if wanted |
 | 3 | Chapter 1's "optional" bass (steps 14–16), which Chapter 2 requires | **Make it required** in 01, and add `required_by` lint so this cannot recur |
 | 4 | Content format | **TOML + standard-library build** (no virtual environment to build). Alternative: YAML + Jinja2 (nicer templates, adds pinned dependencies) |

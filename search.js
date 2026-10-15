@@ -114,7 +114,6 @@ async function loadChapter(c){
   try{
     const dom=await fetchDoc(c.href);if(!dom)return null;
     const book='Chapter '+c.num+' · '+c.title,out=[];
-    let n=0;   // step numbers run through the whole chapter, as chapter.js numbers the lists
     dom.querySelectorAll('.steps > details').forEach(d=>{
       const head=text(d.querySelector('summary')),m=/^(?:Part\s+)?(\d+)\s*[\/·]\s*(.*)$/.exec(head),no=m?m[1]:'',name=m?m[2]:head;
       const lis=[...d.querySelectorAll('ol>li')],ids=lis.map(li=>li.dataset.step).filter(Boolean);
@@ -123,13 +122,12 @@ async function loadChapter(c){
       const html=notes.map(e=>{const x=e.cloneNode(true);x.removeAttribute('id');x.querySelectorAll('[id]').forEach(y=>y.removeAttribute('id'));return x.outerHTML;}).join('')+`<p class="meta">${lis.length} step${lis.length===1?'':'s'}.</p>`;
       out.push(doc({type:'step',part:true,title:name,body:clean(intro),html,crumb:[book,no?'Part '+no:'Part'],href:c.href+(ids[0]?'#s-'+ids[0]:'')}));
       lis.forEach(li=>{
-        n++;
         const id=li.dataset.step;if(!id)return;
         const t=li.querySelector('.step-title');
         if(t)t.remove();
         const shown=li.cloneNode(true);shown.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));   // the preview
         li.querySelectorAll('.step-source').forEach(x=>x.remove());
-        out.push(doc({type:'step',title:t?text(t):label(id),body:text(li),html:shown.innerHTML,risk:li.dataset.risk||'',crumb:[book,[no,name].filter(Boolean).join(' '),'Step '+n],href:c.href+'#s-'+id}));
+        out.push(doc({type:'step',title:t?text(t):label(id),body:text(li),html:shown.innerHTML,risk:li.dataset.risk||'',crumb:[book,[no,name].filter(Boolean).join(' '),'Step '+(lis.indexOf(li)+1)],href:c.href+'#s-'+id}));
       });
     });
     return out;

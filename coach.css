@@ -1090,7 +1090,7 @@ html[data-hand="left"] .pa-more{right:auto;left:var(--gutter)}
 }
 @media (min-width:1024px){
   html[data-player] body{padding-bottom:0}
-  .player-actions{position:sticky;left:auto;right:auto;max-width:calc(46rem + 2 * var(--gutter));margin:0 auto;padding:0 var(--gutter) var(--sp-4);border:0;background:none;box-shadow:none}
+  .player-actions{position:sticky;left:auto;right:auto;max-width:calc(46rem + 2 * var(--gutter));margin:0 auto;padding:var(--sp-4) var(--gutter) var(--sp-4);border:0;background:linear-gradient(to bottom,transparent,var(--bg) var(--sp-4));box-shadow:none}
   .pa-row{max-width:none;padding:var(--sp-2);border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e2)}
   .pa-hint{display:block;width:max-content;max-width:100%;margin:var(--sp-2) auto 0;padding:2px var(--sp-3);border-radius:var(--r-chip);background:var(--bg);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh);text-align:center}
   .pa-hint .key{font-size:14px}

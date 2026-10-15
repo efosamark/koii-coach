@@ -198,15 +198,11 @@ def main():
             if f'<p class="badge os-badge">Needs OS {m.group(2)} or newer</p>' not in m.group(3):
                 errors.append(f'{name}: step {m.group(1)} has data-os="{m.group(2)}" but no "Needs OS {m.group(2)} or newer" badge for readers without JavaScript')
     for name in [f for f in files if f.endswith('.html')]:
-        # Steps are numbered across parts: each part's <ol start> follows on from the part before (readers without JS).
-        n = 0
-        for m in re.finditer(r'<ol(?: start="(\d+)")?>(.*?)</ol>', (out / name).read_text(encoding='utf-8'), re.S):
-            count = len(re.findall(r'<li data-step=', m.group(2)))
-            if not count:
-                continue
-            if int(m.group(1) or 1) != n + 1:
-                errors.append(f'{name} has <ol start="{m.group(1) or 1}"> where the steps before it make it {n + 1}')
-            n += count
+        # Steps are numbered within their part (plan 4: "Step 4 of 8"): every part's list starts at 1, for readers
+        # without JavaScript too.
+        for m in re.finditer(r'<ol start="(\d+)">(.*?)</ol>', (out / name).read_text(encoding='utf-8'), re.S):
+            if re.search(r'<li data-step=', m.group(2)):
+                errors.append(f'{name} has <ol start="{m.group(1)}">: each part numbers its steps from 1')
     for name in [f for f in files if f.endswith('.html')]:
         src = (out / name).read_text(encoding='utf-8')
         order = re.findall(r'<script src="(site|progress|shell)\.js(?:\?[^"]*)?"></script>', src)

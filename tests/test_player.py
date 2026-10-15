@@ -380,12 +380,33 @@ def test_menu_jump_and_shortcuts(run):
 
 
 @pytest.mark.browser
+def test_step_numbers_within_part(run):
+    """Plan 4: "Part 2 · …", "Step 4 of 8": every number a learner reads counts within the part."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    page.set_viewport_size({'width': 1280, 'height': 800})
+    run.go('./first-beat.html#s-beat-kicks')   # Part 2, step 2
+    assert page.locator('li.is-current .step-num').text_content().strip() == '2 of 5'
+    assert page.locator('.rail .ps-step[aria-current="step"] .ps-n').text_content() == '2', 'The rail counts within the part'
+    assert page.locator('li.is-current label.check').text_content() == 'Mark step 2 done'
+    page.locator('#player-tools-btn').click()
+    page.locator('#tools-sheet').wait_for(state='visible')
+    assert page.locator('#tools-sheet .tools-eyebrow').text_content().startswith('For Part 2, step 2:')
+    page.keyboard.press('Escape')
+    assert page.evaluate("() => [...document.querySelectorAll('.steps ol')].every(ol => ol.start === 1)"), 'Each part numbers from 1'
+    page.set_viewport_size({'width': 390, 'height': 844})
+
+
+@pytest.mark.browser
 def test_renumbered_course(run):
     """The course reads Chapter 0-7 in teaching order; a renumbered chapter says what it was, and search still finds it."""
     page = run.page
     run.go('./sampling.html#start')
     assert page.locator('header .eyebrow').text_content().startswith('CHAPTER 3 /')
-    assert 'Formerly 07' in page.locator('.player-chips').text_content(), 'A renumbered chapter shows "Formerly 07"'
+    assert 'Formerly' not in page.locator('.player-chips').text_content(), 'A first-time learner never knew the old numbers'
+    run.seed({'koii-coach-ch-first-beat': {'v': 1, 'done': ['beat-empty-project'], 'last': 'beat-empty-project', 'n': 1}})
+    run.go('./sampling.html#start')
+    assert 'Formerly 07' in page.locator('.player-chips').text_content(), 'A returning learner sees "Formerly 07"'
     assert page.locator('h1').text_content() == 'Sample, chop & resample'
     run.go('./setup.html#start')
     assert page.locator('h1').text_content() == 'Set up your K.O. II' and 'Formerly' not in page.locator('.player-chips').text_content()

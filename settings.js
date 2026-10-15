@@ -29,12 +29,12 @@ const refresh=()=>{if(window.CoachShell)CoachShell.refresh();};
 const fw=$('#firmware');
 function versionNote(){
   const v=fw.value,upd='<a href="./setup.html">Chapter 0 · Set up your K.O. II</a>',
-    OS20='song mode, resampling, hands-free sampling and sidechain',
-    OS25='USB audio, sample reverse, a choice of recording sample rates, mono samples up to 40 seconds, equal-length auto chop, an arpeggiator in KEYS, and key and scale selection (hold KEYS, turn X for key and Y for scale)';
+    OS20='song mode, resampling and sidechain',
+    OS25='USB audio, reverse, the arpeggiator, and scales in KEYS';
   const t={
-    '2.5':`OS 2.5.x is the latest release and the one this course is written for. It has the OS 2.0 features (${OS20}) plus the OS 2.5 additions: ${OS25}.`,
-    '2':`OS 2.0.x has ${OS20}, but none of the OS 2.5 additions: ${OS25}. This course is written for OS 2.5.x, so <b>update first</b>: ${upd} shows how.`,
-    older:`An OS older than 2.0 lacks ${OS20}, and all of the OS 2.5 additions. This course is written for OS 2.5.x, so <b>update first</b>: ${upd} shows how.`,
+    '2.5':`OS 2.5.x is the latest release, and the course is written for it.`,
+    '2':`OS 2.0.x lacks ${OS25}. <b>Update first</b>: ${upd} shows how.`,
+    older:`An OS older than 2.0 lacks ${OS20}, and much more. <b>Update first</b>: ${upd} shows how.`,
     unknown:`The coach can’t read the OS on your K.O. II. Keep it up to date with the official <a href="https://teenage.engineering/apps/update" target="_blank" rel="noopener noreferrer">update utility${icon('external')}${NEWTAB}</a>, and ${upd} walks you through it. Then choose OS 2.5.x here.`
   }[v]||'';
   const n=$('#version-note');

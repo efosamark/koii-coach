@@ -40,7 +40,7 @@ Every step needs `h3.step-title`, one or more `p.step-do` and exactly one `p.ste
 | Another chapter | "Chapter 3 · Sample, chop & resample", and its parts as "Part 4". Never an old two-digit number ("07", "section 03"): the build check fails on it |
 | A step on the same or another page | `<a href="./song.html#s-song-plan">…</a>`. The build check fails if the step does not exist |
 
-Step numbers ("go back to step 3") change whenever a step before them is split. Prefer a link to the step, or its title, over a number.
+Steps are numbered within their part ("Part 2, step 4"), everywhere a learner reads a number, and each part's `<ol>` starts at 1 (the build checks it). A number in the text ("go back to step 3") changes whenever a step before it in that part is split: prefer a link to the step, or its title.
 
 **Step attributes**
 

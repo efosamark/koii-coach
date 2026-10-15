@@ -181,7 +181,10 @@ function stepPanel(d){
   // "Step" and "pad" name the coach's steps and every pad press, so they are left out of this list.
   const text=stepText(li),words=(d.terms||[]).filter(t=>t.re&&!/^term-(step|pad)$/.test(t.id)&&t.re.test(text)).sort((a,b)=>b.beginner-a.beginner).slice(0,8);
   const title=li.querySelector(':scope > .step-title'),name=title?clean([...title.childNodes].filter(n=>!(n.nodeType===1&&n.classList.contains('pl-own'))).map(n=>n.textContent).join('')):'';
-  let h=`<p class="tools-eyebrow">For step ${C.steps().indexOf(li)+1}${name?': '+esc(name):''}</p>`;
+  // Within its part, as the step card counts (plan 4: "Part 2 · …", "Step 4 of 8").
+  const sec=li.closest('details'),k=[...li.parentElement.children].filter(x=>x.matches('li[data-step]')).indexOf(li)+1;
+  const pn=(/Part\s+(\d+)/.exec(sec&&sec.querySelector('summary')?sec.querySelector('summary').textContent:'')||[])[1];
+  let h=`<p class="tools-eyebrow">For ${pn?'Part '+pn+', step '+k:'this step'}${name?': '+esc(name):''}</p>`;
   if(keys.length&&d.device)h+=`<h3 class="sub">Keys in press order</h3>${keysHTML(d,keys,false,li)}`;
   if(topics.length)h+='<h3 class="sub">Fixes for this step</h3>'+topics.map(t=>topicHTML(t,true,4)).join('');
   if(words.length)h+=`<h3 class="sub">Words in this step</h3><dl class="gloss tools-gloss">${words.map(termHTML).join('')}</dl>`;

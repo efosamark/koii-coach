@@ -89,11 +89,10 @@ if(!slug)console.error('chapter.js: <body> needs a data-chapter attribute');
 steps.forEach((li,i)=>{if(!li.dataset.step)console.error('chapter.js: step '+(i+1)+' has no data-step id, so its tick cannot be saved',li);});
 ids.forEach((id,i)=>{if(id&&ids.indexOf(id)!==i)console.error('chapter.js: duplicate data-step id "'+id+'"');});
 
-// Number the lists continuously, so step numbers never depend on hand-typed start attributes.
-let n=0;
-document.querySelectorAll('.steps ol').forEach(ol=>{
-  if(ol.hasAttribute('start')&&ol.start!==n+1)console.warn('chapter.js: <ol start="'+ol.getAttribute('start')+'"> should be '+(n+1)+' (fixed when JavaScript runs; update the HTML for readers without it)',ol);
-  ol.start=n+1;n+=ol.querySelectorAll(':scope>li').length;
+// Steps are numbered within their part (plan 4: "Part 2 · …", "Step 4 of 8"): every part's list starts at 1.
+document.querySelectorAll('.steps ol[start]').forEach(ol=>{
+  console.warn('chapter.js: <ol start="'+ol.getAttribute('start')+'">: each part numbers its steps from 1 (fixed when JavaScript runs; update the HTML for readers without it)',ol);
+  ol.removeAttribute('start');
 });
 
 // Load progress, migrating the old position-based keys the first time.
@@ -194,11 +193,12 @@ function tick(id,on){
   store(true);update();emit('tick',id);
   return true;
 }
-// Checkboxes: "Mark step 4 done" is the accessible name; a step with a title (h3.step-title) is its description.
+// Checkboxes: "Mark step 4 done" is the accessible name, counted within the part as everywhere else (plan 4); a step
+// with a title (h3.step-title) is its description.
 steps.forEach((li,i)=>{
   const id=li.dataset.step;if(!id)return;
   const label=document.createElement('label'),box=document.createElement('input'),text=document.createElement('span');
-  label.className='check';box.type='checkbox';box.checked=done.has(id);text.textContent='Mark step '+(i+1)+' done';
+  label.className='check';box.type='checkbox';box.checked=done.has(id);text.textContent='Mark step '+([...li.parentElement.children].filter(x=>x.matches('li[data-step]')).indexOf(li)+1)+' done';
   const title=li.querySelector(':scope > .step-title');
   if(title){if(!title.id)title.id='t-'+id;box.setAttribute('aria-describedby',title.id);}
   label.append(box,text);li.append(label);boxes[id]=box;
@@ -229,7 +229,12 @@ function update(){
   const fill=document.querySelector('#progress .meter-fill');
   if(fill)fill.style.width=(all?Math.round(100*count/all):0)+'%';
   btn.hidden=t<0;
-  if(t>=0)btn.innerHTML='Continue at step '+(t+1)+'<svg class="icon" aria-hidden="true"><use href="icons.svg#i-next"></use></svg>';
+  // Within its part, as the step card counts (plan 4: "Part 2 · …", "Step 4 of 8").
+  if(t>=0){
+    const li=steps[t],sec=li.closest('details'),k=[...li.parentElement.children].filter(x=>x.matches('li[data-step]')).indexOf(li)+1;
+    const pn=(/Part\s+(\d+)/.exec(sec&&sec.querySelector('summary')?sec.querySelector('summary').textContent:'')||[])[1];
+    btn.innerHTML='Continue at '+(pn?'Part '+pn+', step '+k:'step '+(t+1))+'<svg class="icon" aria-hidden="true"><use href="icons.svg#i-next"></use></svg>';
+  }
   steps.forEach((li,j)=>mark(li,j===t));
   sections.forEach(([s,el])=>{
     const c=s.filter(li=>done.has(li.dataset.step)).length,n=s.filter(li=>!isOff(li.dataset.step)).length;
