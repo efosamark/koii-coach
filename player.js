@@ -609,7 +609,7 @@ function showCheck(P,opt){
 function fixCards(P){
   const c=copy(P.ifnot),b=c.querySelector('b');
   if(b&&/^If it doesn['’]t/i.test(b.textContent))b.remove();
-  const plain=h=>h.replace(/<[^>]+>/g,'').trim(),cap=h=>h.replace(/^([^<]*?)([a-z])/,(m,a,l)=>a+l.toUpperCase());
+  const plain=h=>h.replace(/<[^>]+>/g,'').trim(),cap=h=>h.replace(/^((?:<[^>]+>|\s)*)([a-z])/,(m,a,l)=>a+l.toUpperCase());   // only a lower-case first letter
   const parts=c.innerHTML.trim().replace(/K\.O\. /g,'K.O.\u00a0').replace(/([.?!])\s+(?=[A-Z0-9<“"])/g,'$1\u0000').split('\u0000').map(s=>s.trim()).filter(Boolean);
   // With "?" symptoms, a "label: …" sentence starts a card only for a short label ("USB:", "Older OS:"), never an instruction.
   const asks=parts.some(s=>/\?$/.test(plain(s))),cards=[];

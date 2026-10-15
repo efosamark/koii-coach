@@ -11,6 +11,7 @@ Each release records the date its instructions were checked against the [officia
 A review of the repository for text that had fallen behind the code.
 - **Cheat sheet:** its description for search engines and link previews said it held "the moves of the first chapters"; it has held every chapter's moves since 2026.10.14.23, and their pad plans since 2026.10.14.25. It now says so.
 - **Report form:** the Step field's example reads "Part 2, step 5 / …", the way the app fills it in since steps were numbered within their part (2026.10.14.33). The field's hint names the part too.
+- **Checkpoint fixes:** a "Not quite" card whose sentence already began with a capital letter had its second letter capitalised too ("YOu picked a scene, not a project" in Chapter 1, Part 1). Only a lower-case first letter is capitalised now. `test_part_checkpoint_not_quite` checks it.
 
 **For maintainers:**
 - README: `beat.js` has its row in the file table and `first-beat.js` is only the placement helper (both since 2026.10.15.2); Chapter 1's button is "Hear it", not "Hear this recipe"; the example release tag is `?v=<release>`; the Testing section lists the newer static checks of `test_player.py` (voice, the "You will make" lines, target beats, glued punctuation, report by email).

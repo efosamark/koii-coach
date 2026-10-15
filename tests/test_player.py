@@ -335,6 +335,13 @@ def test_part_checkpoint_not_quite(run):
     assert redo.text_content().endswith('step 8'), redo.text_content()
     redo.click()
     page.wait_for_function(STEP + " === 'check-source-heard'")
+    # A card's first letter is capitalised only when it is lower case: "You picked a scene" must not become "YOu".
+    run.go('./first-beat.html#s-beat-hats-quieter')   # the last step of Part 1
+    page.locator('#player-next').click()
+    page.locator('#player-check .pc-not').click()
+    texts = page.locator('#player-check .fix-card').all_text_contents()
+    assert any('You picked a scene' in x for x in texts), texts
+    assert not [x for x in texts if re.search(r'\b[A-Z]{2}[a-z]', x)], texts
 
 
 @pytest.mark.browser
