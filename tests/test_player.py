@@ -260,14 +260,16 @@ def test_report_by_email_only_when_an_address_is_set(run):
 
 @pytest.mark.browser
 def test_target_beats_match_their_text(run):
-    """beat.js draws every figure.pattern from its own text list: one lit cell per written position, a grid as long as
-    the highest bar, and a Hear it button. Chapter 1 keeps its figures; Chapters 2, 3, 5, 6 and 7 gain them."""
+    """beat.js draws every figure.pattern from its own text list: one lit cell per written position, one 16-cell block
+    per bar up to the highest bar written, and a Hear it button. Chapter 1 keeps its figures; Chapters 2, 3, 5, 6 and 7
+    gain them. In the player every cell of a beat is the same square."""
     count = r"""() => [...document.querySelectorAll('figure.pattern')].map(f => {
         const written = f.querySelectorAll('.pattern-text samp').length;
         const lit = f.querySelectorAll('.strip-cell.on').length;
         const bars = Math.max(...[...f.querySelectorAll('.pattern-text samp')].map(s => Number(s.textContent.split('.')[0])));
+        const sizes = new Set([...f.querySelectorAll('.strip-cell')].map(c => { const r = c.getBoundingClientRect(); return Math.round(r.width) + 'x' + Math.round(r.height); }));
         return {written, lit, cells: f.querySelectorAll('.strip-cell').length / Math.max(1, f.querySelectorAll('.strip-name').length),
-                bars, button: !!f.querySelector('.hear-btn')};
+                blocks: f.querySelectorAll('.strip').length, bars, sizes: [...sizes], button: !!f.querySelector('.hear-btn')};
     })"""
     seen = 0
     for name in ['first-beat', 'song', 'sampling', 'hiphop', 'tech-house', 'thodorakis-house']:
@@ -275,9 +277,14 @@ def test_target_beats_match_their_text(run):
         figs = run.page.evaluate(count)
         assert figs, f'{name} has target beats'
         for f in figs:
-            assert f['lit'] == f['written'] and f['cells'] == 16 * f['bars'] and f['button'], f'{name}: {f}'
+            assert f['lit'] == f['written'] and f['cells'] == 16 and f['blocks'] == f['bars'] and f['button'], f'{name}: {f}'
         seen += len(figs)
     assert seen >= 21 + 6, f'only {seen} target beats'
+    run.go('./tech-house.html#s-bass-answer-b2')
+    run.page.evaluate("() => { document.querySelector('li.is-current .step-hear').open = true; }")
+    for f in run.page.evaluate(count):
+        if f['sizes'] != ['0x0']:
+            assert len(f['sizes']) == 1 and f['sizes'][0].split('x')[0] == f['sizes'][0].split('x')[1], f'cells differ: {f["sizes"]}'
 
 
 @pytest.mark.browser

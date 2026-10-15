@@ -9,12 +9,12 @@ Each release records the date its instructions were checked against the [officia
 **Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence changed.
 
 **Hear the beat in every chapter.** Until now only Chapter 1 could play the beat you are building. Now, 21 steps in Chapters 2, 3, 5, 6 and 7 have a "Hear the beat" disclosure where you listen to a scene you just built.
-- Each one shows a grid of the scene's drums and bass, every bar side by side (headed "Bar 1" to "Bar 4" for four-bar scenes), plays them at the chapter's tempo with practice sounds, and lists every position.
+- Each one shows the scene's drums and bass as a grid of equal squares, four to a beat, with one block per bar ("Bar 1" to "Bar 4") stacked. It plays them at the chapter's tempo with practice sounds and lists every position.
 - The practice sounds now include clap, open hat, rim, shaker and a second bass note, alongside kick, snare, hat and bass.
 - Each beat holds only drum and bass notes that the steps themselves place: never a live-played fill, a vocal or a melody. Where the scene has those too, a note under the caption says what is left out.
 - Every position was checked against the steps that write and erase it, and Chapter 6's against its pattern sheet.
 - Chapter 4 has none: its beats are played live or shifted off the grid on purpose. Chapter 7's BUILD has none either, because its kicks are played live.
-- Chapter 1's target rhythms are drawn by the same code. They look the same, and Hear it now sits right under the grid.
+- Chapter 1's target rhythms are drawn by the same code. Every cell is now the same square: the first cell of each beat used to be narrower, because the gap between beats was taken out of it. Hear it now sits right under the grid.
 
 **Polish**
 - **Symbols match the text.** ← → ✓ and the Rhythm lab's ● ■ ▲ ◆ are now part of the font, drawn to match each weight. They used to come from your device's own font. This covers "2 → 4 → 8 bars", Chapter 6's moves table, the player's key hints and the control map's "→ FX".
@@ -26,6 +26,7 @@ Each release records the date its instructions were checked against the [officia
 **Report by email (off for now).** Setting `reportEmail` in `site.js` adds "or by email" to every report link, for learners without a GitHub account. From a step, the email is filled in with the chapter, the step, its text and the OS. From Home, Troubleshooting, Settings and 404, it opens a short form to fill in. The address is empty, so nothing changes on the site yet. See the README.
 
 **Wording added** (no existing wording changed):
+- The grid's row names: Kick, Snare, Clap, Hat, Open (open hat), Rim, Shaker, Tom, Bass and Bass 2 (the answer note). The list under each grid keeps the full names.
 - The disclosure title "Hear the beat", and each beat's caption and note:
   - Chapter 2, Part 1, “Check the intro and your original”: “INTRO: drums only, one bar at 90 BPM”
   - Chapter 2, Part 4, “Make the breakdown: clear kick and bass”: “BREAK: snare and hats, one bar at 90 BPM” and “Without the melody.”

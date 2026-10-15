@@ -6,13 +6,15 @@
    Each line is "Name (pad): positions" (bar.beat.step). The voice comes from the name (kick, snare, clap, closed or open
    hat, rim, shaker, tom, bass; "answer" is the second bass note). The tempo is data-bpm, or "… BPM" in the caption;
    the length is the highest bar written. The grid (hidden from screen readers: the text list says the same) shows
-   every bar side by side, with a playhead while it plays.
+   one block per bar, stacked, with a playhead while it plays.
    Playback stops when the step changes (the "coach:view" event from player.js), when the figure's disclosure closes
    and before printing. Chapter 1's figures carry data-rows; first-beat.js reads that for its placement helper. */
 (()=>{
 const VOICES=[['answer','bass2'],['bass','bass'],['open hat','ohat'],['hat','hat'],['clap','clap'],['rim','rim'],['click','rim'],
   ['shaker','shaker'],['snare','snare'],['kick','kick'],['tom','tom']];
 const voiceOf=name=>{const n=name.toLowerCase(),v=VOICES.find(([k])=>n.includes(k));return v?v[1]:'rim';};
+// The grid's row names are short, so its cells can be big squares; the text list keeps the full names.
+const SHORT={kick:'Kick',snare:'Snare',clap:'Clap',hat:'Hat',ohat:'Open',rim:'Rim',shaker:'Shaker',tom:'Tom',bass:'Bass',bass2:'Bass 2'};
 const icon=n=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-${n}"></use></svg>`;
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const col=p=>{const m=/^(\d+)\.([1-4])\.([1-4])$/.exec(p);return m?(m[1]-1)*16+(m[2]-1)*4+(m[3]-1):-1;};
@@ -35,13 +37,18 @@ function read(fig){
 const figures=[...document.querySelectorAll('figure.pattern')].map(fig=>{
   const b=read(fig);
   if(!b)return null;
-  const n=16*b.bars,strip=document.createElement('div');
-  strip.className='strip'+(b.bars>1?' multi':'');strip.setAttribute('aria-hidden','true');
-  strip.style.setProperty('--cols',String(n));
-  const head=b.bars>1?Array.from({length:b.bars},(_,i)=>`<span class="strip-beat" style="grid-column:span 16">Bar ${i+1}</span>`).join(''):
-    [1,2,3,4].map(i=>`<span class="strip-beat">Beat ${i}</span>`).join('');
-  strip.innerHTML='<span></span>'+head+b.rows.map((r,i)=>`<span class="strip-name">${esc(r.name)}</span>`+
-    b.grid[i].map((on,c)=>`<span class="strip-cell${on?' on':''}${c%16===0&&c?' barstart':c%4===0?' beatstart':''}" data-c="${c}"></span>`).join('')).join('');
+  // One block per bar, stacked, each a grid: the name column, then four beats of four square cells with a spacer
+  // column between beats (coach.css), so every cell on the page is the same size.
+  const strip=document.createElement('div');
+  strip.className='strips';strip.setAttribute('aria-hidden','true');
+  const gap='<span class="strip-gap"></span>';
+  const head='<span></span>'+[1,2,3,4].map(i=>`<span class="strip-beat">Beat ${i}</span>`).join(gap);
+  strip.innerHTML=Array.from({length:b.bars},(_,bar)=>
+    (b.bars>1?`<p class="strip-bar-title">Bar ${bar+1}</p>`:'')+'<div class="strip">'+(b.bars>1?'':head)+
+    b.rows.map((r,i)=>`<span class="strip-name">${esc(SHORT[r.voice]||r.name)}</span>`+[0,1,2,3].map(beat=>[0,1,2,3].map(k=>{
+      const c=bar*16+beat*4+k;
+      return `<span class="strip-cell${b.grid[i][c]?' on':''}" data-c="${c}"></span>`;
+    }).join('')).join(gap)).join('')+'</div>').join('');
   const tools=document.createElement('div');
   tools.className='strip-tools';
   tools.innerHTML=`<button class="btn hear-btn" type="button">${icon('play')}<span>Hear it</span></button><span class="meta strip-status" role="status"></span>`+

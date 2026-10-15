@@ -1287,18 +1287,16 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .pattern-text{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:1.9}
 .pattern-text .lcd{font-size:14px}
 .pattern-lab{max-width:none;margin:var(--sp-2) 0 0;font-size:var(--t-cap);line-height:var(--t-cap-lh)}
-.strip{display:grid;grid-template-columns:max-content repeat(var(--cols,16),minmax(0,1fr));gap:3px;align-items:center}
-/* Longer beats (beat.js): every bar side by side, thinner cells, a wider gap between bars. */
-.strip.multi{gap:3px 1px}
-.strip.multi .strip-cell{height:18px;border:0;border-radius:2px;background:var(--surface-3)}
-.strip.multi .strip-cell.on{background:var(--ink)}
-.strip.multi .strip-cell.beatstart{margin-left:2px}
-.strip-cell.barstart{margin-left:6px}
-.strip-name{padding-right:var(--sp-1)}
+.strips{display:grid;gap:var(--sp-1)}
+/* A bar of the target beat: the name column (the same width in every grid, so all cells on a page match), then four
+   beats of four square cells, with a spacer column between beats. */
+.strip{display:grid;grid-template-columns:3.6em repeat(4,minmax(0,1fr)) 4px repeat(4,minmax(0,1fr)) 4px repeat(4,minmax(0,1fr)) 4px repeat(4,minmax(0,1fr));gap:2px;align-items:center}
+.strip-bar-title{margin:var(--sp-2) 0 0;font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
+.strip-bar-title:first-child{margin-top:0}
+.strip-name{padding-right:var(--sp-1);white-space:nowrap}
 .strip-beat{grid-column:span 4;font:600 14px/1.2 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
 .strip-name{font-size:var(--t-cap);font-weight:600;line-height:1.2}
-.strip-cell{height:22px;border:1.5px solid var(--line-strong);border-radius:4px;background:var(--surface-1)}
-.strip-cell.beatstart{margin-left:4px}
+.strip-cell{aspect-ratio:1;border:1.5px solid var(--line-strong);border-radius:3px;background:var(--surface-1)}
 .strip-cell.on{border-color:var(--ink);background:var(--ink)}
 .strip-cell.now{box-shadow:0 0 0 2px var(--here)}
 .strip-tools{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin-top:var(--sp-3)}
@@ -1319,7 +1317,7 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 @keyframes pa-pulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 6px var(--here)}}
 #player-next.pulse{animation:pa-pulse 1.2s var(--ease) 2}
 @media (forced-colors:active){
-  .strip-cell,.strip.multi .strip-cell{border:1px solid CanvasText}
+  .strip-cell{border:1px solid CanvasText}
   .strip-cell.on{forced-color-adjust:none;background:CanvasText}
   .strip-cell.now{outline:3px solid Highlight}
   .runner-pos.now .lcd{outline-color:Highlight}
