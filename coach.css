@@ -57,7 +57,7 @@
      Tags         .tag .tag.done .tag.caution .tag.danger .tag.info; OS badge .badge.ok / .badge.warn (kept)
      Notices      .notice.tip .notice.info .notice.caution .notice.danger (danger = irreversible only);
                   a leading <b> is the notice's heading. .checkpoint = "you should now have" box
-     Cards        .card; .card.start (welcome card)
+     Cards        .card; .card.start (welcome card); .card.welcome and .card.continue are Home's dark panel (--panel)
      Disclosure   any <details>/<summary> gets the chevron and a 48px summary; details.card / .disclosure = boxed
      Progress     <span class="meter" aria-hidden="true"><span class="meter-fill" style="width:40%"></span></span>
                   next to visible text ("23 of 57 done"); .status-bar = sticky chapter bar under the app bar
@@ -116,7 +116,13 @@
   --caution-ink:#8A3B00; --caution-surface:#FCEEE2; --caution-line:#C25E0F;
   --info-ink:#2C4859; --info-surface:#EBF0F3;
   --focus:#1F6FD1;
-  --e1:0 1px 2px rgb(0 0 0/.06); --e2:0 8px 24px rgb(0 0 0/.08); --e3:0 -16px 48px rgb(0 0 0/.24);
+  /* Elevation is two soft layers (contact and ambient); in dark it adds a 1px top highlight, like a machined edge. */
+  --e1:0 1px 2px rgb(0 0 0/.04),0 6px 16px -8px rgb(0 0 0/.12); --e2:0 1px 2px rgb(0 0 0/.04),0 16px 36px -12px rgb(0 0 0/.18); --e3:0 -16px 48px rgb(0 0 0/.24);
+  /* Keycap faces: a little light from above. Quiet caps in the surface, hot caps in the key yellow (text on them is
+     still --on-key on --key or lighter, so every ratio above holds). --glow lights the top of the page. */
+  --cap-face:linear-gradient(#FFFFFF,#F1F1EC); --key-face:linear-gradient(#FFDE72,#FFCB2E 65%); --glow:rgb(255 255 255/.8);
+  /* The panel: Home's welcome and Continue cards, always dark, with a speaker-dot field (plan 6.2, decision 26). */
+  --panel:radial-gradient(120% 100% at 100% 0%,#30302E,transparent 60%),linear-gradient(160deg,#1E1E1D,#0F0F0E);
   /* The tick inside a done checkbox is drawn in --on-done: white on green here, near-black on light green in dark. */
   --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
   /* Type. Six sizes, fluid between 390 and 1280px; rem so the reader's own text size still counts. */
@@ -159,7 +165,8 @@
   --caution-ink:#F5A766; --caution-surface:#2B1E13; --caution-line:#D9823A;
   --info-ink:#A9C3D6; --info-surface:#1A2329;
   --focus:#7FB2FF;
-  --e1:0 1px 2px rgb(0 0 0/.4); --e2:0 8px 24px rgb(0 0 0/.5); --e3:0 -16px 48px rgb(0 0 0/.5);
+  --e1:inset 0 1px 0 rgb(255 255 255/.06),0 1px 2px rgb(0 0 0/.4),0 6px 16px -8px rgb(0 0 0/.6); --e2:inset 0 1px 0 rgb(255 255 255/.06),0 16px 36px -12px rgb(0 0 0/.7); --e3:0 -16px 48px rgb(0 0 0/.5);
+  --cap-face:linear-gradient(#272726,#1B1B1A); --key-face:linear-gradient(#FFE387,#FFD044 65%); --glow:rgb(255 255 255/.05);
   --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23080808' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
 }}
 @media screen{:root[data-theme="dark"]{
@@ -174,7 +181,8 @@
   --caution-ink:#F5A766; --caution-surface:#2B1E13; --caution-line:#D9823A;
   --info-ink:#A9C3D6; --info-surface:#1A2329;
   --focus:#7FB2FF;
-  --e1:0 1px 2px rgb(0 0 0/.4); --e2:0 8px 24px rgb(0 0 0/.5); --e3:0 -16px 48px rgb(0 0 0/.5);
+  --e1:inset 0 1px 0 rgb(255 255 255/.06),0 1px 2px rgb(0 0 0/.4),0 6px 16px -8px rgb(0 0 0/.6); --e2:inset 0 1px 0 rgb(255 255 255/.06),0 16px 36px -12px rgb(0 0 0/.7); --e3:0 -16px 48px rgb(0 0 0/.5);
+  --cap-face:linear-gradient(#272726,#1B1B1A); --key-face:linear-gradient(#FFE387,#FFD044 65%); --glow:rgb(255 255 255/.05);
   --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23080808' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
 }}
 :root[data-theme="light"]{color-scheme:light}
@@ -187,10 +195,11 @@
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--sticky-top) + 16px);scroll-padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
-body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:400 var(--t-body)/var(--t-body-lh) var(--font-ui);overflow-wrap:break-word}
+body{margin:0;min-height:100vh;background:radial-gradient(80rem 32rem at 50% -10rem,var(--glow),transparent 70%) no-repeat,var(--bg);color:var(--ink);font:400 var(--t-body)/var(--t-body-lh) var(--font-ui);overflow-wrap:break-word}
 h1,h2,h3,h4{margin:0 0 var(--sp-3);color:var(--ink)}
-h1{font-size:var(--t-h1);line-height:var(--t-h1-lh);font-weight:700}
-h2{font-size:var(--t-h2);line-height:var(--t-h2-lh);font-weight:700}
+/* Large headings are set a little tighter, as display type is; body text keeps the face's own spacing. */
+h1{font-size:var(--t-h1);line-height:var(--t-h1-lh);font-weight:700;letter-spacing:-.025em}
+h2{font-size:var(--t-h2);line-height:var(--t-h2-lh);font-weight:700;letter-spacing:-.015em}
 h3{font-size:var(--t-check);line-height:var(--t-check-lh);font-weight:600}
 h4{font-size:var(--t-body);line-height:var(--t-body-lh);font-weight:600}
 p{margin:0 0 var(--sp-4)}
@@ -202,8 +211,8 @@ small{font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 hr{border:0;border-top:1px solid var(--line);margin:var(--sp-5) 0}
 img,svg,video{max-width:100%}
 /* Links are ink, never yellow: yellow means "press this". */
-a{color:var(--ink);text-decoration-line:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
-a:hover{text-decoration-thickness:2.5px}
+a{color:var(--ink);text-decoration-line:underline;text-decoration-thickness:1.5px;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,currentColor 45%,transparent)}
+a:hover{text-decoration-thickness:2px;text-decoration-color:currentColor}
 button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
 button{cursor:pointer;touch-action:manipulation}
 code,samp,pre{font-family:var(--font-mono);font-weight:500}
@@ -244,11 +253,12 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 /* ---------- Buttons ---------- */
 /* One primary per view. Disabled is a dashed outline with ink-2 text, never an opacity fade.
    .orange and .light are the old app names for primary and secondary. */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:48px;padding:var(--sp-2) var(--sp-5);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 var(--t-body)/1.3 var(--font-ui);text-align:center;text-decoration:none;cursor:pointer;transition:transform var(--dur-press) var(--ease),background-color var(--dur-press) var(--ease)}
-.btn:hover:not(:disabled){background:var(--surface-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:48px;padding:var(--sp-2) var(--sp-5);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 var(--t-body)/1.3 var(--font-ui);text-align:center;text-decoration:none;cursor:pointer;transition:transform var(--dur-press) var(--ease),background-color var(--dur-press) var(--ease),border-color var(--dur-press) var(--ease),box-shadow var(--dur-press) var(--ease)}
+.btn:hover:not(:disabled){background:var(--surface-2);border-color:var(--ink-2)}
 .btn:active:not(:disabled){transform:translateY(1px)}
-.btn.primary,.btn.orange{background:var(--primary);border-color:transparent;color:var(--on-primary)}
-.btn.primary:hover:not(:disabled),.btn.orange:hover:not(:disabled){background:var(--ink-2)}
+/* The primary has a lit top edge and a soft drop, so the one action on screen reads as a physical button. */
+.btn.primary,.btn.orange{background:var(--primary);border-color:transparent;color:var(--on-primary);box-shadow:inset 0 1px 0 rgb(255 255 255/.16),0 1px 2px rgb(0 0 0/.2),0 8px 20px -10px rgb(0 0 0/.55)}
+.btn.primary:hover:not(:disabled),.btn.orange:hover:not(:disabled){border-color:transparent;background:var(--ink-2);background:color-mix(in srgb,var(--primary) 82%,var(--on-primary))}
 .btn.ghost{background:transparent;border-color:transparent;padding-inline:var(--sp-3);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .btn.ghost:hover:not(:disabled){background:var(--surface-2)}
 .btn.danger{background:transparent;border-color:var(--danger);color:var(--danger)}
@@ -263,15 +273,15 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 
 /* ---------- Keycaps and LCD chips: the two hardware primitives ---------- */
 /* Quiet by default. .hot (yellow) only in Do lines and for a lit control on the device map. */
-.key{display:inline-block;min-width:1.9em;margin:0 .1em;padding:.05em .45em;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);box-shadow:0 2px 0 var(--line-strong);font:700 max(.8em,14px)/1.5 var(--font-ui);letter-spacing:.02em;text-align:center;white-space:nowrap;vertical-align:.1em}
-.key.hot{background:var(--key);border-color:var(--key-edge);color:var(--on-key);box-shadow:0 2px 0 var(--key-edge)}
+.key{display:inline-block;min-width:1.9em;margin:0 .1em;padding:.05em .45em;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);background:var(--cap-face);color:var(--ink);box-shadow:0 2px 0 var(--line-strong);font:700 max(.8em,14px)/1.5 var(--font-ui);letter-spacing:.02em;text-align:center;white-space:nowrap;vertical-align:.1em}
+.key.hot{background:var(--key);background:var(--key-face);border-color:var(--key-edge);color:var(--on-key);box-shadow:0 2px 0 var(--key-edge),inset 0 1px 0 rgb(255 255 255/.5)}
 .key.hold::before{content:"HOLD";margin-right:.45em;padding-right:.45em;border-right:1px solid currentColor;color:var(--ink-2)}
 .key.hot.hold::before{color:inherit}
 .key.knob{border-radius:999px;min-width:2.1em}
 .key.pad{min-width:2.4em}
 .chord{font:inherit;white-space:nowrap}
 .nobr{white-space:nowrap}   /* punctuation that must stay on the line of the keycap or chip it touches */
-.lcd{display:inline-block;padding:.05em .4em;border:1px solid var(--lcd-line);border-radius:var(--r-chip);background:var(--lcd-bg);color:var(--lcd-ink);font:500 max(.85em,14px)/1.5 var(--font-mono);letter-spacing:0;white-space:nowrap}
+.lcd{display:inline-block;padding:.05em .4em;border:1px solid var(--lcd-line);border-radius:var(--r-chip);background:var(--lcd-bg);color:var(--lcd-ink);box-shadow:inset 0 1px 3px rgb(0 0 0/.5);text-shadow:0 0 8px rgb(242 242 234/.35);font:500 max(.85em,14px)/1.5 var(--font-mono);letter-spacing:0;white-space:nowrap}
 .lcd.readout{display:block;width:max-content;max-width:100%;margin:var(--sp-2) 0;padding:var(--sp-2) var(--sp-4);border-radius:var(--r-control);font-size:28px;line-height:36px;white-space:normal}
 
 /* ---------- Tags and badges ---------- */
@@ -313,7 +323,6 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 /* ---------- Cards and disclosures ---------- */
 .card{margin:var(--sp-4) 0;padding:var(--sp-5);border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
 .card > :last-child{margin-bottom:0}
-.card.start{border:2px solid var(--primary)}
 @media (max-width:599px){.card{padding:var(--sp-4) var(--sp-4) var(--sp-5)}}
 /* The chevron replaces the browser's marker on every <summary> and turns when the section opens. */
 summary{display:flex;align-items:center;gap:var(--sp-3);min-height:48px;cursor:pointer;font-weight:600;list-style:none}
@@ -391,12 +400,17 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 @media (max-width:599px){.chapters{grid-template-columns:1fr}.chapters .next{grid-column:auto;text-align:left}}
 
 /* ---------- Shell: app bar ---------- */
+/* Frosted: the page shows faintly through the bar as it scrolls under it. Without backdrop-filter it is solid. */
 .appbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:var(--sp-3);height:var(--appbar-h);padding:0 var(--gutter);border-bottom:1px solid var(--line);background:var(--surface-1);transition:box-shadow var(--dur-swap) var(--ease)}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.appbar{background:color-mix(in srgb,var(--surface-1) 82%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px)}}
 .appbar.scrolled{box-shadow:var(--e2)}
 .appbar .menu-btn{margin-left:-10px}
 /* Without JavaScript the bar is the wordmark and a Search link to Troubleshooting (plan 5.8); shell.js replaces both. */
 .appbar .static-search{margin:0 -10px 0 auto}
-.wordmark{display:inline-flex;flex-direction:column;flex:none;color:var(--ink);font:700 15px/18px var(--font-ui);text-decoration:none;white-space:nowrap}
+/* The wordmark: the app icon, then "K.O. II" over a quieter "Coach" (one line from 600px). */
+.wordmark{display:inline-grid;grid-template-columns:28px auto;column-gap:10px;align-items:center;flex:none;color:var(--ink);font:700 15px/18px var(--font-ui);letter-spacing:-.01em;text-decoration:none;white-space:nowrap}
+.wordmark::before{content:"";grid-row:1/3;width:28px;height:28px;border-radius:7px;background:url(icon.svg) center/contain no-repeat;box-shadow:0 0 0 1px var(--line),0 2px 6px -2px rgb(0 0 0/.3)}
+.wordmark > :last-child{color:var(--ink-2)}
 .wordmark-sep{display:none}
 .wordmark:hover{text-decoration:underline;text-decoration-thickness:1.5px}
 .bar-title{display:flex;flex-direction:column;justify-content:center;min-width:0;margin:0;max-width:none;padding-left:var(--sp-3);border-left:1px solid var(--line)}
@@ -415,7 +429,7 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .appbar-meter[hidden]{display:none}
 .appbar-meter .meter-fill{border-radius:0}
 @media (forced-colors:active){.appbar-meter{border-top:1px solid CanvasText}.appbar-meter .meter-fill{forced-color-adjust:none;background:CanvasText}}
-@media (min-width:600px){.wordmark{flex-direction:row;gap:.5em;font-size:16px;line-height:20px}.wordmark-sep{display:inline}}
+@media (min-width:600px){.wordmark{display:inline-flex;align-items:center;gap:.5em;font-size:16px;line-height:20px}.wordmark::before{margin-right:.25em}.wordmark-sep{display:inline;color:var(--line-strong)}}
 @media (max-height:480px){.appbar{position:static}.bar-kicker{display:none}}
 
 /* ---------- Shell: course and tools lists (in the menu sheet, or the rail on desktop) ---------- */
@@ -471,7 +485,7 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 html:has(.sheet[open]){overflow:hidden}
 .sheet{width:100%;max-width:100%;max-height:88vh;max-height:88dvh;margin:auto 0 0;padding:0;border:0;border-radius:var(--r-card) var(--r-card) 0 0;background:var(--surface-raised);color:var(--ink);box-shadow:var(--e3);overflow:hidden}
 .sheet[open]{display:flex;flex-direction:column;animation:sheet-up var(--dur-sheet) var(--ease)}
-.sheet::backdrop{background:rgb(8 8 8/.5)}
+.sheet::backdrop{background:rgb(8 8 8/.5);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sheet::backdrop{background:rgb(8 8 8/.7)}}
 :root[data-theme="dark"] .sheet::backdrop{background:rgb(8 8 8/.7)}
 .sheet[open]::backdrop{animation:fade var(--dur-sheet) var(--ease)}
@@ -515,7 +529,7 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 /* The schematic (controls.html, copied into the Tools sheet and the keys panel): the unit's top as original line art,
    every control placed where it is on the K.O. II (positions in % of the panel, taken from teenage engineering's top-view
    photo). Not to scale, and not an official drawing: no logo or printed artwork, only the parts and their labels. */
-.device.schem{position:relative;container-type:inline-size;width:min(100%,calc(60dvh * 522 / 712));aspect-ratio:522/712;margin:0 auto;padding:0;border-width:2px;border-radius:2.5cqw;background:var(--surface-2)}
+.device.schem{position:relative;container-type:inline-size;width:min(100%,calc(60dvh * 522 / 712));aspect-ratio:522/712;margin:0 auto;padding:0;border-width:2px;border-radius:2.5cqw;background:var(--surface-2);background:linear-gradient(170deg,var(--surface-1),var(--surface-2) 40%,var(--surface-3));box-shadow:inset 0 1px 0 rgb(255 255 255/.5),var(--e2)}
 .schem-art,.schem-keys{position:absolute;inset:0}
 .schem-art > *,.device.schem .schem-keys > .control{position:absolute;box-sizing:border-box}
 .schem-port{display:grid;place-items:center;border:1px solid var(--line-strong);border-top:0;border-radius:0 0 1cqw 1cqw;color:var(--ink-2);font:700 2.1cqw/1 var(--font-ui);letter-spacing:.03em}
@@ -527,7 +541,7 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .schem-fader{border-radius:999px;background:var(--line-strong)}
 .schem-fader::after{content:"";position:absolute;left:-180%;right:-180%;top:44%;height:14%;border:1.5px solid var(--line-strong);border-radius:1cqw;background:var(--surface-1)}
 .schem-label{display:grid;place-items:center;color:var(--ink-2);font:700 1.9cqw/1 var(--font-ui);letter-spacing:.02em;white-space:nowrap}
-.device.schem .display.schem-display{display:grid;place-items:center;margin:0;padding:1.5cqw;border-radius:1cqw;font:500 3.6cqw/1.3 var(--font-mono);text-align:center;overflow:hidden}
+.device.schem .display.schem-display{display:grid;place-items:center;margin:0;padding:1.5cqw;border-radius:1cqw;box-shadow:inset 0 .6cqw 1.6cqw rgb(0 0 0/.6);text-shadow:0 0 8px rgb(242 242 234/.35);font:500 3.6cqw/1.3 var(--font-mono);text-align:center;overflow:hidden}
 .device.schem .schem-keys > .control{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5cqw;min-height:0;padding:0;border-radius:1.4cqw;box-shadow:0 .7cqw 0 var(--line-strong);font:700 2.15cqw/1 var(--font-ui);letter-spacing:-.02em;overflow-wrap:normal;white-space:nowrap}
 .device.schem .schem-keys > .control small{font-size:1.6cqw;font-weight:600;color:var(--ink-2)}
 .device.schem .schem-keys > .control.hot small{color:inherit}
@@ -543,9 +557,9 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .device .info h3{margin:var(--sp-1) 0}
 .hint{margin:0 0 var(--sp-2)}
 .controls:not(.schem-keys){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-2)}
-.control{min-height:48px;padding:var(--sp-1);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);box-shadow:0 3px 0 var(--line-strong);font:700 var(--t-cap)/1.2 var(--font-ui);overflow-wrap:anywhere}
+.control{min-height:48px;padding:var(--sp-1);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);background:var(--cap-face);color:var(--ink);box-shadow:0 3px 0 var(--line-strong);font:700 var(--t-cap)/1.2 var(--font-ui);overflow-wrap:anywhere}
 .control:active{transform:translateY(1px)}
-.control.hot{border-color:var(--key-edge);background:var(--key);color:var(--on-key);box-shadow:0 3px 0 var(--key-edge)}
+.control.hot{border-color:var(--key-edge);background:var(--key);background:var(--key-face);color:var(--on-key);box-shadow:0 3px 0 var(--key-edge)}
 .control.chosen{outline:3px solid var(--ink);outline-offset:2px}
 .control:focus-visible{outline-color:var(--focus)}
 .control.sym{font-size:20px;line-height:1}
@@ -620,7 +634,7 @@ dl.gloss dt{margin-top:var(--sp-3)}
 @media (prefers-reduced-motion:reduce){
   :root{--dur-press:0ms;--dur-swap:0ms;--dur-open:0ms;--dur-sheet:0ms}
   *,*::before,*::after{animation-duration:0s!important;animation-iteration-count:1!important;transition-duration:0s!important;scroll-behavior:auto!important}
-  .btn:active,.icon-btn:active,.control:active{transform:none!important}
+  .btn:active,.icon-btn:active,.control:active,.tile:hover{transform:none!important}
 }
 
 /* ---------- Forced colours (Windows contrast themes) ---------- */
@@ -647,7 +661,7 @@ dl.gloss dt{margin-top:var(--sp-3)}
 /* ---------- Print ---------- */
 /* The whole chapter on paper: no shell, no buttons, ink on white, every section open (chapter.js opens them). */
 @media print{
-  :root{color-scheme:light;--bg:#fff;--surface-1:#fff;--surface-2:#fff;--surface-3:#fff;--ink:#000;--ink-2:#333;--line:#bbb;--line-strong:#666;--lcd-bg:#fff;--lcd-ink:#000;--lcd-line:#000;--key:#fff;--on-key:#000;--key-edge:#000;--done-ink:#000;--done-fill:#fff;--on-done:#000;--here:#000;--e1:none;--e2:none;--e3:none;
+  :root{color-scheme:light;--bg:#fff;--surface-1:#fff;--surface-2:#fff;--surface-3:#fff;--ink:#000;--ink-2:#333;--line:#bbb;--line-strong:#666;--lcd-bg:#fff;--lcd-ink:#000;--lcd-line:#000;--key:#fff;--on-key:#000;--key-edge:#000;--done-ink:#000;--done-fill:#fff;--on-done:#000;--here:#000;--e1:none;--e2:none;--e3:none;--cap-face:#fff;--key-face:#fff;--glow:transparent;
     --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E")}
   html.shell-on body{padding-left:0}
   body{background:#fff;color:#000}
@@ -656,6 +670,7 @@ dl.gloss dt{margin-top:var(--sp-3)}
   .card,.steps > details{box-shadow:none;break-inside:avoid}
   details{break-inside:avoid}
   .key.hot{border-width:2px}
+  .lcd,.display{box-shadow:none!important;text-shadow:none!important}
 }
 
 /* ---------- Course rows, Home and the lab's challenges ---------- */
@@ -664,13 +679,16 @@ dl.gloss dt{margin-top:var(--sp-3)}
 .tag .icon{width:16px;height:16px}
 .source .icon{width:16px;height:16px;margin-left:var(--sp-1);vertical-align:-3px}
 /* Course rows (Home, 404) and the lab's challenges: LED rows like the course menu. */
-.path li{display:grid;grid-template-columns:12px minmax(0,1fr) auto;align-items:center;gap:var(--sp-1) var(--sp-3);min-height:48px;max-width:none;margin:0;padding:var(--sp-2) 0;border-bottom:1px solid var(--line)}
-.path li:last-child{border-bottom:0}
+.path li{position:relative;display:grid;grid-template-columns:12px minmax(0,1fr) auto;align-items:center;gap:var(--sp-1) var(--sp-3);min-height:48px;max-width:none;margin:0;padding:var(--sp-3);border-radius:var(--r-control);transition:background-color var(--dur-press) var(--ease)}
+@media (hover:hover){.path li:hover{background:var(--surface-2)}}
 .path a{font-weight:600}
-.path .num{margin-right:var(--sp-1);font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
+/* The row is the link's target: its ::after covers the row, so a tap anywhere on it opens the chapter. */
+.path a::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.path .num{display:inline-grid;place-items:center;min-width:28px;height:28px;margin-right:var(--sp-2);padding:0 var(--sp-1);border:1px solid var(--line);border-radius:8px;background:var(--surface-2);font:700 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink);vertical-align:middle}
+.path{margin-inline:calc(-1 * var(--sp-3))}
 .path li > .meta{text-align:right}
 /* Phones: the status goes under the name, and the LED lines up with the name's first line. */
-@media (max-width:599px){.path li{grid-template-columns:12px minmax(0,1fr);align-items:start}.path .led{margin-top:7px}.path li > .meta{grid-column:2;text-align:left}}
+@media (max-width:599px){.path li{grid-template-columns:12px minmax(0,1fr);align-items:start}.path .led{margin-top:9px}.path li > .meta{grid-column:2;text-align:left}}
 #goals li{display:flex;align-items:center;gap:var(--sp-3);min-height:40px;margin:0}
 .modes{padding-left:0;list-style:none}
 .modes li{margin:var(--sp-2) 0}
@@ -745,8 +763,28 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 /* Home: the welcome or Continue card, the course in guided order, device projects and the
    tools; two columns where .split has them. Settings: the keep-screen-on choice. Everything else is a component above. */
 .home > div > .card:first-child{margin-top:0}
-.welcome .lead{margin-bottom:var(--sp-5)}
-.welcome h2{font-size:var(--t-check);line-height:var(--t-check-lh)}
+/* The panel: the welcome and Continue cards are a dark instrument face in both themes, with a field of speaker dots
+   fading in from the top right. Its own dark tokens (the same values as the dark theme's) keep every ratio of plan 6.2
+   for what sits on it. Screen only: on paper it is a plain card. */
+@media screen{
+  .card.welcome,.card.continue{
+    --surface-1:#1B1B1A; --surface-2:#2A2A28; --surface-3:#3A3A37; --line:#3D3D3A; --line-strong:#8A8A83; --ink:#EDEDE8; --ink-2:#B4B4AD;
+    --primary:#EDEDE8; --on-primary:#080808; --done-ink:#62D4BE; --done-fill:#40C4AE; --on-done:#080808; --here:#40C4AE;
+    --lcd-line:#8A8A83; --focus:#7FB2FF; --cap-face:linear-gradient(#272726,#1B1B1A);
+    color-scheme:dark;position:relative;isolation:isolate;overflow:hidden;border:1px solid rgb(255 255 255/.08);background:#141413;background:var(--panel);color:var(--ink);
+    box-shadow:inset 0 1px 0 rgb(255 255 255/.1),0 2px 4px rgb(0 0 0/.12),0 28px 56px -28px rgb(0 0 0/.6)}
+  .card.welcome::after,.card.continue::after{content:"";position:absolute;z-index:-1;top:0;right:0;width:min(60%,22rem);height:100%;pointer-events:none;
+    background:radial-gradient(circle,rgb(255 255 255/.17) 1.3px,transparent 1.8px) 0 0/12px 12px;
+    -webkit-mask:linear-gradient(225deg,#000,transparent 70%);mask:linear-gradient(225deg,#000,transparent 70%)}
+  .card.welcome .btn:not(.primary),.card.continue .btn:not(.primary){background:rgb(255 255 255/.04)}
+  .card.welcome .btn:not(.primary):hover,.card.continue .btn:not(.primary):hover{background:rgb(255 255 255/.09)}
+}
+@media screen and (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.card.welcome,.card.continue){border-color:rgb(255 255 255/.12)}}
+@media screen{:root[data-theme="dark"] :is(.card.welcome,.card.continue){border-color:rgb(255 255 255/.12)}}
+.welcome h1{font-size:clamp(2.125rem,1.7rem + 1.6vw,2.75rem);line-height:1.08;letter-spacing:-.035em;max-width:14em}
+.welcome .lead{margin-bottom:var(--sp-6);color:var(--ink-2)}
+.welcome h2{font-size:var(--t-check);line-height:var(--t-check-lh);letter-spacing:0}
+.continue h2{font-size:clamp(1.75rem,1.5rem + 1vw,2.25rem);line-height:1.15;letter-spacing:-.03em}
 .stack{display:grid;gap:var(--sp-3);max-width:30rem;margin:0 0 var(--sp-4)}
 .stack .btn{width:100%}
 .continue .where{margin-bottom:var(--sp-2);font-weight:600}
@@ -757,13 +795,13 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .continue-count{display:flex;align-items:center;gap:var(--sp-3);margin:0 0 var(--sp-3);font-weight:600}
 .continue-count .meter{flex:1 1 auto;max-width:20rem;margin:0}
 .chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:0 0 var(--sp-3);padding:0;list-style:none}
-.chips li{max-width:none;margin:0;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui)}
+.chips li{max-width:none;margin:0;padding:var(--sp-1) var(--sp-3);border:1px solid var(--line);border-radius:999px;background:var(--surface-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui)}
 /* Course complete: every chapter and what it made. */
 .made-list{margin:0 0 var(--sp-4);padding:0;list-style:none}
 .made-list li{margin:0 0 var(--sp-2)}
 .made-list .sub{display:block}
 /* The chapter Continue opens: a green rule and "You are here". */
-.path li.here{box-shadow:inset 4px 0 0 var(--here);padding-left:var(--sp-2)}
+.path li.here{box-shadow:inset 3px 0 0 var(--here);background:var(--surface-2)}
 .path .here-tag{display:inline-flex;margin:0 0 0 var(--sp-2);vertical-align:.1em}
 .home-foot p{margin:0 0 var(--sp-2)}
 .home-foot .install-slot:empty,.home-foot .offline-retry:empty{display:none}
@@ -778,10 +816,11 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 /* Tool tiles: two per row at any width, so the four tools read as one block. */
 .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-3);margin:0 0 var(--sp-4);padding:0;list-style:none}
 .tiles li{max-width:none;margin:0}
-.tile{display:flex;flex-direction:column;gap:var(--sp-1);height:100%;min-height:96px;padding:var(--sp-3);border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-2);color:var(--ink);text-decoration:none}
+.tile{display:flex;flex-direction:column;gap:var(--sp-1);height:100%;min-height:96px;padding:var(--sp-3) var(--sp-3) var(--sp-4);border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-1);box-shadow:var(--e1);color:var(--ink);text-decoration:none;transition:transform var(--dur-press) var(--ease),box-shadow var(--dur-press) var(--ease),border-color var(--dur-press) var(--ease)}
 .tile:hover{border-color:var(--line-strong)}
+@media (hover:hover){.tile:hover{box-shadow:var(--e2);transform:translateY(-1px)}}
 .tile:hover .t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
-.tile .icon{color:var(--ink-2)}
+.tile .icon{box-sizing:content-box;margin-bottom:var(--sp-2);padding:var(--sp-2);border-radius:10px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink)}
 /* No break inside a word (plan 13.2): only at a space, or at the soft hyphen in "Trouble·shooting" on a narrow phone. */
 .tile .t{font-weight:600;line-height:1.3;overflow-wrap:normal;-webkit-hyphens:manual;hyphens:manual}
 .tile .d{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
@@ -824,9 +863,8 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .search-field input::placeholder{color:var(--ink-2);opacity:1}
 /* Type filter and suggestions: 44px pills. The chosen filter is outlined in ink as well as filled. */
 .search-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2);padding:var(--sp-2) var(--sp-3)}
-.search-chip{min-height:44px;padding:0 var(--sp-3);border:1.5px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--ink);font:600 15px/1.2 var(--font-ui)}
-.search-chip:hover{background:var(--surface-3)}
-.search-chip[aria-pressed="true"]{border-color:var(--ink);background:var(--surface-3);box-shadow:inset 0 0 0 1px var(--ink)}
+.search-chip{min-height:44px;padding:0 var(--sp-3);border:1px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--ink);font:600 15px/1.2 var(--font-ui)}
+.search-chip:hover{background:var(--surface-2)}
 .search-body{padding-top:var(--sp-1)}
 .search-note,.search-empty{margin:var(--sp-3) var(--sp-2)}
 .search-empty .meta{margin:0 0 var(--sp-3)}
@@ -952,16 +990,16 @@ html[data-player="step"].pl-kbd .steps ol > li.is-current:focus-visible{outline:
 html[data-player="step"] .steps ol > li.is-current:is([data-risk="delete"],[data-risk="overwrite"],[data-risk="erase-scene"]){border:2px solid var(--danger)}
 html[data-player="step"] .steps ol > li.is-current.is-checkpoint{border:1.5px solid var(--here)}
 html[data-player="step"] li.is-current > .step-head{display:flex;min-height:48px;margin:0 0 var(--sp-3);padding-right:56px}
-html[data-player="step"] li.is-current .step-num{display:inline-flex;align-items:center;justify-content:center;min-width:2.5em;height:32px;padding:0 var(--sp-2);border-radius:var(--r-chip);background:var(--surface-3);color:var(--ink);font:600 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums}
+html[data-player="step"] li.is-current .step-num{display:inline-flex;align-items:center;justify-content:center;min-width:2.5em;height:32px;padding:0 var(--sp-2);border:1px solid var(--line);border-radius:999px;background:var(--surface-2);color:var(--ink-2);font:700 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;letter-spacing:.02em}
 html[data-player="step"] li.is-current > .check{position:absolute;top:var(--sp-3);right:var(--sp-3);justify-content:center;min-width:48px;margin:0}
 html[data-player="step"] li.is-current > .check span{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
 @media (min-width:600px){html[data-player="step"] li.is-current > .check{top:var(--sp-4);right:var(--sp-4)}}
 html[data-player="step"] li.is-current > .step-do{margin:0 0 var(--sp-3);font-size:var(--t-do);line-height:var(--t-do-lh)}
 html[data-player="step"] li.is-current > .step-check{margin:var(--sp-4) 0 0;font-size:var(--t-check);line-height:var(--t-check-lh)}
 html[data-player="step"] li.is-current > .preflight{font-size:var(--t-check);line-height:var(--t-check-lh)}
-html[data-player="step"] li.is-current .key{background:var(--key);border-color:var(--key-edge);color:var(--on-key);box-shadow:0 2px 0 var(--key-edge)}
+html[data-player="step"] li.is-current .key{background:var(--key);background:var(--key-face);border-color:var(--key-edge);color:var(--on-key);box-shadow:0 2px 0 var(--key-edge),inset 0 1px 0 rgb(255 255 255/.5)}
 html[data-player="step"] li.is-current .key.hold::before{color:inherit}
-html[data-player="step"] li.is-current .step-check .key{background:var(--surface-1);border-color:var(--line-strong);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
+html[data-player="step"] li.is-current .step-check .key{background:var(--cap-face);border-color:var(--line-strong);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
 @keyframes pl-in{from{opacity:0;transform:translateX(12px)}}
 html[data-player="step"] .steps ol > li.is-current.pl-in{animation:pl-in var(--dur-swap) var(--ease)}
 @media (prefers-reduced-motion:reduce){html[data-player] .pl-in{animation:none!important}}
@@ -1008,7 +1046,7 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
 .pd-actions .btn .icon{width:20px;height:20px}
 /* Start screen: chips, the safety summary (copies of the page's danger notices), the parts */
 .player-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-1);margin:0 0 var(--sp-3);padding:0;list-style:none}
-.player-chips li{max-width:none;margin:0;padding:2px 6px;border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui)}
+.player-chips li{max-width:none;margin:0;padding:2px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface-2);font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui)}
 /* The chapter needs a newer OS than the one chosen in Settings: a caution chip with the way to update. */
 .player-chips li.warn{display:inline-flex;align-items:center;gap:var(--sp-2);border-color:var(--caution-line);background:var(--caution-surface);color:var(--caution-ink)}
 .player-chips li.warn .icon{width:18px;height:18px}
@@ -1017,6 +1055,7 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
    JavaScript show the full preamble as written. */
 main > .promise,main > .needs{display:none}
 html[data-player="start"] .page-head{margin-bottom:var(--sp-3)}
+html[data-player="start"] .page-head h1{font-size:clamp(2.25rem,1.8rem + 1.8vw,3.25rem);line-height:1.06;letter-spacing:-.035em}
 html[data-player="start"] main > .promise{display:block;margin:0 0 var(--sp-3)}
 html[data-player="start"] main > .needs{display:block;margin:var(--sp-3) 0}
 .needs > h2{margin:0 0 var(--sp-2);font-size:var(--t-check);line-height:var(--t-check-lh)}
@@ -1051,8 +1090,9 @@ html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
 .pp-list{margin:0;padding:0;overflow:hidden;list-style:none;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
 .pp-list li{max-width:none;margin:0;border-top:1px solid var(--line)}
 .pp-list li:first-child{border-top:0}
-.pp-list a{display:grid;grid-template-columns:2ch minmax(0,1fr) auto;align-items:center;gap:var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-4);color:var(--ink);font-weight:600;line-height:1.3;text-decoration:none}
+.pp-list a{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-4);color:var(--ink);font-weight:600;line-height:1.3;text-decoration:none}
 .pp-list a:hover{background:var(--surface-2)}
+.pp-list .pp-n{display:grid;place-items:center;height:28px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--ink);text-align:center}
 .pp-list a:hover .pp-t,.ps-step:hover .ps-t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .pp-list .tally,.ps-part .tally{margin-left:0}
 /* A wide screen: the parts list stands beside everything above it (player.js counts those rows into --start-rows).
@@ -1087,6 +1127,7 @@ html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
 /* Action bar: Back, Steps and the one primary. Fixed under the thumb on phones and tablets (72px plus the safe area,
    a single 48px row on short viewports), docked under the card on desktop. */
 .player-actions{position:fixed;left:0;right:0;bottom:0;z-index:25;padding:var(--sp-2) var(--gutter) calc(var(--sp-2) + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--surface-1);box-shadow:0 -8px 24px rgb(0 0 0/.08)}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.player-actions{background:color-mix(in srgb,var(--surface-1) 82%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px)}}
 .pa-row{display:flex;align-items:stretch;gap:var(--sp-2);max-width:46rem;margin:0 auto}
 .pa-btn{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:none;width:56px;min-height:56px;padding:0;border:1.5px solid transparent;border-radius:var(--r-control);background:transparent;color:var(--ink);font:600 var(--t-cap)/1.1 var(--font-ui)}
 .pa-btn:hover{background:var(--surface-2)}
@@ -1110,7 +1151,7 @@ html[data-hand="left"] .pa-more{right:auto;left:var(--gutter)}
 }
 @media (min-width:1024px){
   html[data-player] body{padding-bottom:0}
-  .player-actions{position:sticky;left:auto;right:auto;max-width:calc(46rem + 2 * var(--gutter));margin:0 auto;padding:var(--sp-4) var(--gutter) var(--sp-4);border:0;background:linear-gradient(to bottom,transparent,var(--bg) var(--sp-4));box-shadow:none}
+  .player-actions{position:sticky;left:auto;right:auto;max-width:calc(46rem + 2 * var(--gutter));margin:0 auto;padding:var(--sp-4) var(--gutter) var(--sp-4);border:0;-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(to bottom,transparent,var(--bg) var(--sp-4));box-shadow:none}
   .pa-row{max-width:none;padding:var(--sp-2);border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e2)}
   .pa-hint{display:block;width:max-content;max-width:100%;margin:var(--sp-2) auto 0;padding:2px var(--sp-3);border-radius:var(--r-chip);background:var(--bg);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh);text-align:center}
   .pa-hint .key{font-size:14px}
@@ -1250,7 +1291,8 @@ html[data-text="larger"][data-player="step"] li.is-current > .step-check{margin-
 .step-moves,.moves{margin:var(--sp-2) 0 var(--sp-3);padding-left:1.25em}
 .step-moves li,.moves li{margin:var(--sp-1) 0}
 .step-extras{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:var(--sp-3) 0 var(--sp-2)}
-.step-more{border:1px solid var(--line);border-radius:var(--r-control);background:var(--surface-2)}
+.step-more{border:1px solid var(--line);border-radius:var(--r-control);background:transparent;transition:background-color var(--dur-press) var(--ease)}
+.step-more:hover,.step-more[open]{background:var(--surface-2)}
 .step-more > summary{min-height:44px;padding:0 var(--sp-4) 0 var(--sp-3);font-size:var(--t-cap)}
 .step-more[open]{flex-basis:100%}
 .step-more > p{max-width:none;margin:0;padding:0 var(--sp-4) var(--sp-3);font-size:var(--t-body);line-height:var(--t-body-lh)}
@@ -1275,7 +1317,7 @@ html.pl-kbd .steps li > .step-title:focus-visible{outline:3px solid var(--focus)
 /* In the player the step's parts keep their own sizes: only the Do line (and the preflight) is large. */
 html[data-player="step"] li.is-current > :is(.step-consequence,.step-extras,.step-source,.step-report,.step-moves,.pattern,.runner,.step-undo,.step-noundo,.step-note,.badge,.skip-box){font-size:var(--t-body);line-height:var(--t-body-lh)}
 html[data-player="step"] li.is-current > :is(.step-source,.step-report){font-size:var(--t-cap);line-height:var(--t-cap-lh)}
-html[data-player="step"] li.is-current .step-more .key,html[data-player="step"] li.is-current .step-source .key{background:var(--surface-1);border-color:var(--line-strong);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
+html[data-player="step"] li.is-current .step-more .key,html[data-player="step"] li.is-current .step-source .key{background:var(--cap-face);border-color:var(--line-strong);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
 /* A risk tag is a link to safety.html: a tag, not underlined. */
 a.tag{text-decoration:none}
 a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
@@ -1331,9 +1373,9 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .tools-head .search-field{flex:1;min-width:0}
 .tools-head .search-field input{min-height:48px}
 .tools-tabs{display:flex;gap:var(--sp-1);padding:var(--sp-2) var(--sp-3);overflow-x:auto;border-bottom:1px solid var(--line);scrollbar-width:thin}
-.tools-tabs button{flex:none;min-height:44px;padding:0 var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font-weight:600;white-space:nowrap}
-.tools-tabs button:hover{background:var(--surface-3)}
-.tools-tabs button[aria-selected="true"]{border-color:var(--ink);background:var(--surface-3);box-shadow:inset 0 0 0 1px var(--ink)}
+.tools-tabs button{flex:none;min-height:44px;padding:0 var(--sp-4);border:1px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--ink);font-weight:600;white-space:nowrap}
+.tools-tabs button:hover{background:var(--surface-2)}
+.tools-tabs button[aria-selected="true"],.search-chip[aria-pressed="true"]{border-color:var(--primary);background:var(--primary);color:var(--on-primary)}
 .tools-body{padding-top:var(--sp-3)}
 .tools-panel{padding:0 var(--sp-2)}
 .tools-panel:focus{outline:none}

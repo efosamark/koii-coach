@@ -4,6 +4,23 @@ What changed in each release of K.O. II Coach. Versions are dates (`YYYY.MM.DD`,
 
 Each release records the date its instructions were checked against the [official EP-133 guide](https://teenage.engineering/guides/ep-133), and which firmware version the guide described then. If your device runs a newer OS and something differs, follow the official guide and [report the step](https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml).
 
+## 2026.10.15.4
+
+**Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence and no wording changed.
+
+A finish for the new look. 2026.10.15 gave the course its type and colour; the owner found the result still read like coursework, built from flat white boxes and heavy outlines. This release keeps every colour meaning and size, and gives the surfaces the depth and detail of a piece of studio equipment.
+- **Home.** The welcome card and the Continue card are a dark instrument panel in both themes, with a field of speaker dots fading in from the top right and a larger title. They use the dark theme's own colours, so everything on them keeps its contrast. The course list is a list of rows you can tap anywhere, each chapter number in a small square. The tool tiles are raised, with their icon in a well, and lift a little under the pointer.
+- **Keycaps** are lit from above: yellow keys have a lighter top edge, quiet keys a faint gradient, and both keep their solid bottom edge. The control map and the keys panel draw their buttons the same way, on a unit body with a little depth.
+- **Display values** (`1.1.1`, `Project 6`, the control map's display) look like recessed glass, with the digits faintly lit.
+- **Cards and bars.** Shadows are two soft layers instead of one hard line. In dark mode raised surfaces get a 1px highlight along the top. The app bar and the phone's Done · Next bar are frosted: the page shows faintly through as it scrolls under them (solid where the browser can't blur). The page behind an open sheet is softened as well as darkened.
+- **App bar.** The wordmark has the app icon in front of it, with "Coach" in the quieter grey.
+- **Type.** Large headings are set slightly tighter (−1.5% for section headings, −2.5% for page titles, −3.5% for Home's and a chapter start's title), which is how display type is normally spaced; body text, labels and keycaps are unchanged. Chapter start titles are larger. Links keep their underline but in a lighter tone of the text colour, full strength under the pointer.
+- **Chips and tabs.** The chapter facts on the start screen and the Continue card ("30–50 min", "Project 6") and the step number ("8 of 10") are quiet rounded labels instead of outlined boxes. The Tools sheet's tabs and the search filters are rounded, and the chosen one is filled in ink. Part numbers on the start screen sit in the same small squares as the course list's. Why and Not working? are outlined and fill only when you hover or open them.
+
+Nothing moved: every step still fits above Done · Next at the sizes `test_fold.py` checks, and yellow still means only "press this".
+
+**For maintainers:** the new tokens are `--cap-face`, `--key-face`, `--glow` and `--panel` (plan §6.2, §6.3 and decision 26); `--e1` and `--e2` are two-layer shadows, and in dark they carry the top highlight. The CSS budget goes from 18 to 20 KB and a chapter page's from 80 to 82 KB (decision 19): the finish adds about 1.2 KB gzipped to the stylesheet, which took Chapter 6 to 80.4 KB.
+
 ## 2026.10.15.3
 
 **Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence changed; the wording that changed is listed below.
