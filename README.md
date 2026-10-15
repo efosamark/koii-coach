@@ -134,7 +134,7 @@ Pull requests run only the **test** job. If a test fails, nothing is deployed an
 | `site.js`, `shell.js` | The list of chapters and tools (and the release version), and the shared app bar and menu built from it. |
 | `progress.js` | Saved progress shared by every page: carrying Chapters 1 and 2 over from older versions, the progress file and Reset. |
 | `search.js`, `wake.js` | Search across every chapter and tool (works offline), and keeping the screen on while you practise. |
-| `icons.svg`, `fonts/` | Icons and the self-hosted fonts: Atkinson Hyperlegible Next for text and keys, Atkinson Hyperlegible Mono for display values (SIL Open Font License, see `fonts/OFL.txt`; `.github/scripts/make_fonts.py` makes them). |
+| `icons.svg`, `fonts/` | Icons and the self-hosted fonts: Atkinson Hyperlegible Next for text and keys, Atkinson Hyperlegible Mono for display values, Archivo SemiExpanded for titles (SIL Open Font License, see `fonts/OFL.txt`; `.github/scripts/make_fonts.py` makes them). |
 | `audio.js`, `beat.js` | The practice sounds made in the browser, and the target beats: every "Hear the beat" grid (and Chapter 1's target rhythms), drawn and played from the step's own text list. |
 | `chapter.js`, `player.js`, `toolsheet.js` | Ticks, progress and resume for every chapter page, the step player on top of them, and the Tools sheet (the step's keys, fixes and words; the map, troubleshooting, glossary and cheat sheet), which player.js loads once the page is idle. |
 | `sw.js` | Offline support (service worker). |

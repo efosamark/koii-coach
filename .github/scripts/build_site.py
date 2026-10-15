@@ -16,7 +16,7 @@ Fails (exit 1) when:
 - a step with data-os has no "Needs OS x or newer" fallback badge,
 - a page loads shell.js without site.js and progress.js before it (progress and migrations would not run there),
 - a page with its stylesheets and scripts weighs more than its budget, gzipped (plan 7.8): 60 KB for Home and the tool
-  pages, 82 KB for a chapter page (docs/overhaul-plan.md decision 19; today they weigh 68-81 KB),
+  pages, 82 KB for a chapter page (docs/overhaul-plan.md decision 19; today they weigh 69-81 KB),
 - another budget of plan 7.8 and decision 19 is broken: a page's HTML over 35 KB gzipped, the CSS over 20 KB, all the
   JavaScript over 72 KB or one page's over 48 KB (gzipped), the icon sprite over 6 KB, the font over 18 KB, or what
   sw.js saves for offline use over 600 KB gzipped,

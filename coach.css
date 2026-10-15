@@ -9,11 +9,12 @@
      <head>
        <meta charset="utf-8"> <meta name="viewport" content="width=device-width,initial-scale=1">
        <meta name="color-scheme" content="light dark">
-       <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+       <meta name="theme-color" content="#1B1B1A" media="(prefers-color-scheme: light)">   (the graphite app bar, both themes)
        <meta name="theme-color" content="#1B1B1A" media="(prefers-color-scheme: dark)">
        title, description, Open Graph and canonical as today; manifest, icon.svg and apple-touch-icon as today
        <link rel="preload" href="fonts/AtkinsonHyperlegibleNext-Regular.woff2" as="font" type="font/woff2" crossorigin>
        <link rel="preload" href="fonts/AtkinsonHyperlegibleNext-Bold.woff2" as="font" type="font/woff2" crossorigin>
+       <link rel="preload" href="fonts/ArchivoSemiExpanded-Bold.woff2" as="font" type="font/woff2" crossorigin>
        <link rel="stylesheet" href="coach.css">
        chapter pages only: <script src="chapter.js" defer></script>
      </head>
@@ -80,7 +81,7 @@
      that value, not with 0. From 1024px the menu button is hidden and the same links sit in the rail.
      Theme hooks for tests: <html data-theme="light|dark"> overrides the system setting.
      Offline: sw.js ASSETS must list ./coach.css ./site.js ./shell.js ./search.js ./icons.svg
-     and the four ./fonts/Atkinson*.woff2; build_site.py must copy icons.svg and fonts/ (woff2 and OFL.txt).
+     and the five ./fonts/*.woff2 (Atkinson and Archivo); build_site.py must copy icons.svg and fonts/ (woff2 and OFL.txt).
    ====================================================================================================== */
 
 /* ---------- Fonts: Atkinson Hyperlegible Next and Mono, Latin subsets (SIL OFL 1.1, fonts/OFL.txt) ---------- */
@@ -92,6 +93,11 @@
 @font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:600;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-SemiBold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD,U+2190,U+2192,U+2713,U+25A0,U+25B2,U+25C6,U+25CF}
 @font-face{font-family:"Atkinson Hyperlegible Next";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/AtkinsonHyperlegibleNext-Bold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD,U+2190,U+2192,U+2713,U+25A0,U+25B2,U+25C6,U+25CF}
 @font-face{font-family:"Atkinson Hyperlegible Mono";font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/AtkinsonHyperlegibleMono-Medium.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* Archivo SemiExpanded Bold (SIL OFL 1.1, fonts/OFL.txt), for titles only (decision 26): a wide grotesk, set like the
+   legends on studio equipment. Nothing read while playing uses it: steps, keycaps, display values and controls stay in
+   Atkinson, which falls in behind it for any character it lacks. */
+@font-face{font-family:"Archivo SemiExpanded";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/ArchivoSemiExpanded-Bold.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2212,U+2215,U+FEFF,U+FFFD}
 
 /* While Atkinson loads (first visit only), text is drawn in Arial or Roboto scaled to Atkinson's average width and
    line metrics, so the page doesn't reflow when the real font arrives. Widths measured over the course's own text. */
@@ -128,6 +134,7 @@
   /* Type. Six sizes, fluid between 390 and 1280px; rem so the reader's own text size still counts. */
   --font-ui:"Atkinson Hyperlegible Next","Atkinson Fallback Arial","Atkinson Fallback Roboto",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --font-mono:"Atkinson Hyperlegible Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;  /* display values only */
+  --font-display:"Archivo SemiExpanded",var(--font-ui);   /* page and section titles, the wordmark (decision 26) */
   --t-cap:.875rem; --t-cap-lh:1.25rem;                                                    /* 14/20: the floor */
   --t-body:clamp(1.0625rem,1.0351rem + .1124vw,1.125rem); --t-body-lh:clamp(1.625rem,1.5702rem + .2247vw,1.75rem); /* 17/26 -> 18/28 */
   --t-check:1.25rem; --t-check-lh:1.75rem;                                                /* 20/28 */
@@ -137,7 +144,7 @@
   --measure:42.1em;   /* 65 of Atkinson's 0; in em, not ch, so the line length does not change with the fallback font's 0 */
   /* Space, radii, layout */
   --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px; --sp-7:48px; --sp-8:64px;
-  --r-chip:6px; --r-control:12px; --r-card:20px;
+  --r-chip:6px; --r-control:10px; --r-card:14px;
   --gutter:16px; --container:1180px; --rail-w:288px;
   --appbar-h:56px; --sticky-top:var(--appbar-h);   /* sticky things sit under the app bar */
   /* Motion */
@@ -186,6 +193,24 @@
   --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23080808' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
 }}
 :root[data-theme="light"]{color-scheme:light}
+/* Graphite: the app bar, the desktop rail and Home's panel are the dark body of the device in both themes (decision 26).
+   They take the dark tokens above, unchanged, so every dark ratio of plan 6.2 holds on them. Screen only. */
+@media screen{.appbar,.rail,.card.welcome,.card.continue{
+  color-scheme:dark;color:var(--ink);
+  --bg:#080808; --surface-1:#1B1B1A; --surface-2:#252524; --surface-3:#363633; --surface-raised:#252524;
+  --line:#3D3D3A; --line-strong:#8A8A83; --ink:#EDEDE8; --ink-2:#ACACA5;
+  --primary:#EDEDE8; --on-primary:#080808;
+  --key:#FFD044; --on-key:#161616; --key-edge:#B38B00;
+  --lcd-bg:#050505; --lcd-ink:#F2F2EA; --lcd-line:#8A8A83;
+  --done-ink:#62D4BE; --done-fill:#40C4AE; --on-done:#080808; --here:#40C4AE;
+  --danger:#FF7A88; --danger-surface:#2E1517;
+  --caution-ink:#F5A766; --caution-surface:#2B1E13; --caution-line:#D9823A;
+  --info-ink:#A9C3D6; --info-surface:#1A2329;
+  --focus:#7FB2FF;
+  --e1:inset 0 1px 0 rgb(255 255 255/.06),0 1px 2px rgb(0 0 0/.4),0 6px 16px -8px rgb(0 0 0/.6); --e2:inset 0 1px 0 rgb(255 255 255/.06),0 16px 36px -12px rgb(0 0 0/.7); --e3:0 -16px 48px rgb(0 0 0/.5);
+  --cap-face:linear-gradient(#272726,#1B1B1A); --key-face:linear-gradient(#FFE387,#FFD044 65%); --glow:rgb(255 255 255/.05);
+  --i-tick:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23080808' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E");
+}}
 @media (min-width:600px){:root{--gutter:24px}}
 @media (min-width:1024px){:root{--gutter:32px;--appbar-h:64px}}
 /* Short viewports (landscape phones, high zoom): a 40px bar that scrolls away, so fixed chrome stays small. */
@@ -197,9 +222,12 @@
 html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--sticky-top) + 16px);scroll-padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
 body{margin:0;min-height:100vh;background:radial-gradient(80rem 32rem at 50% -10rem,var(--glow),transparent 70%) no-repeat,var(--bg);color:var(--ink);font:400 var(--t-body)/var(--t-body-lh) var(--font-ui);overflow-wrap:break-word}
 h1,h2,h3,h4{margin:0 0 var(--sp-3);color:var(--ink)}
-/* Large headings are set a little tighter, as display type is; body text keeps the face's own spacing. */
-h1{font-size:var(--t-h1);line-height:var(--t-h1-lh);font-weight:700;letter-spacing:-.025em}
+/* Titles are in the display face, set a little tighter, as display type is; h3 down (step titles) stay in Atkinson. */
+h1,h2{font-family:var(--font-display)}
+h1{font-size:var(--t-h1);line-height:var(--t-h1-lh);font-weight:700;letter-spacing:-.02em}
 h2{font-size:var(--t-h2);line-height:var(--t-h2-lh);font-weight:700;letter-spacing:-.015em}
+/* A card's or section's own title is a quiet 20px label, so the page's one big title leads (decision 26). */
+:is(.card,.section,.needs,.player-parts,.player-more .inside,.player-reference .ref-part) > h2,h2.sub{font-size:var(--t-check);line-height:var(--t-check-lh);letter-spacing:-.005em}
 h3{font-size:var(--t-check);line-height:var(--t-check-lh);font-weight:600}
 h4{font-size:var(--t-body);line-height:var(--t-body-lh);font-weight:600}
 p{margin:0 0 var(--sp-4)}
@@ -231,7 +259,7 @@ dl{margin:0 0 var(--sp-4)}
 dt{font-weight:600;margin-top:var(--sp-3)}
 dd{margin:0 0 var(--sp-1)}
 /* Form controls: 48px, line-strong outline, the page font (never the browser's Arial). */
-input[type=search],input[type=text],input[type=email],input[type=number],input[type=url],select,textarea{min-height:48px;padding:var(--sp-2) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);max-width:100%}
+input[type=search],input[type=text],input[type=email],input[type=number],input[type=url],select,textarea{min-height:48px;padding:var(--sp-2) var(--sp-3);border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);max-width:100%}
 input[type=checkbox],input[type=radio]{accent-color:var(--ink)}
 /* Range: 8px track, 28px thumb, ink. */
 input[type=range]{-webkit-appearance:none;appearance:none;width:10rem;max-width:100%;height:28px;margin:0 var(--sp-2);background:transparent;vertical-align:middle}
@@ -253,7 +281,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 /* ---------- Buttons ---------- */
 /* One primary per view. Disabled is a dashed outline with ink-2 text, never an opacity fade.
    .orange and .light are the old app names for primary and secondary. */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:48px;padding:var(--sp-2) var(--sp-5);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 var(--t-body)/1.3 var(--font-ui);text-align:center;text-decoration:none;cursor:pointer;transition:transform var(--dur-press) var(--ease),background-color var(--dur-press) var(--ease),border-color var(--dur-press) var(--ease),box-shadow var(--dur-press) var(--ease)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);min-height:48px;padding:var(--sp-2) var(--sp-5);border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 var(--t-body)/1.3 var(--font-ui);text-align:center;text-decoration:none;cursor:pointer;transition:transform var(--dur-press) var(--ease),background-color var(--dur-press) var(--ease),border-color var(--dur-press) var(--ease),box-shadow var(--dur-press) var(--ease)}
 .btn:hover:not(:disabled){background:var(--surface-2);border-color:var(--ink-2)}
 .btn:active:not(:disabled){transform:translateY(1px)}
 /* The primary has a lit top edge and a soft drop, so the one action on screen reads as a physical button. */
@@ -285,14 +313,14 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border:3px solid var(
 .lcd.readout{display:block;width:max-content;max-width:100%;margin:var(--sp-2) 0;padding:var(--sp-2) var(--sp-4);border-radius:var(--r-control);font-size:28px;line-height:36px;white-space:normal}
 
 /* ---------- Tags and badges ---------- */
-.tag{display:inline-flex;align-items:center;gap:var(--sp-1);min-height:24px;padding:0 var(--sp-2);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1.4 var(--font-ui);white-space:nowrap;vertical-align:.1em}
+.tag{display:inline-flex;align-items:center;gap:var(--sp-1);min-height:24px;padding:0 var(--sp-2);border:1px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);color:var(--ink);font:600 var(--t-cap)/1.4 var(--font-ui);white-space:nowrap;vertical-align:.1em}
 .tag.done{background:var(--done-fill);border-color:var(--done-ink);color:var(--on-done)}
 .tag.caution{background:var(--caution-surface);border-color:var(--caution-line);color:var(--caution-ink)}
 .tag.danger{background:var(--danger-surface);border-color:var(--danger);color:var(--danger)}
 .tag.info{background:var(--info-surface);border-color:var(--info-ink);color:var(--info-ink)}
 /* "Needs OS x+" on a step (chapter.js): .ok when the OS chosen in Settings has it, .warn when it does not. */
 .badge{margin:var(--sp-2) 0 var(--sp-3)}
-.badge.ok{display:inline-block;padding:var(--sp-1) var(--sp-3);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+.badge.ok{display:inline-block;padding:var(--sp-1) var(--sp-3);border:1px solid var(--line-strong);border-radius:var(--r-chip);color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 .badge.warn{padding:var(--sp-3) var(--sp-4);border:1px solid var(--caution-line);border-radius:var(--r-control);background:var(--caution-surface);color:var(--ink)}
 .badge.warn b{color:var(--caution-ink)}
 
@@ -402,13 +430,13 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 /* ---------- Shell: app bar ---------- */
 /* Frosted: the page shows faintly through the bar as it scrolls under it. Without backdrop-filter it is solid. */
 .appbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:var(--sp-3);height:var(--appbar-h);padding:0 var(--gutter);border-bottom:1px solid var(--line);background:var(--surface-1);transition:box-shadow var(--dur-swap) var(--ease)}
-@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.appbar{background:color-mix(in srgb,var(--surface-1) 82%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px)}}
-.appbar.scrolled{box-shadow:var(--e2)}
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){.appbar{background:color-mix(in srgb,var(--surface-1) 92%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px)}}
+.appbar.scrolled{box-shadow:0 8px 24px -12px rgb(0 0 0/.35)}
 .appbar .menu-btn{margin-left:-10px}
 /* Without JavaScript the bar is the wordmark and a Search link to Troubleshooting (plan 5.8); shell.js replaces both. */
 .appbar .static-search{margin:0 -10px 0 auto}
 /* The wordmark: the app icon, then "K.O. II" over a quieter "Coach" (one line from 600px). */
-.wordmark{display:inline-grid;grid-template-columns:28px auto;column-gap:10px;align-items:center;flex:none;color:var(--ink);font:700 15px/18px var(--font-ui);letter-spacing:-.01em;text-decoration:none;white-space:nowrap}
+.wordmark{display:inline-grid;grid-template-columns:28px auto;column-gap:10px;align-items:center;flex:none;color:var(--ink);font:700 15px/18px var(--font-display);letter-spacing:-.01em;text-decoration:none;white-space:nowrap}
 .wordmark::before{content:"";grid-row:1/3;width:28px;height:28px;border-radius:7px;background:url(icon.svg) center/contain no-repeat;box-shadow:0 0 0 1px var(--line),0 2px 6px -2px rgb(0 0 0/.3)}
 .wordmark > :last-child{color:var(--ink-2)}
 .wordmark-sep{display:none}
@@ -467,9 +495,9 @@ details.card > .inside,.disclosure > .inside{padding:0 var(--sp-5) var(--sp-4)}
 .mc-kicker{font:600 var(--t-cap)/var(--t-cap-lh) var(--font-ui);color:var(--ink-2)}
 .mc-name{overflow:hidden;font-weight:600;line-height:1.3;text-overflow:ellipsis;white-space:nowrap}
 .menu-continue-row{max-width:none;margin:0}
-.menu-tabs{position:sticky;top:0;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:var(--sp-3) 0 0;padding:3px;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2)}
+.menu-tabs{position:sticky;top:0;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:var(--sp-3) 0 0;padding:3px;border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2)}
 .menu-tabs[hidden]{display:none}
-.menu-tabs button{min-height:44px;border:0;border-radius:9px;background:transparent;color:var(--ink);font-weight:600}
+.menu-tabs button{min-height:44px;border:0;border-radius:7px;background:transparent;color:var(--ink);font-weight:600}
 .menu-tabs button:hover{background:var(--surface-3)}
 .menu-tabs button[aria-pressed="true"]{background:var(--surface-1);box-shadow:inset 0 0 0 1.5px var(--ink)}
 @media (forced-colors:active){.menu-tabs button[aria-pressed="true"],.menu-continue{outline:3px solid Highlight;outline-offset:-3px}}
@@ -525,7 +553,7 @@ html:has(.sheet[open]){overflow:hidden}
 /* ---------- Tool page components: the control map, the Rhythm lab grid, Help, Learn, tables ---------- */
 .card.start h2{margin-top:var(--sp-1)}
 h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var(--t-check-lh)}
-.device{padding:var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-card);background:var(--surface-3)}
+.device{padding:var(--sp-4);border:1px solid var(--line-strong);border-radius:var(--r-card);background:var(--surface-3)}
 /* The schematic (controls.html, copied into the Tools sheet and the keys panel): the unit's top as original line art,
    every control placed where it is on the K.O. II (positions in % of the panel, taken from teenage engineering's top-view
    photo). Not to scale, and not an official drawing: no logo or printed artwork, only the parts and their labels. */
@@ -557,7 +585,7 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .device .info h3{margin:var(--sp-1) 0}
 .hint{margin:0 0 var(--sp-2)}
 .controls:not(.schem-keys){display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-2)}
-.control{min-height:48px;padding:var(--sp-1);border:1.5px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);background:var(--cap-face);color:var(--ink);box-shadow:0 3px 0 var(--line-strong);font:700 var(--t-cap)/1.2 var(--font-ui);overflow-wrap:anywhere}
+.control{min-height:48px;padding:var(--sp-1);border:1px solid var(--line-strong);border-radius:var(--r-chip);background:var(--surface-1);background:var(--cap-face);color:var(--ink);box-shadow:0 3px 0 var(--line-strong);font:700 var(--t-cap)/1.2 var(--font-ui);overflow-wrap:anywhere}
 .control:active{transform:translateY(1px)}
 .control.hot{border-color:var(--key-edge);background:var(--key);background:var(--key-face);color:var(--on-key);box-shadow:0 3px 0 var(--key-edge)}
 .control.chosen{outline:3px solid var(--ink);outline-offset:2px}
@@ -574,12 +602,12 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .lab-steppers{display:flex;flex-wrap:wrap;gap:var(--sp-3) var(--sp-5);margin:var(--sp-4) 0 var(--sp-2)}
 .stepper{display:inline-flex;align-items:center;gap:var(--sp-2)}
 .stepper-label{min-width:4.5em;font-weight:600}
-.step-btn{width:48px;height:48px;padding:0;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 22px/1 var(--font-ui)}
+.step-btn{width:48px;height:48px;padding:0;border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 22px/1 var(--font-ui)}
 .step-btn:disabled{opacity:.4;cursor:default}
 .stepper-value{min-width:3.5ch;font-size:20px;text-align:center}
 .lab-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--sp-1);margin:var(--sp-4) 0 var(--sp-2)}
 .lab-tabs[hidden]{display:none}
-.lab-tabs [role="tab"]{min-height:48px;padding:var(--sp-1) 2px;white-space:nowrap;font-size:15px;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font-weight:600;line-height:1.2}
+.lab-tabs [role="tab"]{min-height:48px;padding:var(--sp-1) 2px;white-space:nowrap;font-size:15px;border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font-weight:600;line-height:1.2}
 .lab-tabs [role="tab"] .glyph{margin-right:.25em}
 .lab-tabs [role="tab"][aria-selected="true"]{border-color:var(--ink);background:var(--surface-2);box-shadow:inset 0 0 0 1.5px var(--ink)}
 .lab-tabs .tab-count{display:block;font:600 var(--t-cap)/1.2 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-2)}
@@ -684,7 +712,7 @@ dl.gloss dt{margin-top:var(--sp-3)}
 .path a{font-weight:600}
 /* The row is the link's target: its ::after covers the row, so a tap anywhere on it opens the chapter. */
 .path a::after{content:"";position:absolute;inset:0;border-radius:inherit}
-.path .num{display:inline-grid;place-items:center;min-width:28px;height:28px;margin-right:var(--sp-2);padding:0 var(--sp-1);border:1px solid var(--line);border-radius:8px;background:var(--surface-2);font:700 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink);vertical-align:middle}
+.path .num{display:inline-grid;place-items:center;min-width:28px;height:28px;margin-right:var(--sp-2);padding:0 var(--sp-1);border:1px solid var(--line);border-radius:var(--r-chip);background:var(--surface-2);font:700 var(--t-cap)/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink);vertical-align:middle}
 .path{margin-inline:calc(-1 * var(--sp-3))}
 .path li > .meta{text-align:right}
 /* Phones: the status goes under the name, and the LED lines up with the name's first line. */
@@ -693,8 +721,13 @@ dl.gloss dt{margin-top:var(--sp-3)}
 .modes{padding-left:0;list-style:none}
 .modes li{margin:var(--sp-2) 0}
 
-/* Help */
-#results details.card{margin:var(--sp-2) 0}
+/* A stack of disclosures (Learn's lessons, a Troubleshooting group) is one grouped list: rows divided by hairlines,
+   rounded at the first and last row shown, so a filtered list keeps its corners (decision 26). */
+:is(.lessons,.help-group) > details.card{margin:0;border-radius:0}
+:is(.lessons,.help-group) > details.card + details.card{margin-top:-1px}
+:is(.lessons,.help-group) > details.card:not([hidden]):not(details:not([hidden]) ~ *){border-top-left-radius:var(--r-card);border-top-right-radius:var(--r-card)}
+:is(.lessons,.help-group) > details.card:not([hidden]):not(:has(~ details:not([hidden]))){border-bottom-left-radius:var(--r-card);border-bottom-right-radius:var(--r-card)}
+.help-group{margin-bottom:var(--sp-5)}
 #firmware-card .row{margin-bottom:var(--sp-2)}
 #import-file:focus-visible + label{outline:3px solid var(--focus);outline-offset:2px}
 
@@ -763,15 +796,14 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 /* Home: the welcome or Continue card, the course in guided order, device projects and the
    tools; two columns where .split has them. Settings: the keep-screen-on choice. Everything else is a component above. */
 .home > div > .card:first-child{margin-top:0}
-/* The panel: the welcome and Continue cards are a dark instrument face in both themes, with a field of speaker dots
-   fading in from the top right. Its own dark tokens (the same values as the dark theme's) keep every ratio of plan 6.2
-   for what sits on it. Screen only: on paper it is a plain card. */
+/* One box per screen: Home's panel. Its other sections sit on the page, each under a hairline (decision 26). */
+.home .card.section{margin:var(--sp-5) 0 0;padding:var(--sp-5) 0 0;border:0;border-top:1px solid var(--line);border-radius:0;background:none;box-shadow:none}
+.home > div > .card.section:first-child{padding-top:0;border-top:0}
+/* The panel: the welcome and Continue cards are a dark instrument face in both themes (the graphite scope under the
+   tokens), with a field of speaker dots fading in from the top right. Screen only: on paper it is a plain card. */
 @media screen{
   .card.welcome,.card.continue{
-    --surface-1:#1B1B1A; --surface-2:#2A2A28; --surface-3:#3A3A37; --line:#3D3D3A; --line-strong:#8A8A83; --ink:#EDEDE8; --ink-2:#B4B4AD;
-    --primary:#EDEDE8; --on-primary:#080808; --done-ink:#62D4BE; --done-fill:#40C4AE; --on-done:#080808; --here:#40C4AE;
-    --lcd-line:#8A8A83; --focus:#7FB2FF; --cap-face:linear-gradient(#272726,#1B1B1A);
-    color-scheme:dark;position:relative;isolation:isolate;overflow:hidden;border:1px solid rgb(255 255 255/.08);background:#141413;background:var(--panel);color:var(--ink);
+    position:relative;isolation:isolate;overflow:hidden;border:1px solid rgb(255 255 255/.08);background:#141413;background:var(--panel);color:var(--ink);
     box-shadow:inset 0 1px 0 rgb(255 255 255/.1),0 2px 4px rgb(0 0 0/.12),0 28px 56px -28px rgb(0 0 0/.6)}
   .card.welcome::after,.card.continue::after{content:"";position:absolute;z-index:-1;top:0;right:0;width:min(60%,22rem);height:100%;pointer-events:none;
     background:radial-gradient(circle,rgb(255 255 255/.17) 1.3px,transparent 1.8px) 0 0/12px 12px;
@@ -781,10 +813,10 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 }
 @media screen and (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.card.welcome,.card.continue){border-color:rgb(255 255 255/.12)}}
 @media screen{:root[data-theme="dark"] :is(.card.welcome,.card.continue){border-color:rgb(255 255 255/.12)}}
-.welcome h1{font-size:clamp(2.125rem,1.7rem + 1.6vw,2.75rem);line-height:1.08;letter-spacing:-.035em;max-width:14em}
+.welcome h1{font-size:clamp(1.875rem,1.5rem + 1.4vw,2.5rem);line-height:1.08;letter-spacing:-.025em;max-width:14em}
 .welcome .lead{margin-bottom:var(--sp-6);color:var(--ink-2)}
-.welcome h2{font-size:var(--t-check);line-height:var(--t-check-lh);letter-spacing:0}
-.continue h2{font-size:clamp(1.75rem,1.5rem + 1vw,2.25rem);line-height:1.15;letter-spacing:-.03em}
+.welcome h2{font-family:var(--font-ui);letter-spacing:0}   /* the question is read, not a title */
+.card.continue > h2{font-size:clamp(1.625rem,1.4rem + 1vw,2.125rem);line-height:1.15;letter-spacing:-.02em}
 .stack{display:grid;gap:var(--sp-3);max-width:30rem;margin:0 0 var(--sp-4)}
 .stack .btn{width:100%}
 .continue .where{margin-bottom:var(--sp-2);font-weight:600}
@@ -820,7 +852,7 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .tile:hover{border-color:var(--line-strong)}
 @media (hover:hover){.tile:hover{box-shadow:var(--e2);transform:translateY(-1px)}}
 .tile:hover .t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
-.tile .icon{box-sizing:content-box;margin-bottom:var(--sp-2);padding:var(--sp-2);border-radius:10px;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink)}
+.tile .icon{box-sizing:content-box;margin-bottom:var(--sp-2);padding:var(--sp-2);border-radius:var(--r-chip);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);color:var(--ink)}
 /* No break inside a word (plan 13.2): only at a space, or at the soft hyphen in "Trouble·shooting" on a narrow phone. */
 .tile .t{font-weight:600;line-height:1.3;overflow-wrap:normal;-webkit-hyphens:manual;hyphens:manual}
 .tile .d{font-size:var(--t-cap);line-height:var(--t-cap-lh);color:var(--ink-2)}
@@ -831,7 +863,7 @@ html{scroll-padding-top:calc(var(--sticky-top) + var(--status-h,0px) + var(--sp-
 .settings .links + p{margin-top:var(--sp-4)}
 .choice{min-width:0;margin:0 0 var(--sp-3);padding:0;border:0}
 .choice legend{margin-bottom:var(--sp-2);padding:0;font-weight:600}
-.choice-opt{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:48px;padding:0 var(--sp-5) 0 var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);font-weight:600;cursor:pointer}
+.choice-opt{display:inline-flex;align-items:center;gap:var(--sp-2);min-height:48px;padding:0 var(--sp-5) 0 var(--sp-4);border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);font-weight:600;cursor:pointer}
 .choice-opt input{width:20px;height:20px;margin:0}
 .choice-opt:has(input:checked){border-color:var(--ink);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--ink)}
 @media (forced-colors:active){.tile{border:1px solid CanvasText}.choice-opt:has(input:checked){outline:2px solid Highlight}}
@@ -1055,7 +1087,7 @@ html.pl-kbd .player-card:focus-visible,html.pl-kbd .player-card h2:focus-visible
    JavaScript show the full preamble as written. */
 main > .promise,main > .needs{display:none}
 html[data-player="start"] .page-head{margin-bottom:var(--sp-3)}
-html[data-player="start"] .page-head h1{font-size:clamp(2.25rem,1.8rem + 1.8vw,3.25rem);line-height:1.06;letter-spacing:-.035em}
+html[data-player="start"] .page-head h1{font-size:clamp(2.125rem,1.7rem + 1.6vw,3rem);line-height:1.06;letter-spacing:-.025em}
 html[data-player="start"] main > .promise{display:block;margin:0 0 var(--sp-3)}
 html[data-player="start"] main > .needs{display:block;margin:var(--sp-3) 0}
 .needs > h2{margin:0 0 var(--sp-2);font-size:var(--t-check);line-height:var(--t-check-lh)}
@@ -1092,7 +1124,7 @@ html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
 .pp-list li:first-child{border-top:0}
 .pp-list a{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-4);color:var(--ink);font-weight:600;line-height:1.3;text-decoration:none}
 .pp-list a:hover{background:var(--surface-2)}
-.pp-list .pp-n{display:grid;place-items:center;height:28px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--ink);text-align:center}
+.pp-list .pp-n{display:grid;place-items:center;height:28px;border:1px solid var(--line);border-radius:var(--r-chip);background:var(--surface-2);color:var(--ink);text-align:center}
 .pp-list a:hover .pp-t,.ps-step:hover .ps-t{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .pp-list .tally,.ps-part .tally{margin-left:0}
 /* A wide screen: the parts list stands beside everything above it (player.js counts those rows into --start-rows).
@@ -1120,8 +1152,8 @@ html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
 .list-resume[hidden]{display:none}
 @media print{.list-resume{display:none!important}}
 /* Player | All steps: two 44px choices, the chosen one outlined in ink as well as filled */
-.player-modes{display:inline-flex;gap:2px;margin:var(--sp-2) 0 var(--sp-3);padding:3px;border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2)}
-.player-modes button{min-height:44px;padding:0 var(--sp-4);border:0;border-radius:9px;background:transparent;color:var(--ink);font-weight:600}
+.player-modes{display:inline-flex;gap:2px;margin:var(--sp-2) 0 var(--sp-3);padding:3px;border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-2)}
+.player-modes button{min-height:44px;padding:0 var(--sp-4);border:0;border-radius:7px;background:transparent;color:var(--ink);font-weight:600}
 .player-modes button:hover{background:var(--surface-3)}
 .player-modes button[aria-pressed="true"]{background:var(--surface-1);box-shadow:inset 0 0 0 1.5px var(--ink)}
 /* Action bar: Back, Steps and the one primary. Fixed under the thumb on phones and tablets (72px plus the safe area,
@@ -1345,7 +1377,7 @@ a.tag:hover{text-decoration:underline;text-decoration-thickness:1.5px;text-under
 .strip-status:empty{display:none}
 /* Placement helper: the step's positions as LCD chips (done dim with a tick, the current one outlined in yellow),
    then "Placed · next position". */
-.runner{margin:var(--sp-3) 0;padding:var(--sp-3) var(--sp-4);border:1.5px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1)}
+.runner{margin:var(--sp-3) 0;padding:var(--sp-3) var(--sp-4);border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1)}
 .runner-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-2)}
 .runner-head .eyebrow{margin:0}
 #placement{font:500 var(--t-check)/var(--t-check-lh) var(--font-mono)}

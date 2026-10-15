@@ -1,9 +1,12 @@
 Copyright 2020-2024 The Atkinson Hyperlegible Next Project Authors (https://github.com/googlefonts/atkinson-hyperlegible-next)
 Copyright 2020-2024 The Atkinson Hyperlegible Mono Project Authors (https://github.com/googlefonts/atkinson-hyperlegible-next-mono)
+Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)
 
 The files in this folder are modified versions of Atkinson Hyperlegible Next (Regular, SemiBold, Bold) and
 Atkinson Hyperlegible Mono (Medium): single weights, subset to Latin, with the slash removed from the zero,
 and (in Next) added arrows, a check mark and four geometric shapes.
+ArchivoSemiExpanded-Bold.woff2 is a modified version of Archivo: one instance of its variable font (width 112.5,
+weight 700), subset to Latin.
 .github/scripts/make_fonts.py makes them from the published variable fonts.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
