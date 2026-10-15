@@ -1,7 +1,7 @@
 'use strict';
 /* Settings (settings.html): the K.O. II's OS version (#firmware, saved as koii-coach-v2.firmware; chapter pages show
-   "Needs OS x+" badges from it), keeping the screen on (koii-coach-prefs.wake: wake.js reads it on every poke(), so
-   switching to Off pokes once to let go of a hold), keyboard shortcuts (koii-coach-prefs.keys: false switches the
+   "Needs OS x+" badges from it), keeping the screen on (koii-coach-prefs.wake: wake.js, on the chapter pages, reads it
+   on every poke(); this page loads no wake.js and holds no lock), keyboard shortcuts (koii-coach-prefs.keys: false switches the
    shell's letter shortcuts off), text size and which side Done · Next sits (koii-coach-prefs.text 'default' | 'larger'
    and .hand 'right' | 'left', applied by shell.js as html[data-text] and html[data-hand]), whether the unit is set up (koii-coach-prefs.setup 'ready' | 'new': Home's Continue
    opens Chapter 0 until it is 'ready'), the progress file, Reset all progress and Reset settings. Loading a file and
@@ -49,7 +49,7 @@ versionNote();
 const wake=P.prefs().wake==='off'?'off':'auto';
 $$('input[name="wake"]').forEach(r=>{
   r.checked=r.value===wake;
-  r.addEventListener('change',()=>{if(!r.checked)return;P.patch('koii-coach-prefs',{wake:r.value});if(r.value==='off'&&window.CoachWake)CoachWake.poke();});
+  r.addEventListener('change',()=>{if(!r.checked)return;P.patch('koii-coach-prefs',{wake:r.value});});
 });
 if(!('wakeLock' in navigator))$('#wake-note').append(' This browser can’t keep the screen on, so give your device a longer screen timeout instead.');
 
@@ -72,7 +72,6 @@ $('#reset-settings').addEventListener('click',()=>{
   let before=null;
   try{before=localStorage.getItem('koii-coach-prefs');localStorage.removeItem('koii-coach-prefs');}catch(e){alertText('This browser is not saving settings (storage is blocked or full, or this is a private window).');return;}
   choices();refresh();
-  if(window.CoachWake)CoachWake.poke();
   toast('Settings reset.',()=>{try{if(before===null)localStorage.removeItem('koii-coach-prefs');else localStorage.setItem('koii-coach-prefs',before);}catch(e){}choices();refresh();toast('Settings restored.');});
 });
 

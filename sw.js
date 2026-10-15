@@ -27,14 +27,17 @@ self.addEventListener('message',e=>{if(!e.data||e.data.type!=='koii-coach-status
 // the saved 404.html (it has the course list, search and links home), as GitHub Pages does online.
 const key=req=>{const u=new URL(req.url);u.search='';u.hash='';return u.href;};
 // Only this release's cache: the one kept from the release before answers only for its own ?v= (below).
-const cached=req=>caches.open(CACHE).then(c=>c.match(key(req),{ignoreSearch:true,ignoreVary:true}).then(r=>r||(req.mode==='navigate'?c.match('./404.html'):undefined)));
+// notFound: whether a page that is not saved gets 404.html. The timeout path says no (the network may still answer);
+// a failed fetch says yes.
+const cached=(req,notFound)=>caches.open(CACHE).then(c=>c.match(key(req),{ignoreSearch:true,ignoreVary:true}).then(r=>r||(notFound&&req.mode==='navigate'?c.match('./404.html'):undefined)));
 // Network first so lessons stay current. If the network has not answered after TIMEOUT ms (1.5 s, so a weak signal at the
 // device does not leave a blank page), or fails, answer from the cache;
 // a late network answer still refreshes the cache for next time.
 // A script, stylesheet or other file asked for with its release (?v=…, build_site.py adds it) is the same file for the
 // whole release: it comes from that release's cache first (this one, or the one kept from the release before), else
 // from the network as below.
-const release=(req,v)=>{const name='koii-coach-'+v;return caches.has(name).then(h=>h?caches.open(name).then(c=>c.match(key(req),{ignoreSearch:true,ignoreVary:true})):undefined);};
+// caches.match with a cacheName never creates the cache (caches.open would, if activate deleted it meanwhile).
+const release=(req,v)=>caches.match(key(req),{cacheName:'koii-coach-'+v,ignoreSearch:true,ignoreVary:true});
 self.addEventListener('fetch',e=>{const req=e.request,u=new URL(req.url);if(req.method!=='GET'||u.origin!==self.location.origin)return;
   const v=req.mode==='navigate'?'':u.searchParams.get('v');
   if(v&&/^[\w.-]{1,40}$/.test(v)){e.respondWith(release(req,v).then(r=>r||network(e,req),()=>network(e,req)));return;}
@@ -48,6 +51,6 @@ function network(e,req){
   const net=fetch(req).then(r=>{if(ours&&r.status===200&&r.type==='basic'&&!r.redirected){const copy=r.clone();saved=caches.open(CACHE).then(c=>c.put(key(req),copy));}return r;});
   e.waitUntil(net.then(()=>saved,()=>{}).catch(()=>{}));
   return new Promise(resolve=>{let done=false;const use=r=>{if(r&&!done){done=true;resolve(r);}};
-    const timer=setTimeout(()=>cached(req).then(use,()=>{}),TIMEOUT);
-    net.then(r=>{clearTimeout(timer);use(r);},()=>{clearTimeout(timer);cached(req).then(r=>use(r||Response.error()),()=>use(Response.error()));});});
+    const timer=setTimeout(()=>cached(req,false).then(use,()=>{}),TIMEOUT);
+    net.then(r=>{clearTimeout(timer);use(r);},()=>{clearTimeout(timer);cached(req,true).then(r=>use(r||Response.error()),()=>use(Response.error()));});});
 }

@@ -125,6 +125,52 @@ def test_every_page_offline(run):
     run.context.set_offline(False)
 
 
+def test_a_slow_network_waits_for_a_page_the_worker_has_not_saved(browser):
+    """sw.js: when a page is missing from the release's cache (evicted by the browser, or new in a release whose worker
+    has not installed yet) and the network has not answered within 1.5 s, the worker keeps waiting for the network
+    instead of answering with 404.html."""
+    import functools
+    import http.server
+    import threading
+    import time
+    import serve
+
+    class Slow(serve.Handler):
+        def send_head(self):
+            if self.path.split('?', 1)[0].endswith('/glossary.html'):
+                time.sleep(2.5)
+            return super().send_head()
+
+        def end_headers(self):
+            self.send_header('Cache-Control', 'no-store')   # or the browser's HTTP cache answers the worker's fetch at once
+            super().end_headers()
+
+    server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), functools.partial(Slow, directory=str(SITE)))
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    base = f'http://127.0.0.1:{server.server_address[1]}{serve.PREFIX}'
+    context = browser.new_context(viewport={'width': 390, 'height': 844})
+    page = context.new_page()
+    errors = []
+    page.on('pageerror', lambda e: errors.append(str(e)))
+    try:
+        page.goto(base + 'manifest.webmanifest')
+        page.evaluate("() => localStorage.setItem('koii-coach-prefs', JSON.stringify({v: 1, setup: 'ready'}))")
+        page.goto(base + 'index.html', wait_until='networkidle')
+        assert page.evaluate("() => navigator.serviceWorker.ready.then(r => Boolean(r.active))")
+        page.reload(wait_until='networkidle')
+        page.wait_for_function('() => Boolean(navigator.serviceWorker.controller)')
+        gone = page.evaluate("""() => caches.keys().then(ks => Promise.all(ks.map(k => caches.open(k).then(c =>
+            c.delete(new URL('./glossary.html', location.href).href))))).then(r => r.some(Boolean))""")
+        assert gone, 'The glossary was in the cache and is now evicted'
+        page.goto(base + 'glossary.html', wait_until='load')
+        assert heading('glossary.html') in page.evaluate(H1), 'The slow network answer, not 404.html'
+        assert errors == [], errors
+    finally:
+        context.close()
+        server.shutdown()
+        server.server_close()
+
+
 def test_a_new_release_under_an_open_page(browser, tmp_path):
     """Plan 7.6: deploy release N+1 while a page of release N is open. The new service worker takes over, the page says
     "Coach updated" with a Reload button, search still opens in the old page with its own release's search.js (from

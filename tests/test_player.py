@@ -307,6 +307,33 @@ def test_skip_a_run_of_optional_steps(run):
     page.locator('#toast button', has_text='Undo').click()
     page.wait_for_function(STEP + " === 'beat-live-practice'")
     assert run.get('koii-coach-ch-first-beat')['skip'] == [], 'Undo brings the steps back'
+    # Going forward never lands on a skipped step (Back and the menu still can): from the last step of Part 5,
+    # Done · Next and the checkpoint's Yes pass the skipped run and land on the recap, which is where cur goes.
+    page.evaluate('ids => CoachChapter.setSkipped(ids, true)', run_ids)
+    run.go('./first-beat.html#s-beat-perform')
+    page.locator('#player-next').click()
+    page.locator('#player-check').wait_for(state='visible')
+    assert run.get('koii-coach-ch-first-beat')['cur'] == 'beat-recap', 'cur passes the skipped run'
+    page.locator('#player-next').click()
+    page.wait_for_function(STEP + " === 'beat-recap'")
+
+
+@pytest.mark.browser
+def test_hear_it_hands_over_between_two_beats(run):
+    """audio.js: starting a second player stops the first without suspending the audio context under the new one,
+    which showed as "Paused by your device" and silence on the second Hear it."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./first-beat.html#all')
+    page.evaluate("() => document.querySelectorAll('.steps > details').forEach(d => { d.open = true; })")   # every part's figures in view
+    status = page.locator('figure.pattern .strip-status')
+    page.locator('figure.pattern .hear-btn').nth(0).click()
+    page.wait_for_function("() => /Playing/.test(document.querySelectorAll('figure.pattern .strip-status')[0].textContent)")
+    page.locator('figure.pattern .hear-btn').nth(1).click()
+    page.wait_for_function("() => /Playing/.test(document.querySelectorAll('figure.pattern .strip-status')[1].textContent)")
+    page.wait_for_timeout(800)   # a suspend's statechange lands a task later
+    assert 'Playing' in status.nth(1).text_content() and 'Paused' not in status.nth(1).text_content(), status.nth(1).text_content()
+    assert status.nth(0).text_content() == '' and 'Hear it' in page.locator('figure.pattern .hear-btn').nth(0).text_content(), 'The first player stopped'
 
 
 @pytest.mark.browser

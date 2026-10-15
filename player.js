@@ -683,19 +683,21 @@ function showList(){
 // ---------- Moving ----------
 function next(){
   if(view==='start'){const r=C.hasProgress()&&C.resumeId();showStep(r?byId.get(r):steps[0]);return;}
-  if(view==='check'){if(part.checkpoint)answer(part,'yes');const np=parts[part.i+1];if(np)showStep(np.steps[0]);else showDone();return;}
+  if(view==='check'){if(part.checkpoint)answer(part,'yes');const np=parts[part.i+1];if(np)showStep(firstOpen(np));else showDone();return;}
   if(view!=='step'||!cur)return;
   if(isGated()){const g=gates.get(cur);g.box.scrollIntoView({block:'center'});g.btn.focus({preventScroll:true});return;}
   if(!isDone(cur))C.setDone(cur.dataset.step,true);
   if(window.CoachWake)CoachWake.poke();
   advance(cur);
 }
-// After a step: the next one in its part, else the part's checkpoint.
+// After a step: the next one in its part that is not skipped, else the part's checkpoint. A skipped step is never
+// landed on going forward (chapter.js: it is not where Continue lands); Back and the menu can still open it.
+const firstOpen=P=>P.steps.find(li=>!isSkipped(li))||P.steps[0];
 function advance(li){
-  const P=partOf(li),k=P.steps.indexOf(li);
-  if(k<P.steps.length-1){const n=P.steps[k+1];C.setCurrent(n.dataset.step);showStep(n);return;}
+  const P=partOf(li),n=P.steps.slice(P.steps.indexOf(li)+1).find(x=>!isSkipped(x));
+  if(n){C.setCurrent(n.dataset.step);showStep(n);return;}
   const np=parts[P.i+1];
-  if(np)C.setCurrent(np.steps[0].dataset.step);
+  if(np)C.setCurrent(firstOpen(np).dataset.step);
   showCheck(P);
 }
 function back(){
@@ -819,7 +821,7 @@ function routeTo(hash){
     if(!li){
       C.say('That step link is out of date. The step may have been rewritten since the link was made.');
       if(mode()==='all'){showList();return true;}
-      showStart();setUrl('#start');return true;
+      openDefault(false);return true;   // where the learner continues, as a plain visit would (the start screen without progress)
     }
     if(mode()==='all'){showList();return false;}   // chapter.js opens its section, scrolls to it and marks it
     showStep(li);return true;

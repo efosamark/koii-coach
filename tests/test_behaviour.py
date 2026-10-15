@@ -230,6 +230,27 @@ def test_failed_offline_install_offers_retry(browser, tmp_path):
         server.server_close()
 
 
+def test_closing_a_help_topic_by_hand_leaves_the_others_alone(run):
+    """tools.js: a topic opened by hand pushes a history entry with its address; closing it by hand removes that entry
+    with history.back(), which must not reopen or scroll to the topic opened before it."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./help.html')
+    a, b = page.locator('details[data-topic]').nth(0), page.locator('details[data-topic]').nth(1)
+    a_id, b_id = a.get_attribute('id'), b.get_attribute('id')
+    a.locator('summary').click()
+    page.wait_for_function('id => location.hash === "#" + id', arg=a_id)
+    b.locator('summary').click()
+    page.wait_for_function('id => location.hash === "#" + id', arg=b_id)
+    a.locator('summary').click()   # closed by hand while B's address is in the bar
+    assert not a.evaluate('d => d.open')
+    b.locator('summary').click()   # closing B takes its entry back off the history
+    page.wait_for_function('id => location.hash !== "#" + id', arg=b_id)
+    page.wait_for_timeout(400)
+    assert not a.evaluate('d => d.open'), 'Closing B did not reopen A'
+    assert not b.evaluate('d => d.open')
+
+
 def test_back_closes_the_tools_sheet_and_keeps_the_step(run):
     page = run.page
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})

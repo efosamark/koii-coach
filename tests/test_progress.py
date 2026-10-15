@@ -246,6 +246,33 @@ def test_a_finished_chapter_stays_finished_with_its_new_recap(run):
     run.page.evaluate("() => CoachChapter.setDone('keep-samples', true)")
     run.go('./index.html')
     assert run.get('koii-coach-ch-sampling')['done'] == ['keep-samples']
+    # Chapter 7's batch was filed under Chapter 2 until 2026.10.15.3, so a finished Chapter 7 stayed at 106 of 107.
+    rec = {'v': 1, 'done': ['backup-and-rights'], 'last': 'backup-and-rights', 'n': 1, 'm': 1}
+    run.seed({'koii-coach-ch-vocal-house': rec, 'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./index.html')
+    assert run.get('koii-coach-ch-vocal-house')['done'] == ['backup-and-rights', 'vocal-recap'], 'Chapter 7 gets its recap too'
+
+
+def test_a_stale_cur_is_recomputed_on_load(run):
+    """A record whose cur names a step that is no longer on the page (renamed since) has cur recomputed when the
+    chapter loads, so Home's Continue link, built from it, never opens a dead step."""
+    run.seed({'koii-coach-ch-sampling': {'v': 1, 'done': ['open-empty-project'], 'last': 'open-empty-project', 'n': 1, 'cur': 'gone-step', 'm': 2},
+              'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})   # m: at the newest level, so no split batch ticks more
+    run.go('./sampling.html')
+    assert run.get('koii-coach-ch-sampling')['cur'] == 'check-empty-project', 'cur moves to the step after the last tick'
+    run.go('./index.html')
+    assert 'gone-step' not in run.page.content(), 'Home links the recomputed step'
+
+
+def test_a_fresh_v2_keeps_cur(run):
+    """A koii-coach-v2 at position 0 (a loaded progress file without one, written fresh by applyFile) carries nothing
+    over to Chapter 1: the record's cur stays where it was instead of going back to the first step."""
+    done = FIRST[:4]
+    run.seed({'koii-coach-ch-first-beat': {'v': 1, 'done': done, 'last': done[-1], 'n': 4, 'cur': 'beat-grid-16', 'derivedFrom': 'beat-tempo-grid', 'm': 1},
+              'koii-coach-v2': v2(), 'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./index.html')
+    rec = run.get('koii-coach-ch-first-beat')
+    assert rec['cur'] == 'beat-grid-16' and rec['done'] == done, rec
 
 
 def test_existing_learners_skip_the_setup_question(run):

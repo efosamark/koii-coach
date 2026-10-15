@@ -92,6 +92,7 @@ function load(){
   if(data)return data;
   data=Promise.all(['./help.html','./glossary.html','./controls.html','./cheat-sheet.html'].map(h=>page(h).catch(()=>null))).then(([help,gloss,ctrl,cheat])=>{
     const out={};
+    if(!help||!gloss||!ctrl||!cheat)data=null;   // a page that failed is fetched again next time (page() dropped it)
     if(help)out.groups=[...help.querySelectorAll('.help-group')].map(g=>({title:clean((g.querySelector('h2')||{}).textContent),topics:[...g.querySelectorAll('details.topic')].map(d=>({id:d.id,title:clean(d.querySelector('summary').textContent),body:d.querySelector('.inside')}))}));
     if(gloss)out.terms=[...gloss.querySelectorAll('.term')].map(t=>{const name=clean(t.querySelector('dt').textContent);return{id:t.id,name,dd:t.querySelector('dd'),beginner:t.hasAttribute('data-beginner'),re:termRe(name)};});
     if(ctrl){out.device=ctrl.querySelector('.device');out.controls=new Map([...ctrl.querySelectorAll('[data-key][id^="control-"]')].map(d=>[d.dataset.key,d]));}

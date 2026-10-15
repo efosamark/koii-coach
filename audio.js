@@ -91,8 +91,10 @@ function player(o){
     if(ctx&&ctx.state==='running'&&![...players].some(p=>p!==api&&p.playing()))ctx.suspend().catch(()=>{});
   }
   async function start(){
+    // This player counts as playing before the others stop, so their stop() does not suspend the context under it.
+    const mine=++token;starting=true;
     players.forEach(p=>{if(p!==api&&p.playing())p.stop();});
-    const mine=++token;starting=true;say('Starting…',true);
+    say('Starting…',true);
     try{
       const c=context();
       if(!c.onstatechange)c.onstatechange=()=>{if(c.state!=='running')players.forEach(p=>{if(p.playing()){p.stop();p.paused();}});};

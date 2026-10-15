@@ -26,7 +26,7 @@ const hashId=()=>{try{return decodeURIComponent(location.hash.slice(1));}catch(e
 
 // ---------- Items opened from a link ----------
 const items=$$('main details[id]');
-let pushed=null,last=null;
+let pushed=null,last=null,popping=false;   // popping: a history.back() of our own is on its way (closing by hand)
 function openItem(d){
   if(!d.open){d.dataset.byLink='1';d.open=true;}
   d.scrollIntoView({block:'start'});
@@ -38,6 +38,7 @@ function openItem(d){
 }
 function route(){
   const h=location.hash;if(h===last)return;last=h;
+  if(popping){popping=false;return;}   // closing an item by hand only removes its entry: nothing else opens or scrolls
   const id=hashId();
   if(pushed&&pushed!==id){const d=document.getElementById(pushed);pushed=null;if(d&&d.open){d.dataset.byLink='1';d.open=false;}}
   const el=id&&document.getElementById(id);
@@ -49,7 +50,7 @@ items.forEach(d=>d.addEventListener('toggle',()=>{
   if(d.open){
     if(location.hash!=='#'+d.id){try{history.pushState(null,'',path+'#'+d.id);pushed=d.id;last=location.hash;}catch(e){}}
   }else if(location.hash==='#'+d.id){
-    if(pushed===d.id){pushed=null;history.back();}
+    if(pushed===d.id){pushed=null;popping=true;history.back();setTimeout(()=>{popping=false;},500);}
     else{try{history.replaceState(null,'',path);last=location.hash;}catch(e){}}
   }
 }));

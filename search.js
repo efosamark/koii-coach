@@ -296,7 +296,7 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
       html=`<div class="search-empty"><p class="meta">Search every step, help topic, lesson and word.</p><p class="eyebrow">Try</p><div class="search-try">${TRY.map(t=>`<button class="search-chip" type="button" data-try="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>`;
     }else if(!ready){
       html='<p class="search-note">Preparing search…</p>';say='Preparing search';
-    }else if(!all.length){
+    }else if(!parts.size){   // no page could be read (offline before the first full visit): the chapters alone are not an index
       html=NEEDS;say='Search needs the offline copy';
     }else{
       if(!total){

@@ -320,7 +320,7 @@ function counts(){
     li.querySelector('.count').innerHTML=x>=total?icon('check')+'Done':x+'/'+total;
     li.querySelector('.state').textContent=x>=total?', done':x>0?`, ${x} of ${total} steps done`:', not started';
   });
-  // Continue row: where Home's Continue goes (hidden while that is this very page's chapter start, or nothing).
+  // Continue row: where Home's Continue goes (hidden when there is nothing to continue).
   const row=nav.querySelector('.menu-continue-row'),P=window.CoachProgress,p=P&&P.continueTarget();
   row.hidden=!p;
   if(p){

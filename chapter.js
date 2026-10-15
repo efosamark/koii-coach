@@ -32,7 +32,7 @@
      isSkipped(id), setSkipped(ids, on), skipped()   optional steps the learner chose to skip (record.skip). A skipped
                            step does not count towards total() and is not where Continue lands; ticking it unskips it
      lastAt()              the time of the last tick (ISO), or null
-     onChange(fn)          fn({type:'tick'|'current'|'reset', id}) after every change made here
+     onChange(fn)          fn({type:'tick'|'current'|'reset'|'skip', id}) after every change made here (id is null for skip)
      go(id)                list mode: opens the step's section, scrolls to it and focuses it
      say(text, undo)       a message in the page's toast; with undo (a function) it carries an Undo button for 10 s
      saved()               false while the browser refuses to save
@@ -152,7 +152,9 @@ function remember(){
   meta.lastChapter=slug;
   try{localStorage.setItem('koii-coach-meta',JSON.stringify(meta));}catch(e){}
 }
-if(state.n!==count()||!('cur' in state))store(false,true);   // also adds cur to a record saved before it existed
+// Also adds cur to a record saved before it existed, and recomputes one that names a step no longer on the page
+// (Home's Continue link is built from it).
+if(state.n!==count()||!('cur' in state)||(typeof state.cur==='string'&&!ids.includes(state.cur)))store(false,true);
 remember();
 // A notice another page left for this chapter (progress.js, when it carried a place over): shown once, then removed.
 (()=>{

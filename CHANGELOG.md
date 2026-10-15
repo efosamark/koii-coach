@@ -6,12 +6,41 @@ Each release records the date its instructions were checked against the [officia
 
 ## 2026.10.15.3
 
-**Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence changed, and no step's wording changed.
+**Checked against:** the official EP-133 guide on 13 October 2026 (no instruction changed). **Written for:** OS 2.5.1. No button sequence changed; the wording that changed is listed below.
 
-A review of the repository for text that had fallen behind the code.
+A review of the repository for text that had fallen behind the code, and a pass over every chapter against its reference pages (pad plans, scene tables, song maps, bar and position totals, tempos, project numbers, sample ranges, setting codes, risk tags against Safety, and every cross-reference). The instructions themselves were consistent; the text around them was not always.
 - **Cheat sheet:** its description for search engines and link previews said it held "the moves of the first chapters"; it has held every chapter's moves since 2026.10.14.23, and their pad plans since 2026.10.14.25. It now says so.
 - **Report form:** the Step field's example reads "Part 2, step 5 / …", the way the app fills it in since steps were numbered within their part (2026.10.14.33). The field's hint names the part too.
 - **Checkpoint fixes:** a "Not quite" card whose sentence already began with a capital letter had its second letter capitalised too ("YOu picked a scene, not a project" in Chapter 1, Part 1). Only a lower-case first letter is capitalised now. `test_part_checkpoint_not_quite` checks it.
+- **Chapter 6, "Check that project 9 is empty":** Chapter 0 leaves a kick, snare and hat on A1–A3 of project 9 (its scratch project) without writing any notes, so the Check "You hear nothing" failed for everyone who followed the course order; only its Not working? said that was fine. The Check now says so itself.
+- **Chapter 1, "B1: open the trim page":** says to press SHIFT + SOUND briefly, as every other trim step does (held, it crops).
+- **Chapter 5, "Make C and D two bars long":** the Check covers D as well as C.
+- **Chapter 4:** the start screen says Parts 6 to 9 need the Chapter 2 scenes and song (it said 6 and 7; Part 8 plays MELODY, BEAT and INTRO and Part 9 plays the song list), and the settings table no longer claims every part sets its codes back (Parts 1 and 6 say to keep 301 or 412 if you like them).
+- **Chapter 6, "What you need":** recording over USB in Part 12 needs OS 2.5 too; the step offers the headphone output instead.
+- **Chapter 7:** the scenes table says groups A, B and D are four bars long and C stays one empty bar (it said every pattern is four bars, which Part 13's own note contradicted); the sound roles are "the roles from Learn, without a melody group" (Learn also names C melody), and group C is "not used" rather than "stays empty", on the page and the cheat sheet, because in a reused project 7 it holds Chapter 3's slices.
+- **Safety and erasing:** a card for erasing a pad's fader moves (ERASE + FADER + pad, and the 2-second hold that clears the group's), which Chapters 4, 5 and 7 use; the page promised every erasing action and lacked it.
+- **Troubleshooting's "More help"** describes the cheat sheet as every chapter's moves, pad plans and song maps (it said Chapters 1 and 2). The cheat sheet's Chapter 1 card links its "Recap", like Chapter 0's (it said "Last step", which is the step after the recap).
+
+**Fixes from a code review** (none changes what a step says):
+- **"Hear it" on a second beat while one plays** showed "Paused by your device" and stayed silent, because stopping the first player suspended the browser's audio under the new one. The new one now counts as playing before the old one stops. This also covers the Rhythm lab's player and the target rhythms of Chapter 1 in All steps.
+- **A finished Chapter 7 stayed at 106 of 107.** The batch that ticks its recap for learners who finished it before 2026.10.14.21 was filed under Chapter 2, which has no such steps. It is filed under Chapter 7 now and applies on the next visit.
+- **Skipped steps:** Done · Next from the step before a run you skipped landed on the first skipped step and marched you through the run. Going forward now passes skipped steps, as Continue already did; Back and the menu can still open one.
+- **A step link that is out of date** (a step renamed since the link was made) opens where you continue, not the start screen, after the "out of date" notice. A saved place that names a renamed step is recomputed when the chapter loads, so Home's Continue never opens a dead step.
+- **A loaded progress file without the old app's record** no longer sends Chapters 1 and 2 back to their first step: a record at position 0 carries nothing over.
+- **Offline copy:** when a page is missing from the saved copy and the network is slow, the coach now waits for the network instead of showing "Page not found" after 1.5 seconds. The previous release's copy is looked up without being recreated by mistake.
+- **Troubleshooting and Learn:** closing a topic you opened by hand no longer scrolls to, or reopens, the one you opened before it.
+- **Tools sheet:** a tool page that failed to load (a dropped connection on first open) is fetched again next time instead of showing "could not load" for the rest of the visit. **Search** shows "Search needs the offline copy" when no page could be read, as meant, instead of "Nothing found".
+- New tests: `test_hear_it_hands_over_between_two_beats`, the skip case in `test_skip_a_run_of_optional_steps`, the Chapter 7 case in `test_a_finished_chapter_stays_finished_with_its_new_recap`, `test_a_stale_cur_is_recomputed_on_load`, `test_a_fresh_v2_keeps_cur`, `test_a_slow_network_waits_for_a_page_the_worker_has_not_saved` and `test_closing_a_help_topic_by_hand_leaves_the_others_alone`.
+
+**Wording that changed** ("was" gives the old text):
+- **Chapter 1**, “B1: open the trim page”: Do: “Tap B1, then briefly press SHIFT + SOUND and use − / + to reach the trim page.” (was “Tap B1, then press SHIFT + SOUND and use − / + to reach the trim page.”).
+- **Chapter 5**, “Make C and D two bars long”: Check: “The display shows Ln.2 for C, then for D.” (was “The display shows Ln.2: C’s pattern is two bars long.”).
+- **Chapter 6**, “Check that project 9 is empty”: Check: “PLAY is silent. Pads are silent, or A1–A3 play Chapter 0’s kit.” (was “You hear nothing.”).
+- **perform.html**: “Any. Parts 6 to 9 use your Chapter 2 scenes and song” (was “Any. Parts 6 and 7 use your Chapter 2 scenes and song”); “Each part says how to set its codes back at the end; keep the ones you like.” (was “Each part sets its codes back at the end.”).
+- **tech-house.html**: “Song mode and sidechain need OS 2.0 or newer. A few optional steps need OS 2.5, and so does recording over USB in Part 12, which offers the headphone output instead.” (was “Song mode and sidechain need OS 2.0 or newer, and a few optional steps need OS 2.5.”).
+- **thodorakis-house.html**: “Each scene starts as a copy of the one above it. A, B and D are four bars long; C stays one empty bar.” (was “… Every pattern is four bars.”); “The roles from Learn, without a melody group: A drums, B bass, D your own samples. Group C is not used.” (was “The same roles as in Learn: A drums, B bass, D your own samples. Group C stays empty.”); pad plan “C · not used” and “Not used in Chapter 7” (were “C · stays empty” and “Empty in Chapter 7”), on the page and the cheat sheet.
+- **help.html**: “Cheat sheet: every chapter’s moves, pad plans and song maps, and the system settings” (was “Cheat sheet: the moves of Chapters 1 and 2 and the system settings”). **cheat-sheet.html**: “Recap of Chapter 1 · First beat.” (was “Last step of Chapter 1 · First beat.”).
+- **safety.html**, new card: “Erase a pad’s fader moves: stopped, hold ERASE + FADER and press the pad”, with what it does, how to avoid it, its undo and its guide page, taken from Chapter 4’s “Erase the pitch moves only”.
 
 **For maintainers:**
 - README: `beat.js` has its row in the file table and `first-beat.js` is only the placement helper (both since 2026.10.15.2); Chapter 1's button is "Hear it", not "Hear this recipe"; the example release tag is `?v=<release>`; the Testing section lists the newer static checks of `test_player.py` (voice, the "You will make" lines, target beats, glued punctuation, report by email).
