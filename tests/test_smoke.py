@@ -194,6 +194,8 @@ def run_target(browser, artifacts_dir, name, url, results):
         page.goto(absolute('./learn.html'), wait_until='networkidle')
         lesson = page.locator('[data-lesson="0"]')
         lesson.locator('summary').click()
+        # A details' toggle event, where tools.js writes the address, is dispatched a task after the click lands.
+        page.wait_for_function("() => location.hash === '#samples-notes-and-patterns'", timeout=5000)
         assert page.evaluate('location.hash') == '#samples-notes-and-patterns', 'An opened lesson has its own address'
         lesson.locator('.complete').click()
         assert lesson.locator('.complete').get_attribute('aria-pressed') == 'true'
