@@ -65,8 +65,8 @@
    fixes open keeps 'not-yet' (the button then has no "Yes ·"), and the chapter-complete screen offers those parts
    again under "Worth another go"; a later Yes clears it.
 
-   The start screen's chips include "Needs Chapters 1–2" (site.js needs), and "Formerly 07" for a chapter renumbered
-   in 2026.10.14.4 (site.js formerly), once the learner has progress anywhere in the course.
+   The start screen shows "Needs Chapters 1–2" (site.js needs) beside the Parts heading, and a "Formerly 07" chip for
+   a chapter renumbered in 2026.10.14.4 (site.js formerly), once the learner has progress anywhere in the course.
    The chapter-complete screen adds, when every step is settled: the system settings the chapter left changed (SYS),
    "Save your progress file" (CoachProgress.saveFile), the chapters that open up now (site.js needs) and, after the last
    chapter or with the course complete, "Make your own track" (cheat-sheet.html#own-track).
@@ -239,8 +239,8 @@ parts.forEach(P=>{
   flush();
 });
 groups.forEach((run,li)=>{
-  const n=run.length,q=clean(li.dataset.route),box=el('div','skip-box pl-own',
-    `<p>${q?esc(q)+` You can skip ${n===1?'this step':'these '+n+' steps'}.`:`You can skip ${n===1?'this step':n===2?'this step and the next':'these '+n+' steps'}: ${n===1?'it won’t':'they won’t'} hold up the chapter, and you can come back later.`}</p>`+
+  const n=run.length,q=clean(li.dataset.route),these=n===1?'this step':n===2&&!q?'this step and the next':'these '+n+' steps',box=el('div','skip-box pl-own',
+    `<p>${q?esc(q)+` You can skip ${these}.`:`You can skip ${these}: ${n===1?'it won’t':'they won’t'} hold up the chapter, and you can come back later.`}</p>`+
     `<button class="btn" type="button" data-skip>${n===1?'Skip this step':'Skip these '+n+' steps'}</button>`);
   box.hidden=true;
   (li.querySelector(':scope > .step-title')||heads.get(li)).after(box);
@@ -306,11 +306,11 @@ const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!=
   const osText=os?'OS '+esc(os[1])+(os[2]?'+':''):'';
   // "About 2–3 hours" in the eyebrow is "2–3 h" on its chip (plan 5.2).
   const short=time.replace(/^about\s+/,'').replace(/\s*hours?$/,' h').replace(/\s*minutes?$/,' min');
-  // "Needs Chapters 1–2": the chapters site.js needs names, by number (a run of numbers as "1–3").
-  const nums=(info&&info.needs||[]).map(s=>+(site.chapters.find(c=>c.slug===s)||{num:NaN}).num).filter(n=>n>=0).sort((a,b)=>a-b);
-  const needs=nums.length?'Needs Chapter'+(nums.length>1?'s ':' ')+(nums.length>1&&nums[nums.length-1]-nums[0]===nums.length-1?nums[0]+'–'+nums[nums.length-1]:nums.join(', ')):'';
+  // "Needs Chapters 1–2": the first and last of the chapters site.js needs names (a run of two or more). It shares the
+  // line of the Parts heading, below, so the first screen keeps its height (decision 24).
+  const nd=info&&info.needs,num=s=>(site.chapters.find(c=>c.slug===s)||{}).num,needs=nd?'Needs Chapters '+num(nd[0])+'–'+num(nd[nd.length-1]):'';
   chips.innerHTML=[short?esc(short):'',proj?'Project '+proj[1]:'',
-    os&&!old?osText:'',needs,
+    os&&!old?osText:'',
     info&&info.formerly&&returning?'Formerly '+esc(info.formerly):''].filter(Boolean).map(t=>`<li>${t}</li>`).join('')+
     (old?`<li class="warn">${icon('warning')}<span>Needs ${osText} · <a href="./setup.html#s-update-open-utility">Update first</a></span></li>`:'');
   const intro=pageHead&&pageHead.nextElementSibling&&pageHead.nextElementSibling.tagName==='P'?pageHead.nextElementSibling:pageHead;
@@ -327,7 +327,7 @@ const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!=
     const needs=main.querySelector(':scope > .needs');
     (shortSafety&&needs?needs:dangers[0]).before(safety);
   }
-  partsBox.innerHTML='<h2 id="player-parts-title">Parts</h2><ol class="pp-list"></ol>';
+  partsBox.innerHTML='<h2 id="player-parts-title">Parts</h2>'+(needs?`<ul class="player-chips"><li>${needs}</li></ul>`:'')+'<ol class="pp-list"></ol>';
   (progress&&progress.parentElement===main?progress:wrap).before(partsBox);
   // Below the parts (plan 5.2): the reference cards, then the preamble in full.
   if(references.length){
@@ -442,31 +442,6 @@ if(Shell&&barActions){
     pressModes(actSheet);
   });
   moreBtn.addEventListener('click',()=>actModal.open());
-}
-
-// "Back up now" on the chapter-complete screen (plan 5.9): Chapter 0's backup part in a sheet, read-only, from the
-// saved copy of setup.html when offline. The link beside the button goes to the chapter itself.
-const backupSheet=el('dialog','sheet backup-sheet pl-own',
-  `<div class="sheet-box"><div class="sheet-head"><h2 class="sheet-title" id="player-backup-title">Back up your work</h2>`+
-  `<button class="icon-btn" type="button" data-close aria-label="Close">${icon('close')}</button></div><div class="sheet-body"><p class="meta">Loading the backup steps…</p></div></div>`);
-backupSheet.id='player-backup';backupSheet.setAttribute('aria-labelledby','player-backup-title');
-let backupModal=null,backupOpener=null;
-if(Shell&&slug!=='setup'){
-  document.body.append(backupSheet);
-  backupModal=Shell.modal(backupSheet,null,()=>{
-    const body=backupSheet.querySelector('.sheet-body');
-    fetch('./setup.html').then(r=>{if(!r.ok)throw new Error(r.status);return r.text();}).then(t=>{
-      const doc=new DOMParser().parseFromString(t,'text/html'),first=doc.querySelector('li[data-step="backup-open-tool"]'),P=first&&first.closest('details');
-      if(!P)throw new Error('no backup part');
-      const h=P.querySelector('summary'),list=P.querySelector('ol');
-      list.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
-      list.querySelectorAll('.check,.step-extras,.step-report').forEach(x=>x.remove());
-      list.querySelectorAll('li[data-step]').forEach(li=>{const t=li.querySelector(':scope > .step-title');if(t){const a=document.createElement('a');a.href='./setup.html#s-'+li.dataset.step;a.innerHTML=t.innerHTML;t.replaceChildren(a);}});
-      body.innerHTML=`<p class="sub">From Chapter 0 · ${esc(clean(h?h.textContent:'Back up'))}</p><ol class="steps backup-steps">${list.innerHTML}</ol>`+
-        `<p><a class="btn" href="./setup.html#s-backup-open-tool">Open it in Chapter 0${icon('next')}</a></p><p class="meta">Nothing here is ticked: your place in this chapter stays where it is.</p>`;
-    }).catch(()=>{body.innerHTML=`<p>The backup steps could not be loaded. They are in <a href="./setup.html#s-backup-open-tool">Chapter 0 · Set up your K.O. II, Part 4</a>.</p>`;});
-  });
-  backupSheet.addEventListener('close',()=>{if(backupOpener&&backupOpener.isConnected)backupOpener.focus();});
 }
 
 // ---------- State and rendering ----------
@@ -691,16 +666,15 @@ function fixCards(P,bare){
   }).join('');
 }
 // The system settings this chapter left changed (plan 5.4c): per family (the code's first two digits), the last code
-// ticked in page order, when it is not the default (the official guide's System page). A reminder, never a warning:
-// some are kept on purpose (301, 412). What each code does is said as the steps say it.
-const SYS={30:'300',40:'401',41:'410',42:'420',50:'502',51:'510'},SAYS={301:'Pad velocity is on.',400:'The metronome clicks while you practise too.',
-  411:'Scene changes wait for the end of the bar.',412:'Scenes wait for the pattern.',421:'The song loops.',500:'Every sample you record is lo-fi.',511:'You hear the phone through the K.O. II while you sample.'};
+// ticked in page order, when it is not the default (the official guide's System page), named by the step that set it
+// ("Optional:" and the code left out of its title). A reminder, never a warning: some are kept on purpose (301, 412).
+const SYS={30:'300',40:'401',41:'410',42:'420',50:'502',51:'510'};
 function stillSet(){
   const last={};
   steps.forEach(li=>{const c=clean(li.dataset.setting);if(/^\d{3}$/.test(c)&&SYS[c.slice(0,2)]&&isDone(li))last[c.slice(0,2)]=[c,li];});
   const l=Object.keys(last).filter(f=>last[f][0]!==SYS[f]);
-  return l.length?'<div class="notice info pd-settings"><p><b>Still set on your K.O. II.</b> This chapter left these system settings changed:</p><ul>'+l.map(f=>{const [c,li]=last[f];
-    return`<li><samp class="lcd">${c}</samp> ${SAYS[c]||''} Type <samp class="lcd">${SYS[f]}</samp> <a href="#s-${esc(li.dataset.step)}">the same way</a> to switch back.</li>`;}).join('')+'</ul></div>':'';
+  return l.length?'<div class="notice info pd-settings"><p><b>System settings still set on your K.O. II:</b></p><ul>'+l.map(f=>{const [c,li]=last[f];
+    return`<li><samp class="lcd">${c}</samp> <a href="#s-${esc(li.dataset.step)}">${cap(esc(gist(li).replace(/^Optional:\s*|\s*\(\d{3}\)$/gi,'')))}</a>. Type <samp class="lcd">${SYS[f]}</samp> the same way to switch back.</li>`;}).join('')+'</ul></div>':'';
 }
 // "You made: …" from the page's "You will make" line.
 function made(){
@@ -720,7 +694,7 @@ function showDone(opt){
   // Parts whose checkpoint was left at "Not quite" (koii-coach-meta.checkpoints), to try again.
   const marks=sub(sub(readObj(META)||{},'checkpoints'),slug),again=parts.filter(p=>marks[p.id]==='not-yet');
   // After the last chapter, and once the whole course is done: the route to a track of your own (cheat-sheet.html).
-  const own=complete&&(all||!nextLink)?'<p><a href="./cheat-sheet.html#own-track">Make your own track</a>: the parts you have done, in order, from an empty project to a finished track.</p>':'';
+  const own=complete&&(all||!nextLink)?'<p><a href="./cheat-sheet.html#own-track">Make your own track</a>: a route through the parts you have done.</p>':'';
   // Chapters that open up now (this is the last chapter their site.js needs names), other than Next, not done yet.
   const nx=nextLink&&nextLink.getAttribute('href'),opens=course.filter(p=>!p.done&&p.c.href!==nx&&(p.c.needs||[]).slice(-1)[0]===slug);
   const head=complete?'Chapter '+esc(chNum)+' done':'Chapter '+esc(chNum)+' · '+esc(plural(open.length,'step','steps'))+' not ticked yet';
@@ -741,8 +715,8 @@ function showDone(opt){
       `</ul>${own}<p><a href="./cheat-sheet.html">The cheat sheet</a> keeps every move and reference table in one place.</p></section>`:own)+
     (complete?stillSet():'')+
     (slug!=='setup'&&complete?`<div class="notice tip pd-backup"><p><b>Back up now.</b> Save a copy of your work with the official EP sample tool, as in <a href="./setup.html#s-backup-open-tool">Chapter 0 · Set up your K.O. II, Part 4</a>.</p>`+
-      (backupModal?`<p><button class="btn" type="button" data-backup aria-haspopup="dialog" aria-controls="player-backup">${icon('list')}Show the backup steps</button></p>`:'')+'</div>':'')+
-    (complete&&window.CoachProgress?'<div class="row pd-file"><button class="btn" type="button" data-save>Save your progress file</button><span class="meta">Your ticks, your place and your notes, kept outside this browser.</span></div>':'')+
+      (Shell?`<p><button class="btn" type="button" data-backup aria-haspopup="dialog">${icon('list')}Show the backup steps</button></p>`:'')+'</div>':'')+
+    (complete&&window.CoachProgress?'<div class="row pd-file"><button class="btn" type="button" data-save>Save your progress file</button><span class="meta">Your ticks, place and notes, kept outside this browser.</span></div>':'')+
     (opens.length?'<h3 class="pd-moves-title">Also ready to start</h3><ul class="pd-also">'+opens.map(p=>`<li><a href="${esc(p.c.href)}">Chapter ${esc(p.c.num)} · ${esc(p.c.title)}</a></li>`).join('')+'</ul>':'')+
     `<div class="row pd-actions">${complete?`<a class="btn" href="#all" data-review>${icon('list')}Review steps</a>`:''}${nextLink?'<a class="btn" href="./index.html">Back to the course</a>':''}`+
     (complete?`<button class="btn ghost" type="button" data-act="restart">${icon('undo')}Restart this chapter</button>`:'')+'</div>';
@@ -875,7 +849,8 @@ listModes.addEventListener('click',e=>{
 });
 doneCard.addEventListener('click',e=>{
   if(e.target.closest('[data-review]')){e.preventDefault();showList();setUrl('#all');scrollTo(0,0);return;}
-  const bk=e.target.closest('[data-backup]');if(bk&&backupModal){backupOpener=bk;backupModal.open();return;}
+  // "Show the backup steps": Chapter 0's backup part in a sheet (toolsheet.js, CoachTools.backup).
+  const bk=e.target.closest('[data-backup]');if(bk){loadTools(()=>{if(window.CoachTools)CoachTools.backup(bk);});return;}
   if(e.target.closest('[data-save]')){CoachProgress.saveFile();C.say('Progress file saved. Keep it somewhere safe.');return;}
   const rp=e.target.closest('[data-redo-part]'),P=rp&&parts[+rp.dataset.redoPart];
   if(P){C.setCurrent(P.steps[0].dataset.step);showStep(P.steps[0]);return;}

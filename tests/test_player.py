@@ -2,11 +2,16 @@
 
 - Risk steps (static check of the HTML): the check that prevents loss comes before the press, the undo after it.
 - Every step has a Check, except info and recap steps; a risk step names what it clears or deletes.
-- Skipping a run of optional steps: they stop counting, the player moves past them, the toast can undo it.
+- Skipping a run of optional steps, or a route (data-route): they stop counting, the player moves past them, the toast
+  can undo it.
+- A ticked data-once step shown again (Back, a menu jump, Redo Part N) says not to press again; Restart says what the
+  K.O. II keeps.
 - A part's checkpoint: the next part's size, the steps left and the switch-off line; "Not quite" shows the fix and is
   kept in koii-coach-meta.checkpoints (going on from it keeps it, the done screen offers the part again, a later Yes
   clears it); it never changes a tick.
-- Chapter complete: arriving ticks the recap once everything else is done, and shows what you made and the new moves.
+- Chapter complete: arriving ticks the recap once everything else is done, and shows what you made and the new moves,
+  the system settings left changed, Save your progress file, the chapters that open up and, after Chapter 7, Make your
+  own track. The start screen says which chapters a chapter needs.
 - The Tools sheet: the step's keys on the map in press order, its help topics, its part's fixes, the other tabs, T to
   open it, and a help link in a step opening it at that topic.
 - Recall: a recap's "Label: answer" moves as closed rows; a data-recall step's presses behind "Show the presses".
@@ -495,8 +500,8 @@ def test_chapter_complete_settings_file_and_what_opens(run):
 
     card = finish('first-beat')
     still = card.locator('.pd-settings li')
-    assert still.all_text_contents() == ['411 Scene changes wait for the end of the bar. Type 410 the same way to switch back.']
-    assert still.locator('a').get_attribute('href') == '#s-beat-scene-sync', 'The way back is the step that set it'
+    assert still.all_text_contents() == ['411 Make scene changes wait for the bar. Type 410 the same way to switch back.'], 'Named by its step, without "Optional:"'
+    assert still.locator('a').get_attribute('href') == '#s-beat-scene-sync', 'A link to the step that set it'
     assert card.locator('.pd-settings').get_attribute('class') == 'notice info pd-settings', 'A reminder, not a warning'
     assert card.locator('.pd-also').count() == 0 and card.locator('a[href$="#own-track"]').count() == 0
     with page.expect_download() as download:
@@ -514,16 +519,18 @@ def test_chapter_complete_settings_file_and_what_opens(run):
     assert card.locator('.pd-also a').first.get_attribute('href') == './perform.html'
     assert finish('sampling').locator('.pd-also a').all_text_contents() == ['Chapter 7 · Vocal house']
     # Perform puts the click, the scenes and the loop back; pad velocity stays on, and says so.
-    assert finish('perform').locator('.pd-settings li').all_text_contents() == ['301 Pad velocity is on. Type 300 the same way to switch back.']
+    assert finish('perform').locator('.pd-settings li').all_text_contents() == ['301 Turn on pad velocity. Type 300 the same way to switch back.'], 'Without the code in its title'
     # The last chapter leads on to a track of your own, even before the whole course is done.
     card = finish('thodorakis-house')
     assert card.locator('a[href="./cheat-sheet.html#own-track"]').text_content() == 'Make your own track'
     assert card.locator('.pd-course').count() == 0
-    # Start screens: what a chapter needs, by number.
-    for ch, chip in (('hiphop', 'Needs Chapters 1–2'), ('thodorakis-house', 'Needs Chapters 1–3'), ('song', None)):
+    # Start screens: what a chapter needs, by number, on the line of the Parts heading.
+    for ch, chip in (('hiphop', ['Needs Chapters 1–2']), ('thodorakis-house', ['Needs Chapters 1–3']), ('song', [])):
         run.go(f'./{ch}.html#start')
-        chips = page.locator('.player-chips li').all_text_contents()
-        assert (chip in chips) if chip else not [c for c in chips if c.startswith('Needs')], f'{ch}: {chips}'
+        assert page.locator('.player-parts .player-chips li').all_text_contents() == chip, ch
+        if chip:
+            head, box = page.locator('#player-parts-title').bounding_box(), page.locator('.player-parts .player-chips').bounding_box()
+            assert abs((head['y'] + head['height'] / 2) - (box['y'] + box['height'] / 2)) < 4, f'{ch}: beside the heading'
 
 
 @pytest.mark.browser

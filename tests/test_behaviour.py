@@ -7,7 +7,8 @@
 - letter shortcuts never fire in a link, a button, a disclosure, a text field, an open dialog, a grid or a radiogroup,
   and do from the step's title;
 - #done with steps left lists them and does not tick the recap; with every chapter done, the course is complete
-  (chapter screen and Home);
+  (chapter screen and Home) and leads to the cheat sheet's own-track route;
+- on an iPhone, the install hint says to bring a progress file across;
 - with storage blocked, the chapter says so as an alert and suggests installing or exporting;
 - a service worker whose install fails says the offline copy is incomplete and offers Retry;
 - phone Back closes the Tools sheet and keeps the step;
@@ -183,7 +184,9 @@ def test_done_with_steps_left_and_the_course_complete(run):
     card = page.locator('#player-done')
     card.wait_for(state='visible')
     assert 'not ticked yet' in card.locator('h2').text_content()
+    assert 'Tick them, or skip the ones you don’t need, and this chapter is done:' in card.text_content()
     assert card.locator('.pd-open a').count() == 8, 'The first eight steps left, as links'
+    assert card.locator('.pd-settings, .pd-file, .pd-also').count() == 0, 'Nothing of the complete screen while steps are left'
     assert 'song-recap' not in run.get('koii-coach-ch-song')['done'], 'The recap is not ticked while steps are left'
     # Every chapter done: the last one shows the course, and Home says so.
     slugs = ['setup', 'first-beat', 'song', 'sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house']
@@ -194,8 +197,27 @@ def test_done_with_steps_left_and_the_course_complete(run):
     course = page.locator('#player-done .pd-course')
     course.wait_for(state='visible')
     assert course.locator('.made-list li').count() == 8
+    assert course.locator('a[href="./cheat-sheet.html#own-track"]').text_content() == 'Make your own track'
     run.go('./index.html')
     assert page.locator('.continue.complete').is_visible(), 'Home shows the course as complete'
+    assert page.locator('.continue.complete #resume').get_attribute('href') == './cheat-sheet.html#own-track'
+    assert 'Make your own track' in page.locator('.continue.complete #resume').text_content()
+
+
+def test_iphone_install_hint_brings_the_progress_file(browser, site_url):
+    """Safari on iPhone has no install prompt: the hint says to save a progress file first, since the installed copy
+    starts with its own storage."""
+    ua = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1'
+    context = browser.new_context(viewport={'width': 390, 'height': 844}, user_agent=ua)
+    page = context.new_page()
+    errors, bad = [], []
+    watch(page, site_url, errors, bad)
+    page.goto(urljoin(site_url, 'settings.html'), wait_until='networkidle')
+    hint = page.locator('.card .install-slot p')
+    assert hint.text_content() == 'To install: tap Share, then Add to Home Screen. Save a progress file first, then load it in the installed app.'
+    assert hint.locator('a').get_attribute('href') == './settings.html#export'
+    context.close()
+    assert errors == [] and bad == []
 
 
 def test_storage_blocked_is_an_alert_with_a_way_out(run):

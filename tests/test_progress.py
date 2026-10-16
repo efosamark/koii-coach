@@ -7,6 +7,7 @@ release left it, opens pages, and checks ticks, the step to continue at and the 
 Run after a build, like test_smoke.py:  python -m pytest tests/test_progress.py
 """
 import json
+import pathlib
 from urllib.parse import urljoin
 
 import pytest
@@ -129,8 +130,13 @@ def test_progress_file_round_trip(run, tmp_path):
               'koii-coach-ch-sampling': {'v': 1, 'done': ['record-first-sample'], 'last': 'record-first-sample', 'n': 1},
               'koii-coach-prefs': {'v': 1, 'wake': 'off', 'setup': 'ready'}})
     run.go('./settings.html')
-    file = run.page.evaluate('() => CoachProgress.exportFile()')
+    # Save progress file downloads it (CoachProgress.saveFile, shared with the chapter-complete card).
+    with run.page.expect_download() as download:
+        run.page.locator('#export').click()
+    assert download.value.suggested_filename.startswith('koii-coach-progress-') and download.value.suggested_filename.endswith('.json')
+    file = json.loads(pathlib.Path(download.value.path()).read_text(encoding='utf-8'))
     assert file['app'] == 'koii-coach' and 'koii-coach-ch-first-beat' in file['data'], 'The file holds the derived record too'
+    run.page.locator('#toast', has_text='Progress file saved').wait_for()
     path = tmp_path / 'koii-coach-progress.json'
     path.write_text(json.dumps(file), encoding='utf-8')
     # A different browser state: other progress, other settings, another OS choice.
@@ -145,6 +151,26 @@ def test_progress_file_round_trip(run, tmp_path):
     assert run.get('koii-coach-ch-first-beat')['cur'] == 'beat-load-snare'
     assert run.get('koii-coach-v2')['firmware'] == 'older', 'This browser keeps its OS choice'
     assert run.get('koii-coach-prefs')['wake'] == 'auto', 'This browser keeps its settings'
+
+
+def test_the_first_tick_asks_to_keep_storage(run):
+    """chapter.js asks the browser to keep the site's storage (navigator.storage.persist) on the first tick of a visit,
+    once, and Save progress file asks too."""
+    run.page.add_init_script("""Object.defineProperty(navigator, 'storage', {configurable: true, value: {
+      persisted: () => Promise.resolve(false), persist: () => { window.__persist = (window.__persist || 0) + 1; return Promise.resolve(false); }}});""")
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./first-beat.html#all')
+    count = lambda: run.page.evaluate('() => window.__persist || 0')
+    assert count() == 0, 'Not before a tick'
+    run.page.locator('li[data-step="beat-empty-project"] .check input').check()
+    run.page.evaluate("() => CoachChapter.setDone('beat-open-project-6', true)")
+    run.page.wait_for_function('() => window.__persist === 1')
+    run.page.wait_for_timeout(200)
+    assert count() == 1, 'Once per visit'
+    run.go('./settings.html')
+    with run.page.expect_download():
+        run.page.locator('#export').click()
+    assert count() == 1
 
 
 def test_split_steps_keep_their_ticks(run):

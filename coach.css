@@ -1012,7 +1012,7 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
 .skip-box{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-3);padding:var(--sp-2) var(--sp-3);border:1px dashed var(--line-strong);border-radius:var(--r-control);font-size:var(--t-body);line-height:var(--t-body-lh)}
 .skip-box p{flex:1 1 16rem;margin:0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 /* A data-once step shown again after its tick: "Done on your K.O. II already?", above its Do lines. */
-.steps li > .once-note{margin:0 0 var(--sp-3);padding:var(--sp-2) var(--sp-3);border-left:3px solid var(--here);background:var(--surface-2);font-size:var(--t-body);line-height:var(--t-body-lh)}
+.steps li > .once-note{margin:0 0 var(--sp-3);padding:var(--sp-2) var(--sp-3);border-left:3px solid var(--here);background:var(--surface-2)}
 .skipped-tag{border-style:dashed}
 /* In the list, a skipped step is dimmed; ticking it brings it back. */
 .steps li.is-skipped > :not(.check,.step-head){opacity:.6}
@@ -1129,6 +1129,9 @@ main > .safety-short{display:none}
 .player-safety .meta{margin:0}
 .player-safety .safety-more{list-style:none;margin-left:-1.25em;color:var(--ink-2)}
 .player-parts{margin:var(--sp-4) 0}
+/* "Needs Chapters 1–2" (player.js) on the Parts heading's line, at its right; the list takes the full width below. */
+.player-parts{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;column-gap:var(--sp-3)}
+.pp-list{flex-basis:100%}
 html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
 .pp-list{margin:0;padding:0;overflow:hidden;list-style:none;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
 .pp-list li{max-width:none;margin:0;border-top:1px solid var(--line)}
@@ -1365,7 +1368,7 @@ html:not([data-player="step"]) .steps li > .part-source{display:none}
 .steps li > .step-title:focus{outline:none}
 html.pl-kbd .steps li > .step-title:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:4px}
 /* In the player the step's parts keep their own sizes: only the Do line (and the preflight) is large. */
-html[data-player="step"] li.is-current > :is(.step-consequence,.step-extras,.step-source,.step-report,.step-moves,.recall,.recall-show,.pattern,.runner,.step-undo,.step-noundo,.step-note,.badge,.skip-box){font-size:var(--t-body);line-height:var(--t-body-lh)}
+html[data-player="step"] li.is-current > :is(.step-consequence,.step-extras,.step-source,.step-report,.step-moves,.recall,.recall-show,.pattern,.runner,.step-undo,.step-noundo,.step-note,.badge,.skip-box,.once-note){font-size:var(--t-body);line-height:var(--t-body-lh)}
 html[data-player="step"] li.is-current > :is(.step-source,.step-report){font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 html[data-player="step"] li.is-current .step-more .key,html[data-player="step"] li.is-current .step-source .key{background:var(--cap-face);border-color:var(--line-strong);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
 /* A risk tag is a link to safety.html: a tag, not underlined. */

@@ -24,8 +24,9 @@
      minutes  [shortest, longest] time to work through it
      made     what the learner has at the end, as the page's "You will make" line says it (Home's course-complete card)
               Keep it in step with that line.
-     needs    the slugs of the chapters to finish first, in course order: a "Needs Chapters 1–2" chip on the start
-              screen, and the done screen of the last one named lists this chapter as ready to start (player.js) */
+     needs    the slugs of the chapters to finish first, a run of two or more in course order: a "Needs Chapters
+              1–2" chip on the start screen, and the done screen of the last one named lists this chapter as ready to
+              start (player.js) */
 window.COACH_SITE={
   name:'K.O. II Coach',
   version:'2026.10.15.5',guideChecked:'2026-10-13',firmware:'OS 2.5.1',

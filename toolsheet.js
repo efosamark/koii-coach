@@ -28,6 +28,7 @@
    box. It shows in the step view only; html.has-device makes room for it (coach.css).
 
    window.CoachTools.open(opener, {tab: 'step'|'map'|'fixes'|'words'|'cheat', topic: <help id>, term: <term id>})
+   window.CoachTools.backup(opener)   the chapter-complete screen's "Show the backup steps" sheet (#player-backup)
    player.js loads this file once the chapter page is idle (decision 19: it is not part of the first paint), or at once
    when Tools is pressed before that. */
 (()=>{
@@ -253,7 +254,36 @@ function open(from,o){
   show(o.tab||'step');
   if(!want){const t=tabBtn(tab);t.focus();}
 }
-window.CoachTools={open};   // T opens it too: player.js registers the shortcut, so it works before this file has loaded
+// "Show the backup steps" on the chapter-complete screen (player.js, plan 5.9): Chapter 0's backup part in a sheet,
+// read-only, from the saved copy of setup.html when offline. It is here, not in player.js, because it is wanted only
+// after that tap (decision 19). The link beside the button goes to the chapter itself.
+let backupSheet=null,backupModal=null,backupOpener=null;
+function backup(from){
+  backupOpener=from;
+  if(!backupSheet){
+    backupSheet=el('dialog','sheet backup-sheet pl-own',
+      `<div class="sheet-box"><div class="sheet-head"><h2 class="sheet-title" id="player-backup-title">Back up your work</h2>`+
+      `<button class="icon-btn" type="button" data-close aria-label="Close">${icon('close')}</button></div><div class="sheet-body"><p class="meta">Loading the backup steps…</p></div></div>`);
+    backupSheet.id='player-backup';backupSheet.setAttribute('aria-labelledby','player-backup-title');
+    document.body.append(backupSheet);
+    backupModal=Shell.modal(backupSheet,null,()=>{
+      const body=backupSheet.querySelector('.sheet-body');
+      fetch('./setup.html').then(r=>{if(!r.ok)throw new Error(r.status);return r.text();}).then(t=>{
+        const doc=new DOMParser().parseFromString(t,'text/html'),first=doc.querySelector('li[data-step="backup-open-tool"]'),P=first&&first.closest('details');
+        if(!P)throw new Error('no backup part');
+        const h=P.querySelector('summary'),list=P.querySelector('ol');
+        list.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
+        list.querySelectorAll('.check,.step-extras,.step-report').forEach(x=>x.remove());
+        list.querySelectorAll('li[data-step]').forEach(li=>{const t=li.querySelector(':scope > .step-title');if(t){const a=document.createElement('a');a.href='./setup.html#s-'+li.dataset.step;a.innerHTML=t.innerHTML;t.replaceChildren(a);}});
+        body.innerHTML=`<p class="sub">From Chapter 0 · ${esc(clean(h?h.textContent:'Back up'))}</p><ol class="steps backup-steps">${list.innerHTML}</ol>`+
+          `<p><a class="btn" href="./setup.html#s-backup-open-tool">Open it in Chapter 0${icon('next')}</a></p><p class="meta">Nothing here is ticked: your place in this chapter stays where it is.</p>`;
+      }).catch(()=>{body.innerHTML=`<p>The backup steps could not be loaded. They are in <a href="./setup.html#s-backup-open-tool">Chapter 0 · Set up your K.O. II, Part 4</a>.</p>`;});
+    });
+    backupSheet.addEventListener('close',()=>{if(backupOpener&&backupOpener.isConnected)backupOpener.focus();});
+  }
+  backupModal.open();
+}
+window.CoachTools={open,backup};   // T opens it too: player.js registers the shortcut, so it works before this file has loaded
 // The view changed: refresh the Tools button (player.js shows it when CoachTools exists).
 document.addEventListener('coach:view',()=>{if(sheet.open&&tab==='step')fill('step');});
 

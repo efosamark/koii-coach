@@ -190,7 +190,7 @@ function migrateSetup(){
 function keys(){const ks=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(ours(k))ks.push(k);}}catch(e){}return ks;}
 const exportFile=()=>{const data={};keys().forEach(k=>{data[k]=localStorage.getItem(k);});return{app:'koii-coach',version:1,exported:new Date().toISOString(),data};};
 // Kept storage is not cleared after a break without a visit (Safari) or when space runs low. The browser decides.
-const persist=()=>{try{navigator.storage.persisted().then(p=>p||navigator.storage.persist()).catch(()=>{});}catch(e){}};
+const persist=()=>{try{navigator.storage.persist().catch(()=>{});}catch(e){}};
 function saveFile(){
   persist();
   const file=exportFile(),a=document.createElement('a');
