@@ -585,6 +585,53 @@ def test_recall_step_keeps_its_presses_behind_a_button(run):
     assert 'is-folded' not in (li.get_attribute('class') or '')
 
 
+ONCE = 'Done on your K.O. II already? Don’t press again: the Check below tells you it took.'
+
+
+@pytest.mark.browser
+def test_once_steps_say_so_when_shown_again(run):
+    """data-once (written by the content lane; set here on two commit steps): a ticked once-step shown again by Back,
+    a menu jump or Redo Part N says above its Do lines not to press again. Not before its tick, never in All steps.
+    Restart says what the K.O. II keeps."""
+    page = run.page
+    page.add_init_script("""document.addEventListener('readystatechange', () => {
+      if (document.readyState !== 'interactive') return;
+      for (const id of ['live-copy', 'keys-copy']) { const li = document.querySelector('li[data-step="' + id + '"]'); if (li) li.dataset.once = ''; } });""")
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./perform.html#s-live-copy')
+    li = page.locator('li[data-step="live-copy"]')
+    note = li.locator('.once-note')
+    assert not note.is_visible(), 'Not before its tick'
+    page.locator('#player-next').click()
+    page.wait_for_function(STEP + " === 'live-copy-listen'")
+    page.locator('#player-back').click()
+    page.wait_for_function(STEP + " === 'live-copy'")
+    assert note.is_visible() and note.text_content() == ONCE
+    assert note.evaluate("n => n.nextElementSibling.matches('.step-do')"), 'Right above the Do lines'
+    # Redo Part 1 from the checkpoint starts at that step, which says so.
+    run.go('./perform.html#s-live-restore-metronome')
+    page.locator('#player-next').click()
+    page.locator('#player-check .pc-not').click()
+    page.locator('#player-check [data-redo]').click()
+    page.wait_for_function(STEP + " === 'live-copy'")
+    assert note.is_visible()
+    # A menu jump to a once-step not ticked yet: no note. All steps: none.
+    page.locator('.menu-btn').click()
+    page.locator('#shell-menu .chapter-pane .ps-part').nth(1).locator('summary').click()
+    page.locator('#shell-menu .chapter-pane [data-jump="keys-copy"]').click()
+    page.wait_for_function(STEP + " === 'keys-copy'")
+    assert not page.locator('li[data-step="keys-copy"] .once-note').is_visible()
+    run.go('./perform.html#all')
+    assert note.evaluate('n => n.hidden')
+    # Restart: the K.O. II keeps what you made; project 6 holds three chapters.
+    said = []
+    page.once('dialog', lambda d: (said.append(d.message), d.dismiss()))
+    page.evaluate("() => document.getElementById('reset').click()")
+    assert 'Your K.O. II keeps what you made. Practise again in a fresh copy with SHIFT + MAIN, or back up first. Project 6 also holds your work from Chapters 1, 2 and 4.' in said[0], said
+    assert 'nothing on your K.O. II changes' not in said[0]
+    assert run.get('koii-coach-ch-perform')['done'], 'Cancel keeps the ticks'
+
+
 @pytest.mark.browser
 def test_get_back_in_on_continue(run):
     """Home's and the menu's Continue link to #s-<the step to continue at>: after more than 30 minutes that shows Get back

@@ -270,14 +270,15 @@ $('resume').addEventListener('click',()=>{const t=here();if(t>=0)go(t);});
 const openAll=()=>document.querySelectorAll('details').forEach(d=>d.open=true);
 addEventListener('beforeprint',openAll);
 $('print').addEventListener('click',()=>{openAll();print();});
-// Restart this chapter: asks first, clears its ticks and skips, and can be undone for 10 seconds (plan 5.6).
+// Restart this chapter: asks first, clears its ticks and skips, and can be undone for 10 seconds (plan 5.6). The
+// K.O. II keeps what was made, so the question says how to practise again (in project 6, Chapters 1, 2 and 4 share it).
 function apply(){
   document.querySelectorAll('.check input').forEach(b=>{b.checked=done.has(b.closest('li').dataset.step);});
   update();
   if(window.CoachShell)CoachShell.refresh();   // no change event fires here, so tell the shell's course list itself
 }
 $('reset').addEventListener('click',()=>{
-  if(!confirm('Restart this chapter?\n\nThis clears every tick in it. Other chapters keep their progress, and nothing on your K.O. II changes. You can undo this for 10 seconds.'))return;
+  if(!confirm('Restart this chapter?\n\nThis clears every tick in it. Other chapters keep their progress. Your K.O. II keeps what you made. Practise again in a fresh copy with SHIFT + MAIN, or back up first.'+(book==='project-6'?' Project 6 also holds your work from Chapters 1, 2 and 4.':'')+' You can undo this for 10 seconds.'))return;
   const before={done:[...done],skip:[...skip],last:state.last,cur:state.cur,at:state.at};
   done.clear();skip.clear();state.last=null;note='';store();
   apply();

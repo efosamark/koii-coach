@@ -75,8 +75,8 @@
    #player-actions (Back, Tools, Done · Next); #player-check; #player-done; #player-report (the "This step doesn't
    match my K.O. II" link, moved into the step on screen and pre-filled for it); the start screen's chips, safety and
    reference summaries and parts list; .player-modes; .back-pill; .getback; and inside each step a .step-head (the
-   part-relative "1 of 4" and the tags), a .skip-box on the first of a run of optional steps and, for a delete or
-   overwrite step, a .gate. coach.css, "Step player", draws them. <html data-player="start|step|check|done"> is set
+   part-relative "1 of 4" and the tags), a .skip-box on the first of a run of optional or route steps, a
+   .once-note on a data-once step and, for a delete or overwrite step, a .gate. coach.css, "Step player", draws them. <html data-player="start|step|check|done"> is set
    while the player shows one of its views.
    After every change of view it fires a "coach:view" event on document, detail {view: 'start'|'step'|'check'|'done'|
    'list', step: the id on screen or null}; first-beat.js and the Tools sheet (toolsheet.js) use it.
@@ -247,8 +247,9 @@ groups.forEach((run,li)=>{
 // answer once opened. The label is the text before the first ": ", at most 48 characters and without a key in it.
 // The rows are a copy, shown only while the recap is on screen; the list as written stays for All steps, print and
 // the done screen's New moves. A data-recall step (never a risk step) keeps its Do lines behind "Show the presses".
+// A data-once step (a commit, a doubling) shown again once ticked says, above its Do lines, not to press again.
 const cap=h=>h.replace(/^((?:<[^>]+>|\s)*)([a-z])/,(m,a,l)=>a+l.toUpperCase());   // only a lower-case first letter
-const recapRows=new Map(),recalls=new Map();   // recap -> [its ul.step-moves, the rows]; data-recall step -> its button line
+const recapRows=new Map(),recalls=new Map(),onces=new Map();   // recap -> [its ul.step-moves, the rows]; data-recall step -> its button line; data-once step -> its note
 steps.forEach(li=>{
   const ul=li.dataset.kind==='recap'&&li.querySelector(':scope > .step-moves'),d=li.querySelector(':scope > .step-do');
   if(ul){
@@ -260,6 +261,7 @@ steps.forEach(li=>{
     }).join(''));
     if(n){rows.hidden=true;ul.after(rows);recapRows.set(li,[ul,rows]);}
   }
+  if('once' in li.dataset&&d){const n=el('p','once-note pl-own','Done on your K.O. II already? Don’t press again: the Check below tells you it took.');n.hidden=true;d.before(n);onces.set(li,n);}
   if(!('recall' in li.dataset)||li.dataset.risk||!d)return;
   const p=el('p','recall-show pl-own','<button class="btn" type="button" aria-expanded="false">Show the presses</button> <span class="meta">Try it from memory first.</span>');
   p.hidden=true;d.before(p);recalls.set(li,p);
@@ -498,6 +500,7 @@ function render(){
   setHidden(want);
   steps.forEach(li=>{const on=v==='step'&&li===cur;li.classList.toggle('is-current',on);li.classList.toggle('is-folded',on&&recalls.has(li)&&shown!==li);});
   recapRows.forEach(([,r],li)=>{r.hidden=!(v==='step'&&li===cur);});
+  onces.forEach((p,li)=>{p.hidden=!(v==='step'&&li===cur&&isDone(li)&&!isGated());});
   recalls.forEach((p,li)=>{const open=shown===li,b=p.firstChild;p.hidden=!(v==='step'&&li===cur);b.setAttribute('aria-expanded',String(open));b.textContent=open?'Hide the presses':'Show the presses';p.lastChild.hidden=open;});
   gates.forEach((g,li)=>{
     const on=v==='step'&&li===cur,ok=confirmed===li;

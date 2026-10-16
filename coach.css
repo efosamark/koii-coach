@@ -975,7 +975,7 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
    #player-actions (#player-back, #player-tools-btn, #player-next, #player-go, .pa-more), #chapter-actions (the ⋮
    sheet), #player-check, #player-done, .player-modes, .player-chips, .player-safety, .player-reference,
    .player-parts, .part-about, .back-pill, .getback, .led-row; inside a step: .step-head (.step-num and tags),
-   .skip-box, .recall (a recap's moves as closed rows), .recall-show ("Show the presses"), .preflight, .gate, .step-do,
+   .skip-box, .once-note, .recall (a recap's moves as closed rows), .recall-show ("Show the presses"), .preflight, .gate, .step-do,
    .step-check[data-sense="hear|see"], li.is-current, li.is-checkpoint, li.is-folded (Do lines still behind "Show the
    presses"), li.is-skipped, li[data-risk]. Yellow stays for keycaps: in the player the keys of the step on screen are
    hot, except inside its check. */
@@ -1011,6 +1011,8 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
 .getback > :last-child{margin-bottom:0}
 .skip-box{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);margin:0 0 var(--sp-3);padding:var(--sp-2) var(--sp-3);border:1px dashed var(--line-strong);border-radius:var(--r-control);font-size:var(--t-body);line-height:var(--t-body-lh)}
 .skip-box p{flex:1 1 16rem;margin:0;color:var(--ink-2);font-size:var(--t-cap);line-height:var(--t-cap-lh)}
+/* A data-once step shown again after its tick: "Done on your K.O. II already?", above its Do lines. */
+.steps li > .once-note{margin:0 0 var(--sp-3);padding:var(--sp-2) var(--sp-3);border-left:3px solid var(--here);background:var(--surface-2);font-size:var(--t-body);line-height:var(--t-body-lh)}
 .skipped-tag{border-style:dashed}
 /* In the list, a skipped step is dimmed; ticking it brings it back. */
 .steps li.is-skipped > :not(.check,.step-head){opacity:.6}
