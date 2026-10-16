@@ -29,7 +29,8 @@
      setCurrent(id)        moves cur there (saved; the "You are here" mark follows)
      resumeId()            where to open a chapter that has progress: current(), else the first step not ticked yet
      hasProgress()         true once a step on this page is ticked
-     isSkipped(id), setSkipped(ids, on), skipped()   optional steps the learner chose to skip (record.skip). A skipped
+     isSkipped(id), setSkipped(ids, on), skipped()   steps the learner chose to skip: a run of optional steps, or a
+                           route they are not taking (player.js, data-route), kept in record.skip. A skipped
                            step does not count towards total() and is not where Continue lands; ticking it unskips it
      lastAt()              the time of the last tick (ISO), or null
      onChange(fn)          fn({type:'tick'|'current'|'reset'|'skip', id}) after every change made here (id is null for skip)
@@ -128,7 +129,7 @@ if(!(state&&state.v===1&&Array.isArray(state.done))){
   save();
 }
 const done=new Set(state.done.filter(x=>typeof x==='string'));
-// Optional steps the learner skipped (plan 5.3). Only kept in the record once there are any.
+// Optional or route steps the learner skipped (plan 5.3). Only kept in the record once there are any.
 const skip=new Set((Array.isArray(state.skip)?state.skip:[]).filter(x=>typeof x==='string'&&ids.includes(x)));
 if(typeof state.last!=='string')state.last=null;
 const count=()=>steps.filter(li=>done.has(li.dataset.step)).length;

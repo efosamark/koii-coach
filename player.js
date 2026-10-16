@@ -26,6 +26,11 @@
      li[data-setting="401"]             neutral "System setting 401" tag
      li[data-os="2.5"]                  "Needs OS 2.5+" tag (chapter.js's badge then shows only when it warns)
      li[data-optional]                  "Optional" tag; a run of optional steps in one part can be skipped at once
+     li[data-route="Using USB audio, not the line input?"]  steps for one way of doing the part: consecutive steps
+                                        in one part with the same question are a run that can be skipped at once,
+                                        like optional steps ("<question> You can skip these N steps."), but untagged
+     li[data-once]                      a press that must happen once on the unit (a commit, a doubling): shown again
+                                        after its tick (Back, a menu jump, Redo), it says so above its Do lines
      li[data-kind="recap"]              the chapter's recap: ticked by itself on the chapter-complete screen once
                                         every other step is done; its ul.step-moves show there as "New moves". In the
                                         player, each move that reads "Label: answer" (the text before the first ": ",
@@ -218,18 +223,21 @@ steps.forEach(li=>{
   gates.set(li,{box:g,btn:g.querySelector('.gate-btn'),hint:g.querySelector('.gate-hint'),ok:g.querySelector('.gate-ok')});
   gates.get(li).btn.addEventListener('click',()=>{confirmed=li;render();focusStep(li);});
 });
-// A run of optional steps in one part: its first step offers to skip the whole run (plan 5.3). Skipped steps stop
-// counting towards the chapter; ticking one later brings it back.
+// A run of optional steps in one part, or of steps with the same data-route (one way of doing a part, such as the
+// line input instead of USB): its first step offers to skip the whole run (plan 5.3). A route's box asks its question
+// first ("Using USB audio, not the line input? You can skip these 5 steps."); its steps stay required, untagged.
+// Skipped steps stop counting towards the chapter; ticking one later brings it back.
 const groups=new Map();   // first step of a run -> the run
+const runKey=li=>clean(li.dataset.route)||('optional' in li.dataset?'\u0000':'');
 parts.forEach(P=>{
   let run=[];
   const flush=()=>{if(run.length)groups.set(run[0],run);run=[];};
-  P.steps.forEach(li=>{if('optional' in li.dataset)run.push(li);else flush();});
+  P.steps.forEach(li=>{const k=runKey(li);if(run.length&&k!==runKey(run[0]))flush();if(k)run.push(li);});
   flush();
 });
 groups.forEach((run,li)=>{
-  const n=run.length,box=el('div','skip-box pl-own',
-    `<p>You can skip ${n===1?'this step':n===2?'this step and the next':'these '+n+' steps'}: ${n===1?'it won’t':'they won’t'} hold up the chapter, and you can come back later.</p>`+
+  const n=run.length,q=clean(li.dataset.route),box=el('div','skip-box pl-own',
+    `<p>${q?esc(q)+` You can skip ${n===1?'this step':'these '+n+' steps'}.`:`You can skip ${n===1?'this step':n===2?'this step and the next':'these '+n+' steps'}: ${n===1?'it won’t':'they won’t'} hold up the chapter, and you can come back later.`}</p>`+
     `<button class="btn" type="button" data-skip>${n===1?'Skip this step':'Skip these '+n+' steps'}</button>`);
   box.hidden=true;
   (li.querySelector(':scope > .step-title')||heads.get(li)).after(box);
@@ -693,12 +701,12 @@ function showDone(opt){
   const head=complete?'Chapter '+esc(chNum)+' done':'Chapter '+esc(chNum)+' · '+esc(plural(open.length,'step','steps'))+' not ticked yet';
   doneCard.innerHTML=`<p class="pl-eyebrow">Chapter ${esc(chNum)} · ${esc(chName)}</p><h2 class="pd-title" id="player-done-title" tabindex="-1">${head}</h2>`+
     (complete?`<p class="pd-leds">${leds(Array.from({length:16}),()=>true)}</p>`+(makes?`<p class="pd-made">${made()}</p>`:'')+
-      `<p>All ${C.total()} steps are ticked${skipped?` (${plural(skipped,'optional step','optional steps')} skipped)`:''}.</p>`+
+      `<p>All ${C.total()} steps are ticked${skipped?` (${plural(skipped,'step','steps')} skipped)`:''}.</p>`+
       (kept.length?`<h3 class="pd-moves-title">${kept.some(k=>k[2]==='scene')?'Scene numbers to keep':'Numbers to keep'}</h3><p class="pd-notes">`+
         kept.map(([n,v])=>`<span class="note-pair">${esc(n)} <samp class="lcd">${v?esc(v):'–'}</samp></span>`).join(' ')+'</p>'+
         (kept.some(k=>!k[1])?'<p class="meta">– is a number you did not note here: take it from your paper.</p>':''):'')+
       (moves.length?'<h3 class="pd-moves-title">New moves</h3>'+moves.map(m=>{const c=copy(m);c.classList.add('pd-moves');return c.outerHTML;}).join(''):'')
-    :`<p>Tick them, or skip the optional ones, and this chapter is done:</p><ul class="pd-open">`+
+    :`<p>Tick them, or skip the ones you don’t need, and this chapter is done:</p><ul class="pd-open">`+
       open.slice(0,8).map(li=>`<li><a href="#s-${esc(li.dataset.step)}"><span class="pd-n">${inPart(li)[0]}</span><span class="pd-t">${esc(gist(li))} <span class="meta">Part ${partOf(li).n}</span></span></a></li>`).join('')+'</ul>'+
       (open.length>8?`<p><a href="#all">${esc(plural(open.length-8,'more step','more steps'))}: see All steps</a></p>`:''))+
     (again.length?'<h3 class="pd-moves-title">Worth another go</h3><p>You answered “Not quite” at the end of these parts.</p>'+

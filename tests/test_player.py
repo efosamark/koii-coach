@@ -14,6 +14,7 @@
 - The menu's "This chapter" tab jumps to a step without ticking it; keyboard shortcuts and their off switch.
 Run after a build, like test_smoke.py:  python -m pytest tests/test_player.py
 """
+import json
 import pathlib
 import re
 from html import unescape
@@ -320,6 +321,37 @@ def test_skip_a_run_of_optional_steps(run):
     assert run.get('koii-coach-ch-first-beat')['cur'] == 'beat-recap', 'cur passes the skipped run'
     page.locator('#player-next').click()
     page.wait_for_function(STEP + " === 'beat-recap'")
+
+
+@pytest.mark.browser
+def test_skip_a_route(run):
+    """data-route (written by the content lane; set here on real steps before the player reads the page): consecutive
+    steps with the same question are a run with its own skip box, untagged. Skipping one route lands on the other, and
+    the chapter completes without it."""
+    page = run.page
+    line = ['line-connect', 'line-connect-volume', 'line-handsfree-record', 'line-select-input', 'line-record-d3']
+    usb = ['usb-connect', 'usb-connect-output', 'usb-live-monitor', 'usb-handsfree-record', 'usb-record-d3']
+    page.add_init_script("""document.addEventListener('readystatechange', () => {
+      if (document.readyState !== 'interactive') return;
+      const set = (ids, q) => ids.forEach(id => { const li = document.querySelector('li[data-step="' + id + '"]'); if (li) li.dataset.route = q; });
+      set(%s, 'Using USB audio, not the line input?'); set(%s, 'Using the line input, not USB?'); });""" % (json.dumps(line), json.dumps(usb)))
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./sampling.html#s-line-connect')
+    box = page.locator('li[data-step="line-connect"] .skip-box')
+    assert box.locator('p').text_content() == 'Using USB audio, not the line input? You can skip these 5 steps.'
+    assert box.locator('[data-skip]').text_content() == 'Skip these 5 steps'
+    assert page.locator('li[data-step="line-connect"] .step-head .tag:not([hidden])').count() == 0, 'A route step is not tagged Optional'
+    assert page.locator('li[data-step="usb-live-monitor"] .skip-box').count() == 0, 'An optional step inside a route is part of its run'
+    box.locator('[data-skip]').click()
+    page.wait_for_function(STEP + " === 'usb-connect'")
+    assert page.locator('li[data-step="usb-connect"] .skip-box p').text_content() == 'Using the line input, not USB? You can skip these 5 steps.'
+    assert run.get('koii-coach-ch-sampling')['skip'] == line
+    assert page.locator('#toast').text_content().startswith('5 steps skipped.')
+    page.evaluate("ids => CoachChapter.ids().filter(id => !ids.includes(id) && !/recap/.test(id)).forEach(id => CoachChapter.setDone(id, true))", line)
+    run.go('./sampling.html#done')
+    card = page.locator('#player-done')
+    assert card.locator('h2').text_content() == 'Chapter 3 done'
+    assert '(5 steps skipped).' in card.text_content()
 
 
 @pytest.mark.browser
