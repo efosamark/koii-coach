@@ -466,7 +466,7 @@
           <li data-step="fx-copy" data-note="FXJAM" data-once>
             <h3 class="step-title">Copy BEAT as FXJAM</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select BEAT, release and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>. Write the new number as FXJAM. Press <kbd class="key">PLAY</kbd> and leave it running.</p>
-            <p class="step-check"><span class="sr">Check: </span>The copy plays the same beat as BEAT.</p>
+            <p class="step-check"><span class="sr">Check: </span>The new number differs from BEAT’s, and it plays the same beat.</p>
           </li>
           <li data-step="fx-beat-repeat">
             <h3 class="step-title">Beat repeat: FX + pad 1</h3>
@@ -661,7 +661,7 @@
             <p class="step-note">Add a punch-in FX (Part 4) in the last beat before a change, or a latched hat repeat (Part 3) during BREAK.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The loop function <span class="nobr">(<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">TEMPO</kbd></kbd>)</span> is another live move: it repeats a short piece of the music. See “<a href="./sampling.html#s-loop-optional">Optional: start a LOOP</a>” in Chapter 3 · Sample, chop &amp; resample.</p></details></div>
           </li>
-          <li data-step="scene-erase" data-note="TRASH" data-once>
+          <li data-step="scene-erase" data-note="TRASH">
             <h3 class="step-title">Copy a throwaway scene: TRASH</h3>
             <p class="step-do">Stopped, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> to copy the scene you are in, then hold <kbd class="key">MAIN</kbd> and write the new number as TRASH.</p>
             <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows the copy’s new number.</p>
@@ -716,7 +716,7 @@
           <li data-step="song-break-copy" data-note="BREAK2" data-once>
             <h3 class="step-title">Copy BREAK as BREAK2</h3>
             <p class="step-do">In project 6, stop playback. Hold <kbd class="key">MAIN</kbd>, select BREAK, release, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>. Write the new number as BREAK2.</p>
-            <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: melody, snare and hats, two bars long.</p>
+            <p class="step-check"><span class="sr">Check: </span>The new number differs from BREAK’s. Press <kbd class="key">PLAY</kbd>: melody, snare and hats, two bars.</p>
             <p class="step-note">Stop.</p>
           </li>
           <li data-step="song-break-double" data-once>
@@ -851,25 +851,6 @@
             <p class="step-check"><span class="sr">Check: </span>The app shows the K.O. II as its input.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Look for a new USB audio device named “ko2”. Owners’ tools find it by “EP-133” in its name on a Mac (<a href="https://github.com/kmorrill/ep-series-sysex">ep-series-sysex</a>) and “EP133” on Linux (<a href="https://github.com/geokkjer/sound-arranger">sound-arranger</a>). Restarts or shows <samp class="lcd">BAT</samp>? Fit fresh AAA batteries: USB power must give 5 V and at least 1 A.</p></details></div>
           </li>
-          <li data-step="rec-level" data-os="2.0">
-            <h3 class="step-title">Set the recording level</h3>
-            <p class="badge os-badge">Needs OS 2.0 or newer</p>
-            <p class="step-do">Start the song: hold <kbd class="key">MAIN</kbd>, press <kbd class="key">ENTER</kbd>, then <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd>. Watch your app’s level meter.</p>
-            <p class="step-check"><span class="sr">Check: </span>The app’s meter peaks below the top.</p>
-            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Too loud? Lower the app’s input level, or select the loudest group in MAIN and lower its fader.</p></details></div>
-          </li>
-          <li data-step="rec-take" data-os="2.0">
-            <h3 class="step-title">Record your performance</h3>
-            <p class="badge os-badge">Needs OS 2.0 or newer</p>
-            <p class="step-do">Start recording in the app, then, in the song list, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> on the K.O. II and perform.</p>
-            <p class="step-check"><span class="sr">Check: </span>The song plays from the start while the app records.</p>
-            <p class="step-note">Add punch-in FX, a latched repeat or, if you play scenes by hand, scene changes. Read your plan for the take before you switch to the recording app.</p>
-          </li>
-          <li data-step="rec-take-stop">
-            <h3 class="step-title">Stop the recording and listen</h3>
-            <p class="step-do">After the song stops, wait for the last sound to fade, then stop the app. Listen back on the phone or computer.</p>
-            <p class="step-check"><span class="sr">Check: </span>Your song plays back, with your live effects.</p>
-          </li>
           <li data-step="rec-line-out" data-route="Using USB audio, not the line output?">
             <h3 class="step-title">No USB audio? Use the line output</h3>
             <p class="step-do">Connect a stereo 3.5 mm cable to the line input of an audio interface or recorder, and start with low levels.</p>
@@ -877,10 +858,29 @@
             <p class="step-note">Either way your recording is audio only: back up the project itself with the official EP sample tool on a computer.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The 3.5 mm socket is a stereo headphone and line output.</p></details></div>
           </li>
+          <li data-step="rec-level" data-os="2.0">
+            <h3 class="step-title">Set the recording level</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
+            <p class="step-do">Start the song: hold <kbd class="key">MAIN</kbd>, press <kbd class="key">ENTER</kbd>, then <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd>. Watch the level meter of your app or recorder.</p>
+            <p class="step-check"><span class="sr">Check: </span>The meter peaks below the top.</p>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Too loud? Lower the input level of the app or recorder, or select the loudest group in MAIN and lower its fader.</p></details></div>
+          </li>
+          <li data-step="rec-take" data-os="2.0">
+            <h3 class="step-title">Record your performance</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
+            <p class="step-do">Start recording in the app or recorder, then, in the song list, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> on the K.O. II and perform.</p>
+            <p class="step-check"><span class="sr">Check: </span>The song plays from the start while it records.</p>
+            <p class="step-note">Add punch-in FX, a latched repeat or, if you play scenes by hand, scene changes. Read your plan for the take before you switch to the recording app.</p>
+          </li>
+          <li data-step="rec-take-stop">
+            <h3 class="step-title">Stop the recording and listen</h3>
+            <p class="step-do">After the song stops, wait for the last sound to fade, then stop the app or recorder. Listen back on the phone, computer or recorder.</p>
+            <p class="step-check"><span class="sr">Check: </span>Your song plays back, with your live effects.</p>
+          </li>
           <li data-step="perform-recap" data-kind="recap">
             <h3 class="step-title">Your performance moves</h3>
             <p class="step-do">Say the presses for each move, then tap it to check.</p>
-            <ul class="step-moves"><li>Record live: at <samp class="lcd">1.1.1</samp> tap <kbd class="key">RECORD</kbd>, press <kbd class="key">PLAY</kbd>, play after the count-in, then press <kbd class="key">RECORD</kbd>.</li><li><kbd class="key">TIMING</kbd>: <kbd class="key knob">X</kbd> sets the grid, <kbd class="key">−</kbd> quantize, <kbd class="key">+</kbd> free time, <kbd class="key knob">Y</kbd> swing.</li><li>KEYS: select a pad, press <kbd class="key">KEYS</kbd>; hold it and turn <kbd class="key knob">X</kbd> for the key, <kbd class="key knob">Y</kbd> for the scale.</li><li>Note repeat: hold <kbd class="key">TIMING</kbd> and a pad; in TIMING, <kbd class="key">SHIFT</kbd> + the pad latches it.</li><li>Punch-in FX: while playing, hold <kbd class="key">FX</kbd> and press a pad.</li><li>Copy a pad’s notes: hold it, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd>; hold another, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>.</li><li>Next scene in time: hold <kbd class="key">MAIN</kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> before the change lands.</li><li>Sidechain: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">FX</kbd></kbd>, <kbd class="key">+</kbd>; hold a group button and press a pad for the source, <kbd class="key">SHIFT</kbd> + a group to dip.</li></ul>
+            <ul class="step-moves"><li>Record live: at <samp class="lcd">1.1.1</samp> tap <kbd class="key">RECORD</kbd>, press <kbd class="key">PLAY</kbd>, play after the count-in, then press <kbd class="key">RECORD</kbd>.</li><li>Timing: in <kbd class="key">TIMING</kbd>, <kbd class="key knob">X</kbd> sets the grid, <kbd class="key">−</kbd> quantize, <kbd class="key">+</kbd> free time, <kbd class="key knob">Y</kbd> swing.</li><li>KEYS: select a pad, press <kbd class="key">KEYS</kbd>; hold it and turn <kbd class="key knob">X</kbd> for the key, <kbd class="key knob">Y</kbd> for the scale.</li><li>Note repeat: hold <kbd class="key">TIMING</kbd> and a pad; in TIMING, <kbd class="key">SHIFT</kbd> + the pad latches it.</li><li>Punch-in FX: while playing, hold <kbd class="key">FX</kbd> and press a pad.</li><li>Copy a pad’s notes: hold it, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd>; hold another, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>.</li><li>Next scene in time: hold <kbd class="key">MAIN</kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> before the change lands.</li><li>Sidechain: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">FX</kbd></kbd>, <kbd class="key">+</kbd>; hold a group button and press a pad for the source, <kbd class="key">SHIFT</kbd> + a group to dip.</li></ul>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> a file on your phone or computer plays your song, including your live effects.</p>

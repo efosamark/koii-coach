@@ -362,7 +362,8 @@ def test_skip_a_route(run):
     assert box.locator('p').text_content() == 'Using USB audio, not the line input? You can skip these 5 steps.'
     assert box.locator('[data-skip]').text_content() == 'Skip these 5 steps'
     assert page.locator('li[data-step="line-connect"] .step-head .tag:not([hidden])').count() == 0, 'A route step is not tagged Optional'
-    assert page.locator('li[data-step="usb-live-monitor"] .skip-box').count() == 0, 'An optional step inside a route is part of its run'
+    assert page.locator('li[data-step="usb-live-monitor"] .skip-box').count() == 1, 'An optional step inside a route keeps its own box'
+    assert page.locator('li[data-step="usb-live-monitor"] .skip-box [data-skip]').text_content() == 'Skip this step'
     box.locator('[data-skip]').click()
     page.wait_for_function(STEP + " === 'usb-connect'")
     assert page.locator('li[data-step="usb-connect"] .skip-box p').text_content() == 'Using the line input, not USB? You can skip these 5 steps.'
@@ -373,6 +374,11 @@ def test_skip_a_route(run):
     card = page.locator('#player-done')
     assert card.locator('h2').text_content() == 'Chapter 3 done'
     assert '(5 steps skipped).' in card.text_content()
+    # Chapter 4 Part 9: skipping the USB route lands on the line output, before the level and the take.
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./perform.html#s-rec-usb')
+    page.locator('li[data-step="rec-usb"] .skip-box [data-skip]').click()
+    page.wait_for_function(STEP + " === 'rec-line-out'")
 
 
 @pytest.mark.browser

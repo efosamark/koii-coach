@@ -38,7 +38,7 @@ function versionNote(){
     newer:`If a step differs on your K.O. II, follow the official guide, and report the step.`,
     '2':`OS 2.0.x lacks ${OS25}. <b>Update first</b>: ${upd} shows how.`,
     older:`An OS older than 2.0 lacks ${OS20}, and much more. <b>Update first</b>: ${upd} shows how.`,
-    unknown:`The coach can’t read the OS on your K.O. II. Keep it up to date with the official <a href="https://teenage.engineering/apps/update" target="_blank" rel="noopener noreferrer">update utility${icon('external')}${NEWTAB}</a>, and ${upd} walks you through it. Then choose OS 2.5.x here.`
+    unknown:`The coach can’t read the OS on your K.O. II. Keep it up to date with the official <a href="https://teenage.engineering/apps/update" target="_blank" rel="noopener noreferrer">update utility${icon('external')}${NEWTAB}</a>, and ${upd} walks you through it. Then choose your OS here: OS 2.5.x, or Newer than OS 2.5.1.`
   }[v]||'';
   const n=$('#version-note');
   n.className='notice '+(v==='2'||v==='older'?'caution':'info');

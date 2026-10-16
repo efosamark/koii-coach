@@ -88,7 +88,9 @@ const figures=[...document.querySelectorAll('figure.pattern')].map(fig=>{
 }).filter(Boolean);
 
 const stopAll=()=>{if(window.CoachAudio)CoachAudio.stopAll();};
-document.addEventListener('coach:view',stopAll);
+// Only a new view or step stops it: "Show the presses" and a gate's "Yes, I have checked" fire coach:view on the same step.
+let seen='';
+document.addEventListener('coach:view',e=>{const d=e.detail||{},k=d.view+'|'+d.step;if(k!==seen){seen=k;stopAll();}});
 addEventListener('beforeprint',stopAll);
 window.CoachBeat={figures};
 })();

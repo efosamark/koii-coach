@@ -261,7 +261,8 @@ def test_clean_up_after_eight_weeks(run, tmp_path):
 
 
 def test_a_finished_chapter_stays_finished_with_its_new_recap(run):
-    """2026.10.14.21 added a recap step to Chapters 0 and 3-7. A learner who had finished one keeps it finished."""
+    """2026.10.14.21 added a recap step to Chapters 0 and 3-7, and 2026.10.16 a listen-back step to Chapters 5 and 6.
+    A learner who had finished one keeps it finished."""
     rec = {'v': 1, 'done': ['keep-samples'], 'last': 'keep-samples', 'n': 1, 'm': 1}
     run.seed({'koii-coach-ch-sampling': rec, 'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
     run.go('./index.html')
@@ -277,6 +278,12 @@ def test_a_finished_chapter_stays_finished_with_its_new_recap(run):
     run.seed({'koii-coach-ch-vocal-house': rec, 'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
     run.go('./index.html')
     assert run.get('koii-coach-ch-vocal-house')['done'] == ['backup-and-rights', 'vocal-recap'], 'Chapter 7 gets its recap too'
+    # 2026.10.16 added a listen-back step after the recording in Chapters 5 and 6: a learner past the take keeps it.
+    for slug, take, listen in [('hiphop', 'record-song', 'record-song-listen'), ('tech-house', 'record-full-pass-take', 'record-full-pass-listen')]:
+        rec = {'v': 1, 'done': [take], 'last': take, 'n': 1, 'm': 2}
+        run.seed({f'koii-coach-ch-{slug}': rec, 'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+        run.go('./index.html')
+        assert run.get(f'koii-coach-ch-{slug}')['done'] == [take, listen], f'{slug}: the listen-back step is ticked with the take'
 
 
 def test_a_stale_cur_is_recomputed_on_load(run):

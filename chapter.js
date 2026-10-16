@@ -284,8 +284,13 @@ function apply(){
   update();
   if(window.CoachShell)CoachShell.refresh();   // no change event fires here, so tell the shell's course list itself
 }
+// What Restart says about practising again: Chapters 2 and 4 start from scenes you already have; the others start by
+// checking for an empty project, which a copy of your scenes would fail.
+const EMPTY='Its first steps expect an empty project: back up first (Chapter 0, Part 4), then use one whose pads are all silent.',
+  AGAIN={song:'Practise again in a fresh copy with SHIFT + MAIN, or back up first.',perform:'Practise again in a fresh copy with SHIFT + MAIN, or back up first.',
+    'first-beat':EMPTY,sampling:EMPTY,hiphop:EMPTY,'tech-house':EMPTY,'vocal-house':'Part 1 sets up a project again: back up first (Chapter 0, Part 4).'};
 $('reset').addEventListener('click',()=>{
-  if(!confirm('Restart this chapter?\n\nThis clears every tick in it. Other chapters keep their progress. Your K.O. II keeps what you made. Practise again in a fresh copy with SHIFT + MAIN, or back up first.'+(book==='project-6'?' Project 6 also holds your work from Chapters 1, 2 and 4.':'')+' You can undo this for 10 seconds.'))return;
+  if(!confirm('Restart this chapter?\n\nThis clears every tick in it. Other chapters keep their progress.'+(AGAIN[slug]?' Your K.O. II keeps what you made. '+AGAIN[slug]:'')+(book==='project-6'?' Project 6 also holds your work from Chapters 1, 2 and 4.':'')+' You can undo this for 10 seconds.'))return;
   const before={done:[...done],skip:[...skip],last:state.last,cur:state.cur,at:state.at};
   done.clear();skip.clear();state.last=null;note='';store();
   apply();

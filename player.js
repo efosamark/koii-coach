@@ -231,21 +231,21 @@ steps.forEach(li=>{
 // line input instead of USB): its first step offers to skip the whole run (plan 5.3). A route's box asks its question
 // first ("Using USB audio, not the line input? You can skip these 5 steps."); its steps stay required, untagged.
 // Skipped steps stop counting towards the chapter; ticking one later brings it back.
-const groups=new Map();   // first step of a run -> the run
-const runKey=li=>clean(li.dataset.route)||('optional' in li.dataset?'\u0000':'');
-parts.forEach(P=>{
+const groups=[];   // [run, its route question or '', its box]: optional runs, then route runs; a step can be in one of each
+[[li=>'optional' in li.dataset?'o':'',0],[li=>clean(li.dataset.route),1]].forEach(([key,route])=>parts.forEach(P=>{
   let run=[];
-  const flush=()=>{if(run.length)groups.set(run[0],run);run=[];};
-  P.steps.forEach(li=>{const k=runKey(li);if(run.length&&k!==runKey(run[0]))flush();if(k)run.push(li);});
+  const flush=()=>{if(run.length)groups.push([run,route?key(run[0]):'']);run=[];};
+  P.steps.forEach(li=>{const k=key(li);if(run.length&&k!==key(run[0]))flush();if(k)run.push(li);});
   flush();
-});
-groups.forEach((run,li)=>{
-  const n=run.length,q=clean(li.dataset.route),these=n===1?'this step':n===2&&!q?'this step and the next':'these '+n+' steps',box=el('div','skip-box pl-own',
+}));
+groups.forEach(g=>{
+  const[run,q]=g,li=run[0],n=run.length,these=n===1?'this step':n===2&&!q?'this step and the next':'these '+n+' steps',box=el('div','skip-box pl-own',
     `<p>${q?esc(q)+` You can skip ${these}.`:`You can skip ${these}: ${n===1?'it won’t':'they won’t'} hold up the chapter, and you can come back later.`}</p>`+
     `<button class="btn" type="button" data-skip>${n===1?'Skip this step':'Skip these '+n+' steps'}</button>`);
   box.hidden=true;
   (li.querySelector(':scope > .step-title')||heads.get(li)).after(box);
   box.querySelector('[data-skip]').addEventListener('click',()=>skipRun(run));
+  g.push(box);
 });
 // Recall before reading. In a recap, each move that reads "Label: answer" becomes a closed row: the label, and the
 // answer once opened. The label is the text before the first ": ", at most 48 characters and without a key in it.
@@ -259,9 +259,9 @@ steps.forEach(li=>{
   if(ul){
     let n=0;
     const rows=el('ul','recall pl-own',[...ul.children].map(m=>{
-      const h=m.innerHTML.trim(),k=h.indexOf(': '),cue=h.slice(0,k);
-      if(k<1||/<kbd|<[^>]*$/.test(cue)||clean(cue.replace(/<[^>]*>/g,'')).length>48)return`<li>${h}</li>`;
-      n++;return`<li><details><summary>${cue}</summary><p>${cap(h.slice(k+2))}</p></details></li>`;
+      const h=m.innerHTML.trim(),c=/:((?:<\/[^>]+>)*)\s/.exec(h),cue=c?h.slice(0,c.index)+c[1]:'';   // the colon may sit in punctuation glue: '(tim):</span> '
+      if(!c||c.index<1||/<kbd|<[^>]*$/.test(cue)||clean(cue.replace(/<[^>]*>/g,'')).length>48)return`<li>${h}</li>`;
+      n++;return`<li><details><summary>${cue}</summary><p>${cap(h.slice(c.index+c[0].length))}</p></details></li>`;
     }).join(''));
     if(n){rows.hidden=true;ul.after(rows);recapRows.set(li,[ul,rows]);}
   }
@@ -482,7 +482,6 @@ function render(){
   setHidden(want);
   steps.forEach(li=>{const on=v==='step'&&li===cur;li.classList.toggle('is-current',on);li.classList.toggle('is-folded',on&&recalls.has(li)&&shown!==li);});
   recapRows.forEach(([,r],li)=>{r.hidden=!(v==='step'&&li===cur);});
-  onces.forEach((p,li)=>{p.hidden=!(v==='step'&&li===cur&&isDone(li)&&!isGated());});
   recalls.forEach((p,li)=>{const open=shown===li,b=p.firstChild;p.hidden=!(v==='step'&&li===cur);b.setAttribute('aria-expanded',String(open));b.textContent=open?'Hide the presses':'Show the presses';p.lastChild.hidden=open;});
   gates.forEach((g,li)=>{
     const on=v==='step'&&li===cur,ok=confirmed===li;
@@ -517,6 +516,8 @@ function render(){
 // What follows the ticks: the app bar's title and meter, the main button, the pill, the tags, the skip boxes, the menu.
 function paint(){
   const total=C.total(),count=C.count();
+  // Here, not in render(): a tick from the step card's own checkbox repaints only.
+  onces.forEach((p,li)=>{p.hidden=printing||!(view==='step'&&li===cur&&isDone(li)&&!isGated());});
   const P=view==='check'?part:cur&&partOf(cur);
   if(Shell){
     Shell.setMeter(total?count/total:0);
@@ -547,7 +548,7 @@ function paint(){
   pill.hidden=!(home&&home!==cur);
   if(!pill.hidden)pill.innerHTML=`${icon('back')}<span>Back to ${partOf(home)===partOf(cur)?'step '+inPart(home)[0]:where(home)}<span class="sr">, where you continue</span></span>`;
   heads.forEach((h,li)=>{const t=h.querySelector('.skipped-tag');t.hidden=!isSkipped(li);h.classList.toggle('bare',!h.querySelector('.tag:not([hidden])'));});
-  groups.forEach((run,li)=>{const b=li.querySelector(':scope > .skip-box');if(b)b.hidden=!(view==='step'&&li===cur)||run.every(settled);});
+  groups.forEach(([run,,b])=>{b.hidden=!(view==='step'&&run[0]===cur)||run.every(settled);});
   if(Shell)Shell.refreshChapter();
   cue();
 }
@@ -647,6 +648,7 @@ function showCheck(P,opt){
 function fixCards(P,bare){
   const c=copy(P.ifnot),b=c.querySelector('b');
   if(b&&/^If it doesn['’]t/i.test(b.textContent))b.remove();
+  c.querySelectorAll('.nobr').forEach(g=>g.replaceWith(...g.childNodes));   // glue keeps "PLAY." together, hiding the sentence end
   const plain=h=>h.replace(/<[^>]+>/g,'').trim();
   const parts=c.innerHTML.trim().replace(/K\.O\. /g,'K.O.\u00a0').replace(/([.?!])\s+(?=[A-Z0-9<“"])/g,'$1\u0000').split('\u0000').map(s=>s.trim()).filter(Boolean);
   // With "?" symptoms, a "label: …" sentence starts a card only for a short label ("USB:", "Older OS:"), never an instruction.
@@ -697,7 +699,7 @@ function showDone(opt){
   // After the last chapter, and once the whole course is done: the route to a track of your own (cheat-sheet.html).
   const own=complete&&(all||!nextLink)?'<p><a href="./cheat-sheet.html#own-track">Make your own track</a>: a route through the parts you have done.</p>':'';
   // Chapters that open up now (this is the last chapter their site.js needs names), other than Next, not done yet.
-  const nx=nextLink&&nextLink.getAttribute('href'),opens=course.filter(p=>!p.done&&p.c.href!==nx&&(p.c.needs||[]).slice(-1)[0]===slug);
+  const nx=nextLink&&nextLink.getAttribute('href'),opens=course.filter(p=>!p.done&&p.c.href!==nx&&(p.c.needs||[]).includes(slug)&&p.c.needs.every(n=>n===slug||course.some(q=>q.c.slug===n&&q.done)));
   const head=complete?'Chapter '+esc(chNum)+' done':'Chapter '+esc(chNum)+' · '+esc(plural(open.length,'step','steps'))+' not ticked yet';
   doneCard.innerHTML=`<p class="pl-eyebrow">Chapter ${esc(chNum)} · ${esc(chName)}</p><h2 class="pd-title" id="player-done-title" tabindex="-1">${head}</h2>`+
     (complete?`<p class="pd-leds">${leds(Array.from({length:16}),()=>true)}</p>`+(makes?`<p class="pd-made">${made()}</p>`:'')+
@@ -892,7 +894,7 @@ function routeTo(hash){
     }
     if(mode()==='all'){showList();return false;}   // chapter.js opens its section, scrolls to it and marks it
     showStep(li);
-    if(was&&C.hasProgress()&&id===C.current())welcomeBack(li);   // Continue (Home, the menu) links to the step to continue at
+    if(was&&C.hasProgress()&&C.count()<C.total()&&id===C.current())welcomeBack(li);   // Continue (Home, the menu) links to the step to continue at
     return true;
   }
   if(h){
