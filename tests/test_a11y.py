@@ -113,6 +113,17 @@ def test_axe_on_every_page_and_sheet(run, scheme):
     page.keyboard.type('erase')
     page.wait_for_timeout(600)
     found += run.axe(f'{scheme} search')
+    # A chord marked HOLD in the press order, in the Tools sheet and beside the card on a wide screen.
+    run.go('./song.html#s-song-break-clear')
+    page.locator('#player-tools-btn').click()
+    page.locator('#tools-panel-step .press-order .key.hold').wait_for()
+    found += run.axe(f'{scheme} Tools sheet with a chord')
+    page.keyboard.press('Escape')
+    page.locator('#tools-sheet').wait_for(state='hidden')
+    page.set_viewport_size({'width': 1280, 'height': 1200})
+    run.go('./song.html#s-song-break-clear')
+    page.locator('#player-device .press-order .key.hold').wait_for()
+    found += run.axe(f'{scheme} device panel with a chord')
     assert found == [], 'Serious or critical axe violations:\n' + '\n'.join(found)
 
 
