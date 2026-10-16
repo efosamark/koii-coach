@@ -121,7 +121,7 @@
             <h3 class="step-title">A2 and A3: load snare and hat</h3>
             <p class="step-do">Tap <kbd class="key pad">A2</kbd>, hold <kbd class="key">SOUND</kbd>, type <kbd class="key">1</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and release (sample 100). Tap <kbd class="key pad">A3</kbd>, hold <kbd class="key">SOUND</kbd>, type <kbd class="key">2</kbd>, <kbd class="key">0</kbd>, <kbd class="key">0</kbd> and release (sample 200).</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows sample numbers 100, then 200.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The same sounds as Chapter 1. Factory kicks sit at 1–99, snares at 100–199 and hi-hats at 200–299.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The Chapter 1 sounds, unless you typed your favourites there. Factory kicks sit at 1–99, snares at 100–199 and hi-hats at 200–299.</p></details></div>
           </li>
           <li data-step="load-drum-kit-level">
             <h3 class="step-title">Listen, and set the hat lower</h3>
@@ -138,7 +138,7 @@
           <li data-step="set-grid-16-quantize">
             <h3 class="step-title">Set the grid to 16, quantized</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd> and turn <kbd class="key knob">X</kbd> until it shows <samp class="lcd">16</samp> (not <samp class="lcd">16T</samp>). Press <kbd class="key">−</kbd> to choose quantize. Press <kbd class="key">MAIN</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>The MAIN icon is lit again.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">16</samp> and the Q icon, not <samp class="lcd">16T</samp>.</p>
             <p class="step-note">Leave <kbd class="key knob">Y</kbd> (swing) alone.</p>
           </li>
           <li data-step="write-kicks">
@@ -146,13 +146,13 @@
             <p class="step-do">Stopped, in MAIN, with <kbd class="key">A</kbd> selected: hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> until the display shows <samp class="lcd">1.1.1</samp>.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">1.1.1</samp>: the start of bar 1.</p>
           </li>
-          <li data-step="write-kicks-four">
+          <li data-step="write-kicks-four" data-recall>
             <h3 class="step-title">A1: write the four kicks</h3>
             <p class="step-do">Hold <kbd class="key">RECORD</kbd>, tap <kbd class="key pad">A1</kbd>, release. Use <kbd class="key">+</kbd> to reach <samp class="lcd">1.2.3</samp>, <samp class="lcd">1.3.1</samp> and <samp class="lcd">1.4.3</samp> and write <kbd class="key pad">A1</kbd> the same way at each.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">A1</kbd> lights at all four positions.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A lit pad means a note is written on that step.</p></details></div>
           </li>
-          <li data-step="write-hats">
+          <li data-step="write-hats" data-recall>
             <h3 class="step-title">A3: write the hats</h3>
             <p class="step-do">Still stopped in group <kbd class="key">A</kbd>, hold <kbd class="key">RECORD</kbd> and tap <kbd class="key pad">A3</kbd> at every .1 and .3: <samp class="lcd">1.1.1</samp>, <samp class="lcd">1.1.3</samp>, <samp class="lcd">1.2.1</samp>, <samp class="lcd">1.2.3</samp>, <samp class="lcd">1.3.1</samp>, <samp class="lcd">1.3.3</samp>, <samp class="lcd">1.4.1</samp> and <samp class="lcd">1.4.3</samp>.</p>
             <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>. Kick and steady hats.</p>
@@ -211,7 +211,7 @@
             <p class="step-check"><span class="sr">Check: </span>The bass joins the kick on beats 1 and 3.</p>
             <p class="step-note">Stop.</p>
           </li>
-          <li data-step="lengthen-c-and-d">
+          <li data-step="lengthen-c-and-d" data-once>
             <h3 class="step-title">Make C and D two bars long</h3>
             <p class="step-do">Tap <kbd class="key">C</kbd>. Hold <kbd class="key">RECORD</kbd>, press <kbd class="key">+</kbd> once, then release both. Tap <kbd class="key">D</kbd> and do the same.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">Ln.2</samp> for C, then for D.</p>
@@ -229,9 +229,9 @@
             <p class="step-do">Hold <kbd class="key pad">A2</kbd> and press <kbd class="key">+</kbd> three times, then release and press <kbd class="key">MAIN</kbd>. Press <kbd class="key">PLAY</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The snare sits a hair behind the beat, a laid-back hip-hop feel.</p>
             <p class="step-note">Stop.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Each press moves every <kbd class="key pad">A2</kbd> snare one tick (1/96 of a beat) later.</p></details><details class="step-more"><summary>Not working?</summary><p>Too much? Open timing correct again and tap <kbd class="key pad">A2</kbd> once: a tap there snaps all its notes back to the grid.</p></details></div>
+            <div class="step-extras"><details class="step-more step-hear"><summary>Hear the difference</summary><figure class="pattern" data-bpm="90"><figcaption>On the grid</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp><br>Hat (A3): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.1.3</samp> <samp class="lcd">1.2.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.3.3</samp> <samp class="lcd">1.4.1</samp> <samp class="lcd">1.4.3</samp><br>Bass (B1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.3.1</samp></p></figure><figure class="pattern" data-bpm="90" data-late="A2:3"><figcaption>Snare 3 ticks late</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp><br>Hat (A3): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.1.3</samp> <samp class="lcd">1.2.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.3.3</samp> <samp class="lcd">1.4.1</samp> <samp class="lcd">1.4.3</samp><br>Bass (B1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.3.1</samp></p></figure></details><details class="step-more"><summary>Why</summary><p>Each press moves every <kbd class="key pad">A2</kbd> snare one tick (1/96 of a beat) later.</p></details><details class="step-more"><summary>Not working?</summary><p>Too much? Open timing correct again and tap <kbd class="key pad">A2</kbd> once: a tap there snaps all its notes back to the grid.</p></details></div>
           </li>
-          <li data-step="name-verse-commit-hook" data-note="VERSE">
+          <li data-step="name-verse-commit-hook" data-note="VERSE" data-once>
             <h3 class="step-title">Name VERSE and commit</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and write the scene number down as VERSE. Release <kbd class="key">MAIN</kbd> and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once.</p>
             <p class="step-check"><span class="sr">Check: </span>VERSE’s scene number is on your paper.</p>
