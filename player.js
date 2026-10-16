@@ -78,9 +78,9 @@
    #player-actions (Back, Tools, Done · Next); #player-check; #player-done; #player-report (the "This step doesn't
    match my K.O. II" link, moved into the step on screen and pre-filled for it); the start screen's chips, safety and
    reference summaries and parts list; .player-modes; .back-pill; .getback; and inside each step a .step-head (the
-   part-relative "1 of 4" and the tags), a .skip-box on the first of a run of optional or route steps, a
-   .once-note on a data-once step and, for a delete or overwrite step, a .gate. coach.css, "Step player", draws them. <html data-player="start|step|check|done"> is set
-   while the player shows one of its views.
+   part-relative "1 of 4" and the tags), a .skip-box on the first of a run of optional or route steps, a .once-note
+   on a data-once step and, for a delete or overwrite step, a .gate. coach.css, "Step player", draws them.
+   <html data-player="start|step|check|done"> is set while the player shows one of its views.
    After every change of view it fires a "coach:view" event on document, detail {view: 'start'|'step'|'check'|'done'|
    'list', step: the id on screen or null}; first-beat.js and the Tools sheet (toolsheet.js) use it.
    window.CoachPlayer = {view(), current()}: what is on screen; partFixes(li): the "If it doesn't" of li's part as
@@ -327,7 +327,7 @@ const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!=
     const needs=main.querySelector(':scope > .needs');
     (shortSafety&&needs?needs:dangers[0]).before(safety);
   }
-  partsBox.innerHTML='<h2 id="player-parts-title">Parts</h2>'+(needs?`<ul class="player-chips"><li>${needs}</li></ul>`:'')+'<ol class="pp-list"></ol>';
+  partsBox.innerHTML='<h2 id="player-parts-title">Parts</h2>'+(needs?`<ul class="chips"><li>${needs}</li></ul>`:'')+'<ol class="pp-list"></ol>';
   (progress&&progress.parentElement===main?progress:wrap).before(partsBox);
   // Below the parts (plan 5.2): the reference cards, then the preamble in full.
   if(references.length){

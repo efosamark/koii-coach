@@ -527,9 +527,9 @@ def test_chapter_complete_settings_file_and_what_opens(run):
     # Start screens: what a chapter needs, by number, on the line of the Parts heading.
     for ch, chip in (('hiphop', ['Needs Chapters 1–2']), ('thodorakis-house', ['Needs Chapters 1–3']), ('song', [])):
         run.go(f'./{ch}.html#start')
-        assert page.locator('.player-parts .player-chips li').all_text_contents() == chip, ch
+        assert page.locator('.player-parts .chips li').all_text_contents() == chip, ch
         if chip:
-            head, box = page.locator('#player-parts-title').bounding_box(), page.locator('.player-parts .player-chips').bounding_box()
+            head, box = page.locator('#player-parts-title').bounding_box(), page.locator('.player-parts .chips').bounding_box()
             assert abs((head['y'] + head['height'] / 2) - (box['y'] + box['height'] / 2)) < 4, f'{ch}: beside the heading'
 
 

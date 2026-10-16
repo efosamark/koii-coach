@@ -1129,7 +1129,8 @@ main > .safety-short{display:none}
 .player-safety .meta{margin:0}
 .player-safety .safety-more{list-style:none;margin-left:-1.25em;color:var(--ink-2)}
 .player-parts{margin:var(--sp-4) 0}
-/* "Needs Chapters 1–2" (player.js) on the Parts heading's line, at its right; the list takes the full width below. */
+/* "Needs Chapters 1–2" (player.js, a .chips list) on the Parts heading's line, at its right; the list takes the full
+   width below. */
 .player-parts{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;column-gap:var(--sp-3)}
 .pp-list{flex-basis:100%}
 html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
