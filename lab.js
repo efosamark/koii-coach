@@ -9,7 +9,9 @@
    One button is in the tab order; the arrow keys move between cells (Up and Down move a beat on a phone, a sound when
    wider), Home and End go to the start and end of the row, and Space or Enter toggles. The playhead outlines the whole
    column and the LCD beside Play shows its position. Tempo and volume are −/+ steppers with an LCD value, each a
-   role=spinbutton (arrow keys, Page Up and Down; holding −/+ repeats). */
+   role=spinbutton (arrow keys, Page Up and Down; holding −/+ repeats). The Swing checkbox (#swing) plays every second
+   step (1.1.2, 1.1.4 …) 8 ticks of 96 late, a triplet shuffle. It is a general swing, not the K.O. II's amount, and
+   it is not saved. */
 (()=>{
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const el=$('#beat');
@@ -26,7 +28,7 @@ let grid=saved?saved.map(r=>Array.from({length:16},(_,i)=>r.includes(i))):recipe
 // first N rows of the recipe. It is not saved until you change it, so your own grid is back on the next visit.
 const asked=/^#recipe-([1-4])$/.exec(location.hash);
 if(asked)grid=HITS.map((row,r)=>Array.from({length:16},(_,i)=>r<+asked[1]&&row.includes(i)));
-const compact=matchMedia('(max-width:759px)');
+const compact=matchMedia('(max-width:759px)'),swing=$('#swing'),swung=()=>Boolean(swing&&swing.checked);
 let sel=0,focus={r:0,c:0};
 
 // ---------- The grid ----------
@@ -106,7 +108,7 @@ tabs.addEventListener('keydown',e=>{
 function changed(keep){
   $('#lab-positions').innerHTML=grid.map((row,r)=>{const p=row.flatMap((on,c)=>on?[pos(c)]:[]);return`<p class="line"><b>${NAMES[r]}:</b> ${p.length?p.map(lcd).join(' '):'no notes'}</p>`;}).join('');
   const same=(row,cs)=>row.every((on,c)=>on===cs.includes(c));
-  const goals=[['Kick on every beat only: 1.1.1, 1.2.1, 1.3.1 and 1.4.1',g=>same(g[0],[0,4,8,12])],['Hats on all 16 steps',g=>g[2].every(Boolean)],['No bass at all: hear how much it carried',g=>!g[3].some(Boolean)]];
+  const goals=[['Kick on every beat only: 1.1.1, 1.2.1, 1.3.1 and 1.4.1',g=>same(g[0],[0,4,8,12])],['Hats on all 16 steps',g=>g[2].every(Boolean)],['Hats on all 16 steps, then Swing on',g=>g[2].every(Boolean)&&swung()],['No bass at all: hear how much it carried',g=>!g[3].some(Boolean)]];
   $('#goals').innerHTML=goals.map(([t,f])=>{const ok=f(grid);return`<li class="goal${ok?' ok':''}" data-state="${ok?'done':'todo'}"><span class="led" aria-hidden="true"></span><span>${t}${ok?'<span class="sr"> (done)</span>':''}</span></li>`;}).join('');
   $$('#lab-tabs [role="tab"]').forEach(t=>{const n=grid[Number(t.dataset.r)].filter(Boolean).length;t.querySelector('.tab-count').textContent=n===1?'1 hit':n+' hits';});
   if(keep!==false&&P)P.writeV2({lab:grid.map(r=>r.flatMap((on,c)=>on?[c]:[]))});
@@ -141,12 +143,13 @@ setValue('bpm',90);setValue('vol',7);
 // ---------- Play ----------
 const play=$('#audio-play'),status=$('#audio-status'),now=$('#lab-pos');
 const player=CoachAudio.player({
-  grid:()=>grid,bpm:()=>values.bpm,volume:()=>values.vol*.025,
+  grid:()=>grid,bpm:()=>values.bpm,volume:()=>values.vol*.025,late:(r,c)=>swung()&&c%2?8:0,
   onStep:c=>{$$('#beat .now').forEach(b=>b.classList.remove('now'));if(c>=0)$$(`#beat [data-c="${c}"]`).forEach(b=>b.classList.add('now'));now.textContent=c>=0?pos(c):'–.–.–';},
   onState:(t,on,failed)=>{status.textContent=t;play.innerHTML=on?icon('stop')+'Stop':icon('play')+'Play lab';if(!on)now.textContent='–.–.–';
     if(failed){const x=$('#toast');if(x){x.textContent='Audio could not start. The visual guide still works.';x.classList.remove('hidden');setTimeout(()=>x.classList.add('hidden'),5000);}}}
 });
 play.addEventListener('click',player.toggle);
+if(swing)swing.addEventListener('change',()=>changed(false));
 const onCompact=()=>render();
 if(compact.addEventListener)compact.addEventListener('change',onCompact);else if(compact.addListener)compact.addListener(onCompact);
 render();pick(0);changed(false);

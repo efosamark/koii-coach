@@ -275,7 +275,8 @@ def test_report_by_email_only_when_an_address_is_set(run):
 def test_target_beats_match_their_text(run):
     """beat.js draws every figure.pattern from its own text list: one lit cell per written position, one 16-cell block
     per bar up to the highest bar written, and a Hear it button. Chapter 1 keeps its figures; Chapters 2, 3, 5, 6 and 7
-    gain them. In the player every cell of a beat is the same square."""
+    gain them. Every row's name picks its sound: none falls back to the rim click. In the player every cell of a beat
+    is the same square."""
     count = r"""() => [...document.querySelectorAll('figure.pattern')].map(f => {
         const written = f.querySelectorAll('.pattern-text samp').length;
         const lit = f.querySelectorAll('.strip-cell.on').length;
@@ -291,6 +292,8 @@ def test_target_beats_match_their_text(run):
         assert figs, f'{name} has target beats'
         for f in figs:
             assert f['lit'] == f['written'] and f['cells'] == 16 and f['blocks'] == f['bars'] and f['button'], f'{name}: {f}'
+        rim = run.page.evaluate("() => CoachBeat.figures.flatMap(f => f.rows).filter(r => r.voice === 'rim' && !/rim|click/i.test(r.name)).map(r => r.name)")
+        assert rim == [], f'{name}: rows with no sound of their own play as rim: {rim}'
         seen += len(figs)
     assert seen >= 21 + 6, f'only {seen} target beats'
     run.go('./tech-house.html#s-bass-answer-b2')
@@ -375,6 +378,61 @@ def test_hear_it_hands_over_between_two_beats(run):
     page.wait_for_timeout(800)   # a suspend's statechange lands a task later
     assert 'Playing' in status.nth(1).text_content() and 'Paused' not in status.nth(1).text_content(), status.nth(1).text_content()
     assert status.nth(0).text_content() == '' and 'Hear it' in page.locator('figure.pattern .hear-btn').nth(0).text_content(), 'The first player stopped'
+
+
+# Every note audio.js makes, as the test sees it: [value, time] of each frequency set (gains stay under 20) and
+# ['tone' or 'noise', time] of each sound started.
+AUDIO_LOG = """(() => {
+  const log = window.__audio = {freq: [], start: []};
+  const set = AudioParam.prototype.setValueAtTime;
+  AudioParam.prototype.setValueAtTime = function (v, t) { if (v >= 20) log.freq.push([v, t]); return set.call(this, v, t); };
+  for (const [Node, kind] of [[OscillatorNode, 'tone'], [AudioBufferSourceNode, 'noise']]) {
+    const start = Node.prototype.start;
+    Node.prototype.start = function (t) { log.start.push([kind, t]); return start.apply(this, arguments); };
+  }
+})();"""
+# A "Hear the difference" pair as the content lane writes it, put first in a real step's extras before beat.js reads the
+# page (readyState "interactive" comes before the deferred scripts run).
+HEAR_DIFFERENCE = """document.addEventListener('readystatechange', () => {
+  const box = document.readyState === 'interactive' && document.querySelector('li[data-step="optional-lazy-snare-shift"] .step-extras');
+  if (box) box.insertAdjacentHTML('afterbegin', `<details class="step-more step-hear" id="t-diff"><summary>Hear the difference</summary>
+    <figure class="pattern" data-bpm="90"><figcaption>On the grid</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp><br>Snare (A2): <samp class="lcd">1.1.1</samp></p></figure>
+    <figure class="pattern" data-bpm="90" data-late="A2:3" data-pitch="B1:+1; C1:-12"><figcaption>Snare 3 ticks late</figcaption><p class="pattern-text">Kick (A1): <samp class="lcd">1.1.1</samp><br>Snare (A2): <samp class="lcd">1.1.1</samp><br>Bass (B1): <samp class="lcd">1.1.1</samp><br>Bass answer (B2): <samp class="lcd">1.1.1</samp><br>Melody (C1): <samp class="lcd">1.1.1</samp><br>Synth stab (C2): <samp class="lcd">1.1.1</samp></p></figure></details>`);
+});"""
+
+
+@pytest.mark.browser
+def test_hear_the_difference_late_pitch_and_melody(run):
+    """beat.js and audio.js: data-late plays a pad's rows N ticks late (96 a beat) while the grid keeps them on their
+    step, data-pitch transposes a pad's rows, "melody" and "synth stab" rows are the melody pluck (grid label Melody),
+    and "Bass answer" sounds the same note as Bass. The two figures of a "Hear the difference" play one at a time."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    page.add_init_script(AUDIO_LOG)
+    page.add_init_script(HEAR_DIFFERENCE)
+    run.go('./hiphop.html#all')
+    rows = page.evaluate("() => CoachBeat.figures.filter(f => f.fig.closest('#t-diff')).map(f => f.rows.map(r => [r.voice, r.late, r.pitch]))")
+    assert rows == [[['kick', 0, 0], ['snare', 0, 0]],
+                    [['kick', 0, 0], ['snare', 3, 0], ['bass', 0, 1], ['bass2', 0, 0], ['melody', 0, -12], ['melody', 0, 0]]], rows
+    late = page.locator('#t-diff figure.pattern').nth(1)
+    assert late.locator('.strip-name').all_text_contents() == ['Kick', 'Snare', 'Bass', 'Bass 2', 'Melody', 'Melody']
+    assert late.locator('.strip-cell.on').evaluate_all('cs => cs.map(c => c.dataset.c)') == ['0'] * 6, 'The grid shows the late snare on its step'
+    page.evaluate("() => { for (let d = document.querySelector('#t-diff'); d; d = d.parentElement.closest('details')) d.open = true; }")
+    hear, status = page.locator('#t-diff .hear-btn'), page.locator('#t-diff .strip-status')
+    hear.nth(0).click()
+    page.wait_for_function("() => /Playing/.test(document.querySelectorAll('#t-diff .strip-status')[0].textContent)")
+    hear.nth(1).click()
+    page.wait_for_function("() => /Playing/.test(document.querySelectorAll('#t-diff .strip-status')[1].textContent)")
+    assert status.nth(0).text_content() == '' and 'Hear it' in hear.nth(0).text_content(), 'One of the pair plays at a time'
+    page.wait_for_function("() => window.__audio.freq.some(([v]) => Math.abs(v - 65.41 * 2 ** (1 / 12)) < .01)")
+    log = page.evaluate('() => window.__audio')
+    # The second figure's first bar: its transposed bass (unique to it) gives the time of 1.1.1.
+    t0 = next(t for v, t in log['freq'] if abs(v - 65.41 * 2 ** (1 / 12)) < .01)
+    at = sorted(round(v, 2) for v, t in log['freq'] if abs(t - t0) < 1e-6)
+    want = sorted(round(f, 2) for f in [140, 65.41, 65.41 * 2 ** (1 / 12), 261.63 / 2, 261.63])
+    assert at == want, f'kick, bass2 = bass, bass +1, melody -12, stab: {at}'
+    noise = [t for kind, t in log['start'] if kind == 'noise' and t0 - 1e-6 < t < t0 + .1]
+    assert noise and abs(noise[0] - t0 - 3 * 60 / 90 / 96) < 1e-4, f'The snare plays 3 ticks (20.8 ms at 90 BPM) late: {[n - t0 for n in noise]}'
 
 
 @pytest.mark.browser
@@ -884,6 +942,40 @@ def test_rhythm_lab(run):
     run.go('./lab.html#recipe-2')
     on = page.evaluate("() => [0, 1, 2, 3].map(r => document.querySelectorAll(`#beat button[data-r='${r}'][aria-pressed='true']`).length)")
     assert on == [4, 2, 0, 0], f'Kick and snare of the recipe only ({on})'
+
+
+@pytest.mark.browser
+def test_rhythm_lab_swing(run):
+    """The lab's Swing checkbox plays every second step (1.1.2, 1.1.4 …) late, 8 ticks of 96, and the challenge
+    "Hats on all 16 steps, then Swing on" lights once both are true. Swing is not saved."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    page.add_init_script(AUDIO_LOG)
+    run.go('./lab.html')
+    swing = page.get_by_role('checkbox', name='Swing')
+    assert not swing.is_checked() and swing.get_attribute('aria-describedby') == 'swing-hint'
+    assert page.locator('#swing-hint').text_content() == 'Swing pushes every second step late: 1.1.2, 1.1.4, 1.2.2 and so on.'
+    goals = page.locator('#goals li')
+    assert goals.nth(2).text_content() == 'Hats on all 16 steps, then Swing on' and goals.nth(2).get_attribute('data-state') == 'todo'
+    page.locator('#clear').click()
+    page.evaluate("() => document.querySelectorAll('#beat button[data-r=\"2\"]').forEach(b => b.click())")   # hats on all 16 steps
+    assert [goals.nth(i).get_attribute('data-state') for i in (1, 2)] == ['done', 'todo']
+    hats = lambda: page.evaluate("() => window.__audio.start.filter(([k]) => k === 'noise').map(([, t]) => t)")
+    gaps = lambda ts: [round(b - a, 4) for a, b in zip(ts, ts[1:])]
+    step = 60 / 90 / 4
+    page.locator('#audio-play').click()
+    page.wait_for_function("() => window.__audio.start.length >= 6")
+    assert set(gaps(hats())[:5]) == {round(step, 4)}, f'Straight: every step the same length ({gaps(hats())})'
+    swing.check()
+    assert goals.nth(2).get_attribute('data-state') == 'done' and '(done)' in goals.nth(2).text_content()
+    page.evaluate('() => { window.__audio.start.length = 0; }')
+    page.wait_for_function("() => window.__audio.start.length >= 8")
+    ts = hats()
+    late = 8 * step / 24
+    assert set(gaps(ts)[1:6]) == {round(step + late, 4), round(step - late, 4)}, f'Swung: long, short, long … ({gaps(ts)})'
+    page.locator('#audio-play').click()
+    run.go('./lab.html')
+    assert not page.get_by_role('checkbox', name='Swing').is_checked(), 'Swing starts off on each visit'
 
 
 @pytest.mark.browser

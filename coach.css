@@ -608,6 +608,7 @@ h2.sub{margin:var(--sp-5) 0 var(--sp-3);font-size:var(--t-check);line-height:var
 .lab-now{display:inline-flex;align-items:center;gap:var(--sp-2)}
 .lab-pos{min-width:5.5ch;font-size:28px;line-height:1.3;text-align:center}
 .lab-steppers{display:flex;flex-wrap:wrap;gap:var(--sp-3) var(--sp-5);margin:var(--sp-4) 0 var(--sp-2)}
+.lab-steppers .lab-swing{margin:0}
 .stepper{display:inline-flex;align-items:center;gap:var(--sp-2)}
 .stepper-label{min-width:4.5em;font-weight:600}
 .step-btn{width:48px;height:48px;padding:0;border:1px solid var(--line-strong);border-radius:var(--r-control);background:var(--surface-1);color:var(--ink);font:600 22px/1 var(--font-ui)}
