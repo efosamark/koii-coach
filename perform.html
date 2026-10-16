@@ -93,7 +93,7 @@
         <summary><h2 class="part-title">Part 1 · Record live with feel</h2></summary>
         <p><b>Goal:</b> replace your placed snare with one you play live, soft “ghost notes” included.</p>
         <ol>
-          <li data-step="live-copy">
+          <li data-step="live-copy" data-once>
             <h3 class="step-title">Copy BEAT as a practice scene</h3>
             <p class="step-do">Stopped, hold <kbd class="key">MAIN</kbd>, select BEAT with <kbd class="key">−</kbd> / <kbd class="key">+</kbd> and release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> to copy it.</p>
             <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not BEAT’s.</p>
@@ -140,8 +140,8 @@
           <li data-step="live-quantize">
             <h3 class="step-title">Set quantize on the 16 grid</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd>. Check that the display shows <samp class="lcd">16</samp> (turn <kbd class="key knob">X</kbd> if not), press <kbd class="key">−</kbd> to choose quantize, then press <kbd class="key">MAIN</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">16</samp>. The MAIN icon is lit again.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Quantize snaps every hit you record to the nearest of the 16 steps in the bar.</p></details></div>
+            <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">16</samp> and the Q icon.</p>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Quantize snaps every hit you record to the nearest of the 16 steps in the bar.</p></details><details class="step-more"><summary>Not working?</summary><p>See help: “<a href="./help.html#timing-did-not-fix-old-notes">TIMING did not fix old notes</a>”.</p></details></div>
           </li>
           <li data-step="live-practise">
             <h3 class="step-title">Practise the backbeat on A2</h3>
@@ -184,7 +184,7 @@
           <li data-step="live-free-time">
             <h3 class="step-title">Switch to free time</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd>, press <kbd class="key">+</kbd> (free time), then <kbd class="key">MAIN</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>The MAIN icon is lit again.</p>
+            <p class="step-check"><span class="sr">Check: </span>In TIMING the FREE icon lit, not Q.</p>
           </li>
           <li data-step="live-free-time-record">
             <h3 class="step-title">Overdub loose ghost notes</h3>
@@ -196,7 +196,7 @@
           <li data-step="live-swing" data-optional>
             <h3 class="step-title">Optional: turn on swing</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd>, press <kbd class="key">−</kbd> (quantize), check the display shows <samp class="lcd">16</samp>, turn <kbd class="key knob">Y</kbd> a little and press <kbd class="key">MAIN</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>The SWING icon lights.</p>
+            <p class="step-check"><span class="sr">Check: </span>In TIMING the Q icon lit. The SWING icon lights.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Swing gives the hats a shuffle. It only shapes notes you record after setting it, and only on the 8 and 16 grids.</p></details></div>
           </li>
           <li data-step="live-swing-clear" data-optional data-risk="erase">
@@ -217,7 +217,7 @@
           <li data-step="live-restore">
             <h3 class="step-title">Set quantize back, without swing</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd>, press <kbd class="key">−</kbd> (quantize), turn <kbd class="key knob">Y</kbd> back to no swing, then press <kbd class="key">MAIN</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>The SWING icon goes out.</p>
+            <p class="step-check"><span class="sr">Check: </span>In TIMING the Q icon lit. The SWING icon goes out.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Later chapters expect quantize and no swing.</p></details></div>
           </li>
           <li data-step="live-restore-metronome" data-setting="401">
@@ -236,7 +236,7 @@
         <summary><h2 class="part-title">Part 2 · Play a bassline in a scale with KEYS</h2></summary>
         <p><b>Goal:</b> turn one bass sound into a 12-note keyboard in a scale, and record a two-bar bassline live.</p>
         <ol>
-          <li data-step="keys-copy">
+          <li data-step="keys-copy" data-once>
             <h3 class="step-title">Copy DRUMS as BASSLINE</h3>
             <p class="step-do">Stopped, hold <kbd class="key">MAIN</kbd>, select DRUMS, your drums-only scene, with <kbd class="key">−</kbd> / <kbd class="key">+</kbd> and release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> to copy it.</p>
             <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, the copy’s.</p>
@@ -256,11 +256,11 @@
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: drums only, no bass. Stop.</p>
           </li>
-          <li data-step="keys-two-bars">
+          <li data-step="keys-two-bars" data-once>
             <h3 class="step-title">Make group B two bars long</h3>
             <p class="step-do">Stopped in MAIN with group <kbd class="key">B</kbd> selected, hold <kbd class="key">RECORD</kbd>, press <kbd class="key">+</kbd> once and release both.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">Ln.2</samp>: B’s pattern is two bars long.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A stays one bar long and repeats underneath.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A stays one bar long and repeats underneath.</p></details><details class="step-more"><summary>Not working?</summary><p>See help: “<a href="./help.html#my-bass-loops-too-soon">My bass loops too soon</a>”.</p></details></div>
           </li>
           <li data-step="keys-on">
             <h3 class="step-title">B1: switch on KEYS</h3>
@@ -314,8 +314,8 @@
           <li data-step="keys-off">
             <h3 class="step-title">Switch KEYS off</h3>
             <p class="step-do">Press <kbd class="key">KEYS</kbd> again to switch it off. Tap <kbd class="key">A</kbd>, then <kbd class="key pad">A1</kbd> and <kbd class="key pad">A2</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>You hear kick and snare, not one sound at different pitches.</p>
-            <p class="step-note">The piano icon (KEYS MODE) should now be off. Hold <kbd class="key">MAIN</kbd> and select BEAT: it still has its two original bass pulses.</p>
+            <p class="step-check"><span class="sr">Check: </span>The piano icon goes out. <kbd class="key pad">A1</kbd> and <kbd class="key pad">A2</kbd> play kick and snare.</p>
+            <p class="step-note">Hold <kbd class="key">MAIN</kbd> and select BEAT: it still has its two original bass pulses.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Owners report that pressing <kbd class="key">KEYS</kbd> again leaves KEYS mode (<a href="https://www.reddit.com/r/teenageengineering/comments/1alfa5i/comment/kpekfwd/" target="_blank" rel="noopener noreferrer">Reddit<span class="sr"> (opens in a new tab)</span></a>). The piano icon goes out.</p></details><details class="step-more"><summary>Not working?</summary><p>Piano icon still lit, or one sound at many pitches? Press <kbd class="key">KEYS</kbd> once more. Still stuck? Report it with “This step doesn’t match my K.O. II”.</p></details></div>
           </li>
         </ol>
@@ -327,7 +327,7 @@
         <summary><h2 class="part-title">Part 3 · Note repeat, hat rolls and the arpeggio</h2></summary>
         <p><b>Goal:</b> let the K.O. II repeat a pad for you: steady hats, a roll, a hands-free repeat and an arpeggio, held notes played one at a time.</p>
         <ol>
-          <li data-step="repeat-copy" data-note="ROLL">
+          <li data-step="repeat-copy" data-note="ROLL" data-once>
             <h3 class="step-title">Copy BEAT as ROLL</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select BEAT, release and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>. Write the new number as ROLL.</p>
             <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not BEAT’s.</p>
@@ -344,7 +344,7 @@
           <li data-step="repeat-try">
             <h3 class="step-title">Set the repeat to eighth notes</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd>, turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">8</samp>, not <samp class="lcd">8T</samp>, and press <kbd class="key">−</kbd> for quantize. Press <kbd class="key">MAIN</kbd>, then <kbd class="key">PLAY</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>Kick, snare and bass play, with no hats.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">8</samp> and the Q icon. Kick, snare and bass play, no hats.</p>
           </li>
           <li data-step="repeat-try-hold">
             <h3 class="step-title">Hold TIMING + A3</h3>
@@ -420,14 +420,14 @@
           <li data-step="arp-sound-page">
             <h3 class="step-title">Find the play mode page</h3>
             <p class="step-do">Briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> to open sound edit. Use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to find the page where <kbd class="key knob">X</kbd> changes the play mode.</p>
-            <p class="step-check"><span class="sr">Check: </span>The display changes with each page.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">SND</samp>: the sound page.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>It is the sound page: <kbd class="key knob">X</kbd> sets the play mode, <kbd class="key knob">Y</kbd> the pan.</p></details></div>
           </li>
           <li data-step="arp-sound-mode">
             <h3 class="step-title">Set C2 to oneshot or legato</h3>
             <p class="step-do">Turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">one</samp> (oneshot) or <samp class="lcd">leg</samp> (legato), not <samp class="lcd">key</samp>. Press <kbd class="key">MAIN</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">C2</kbd> now plays one note at a time.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The display shortens the modes to one, key and leg, as owners report (<a href="https://www.reddit.com/r/teenageengineering/comments/1wc6mrf/comment/p8vlpgw/" target="_blank" rel="noopener noreferrer">Reddit<span class="sr"> (opens in a new tab)</span></a>). This changes <kbd class="key pad">C2</kbd> only.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The display shortens the modes to one, key and leg, as the pictures in the official guide show (<a href="https://teenage.engineering/guides/ep-133/modes#8.2.1-sound-mode">Modes, 8.2.1</a>). Owners report the same (<a href="https://www.reddit.com/r/teenageengineering/comments/1wc6mrf/comment/p8vlpgw/" target="_blank" rel="noopener noreferrer">Reddit<span class="sr"> (opens in a new tab)</span></a>). This changes <kbd class="key pad">C2</kbd> only.</p></details></div>
           </li>
           <li data-step="arp-play" data-os="2.5">
             <h3 class="step-title">Switch on KEYS at the 16 grid</h3>
@@ -441,16 +441,17 @@
             <p class="step-do">Now hold <kbd class="key">TIMING</kbd> and press and hold three pads, one after another.</p>
             <p class="step-check"><span class="sr">Check: </span>The notes play one at a time, in the order you pressed them.</p>
             <p class="step-note">Let go to stop. Try <samp class="lcd">8</samp> for a slower arpeggio, then stop playback.</p>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>See help: “<a href="./help.html#the-arpeggio-does-not-play">The arpeggio does not play</a>”.</p></details></div>
           </li>
           <li data-step="repeat-clean">
             <h3 class="step-title">Set quantize back</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd>, set <kbd class="key knob">X</kbd> to <samp class="lcd">16</samp>, press <kbd class="key">−</kbd> (quantize), then press <kbd class="key">MAIN</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">16</samp>, not <samp class="lcd">16T</samp>. The MAIN icon is lit again.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">16</samp> and the Q icon, not <samp class="lcd">16T</samp>.</p>
           </li>
           <li data-step="repeat-clean-keys">
             <h3 class="step-title">Switch KEYS off</h3>
             <p class="step-do">Press <kbd class="key">KEYS</kbd> again to switch it off, then tap <kbd class="key pad">C1</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">C1</kbd> plays your Chapter 2 melody sound at its normal pitch.</p>
+            <p class="step-check"><span class="sr">Check: </span>The piano icon goes out. <kbd class="key pad">C1</kbd> plays your Chapter 2 melody sound at normal pitch.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Piano icon still lit? See Not working? in the first <a href="#s-keys-off">Switch KEYS off</a> step.</p></details></div>
           </li>
         </ol>
