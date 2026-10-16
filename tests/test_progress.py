@@ -108,7 +108,7 @@ def test_schema_2_and_finished_records(run):
     # Schema 2 (until 2026-10-12): 01's step and the Learn lessons were positions, and "not sure" was the default OS.
     run.seed({'koii-coach-v2': {'step': 18, 'note': 0, 'done': [0, 1], 'firmware': 'unknown', 'finished': False}})
     run.go('./learn.html')
-    assert run.page.locator('#learn-count').text_content().startswith('2 of 19'), 'Lessons saved by position count as tried'
+    assert run.page.locator('#learn-count').text_content().startswith('2 of 20'), 'Lessons saved by position count as tried'
     rec = run.get('koii-coach-ch-first-beat')
     assert rec['cur'] == 'beat-recap' and rec['done'] == FIRST[:FIRST.index('beat-recap')], f'Schema 2 step 18 is the recap ({rec})'
     run.go('./settings.html')
