@@ -59,7 +59,7 @@ Every step needs `h3.step-title`, one or more `p.step-do` and exactly one `p.ste
 | Attribute | Use |
 |---|---|
 | `data-late="A2:3"` | That pad's row plays 3 ticks late (96 ticks per beat, 24 per 16th step). Several: `"A2:3;A3:6"`. Use only the step's own amount. |
-| `data-pitch="B2:+1"` | That pad's row plays transposed by that many semitones; negative is allowed (`"B2:-12"`). |
+| `data-pitch="B2:+1"` | That pad's row plays transposed by that many semitones. Negative is allowed (`"B2:-12"`). |
 
 Steps are numbered within their part ("Part 2, step 4"), everywhere a learner reads a number, and each part's `<ol>` starts at 1 (the build checks it). A number in the text ("go back to step 3") changes whenever a step before it in that part is split: prefer a link to the step, or its title.
 
