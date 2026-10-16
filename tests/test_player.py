@@ -17,6 +17,8 @@
 - Recall: a recap's "Label: answer" moves as closed rows; a data-recall step's presses behind "Show the presses".
 - Get back in on Continue's #s-<cur> after a break: the part's Goal and the notes, never the last Check.
 - The menu's "This chapter" tab jumps to a step without ticking it; keyboard shortcuts and their off switch.
+- Target beats: every row has a sound of its own; data-late and data-pitch shift a pad's rows in time and pitch (the
+  grid keeps them on their step); a "Hear the difference" pair plays one at a time. The Rhythm lab's Swing.
 Run after a build, like test_smoke.py:  python -m pytest tests/test_player.py
 """
 import json

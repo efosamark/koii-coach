@@ -2,10 +2,11 @@
 /* Practice sounds made in the browser (Web Audio), for the Rhythm lab (lab.js) and the target beats of the chapters (beat.js).
    They are synthesised, not the K.O. II's factory samples: kick, snare, clap, hat, open hat, rim, shaker, tom, bass,
    a second bass pad on the same note (bass2: on the course's path it is a copy of the first) and melody, a short
-   pluck at one fixed pitch (a sample's own pitch is not known).
+   pluck at one fixed pitch, C two octaves above the bass's C (a sample's own pitch is not known). So a melody row
+   fits the bass, and data-pitch on a figure (beat.js) can make it clash: +1 a semitone, +12 an octave that fits.
    A plain script: it defines window.CoachAudio. Load it before the page script that uses it.
 
-   CoachAudio.player({grid, bpm, volume, onStep, onState}) returns {toggle(), stop(), playing()}:
+   CoachAudio.player({grid, kinds, bpm, volume, late, pitch, onStep, onState}) returns {toggle(), stop(), playing()}:
      grid()    rows of 16 × bars booleans, read on every step, so edits play at once
      kinds()   the voice of each row (names above); without it the rows are kick, snare, hat, bass (the lab's order)
      bpm()     tempo; volume() 0 to 0.25
