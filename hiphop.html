@@ -515,9 +515,9 @@
       </details>
       <details>
         <summary><h2 class="part-title">Part 7 · Make the intro and the break</h2></summary>
-        <p><b>Goal:</b> copy VERSE as INTRO without the bass, then INTRO as BREAK: your kicks with two hats per bar.</p>
+        <p><b>Goal:</b> copy VERSE as INTRO without the bass, then INTRO as BREAK: your kicks with two hats per bar, a bare break that makes the return feel bigger.</p>
         <ol>
-          <li data-step="make-intro-scene-v2" data-note="INTRO">
+          <li data-step="make-intro-scene-v2" data-note="INTRO" data-once>
             <h3 class="step-title">Copy VERSE as INTRO</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select VERSE with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>, release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>, then hold <kbd class="key">MAIN</kbd> and write the new number as INTRO.</p>
             <p class="step-check"><span class="sr">Check: </span>The new number differs from VERSE’s.</p>
@@ -541,9 +541,9 @@
             <h3 class="step-title">Check VERSE and HOOK are unchanged</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select VERSE and release. Press <kbd class="key">PLAY</kbd>, then stop. Do the same with HOOK.</p>
             <p class="step-check"><span class="sr">Check: </span>VERSE still has its bass, and HOOK its vocal.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Copies are independent.</p></details><details class="step-more"><summary>Not working?</summary><p>If an earlier scene changed, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once while the umbrella is lit.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Scenes keep their own notes. Sounds and their settings belong to the project, so B1’s new pitch or sound from Part 6 plays in every scene.</p></details><details class="step-more"><summary>Not working?</summary><p>VERSE’s bass at its new pitch or sound from Part 6 is expected: don’t undo. If an earlier scene changed, press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once while the umbrella is lit.</p></details></div>
           </li>
-          <li data-step="make-break-scene" data-note="BREAK">
+          <li data-step="make-break-scene" data-note="BREAK" data-once>
             <h3 class="step-title">Copy INTRO as BREAK</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select INTRO again and release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once and write the new number as BREAK.</p>
             <p class="step-check"><span class="sr">Check: </span>The new number differs from INTRO’s.</p>
@@ -560,7 +560,7 @@
             <h3 class="step-title">Clear the hats in BREAK</h3>
             <p class="preflight">Still in BREAK: hold <kbd class="key">MAIN</kbd> to check the number.</p>
             <p class="step-consequence">Clears every note of <kbd class="key pad">A3</kbd> in BREAK.</p>
-            <p class="step-do">Still in group <kbd class="key">A</kbd>, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A3</kbd></kbd> until <samp class="lcd">TRK</samp> blinks to clear the hats.</p>
+            <p class="step-do">Stopped, still in group <kbd class="key">A</kbd>, hold <kbd class="chord"><kbd class="key">ERASE</kbd> + <kbd class="key pad">A3</kbd></kbd> until <samp class="lcd">TRK</samp> blinks to clear the hats.</p>
             <p class="step-undo">Wrong pad? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> at once, while the umbrella is lit.</p>
             <p class="step-check"><span class="sr">Check: </span>Press <kbd class="key">PLAY</kbd>: only the kicks are left. Stop.</p>
           </li>
@@ -583,9 +583,9 @@
       </details>
       <details>
         <summary><h2 class="part-title">Part 8 · Add the twist and the ending</h2></summary>
-        <p><b>Goal:</b> copy HOOK as RETURN with a short word twice near the end of bar 2, and INTRO as END with one kick per bar.</p>
+        <p><b>Goal:</b> copy HOOK as RETURN with a twist, a short word twice near the end of bar 2, and INTRO as END: a short ending with one kick per bar.</p>
         <ol>
-          <li data-step="make-return-scene" data-note="RETURN">
+          <li data-step="make-return-scene" data-note="RETURN" data-once>
             <h3 class="step-title">Copy HOOK as RETURN</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and select HOOK. Play it once to check, then stop. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> and write the new number as RETURN.</p>
             <p class="step-check"><span class="sr">Check: </span>The new number differs from HOOK’s.</p>
@@ -608,7 +608,7 @@
           </li>
           <li data-step="trim-repeat-xy">
             <h3 class="step-title">Trim D1 to one short word</h3>
-            <p class="step-do">Set <kbd class="key knob">X</kbd> and <kbd class="key knob">Y</kbd> so only one short word or syllable plays, about 0.2 seconds. On the play-mode page turn <kbd class="key knob">X</kbd> to oneshot.</p>
+            <p class="step-do">Set <kbd class="key knob">X</kbd> and <kbd class="key knob">Y</kbd> so only one short word or syllable plays, about 0.2 seconds. On <samp class="lcd">SND</samp>, the sound page, turn <kbd class="key knob">X</kbd> to oneshot.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> plays only one short word.</p>
           </li>
           <li data-step="trim-repeat-level">
@@ -641,7 +641,7 @@
             <p class="step-do">Hold <kbd class="key">RECORD</kbd>, tap <kbd class="key pad">D1</kbd>, release. Press <kbd class="key">+</kbd> twice to reach <samp class="lcd">2.4.3</samp> and write <kbd class="key pad">D1</kbd> again. Play two passes.</p>
             <p class="step-check"><span class="sr">Check: </span>The word repeats twice near the end of bar 2.</p>
           </li>
-          <li data-step="make-end-scene-v2" data-note="END">
+          <li data-step="make-end-scene-v2" data-note="END" data-once>
             <h3 class="step-title">Copy INTRO as END</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, select INTRO, release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> and write the new number as END.</p>
             <p class="step-check"><span class="sr">Check: </span>The new number differs from INTRO’s.</p>
@@ -686,25 +686,25 @@
             <p class="step-do">Hold <kbd class="key">MAIN</kbd> and select INTRO. Stopped, tap <kbd class="key">C</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The scene number matches INTRO on your paper.</p>
           </li>
-          <li data-step="lengthen-intro">
+          <li data-step="lengthen-intro" data-once>
             <h3 class="step-title">Double C in INTRO</h3>
             <p class="step-do">Tap <kbd class="key">RECORD</kbd> to arm it, hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd> once, release <kbd class="key">SHIFT</kbd>, then tap <kbd class="key">RECORD</kbd> again to disarm.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">Ln.4</samp>: C’s pattern is four bars long.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>This doubles the pattern’s length and copies its notes into the new bars.</p></details></div>
           </li>
-          <li data-step="lengthen-end">
+          <li data-step="lengthen-end" data-once>
             <h3 class="step-title">Do the same in END</h3>
-            <p class="step-do">Do the same in END.</p>
+            <p class="step-do">Do <a href="./hiphop.html#s-lengthen-intro">the same</a> in END.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">Ln.4</samp> in END too.</p>
           </li>
-          <li data-step="lengthen-break">
+          <li data-step="lengthen-break" data-once>
             <h3 class="step-title">Make BREAK’s C eight bars</h3>
             <p class="step-do">Select BREAK. Tap <kbd class="key">C</kbd>, arm <kbd class="key">RECORD</kbd>, hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd> twice: 2 → 4 → 8 bars. Disarm <kbd class="key">RECORD</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">Ln.8</samp>: C’s pattern is eight bars long.</p>
           </li>
-          <li data-step="lengthen-verse-hook-return">
+          <li data-step="lengthen-verse-hook-return" data-once>
             <h3 class="step-title">Make VERSE, HOOK and RETURN 16 bars</h3>
-            <p class="step-do">Do the same in VERSE, HOOK and RETURN, pressing <kbd class="key">+</kbd> three times in each: 2 → 4 → 8 → 16 bars.</p>
+            <p class="step-do">Do <a href="./hiphop.html#s-lengthen-break">the same</a> in VERSE, HOOK and RETURN, pressing <kbd class="key">+</kbd> three times in each: 2 → 4 → 8 → 16 bars.</p>
             <p class="step-check"><span class="sr">Check: </span>Each press doubles the length shown, up to 16 bars.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>In HOOK and RETURN the vocal notes are copied along, so the phrase still plays every two bars.</p></details><details class="step-more"><summary>Not working?</summary><p>Doubled the wrong group? Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</p></details></div>
           </li>
@@ -721,15 +721,17 @@
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until position 1 holds INTRO’s scene number.</p>
             <p class="step-check"><span class="sr">Check: </span>Position 1 holds INTRO’s scene number.</p>
           </li>
-          <li data-step="enter-six-song-positions">
+          <li data-step="enter-six-song-positions" data-os="2.0">
             <h3 class="step-title">Add VERSE as position 2</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">A</kbd> to add a position. Still holding <kbd class="key">SHIFT</kbd>, use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to set its scene to VERSE.</p>
             <p class="step-check"><span class="sr">Check: </span>Position 2 holds VERSE’s scene number.</p>
           </li>
-          <li data-step="song-positions-rest">
+          <li data-step="song-positions-rest" data-os="2.0">
             <h3 class="step-title">Add HOOK, BREAK, RETURN and END</h3>
+            <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="preflight">Add while you are on the last position.</p>
-            <p class="step-do">Add four more the same way: HOOK, BREAK, RETURN, END. Release <kbd class="key">SHIFT</kbd> and step through with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>.</p>
+            <p class="step-do">Add four more <a href="./hiphop.html#s-enter-six-song-positions">the same way</a>: HOOK, BREAK, RETURN, END. Release <kbd class="key">SHIFT</kbd> and step through with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>Exactly six positions, in the song map’s order.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>An extra position? Select it and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd> to cut it.</p></details></div>
           </li>
@@ -738,7 +740,7 @@
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do"><b>Checkpoint.</b> Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> to play the song from the start, and listen without touching anything.</p>
             <p class="step-check"><span class="sr">Check: </span>INTRO, VERSE, HOOK, BREAK, RETURN and END, about 2:51, then it stops.</p>
-            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Much shorter? A scene’s C is still two bars, or a position is missing. Much longer? A pattern is longer than planned: check C’s length in that scene. It keeps looping? Song loop is on: system setting <samp class="lcd">420</samp> turns it off.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Much shorter? A scene’s C is still two bars, or a position is missing. Much longer? A pattern is longer than planned: check C’s length in that scene. It keeps looping? Song loop is on: system setting <samp class="lcd">420</samp> turns it off. See help: “<a href="./help.html#the-song-is-too-short-or-has-extra-positions">The song is too short or has extra positions</a>”.</p></details></div>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> the song plays INTRO, VERSE, HOOK, BREAK, RETURN and END, about 2:51, then stops.</p>
