@@ -42,6 +42,7 @@
     </header>
     <p class="promise">Build a 64-bar hip-hop beat around a phrase you sample yourself.</p>
     <p>Old-school hip-hop at 90 BPM: your Chapter 1 drums and bass, a few sung words you sample yourself, a bare break and a twist near the end. The song list plays it all back in about 2 minutes 51 seconds.</p>
+    <p class="notice tip">Leave room for the voice: the snare on 2 and 4, two bass pulses and every word clear. A bare break makes the return feel bigger.</p>
     <p class="makes"><b>You will make:</b> a 64-bar hip-hop beat around a phrase you sampled, in project 8.</p>
     <section class="needs" aria-labelledby="needs-title">
       <h2 id="needs-title">Before you start</h2>
@@ -805,7 +806,7 @@
           </li>
           <li data-step="live-instant-again" data-optional data-setting="410">
             <h3 class="step-title">Optional: instant scene changes again (410)</h3>
-            <p class="step-do">Afterwards set <samp class="lcd">410</samp> the same way to switch scenes instantly again.</p>
+            <p class="step-do">Afterwards set <samp class="lcd">410</samp> <a href="./hiphop.html#s-optional-live-performance">the same way</a> to switch scenes instantly again.</p>
             <p class="step-check"><span class="sr">Check: </span>The SYSTEM icon lights, then goes out after <kbd class="key">MAIN</kbd>.</p>
           </li>
           <li data-step="record-performance" data-os="2.5">
@@ -814,6 +815,7 @@
             <p class="step-do">Connect the K.O. II to a computer or phone with USB-C and choose the K.O. II as the recording app’s input.</p>
             <p class="step-check"><span class="sr">Check: </span>Your recording app lists the K.O. II as an input.</p>
             <p class="step-note">That is USB audio out. Or plug the K.O. II’s output into a recorder or audio interface.</p>
+            <p class="step-note">Same phone as the coach? Switch on Do Not Disturb, so calls and alerts don’t interrupt the take. Read the next steps before you switch apps. Recording on another device keeps the coach in view.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Record your song.</p></details></div>
           </li>
           <li data-step="record-song" data-os="2.0">
@@ -822,6 +824,11 @@
             <p class="step-do">Start recording there, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> in the song list.</p>
             <p class="step-check"><span class="sr">Check: </span>The song plays while your app records.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Commit copies scenes. It does not save audio.</p></details></div>
+          </li>
+          <li data-step="record-song-listen">
+            <h3 class="step-title">Stop the recording and listen</h3>
+            <p class="step-do">After the song stops, wait for the last sound to fade, then stop the app or recorder. Listen back on the phone, computer or recorder.</p>
+            <p class="step-check"><span class="sr">Check: </span>Your recording plays the whole song.</p>
           </li>
           <li data-step="write-down-scenes" data-kind="info">
             <h3 class="step-title">Write down your scene numbers</h3>
@@ -839,11 +846,12 @@
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do"><b>Checkpoint.</b> In the song list, play the song once more with <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear a finished beat of about 2:51.</p>
+            <p class="step-note">New ideas? Try them in a fresh copy with <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>, so the finished scenes stay safe.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>A short drum intro, the groove, the hook with your phrase and answer, a bare break, the return with the twist and a short ending.</p></details><details class="step-more"><summary>Not working?</summary><p>Find the one scene that sounds wrong, hold <kbd class="key">MAIN</kbd> to select it, fix it there, then play the song again.</p></details></div>
           </li>
           <li data-step="hiphop-recap" data-kind="recap">
             <h3 class="step-title">Your hip-hop moves</h3>
-            <p class="step-do">Read the seven moves below, then try one from memory.</p>
+            <p class="step-do">Say the presses for each move, then tap it to check.</p>
             <ul class="step-moves"><li>Sample: tap <kbd class="key">C</kbd>, press <kbd class="key">SAMPLE</kbd>, pick the input with <kbd class="key">−</kbd> / <kbd class="key">+</kbd>; <kbd class="key knob">X</kbd> level, <kbd class="key knob">Y</kbd> threshold; hold the pad.</li><li>Copy a sound: in <kbd class="key">SOUND</kbd>, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">C</kbd></kbd>; tap another pad, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">D</kbd></kbd>.</li><li>Trim: briefly <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd>, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to the trim page; <kbd class="key knob">X</kbd> start, <kbd class="key knob">Y</kbd> length.</li><li>New section: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>, then hold <kbd class="key">MAIN</kbd> and write the number down.</li><li>Clear a pad’s notes: stopped, hold <kbd class="key">ERASE</kbd> + the pad until <samp class="lcd">TRK</samp> blinks.</li><li>Double a pattern: arm <kbd class="key">RECORD</kbd>, hold <kbd class="key">SHIFT</kbd> and press <kbd class="key">+</kbd>, then disarm.</li><li>Song list: hold <kbd class="key">MAIN</kbd> and press <kbd class="key">ENTER</kbd>; <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a position, <kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd> / <kbd class="key">+</kbd> picks its scene.</li></ul>
           </li>
         </ol>
@@ -854,17 +862,17 @@
     </section>
     <section class="card">
       <h2>Your song map</h2>
-      <table>
+      <table class="map">
         <thead>
-          <tr><th>Position</th><th>Scene</th><th>C’s length</th><th>What you hear</th></tr>
+          <tr><th scope="col">Position</th><th scope="col">Scene</th><th scope="col">C’s length</th><th scope="col">What you hear</th><th scope="col">What changes</th></tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td>INTRO</td><td>4 bars (double once)</td><td>Drums only</td></tr>
-          <tr><td>2</td><td>VERSE</td><td>16 bars (double three times)</td><td>Drums and bass, with room for a rapper</td></tr>
-          <tr><td>3</td><td>HOOK</td><td>16 bars (double three times)</td><td>Phrase and answer every two bars</td></tr>
-          <tr><td>4</td><td>BREAK</td><td>8 bars (double twice)</td><td>Kick and two hats per bar</td></tr>
-          <tr><td>5</td><td>RETURN</td><td>16 bars (double three times)</td><td>HOOK plus the repeated word</td></tr>
-          <tr><td>6</td><td>END</td><td>4 bars (double once)</td><td>One kick per bar, snare and hats</td></tr>
+          <tr><td data-label="Position">1</td><th scope="row">INTRO</th><td data-label="C’s length">4 bars (double once)</td><td data-label="What you hear">Drums only</td><td data-label="What changes">A short drum intro opens the song</td></tr>
+          <tr><td data-label="Position">2</td><th scope="row">VERSE</th><td data-label="C’s length">16 bars (double three times)</td><td data-label="What you hear">Drums and bass, with room for a rapper</td><td data-label="What changes">The bass comes in</td></tr>
+          <tr><td data-label="Position">3</td><th scope="row">HOOK</th><td data-label="C’s length">16 bars (double three times)</td><td data-label="What you hear">Phrase and answer every two bars</td><td data-label="What changes">Your phrase and answer come in</td></tr>
+          <tr><td data-label="Position">4</td><th scope="row">BREAK</th><td data-label="C’s length">8 bars (double twice)</td><td data-label="What you hear">Kick and two hats per bar</td><td data-label="What changes">Snare, bass and vocal drop out: a bare break</td></tr>
+          <tr><td data-label="Position">5</td><th scope="row">RETURN</th><td data-label="C’s length">16 bars (double three times)</td><td data-label="What you hear">HOOK plus the repeated word</td><td data-label="What changes">Everything comes back, bigger after the break, with the twist</td></tr>
+          <tr><td data-label="Position">6</td><th scope="row">END</th><td data-label="C’s length">4 bars (double once)</td><td data-label="What you hear">One kick per bar, snare and hats</td><td data-label="What changes">Bass and vocal drop out, and the kick thins to one per bar</td></tr>
         </tbody>
       </table>
       <p>6 positions, 64 bars: about 2 minutes 51 seconds at 90 BPM.</p>
