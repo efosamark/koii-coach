@@ -64,7 +64,7 @@
         <figure class="padgrid"><figcaption><b>C</b> · melody</figcaption><div class="pads" aria-hidden="true"><span>7</span><span>8</span><span>9</span><span>4</span><span>5</span><span>6</span><span class="on">1</span><span>2</span><span>3</span><span>.</span><span>0</span><span class="enter">ENTER</span></div><p class="pad-legend">C1 melody</p></figure>
         <figure class="padgrid"><figcaption><b>D</b> · not used yet</figcaption><div class="pads" aria-hidden="true"><span>7</span><span>8</span><span>9</span><span>4</span><span>5</span><span>6</span><span>1</span><span>2</span><span>3</span><span>.</span><span>0</span><span class="enter">ENTER</span></div><p class="pad-legend">Empty in Chapter 2</p></figure>
       </div>
-      <ul class="moves"><li><kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> commits and moves you into a copy.</li><li>Hold <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd> selects a scene.</li><li>Brief <kbd class="key">ERASE</kbd> + pad removes one note. Holding <kbd class="key">ERASE</kbd> + pad until <samp class="lcd">TRK</samp> blinks clears its notes.</li><li><kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">ENTER</kbd></kbd> opens the song list. <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a position, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd> picks its scene. <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> plays from the start.</li></ul>
+      <ul class="moves"><li>Commit: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>, which moves you into a copy.</li><li>Select a scene: hold <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd>.</li><li>Remove notes: brief <kbd class="key">ERASE</kbd> + pad removes one. Hold until <samp class="lcd">TRK</samp> blinks to clear the track.</li><li>Song list: <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">ENTER</kbd></kbd> opens it. There, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">A</kbd></kbd> adds a position, <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd> picks its scene and <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">PLAY</kbd></kbd> plays from the start.</li></ul>
       <h3>The song map</h3>
       <table class="map"><thead><tr><th scope="col">Section</th><th scope="col">Scene</th><th scope="col">Song positions</th><th scope="col">Bars</th><th scope="col">What you hear</th></tr></thead><tbody><tr><th scope="row">Intro</th><td data-label="Scene">INTRO</td><td data-label="Song positions">1–2</td><td data-label="Bars">2</td><td data-label="What you hear">Drums only: kick, snare and hats</td></tr><tr><th scope="row">Main groove</th><td data-label="Scene">BEAT</td><td data-label="Song positions">3–4</td><td data-label="Bars">2</td><td data-label="What you hear">Your Chapter 1 · First beat: drums and bass</td></tr><tr><th scope="row">Melody</th><td data-label="Scene">MELODY</td><td data-label="Song positions">5–6</td><td data-label="Bars">4</td><td data-label="What you hear">Drums, bass and the two-bar C melody</td></tr><tr><th scope="row">Breakdown</th><td data-label="Scene">BREAK</td><td data-label="Song positions">7</td><td data-label="Bars">2</td><td data-label="What you hear">Melody, snare and hats, without kick and bass</td></tr><tr><th scope="row">Melody return</th><td data-label="Scene">MELODY</td><td data-label="Song positions">8–9</td><td data-label="Bars">4</td><td data-label="What you hear">Kick and bass come back under the melody</td></tr><tr><th scope="row">Ending</th><td data-label="Scene">BREAK</td><td data-label="Song positions">10</td><td data-label="Bars">2</td><td data-label="What you hear">The melody without kick and bass, then the song stops</td></tr></tbody></table>
       <p class="meta">From <a href="./song.html#s-song-recap">Chapter 2 · Make it a song</a>. The 16 bars last about 43 seconds at 90 BPM.</p>
@@ -130,17 +130,17 @@
       </table>
       <p>Official guide: <a href="https://teenage.engineering/guides/ep-133/modes#8.3-main">Main mode</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record#9.6-erase-undo">Erase and undo</a></p>
       <h3>Your song map</h3>
-      <table>
+      <table class="map">
         <thead>
-          <tr><th>Position</th><th>Scene</th><th>C length</th><th>What you hear</th></tr>
+          <tr><th scope="col">Position</th><th scope="col">Scene</th><th scope="col">C’s length</th><th scope="col">What you hear</th><th scope="col">What changes</th></tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td>INTRO</td><td>4 bars (double once)</td><td>Drums only</td></tr>
-          <tr><td>2</td><td>VERSE</td><td>16 bars (double three times)</td><td>Drums and bass, with room for a rapper</td></tr>
-          <tr><td>3</td><td>HOOK</td><td>16 bars (double three times)</td><td>Phrase and answer every two bars</td></tr>
-          <tr><td>4</td><td>BREAK</td><td>8 bars (double twice)</td><td>Kick and two hats per bar</td></tr>
-          <tr><td>5</td><td>RETURN</td><td>16 bars (double three times)</td><td>HOOK plus the repeated word</td></tr>
-          <tr><td>6</td><td>END</td><td>4 bars (double once)</td><td>One kick per bar, snare and hats</td></tr>
+          <tr><td data-label="Position">1</td><th scope="row">INTRO</th><td data-label="C’s length">4 bars (double once)</td><td data-label="What you hear">Drums only</td><td data-label="What changes">A short drum intro opens the song</td></tr>
+          <tr><td data-label="Position">2</td><th scope="row">VERSE</th><td data-label="C’s length">16 bars (double three times)</td><td data-label="What you hear">Drums and bass, with room for a rapper</td><td data-label="What changes">The bass comes in</td></tr>
+          <tr><td data-label="Position">3</td><th scope="row">HOOK</th><td data-label="C’s length">16 bars (double three times)</td><td data-label="What you hear">Phrase and answer every two bars</td><td data-label="What changes">Your phrase and answer come in</td></tr>
+          <tr><td data-label="Position">4</td><th scope="row">BREAK</th><td data-label="C’s length">8 bars (double twice)</td><td data-label="What you hear">Kick and two hats per bar</td><td data-label="What changes">Snare, bass and vocal drop out: a bare break</td></tr>
+          <tr><td data-label="Position">5</td><th scope="row">RETURN</th><td data-label="C’s length">16 bars (double three times)</td><td data-label="What you hear">HOOK plus the repeated word</td><td data-label="What changes">The hook comes back, bigger after the break, with the twist</td></tr>
+          <tr><td data-label="Position">6</td><th scope="row">END</th><td data-label="C’s length">4 bars (double once)</td><td data-label="What you hear">One kick per bar, snare and hats</td><td data-label="What changes">Back to drums only, with one kick per bar</td></tr>
         </tbody>
       </table>
       <p>6 positions, 64 bars: about 2 minutes 51 seconds at 90 BPM.</p>
@@ -245,6 +245,20 @@
       </table>
       <p>32 positions × 4 bars = 128 bars: exactly 4:00 at 128 BPM. Each position lasts 7.5 seconds.</p>
       <p class="meta">From <a href="./thodorakis-house.html">Chapter 7 · Vocal house</a>.</p>
+    </section>
+    <section class="card" id="own-track" aria-labelledby="cs-own-track">
+      <h2 id="cs-own-track">After Chapter 7: make your own track</h2>
+      <p>New ideas? Try them in a fresh copy with <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>, so the finished scenes stay safe.</p>
+      <p>For a whole new track, follow the parts you have done, in this order:</p>
+      <ol class="moves">
+        <li>Free a project and set the tempo: Chapter 7 · Vocal house, <a href="./thodorakis-house.html#s-choose-project-to-use">Part 1 · Set up an empty 128 BPM project</a>. It finds an empty project, or backs up and reuses one.</li>
+        <li>Choose sounds: Chapter 6 · Tech house, <a href="./tech-house.html#s-choose-kick">Part 2 · Choose every sound before writing notes</a>. Or sample your own: Chapter 3 · Sample, chop &amp; resample, <a href="./sampling.html#s-erase-test-note">Part 2 · Build a drum kit from your voice</a>.</li>
+        <li>Sketch a beat: the <a href="./lab.html">Rhythm lab</a>.</li>
+        <li>Build scenes by commit: Chapter 2 · Make it a song, <a href="./song.html#s-song-find-beat">Part 1 · Make the intro</a> and <a href="./song.html#s-song-copy-break">Part 4 · Make the breakdown</a>.</li>
+        <li>Arrange the song list: Chapter 2 · Make it a song, <a href="./song.html#s-song-plan">Part 5 · Build the song list</a>.</li>
+        <li>Mix: Chapter 4 · Play &amp; perform, <a href="./perform.html#s-sc-play">Part 8 · Make the mix pump with sidechain</a>, and Chapter 6 · Tech house, <a href="./tech-house.html#s-list-three-dislikes">Part 11 · Speaker mix check</a>.</li>
+        <li>Record and back up: Chapter 4 · Play &amp; perform, <a href="./perform.html#s-rec-usb">Part 9 · Record your performance</a>, and Chapter 0 · Set up your K.O. II, <a href="./setup.html#s-backup-open-tool">Part 4 · Back up with the EP sample tool</a>.</li>
+      </ol>
     </section>
     <section class="card" id="settings-codes" aria-labelledby="cs-settings">
       <h2 id="cs-settings">System settings the course uses</h2>

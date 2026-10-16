@@ -6,6 +6,7 @@ How to add, change or split a step in K.O. II Coach, and release it. The chapter
 
 - **The official guide is the source.** Re-read the matching page of the [official EP-133 guide](https://teenage.engineering/guides/ep-133) and, for anything it does not cover, the [What's new](https://teenage.engineering/guides/ep-133/whats-new) and [downloads](https://teenage.engineering/downloads/ep-133) pages. Where the guide is silent, look for owner reports (the Elektronauts EP-133 threads, owner-written cheat sheets), link them, and label them as owners' reports, never as the guide's. If nothing answers it, say so in the step and give the safe way to find out ("watch the TIME icon as you turn X") instead of guessing.
 - **Never change a button sequence without trying it on the unit** (see section 8). A rewording that keeps every key, pad and display value in the same order is a text change; anything else is an instruction change.
+- **Keep the tool pages in step.** When a step changes a move, grep `learn.html`, `help.html`, `glossary.html`, `controls.html`, `safety.html` and `cheat-sheet.html` for that move and change them with it. A learner who tries it from a tool page gets the move the chapters teach.
 - **Keep every link and every saved tick working.** A step's `data-step` id is part of its address (`sampling.html#s-record-kick`) and of every learner's saved progress. Never rename or reuse an id. Never change the shape of an existing `koii-coach…` storage key: add fields, never remove or repurpose one.
 
 ## 2. Step markup
@@ -26,7 +27,7 @@ Each chapter page has `section.steps`, one `<details>` per part (its `summary` h
 </li>
 ```
 
-Every step needs `h3.step-title`, one or more `p.step-do` and exactly one `p.step-check`: what the learner sees or hears afterwards, as a fact ("The display shows `1.1.1`.", "A2 plays the snare."), never an instruction and never "You should". Only a step with nothing to check on the K.O. II (reading, writing on paper, opening a web page) leaves it out, marked `data-kind="info"`. A risk step also needs `p.preflight`, `p.step-consequence` and `p.step-undo`, or `p.step-noundo` when there is no undo. `tests/test_player.py` checks all of this.
+Every step needs `h3.step-title`, one or more `p.step-do` and exactly one `p.step-check`: what the learner sees or hears afterwards, as a fact ("The display shows `1.1.1`.", "A2 plays the snare."), never an instruction and never "You should". A Check must fail when the press fails, unless the next step's Check already catches it: "The display shows `Ln.4`, and bars 3–4 repeat bars 1–2.", not only "The display shows `Ln.4`." (which a wrong press can show too). Only a step with nothing to check on the K.O. II (reading, writing on paper, opening a web page) leaves it out, marked `data-kind="info"`. A risk step also needs `p.preflight`, `p.step-consequence` and `p.step-undo`, or `p.step-noundo` when there is no undo. `tests/test_player.py` checks all of this.
 
 **Inline markup**
 
@@ -49,7 +50,16 @@ Every step needs `h3.step-title`, one or more `p.step-do` and exactly one `p.ste
   <p class="pattern-note meta">Without the vocal hook.</p></figure></details>
 ```
 
-`beat.js` draws the grid and plays it from the text list alone, so write every note of the scene as it stands after that step, not just the new ones, and only what the steps themselves place (never a live-played fill or the learner's own vocal). The sound comes from the name: kick, snare, clap, closed hat, open hat, rim, shaker, tom, bass, and "answer" for a second bass pad. Load `audio.js` and `beat.js` on the page. `tests/test_player.py::test_target_beats_match_their_text` checks that each grid matches its list.
+`beat.js` draws the grid and plays it from the text list alone, so write every note of the scene as it stands after that step, not just the new ones, and only what the steps themselves place (never a live-played fill or the learner's own vocal). The sound comes from the name: kick, snare, clap, closed hat, open hat, rim, shaker, tom, bass, "answer" for a second bass pad (it sounds the same note as the bass), and a name with "melody", "synth" or "stab" for a melodic pluck ("Melody (C1):", "Synth stab (C2):"). Load `audio.js` and `beat.js` on the page. `tests/test_player.py::test_target_beats_match_their_text` checks that each grid matches its list.
+
+**Hear the goal.** A long writing run whose pattern is first played several steps later may show the finished pattern on its first writing step, before it is built. Its caption starts with "Goal:" ("Goal: drums and bass, four bars at 128 BPM"), and its text list is the part's finished pattern, not the scene after that step. Keep the reference figure on the step that plays it.
+
+**Hear the difference.** For a step judged by feel (a note a few ticks late, a pitch that clashes), put two figures in one `details.step-more.step-hear` whose summary is "Hear the difference", each with its own figcaption ("On the grid", "Snare 3 ticks late"). One plays at a time. Two attributes on a `figure.pattern` change how a row plays, while the grid still shows it on its step:
+
+| Attribute | Use |
+|---|---|
+| `data-late="A2:3"` | That pad's row plays 3 ticks late (96 ticks per beat, 24 per 16th step). Several: `"A2:3;A3:6"`. Use only the step's own amount. |
+| `data-pitch="B2:+1"` | That pad's row plays transposed by that many semitones. Negative is allowed (`"B2:-12"`). |
 
 Steps are numbered within their part ("Part 2, step 4"), everywhere a learner reads a number, and each part's `<ol>` starts at 1 (the build checks it). A number in the text ("go back to step 3") changes whenever a step before it in that part is split: prefer a link to the step, or its title.
 
@@ -59,10 +69,13 @@ Steps are numbered within their part ("Part 2, step 4"), everywhere a learner re
 |---|---|
 | `data-risk="erase"` | The step clears notes that undo can bring back. An orange "Clears notes" tag; no gate. |
 | `data-risk="delete"`, `"overwrite"` or `"erase-scene"` | Nothing can bring it back: deleting a sample, cropping or overwriting a file, erasing a scene (ERASE + MAIN). A red tag, and the step stays folded until "Yes, I have checked". Add or update its entry on `safety.html`. |
-| `data-optional` | The main path works without it. A run of optional steps in one part can be skipped together. Do not mark a step optional because it only applies to some learners (a reused project, an audio file): say the condition in its title instead. |
+| `data-optional` | The main path works without it. A run of optional steps in one part can be skipped together. Do not mark a step optional because it only applies to some learners (a reused project, an audio file): say the condition in its title instead, and mark the run with `data-route`. |
+| `data-route="Using USB audio, not the line input?"` | The step belongs to one of two or more routes through a part (line input or USB, recording or audio files, an empty or a reused project). Consecutive steps with the same question form a run that learners on the other route skip in one tap, like optional steps: the box reads "Using USB audio, not the line input? You can skip these 5 steps." Write the question for the learner who is not on this route, ending in "?". The steps stay required for learners on it, and each title says its condition. |
+| `data-once` | The press must happen only once on the unit: every commit (SHIFT + MAIN) and every step that doubles or lengthens a pattern. When the step is shown again after its tick (Back, a menu jump, Redo), the player says it is done on the K.O. II already and points to its Check, so nobody commits or doubles twice. |
+| `data-recall` | A note-writing step the learner has done before: the player shows the title and Check and folds the Do lines behind "Show the presses". Never on a risk step, a step with Before you press, a commit or scene step, or a project choice. List mode and print show everything. |
 | `data-setting="411"` | The step sets a system setting; shows a "System setting 411" tag. |
 | `data-os="2.0"` | Needs that OS or newer; the badge follows the OS chosen in Settings. Add `<p class="badge os-badge">Needs OS 2.0 or newer</p>` under the title as the fallback text. |
-| `data-kind="recap"` | The chapter's recap; ticked by itself on the chapter-complete screen. Its `ul.step-moves` lists the moves learned. |
+| `data-kind="recap"` | The chapter's recap; ticked by itself on the chapter-complete screen. Its `ul.step-moves` lists the moves learned, each as "Label: answer" ("Commit: SHIFT + MAIN, which moves you into a copy."): the player shows the label and asks for the presses before it shows the answer. |
 | `data-kind="info"` | Nothing to check on the K.O. II: the step is reading, writing on paper, or work on a phone or computer with no visible result. It has no Check (and never `data-risk`). |
 | `data-note="DRUMS"` | The step asks you to write a scene number down; it gets an optional field, kept per project. Several names: `"V1\|V2\|V3"`. Add `data-note-kind="sample"` for sample numbers. |
 | `data-place="A1 1.1.1 1.2.3"` | Chapter 1 only: the placement helper's positions. |

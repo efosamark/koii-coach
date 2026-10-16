@@ -83,6 +83,7 @@
             <h3 class="step-title">Go home, and stop playback</h3>
             <p class="step-do">Press <span class="nobr"><kbd class="key">MAIN</kbd>.</span> If the K.O. II is playing, press <kbd class="key">PLAY</kbd> to stop it.</p>
             <p class="step-check"><span class="sr">Check: </span>Nothing plays, and the display shows the current step.</p>
+            <p class="step-note">Can’t find a button? Tap Tools: it lights this step’s keys on a map of the K.O. II.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>On a new K.O. II, projects 1–5 hold factory demos and projects 6–9 are empty. Project 6 keeps the demos safe.</p></details><details class="step-more"><summary>Not working?</summary><p>Not on OS 2.5.1 yet, or music on the unit you care about? Do Chapter 0 · Set up your K.O. II first (update and backup).</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
@@ -111,7 +112,7 @@
           <li data-step="beat-grid-16">
             <h3 class="step-title">Set the grid to 16, quantized</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd> and turn <kbd class="key knob">X</kbd> until it shows <span class="nobr"><samp class="lcd">16</samp>,</span> the default 1/16 grid (not <span class="nobr"><samp class="lcd">16T</samp>).</span> Press <kbd class="key">−</kbd> to choose quantize. Press <span class="nobr"><kbd class="key">MAIN</kbd>.</span></p>
-            <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">16</samp>, not <samp class="lcd">16T</samp>. The MAIN icon is lit again.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">16</samp> and the Q icon, not <samp class="lcd">16T</samp>.</p>
             <p class="step-note">Leave <kbd class="key knob">Y</kbd> (swing) at no swing.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Chapter 1 uses 4/4 with 16 steps per bar, four per beat. Quantize snaps live playing to that grid as you record.</p></details><details class="step-more"><summary>Not working?</summary><p>Swing on? Turn Y back to no swing. Time signature changed? MAIN + TEMPO opens it: set 4/4. Keep the pattern one bar long.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/functions">Functions</a></p>
@@ -120,6 +121,7 @@
             <h3 class="step-title">A1: load the kick</h3>
             <p class="step-do">Press <span class="nobr"><kbd class="key">SOUND</kbd>,</span> tap <span class="nobr"><kbd class="key">A</kbd>,</span> then tap <span class="nobr"><kbd class="key pad">A1</kbd>.</span> Hold <span class="nobr"><kbd class="key">SOUND</kbd>,</span> type <kbd class="key">1</kbd> on the pads to load sample 001, and release <span class="nobr"><kbd class="key">SOUND</kbd>.</span></p>
             <p class="step-check"><span class="sr">Check: </span>The display shows the sample number you typed.</p>
+            <p class="step-note">Chose favourites in Chapter 0? Type their numbers instead, here and in the snare and hat steps.</p>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="beat-hear-kick">
@@ -206,7 +208,7 @@
       </details>
       <details id="keep-the-drums">
         <summary><h2 class="part-title">Part 3 · Balance and keep the drums</h2></summary>
-        <p><b>Goal:</b> set each drum’s volume in <kbd class="key">SOUND</kbd>, write down the DRUMS scene number, and commit a copy to keep building in.</p>
+        <p><b>Goal:</b> set each drum’s volume in <kbd class="key">SOUND</kbd>, write down the DRUMS scene number, and commit a copy to keep building in. Commit keeps this scene and moves you into a copy to change.</p>
         <ol>
           <li data-step="beat-balance">
             <h3 class="step-title">Tap the drums in SOUND</h3>
@@ -225,14 +227,13 @@
             <h3 class="step-title">Write down DRUMS</h3>
             <p class="step-do">Stop playback. Hold <kbd class="key">MAIN</kbd> and read the scene number on the display. Write it down as DRUMS.</p>
             <p class="step-check"><span class="sr">Check: </span>Nothing plays. While you hold <kbd class="key">MAIN</kbd>, the display shows the scene number.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Commit saves the current patterns as a scene and creates a new scene, so you can add variations without overwriting the previous section. It is not an audio export or a backup file.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
-          <li data-step="beat-commit-copy">
+          <li data-step="beat-commit-copy" data-once>
             <h3 class="step-title">Commit: make a copy</h3>
             <p class="step-do">Release <span class="nobr"><kbd class="key">MAIN</kbd>,</span> then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once. Hold <kbd class="key">MAIN</kbd> again.</p>
             <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number: the copy’s.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>The new number differs from DRUMS, and <kbd class="key">PLAY</kbd> still gives your drum beat: the copy starts identical.</p></details><details class="step-more"><summary>Not working?</summary><p>Lost track of scenes? See help: “<a href="./help.html#which-scene-am-i-in">Which scene am I in?</a>”.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Commit saves the current patterns as a scene and creates a new scene, so you can add variations without overwriting the previous section. It is not an audio export or a backup file. The new number differs from DRUMS, and <kbd class="key">PLAY</kbd> still gives your drum beat: the copy starts identical. A scene is an arrangement of the four groups’ patterns: the notes. Sounds and their settings, such as volume, pitch and trim, belong to the project, so every scene shares them. See Learn: “<a href="./learn.html#groups-and-scenes">Groups and scenes</a>”.</p></details><details class="step-more"><summary>Not working?</summary><p>Lost track of scenes? See help: “<a href="./help.html#which-scene-am-i-in">Which scene am I in?</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
         </ol>
@@ -269,7 +270,7 @@
             <h3 class="step-title">B1: open the trim page</h3>
             <p class="preflight">Never hold <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> on the trim page unless you mean to crop: that overwrites the sample file and cannot be undone.</p>
             <p class="step-do">Tap <span class="nobr"><kbd class="key pad">B1</kbd>,</span> then briefly press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">SOUND</kbd></kbd> and use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to reach the trim page.</p>
-            <p class="step-check"><span class="sr">Check: </span>Tapping <kbd class="key pad">B1</kbd> plays the bass, still untrimmed.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">TRI</samp>: the trim page.</p>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a></p>
           </li>
           <li data-step="beat-bass-trim-y">
@@ -313,7 +314,7 @@
             <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd>, the display shows a number different from DRUMS.</p>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
           </li>
-          <li data-step="beat-perform-start">
+          <li data-step="beat-perform-start" data-once>
             <h3 class="step-title">Keep BEAT safe, then start DRUMS</h3>
             <p class="step-do">Release, then press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once so BEAT stays safe. Now hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> use <kbd class="key">−</kbd> / <kbd class="key">+</kbd> to select DRUMS, release and press <span class="nobr"><kbd class="key">PLAY</kbd>.</span></p>
             <p class="step-check"><span class="sr">Check: </span>You hear drums only, with no bass.</p>
@@ -334,7 +335,7 @@
         <summary><h2 class="part-title">Part 6 · Record live and wrap up</h2></summary>
         <p><b>Goal:</b> try live recording in a practice copy, keeping BEAT clean, then look back at what you learned.</p>
         <ol>
-          <li data-step="beat-live-practice" data-optional>
+          <li data-step="beat-live-practice" data-optional data-once>
             <h3 class="step-title">Optional: make a practice copy</h3>
             <p class="step-do">Hold <span class="nobr"><kbd class="key">MAIN</kbd>,</span> select BEAT and release. Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once to make a practice copy. BEAT stays untouched.</p>
             <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> shows a new number, not BEAT’s.</p>
@@ -395,14 +396,14 @@
           </li>
           <li data-step="beat-recap" data-kind="recap">
             <h3 class="step-title">Your first beat is done</h3>
-            <p class="step-do">Read the six moves below, then try one from memory without reading this app.</p>
+            <p class="step-do">Say the presses for each move, then tap it to check.</p>
             <ul class="step-moves"><li>Navigate: stopped MAIN, <kbd class="key">−</kbd> / <kbd class="key">+</kbd> <span class="nobr">(<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">−</kbd></kbd></span> / <kbd class="key">+</kbd> jumps a bar).</li><li>Write: hold <kbd class="key">RECORD</kbd> + pad.</li><li>Erase one note: brief <kbd class="key">ERASE</kbd> + pad.</li><li>Undo: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd> while the umbrella is lit.</li><li>Commit: <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>.</li><li>Select a scene: hold <kbd class="chord"><kbd class="key">MAIN</kbd> + <kbd class="key">−</kbd></kbd> / <kbd class="key">+</kbd>.</li></ul>
             <p class="step-note">Your scenes so far: DRUMS and BEAT.</p>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a> · <a href="https://teenage.engineering/guides/ep-133/modes">Modes</a> · <a href="https://teenage.engineering/guides/ep-133/play-and-record">Play and record</a></p>
           </li>
           <li data-step="beat-recap-try" data-kind="recap">
             <h3 class="step-title">Try one move in a fresh copy</h3>
-            <p class="step-do">In a fresh copy of BEAT <span class="nobr">(<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>),</span> move one kick or add one hat. Rebuild your change in the <a href="./lab.html">Rhythm lab</a> and listen.</p>
+            <p class="step-do">Try moving one kick or adding one hat in the <a href="./lab.html">Rhythm lab</a> first. Then write it in a fresh copy of BEAT <span class="nobr">(<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd>).</span></p>
             <p class="step-note">Then mark this chapter complete.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>To keep a copy off the device, back it up with the EP sample tool on a computer. See help: “<a href="./help.html#how-do-i-export-or-back-up">How do I export or back up?</a>”.</p></details></div>
             <p class="step-source">Official guide: <a href="https://teenage.engineering/guides/ep-133/get-started">Get started</a></p>
