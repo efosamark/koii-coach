@@ -975,9 +975,9 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
    #player-actions (#player-back, #player-tools-btn, #player-next, #player-go, .pa-more), #chapter-actions (the ⋮
    sheet), #player-check, #player-done, .player-modes, .player-chips, .player-safety, .player-reference,
    .player-parts, .part-about, .back-pill, .getback, .led-row; inside a step: .step-head (.step-num and tags),
-   .skip-box, .once-note, .recall (a recap's moves as closed rows), .recall-show ("Show the presses"), .preflight, .gate, .step-do,
-   .step-check[data-sense="hear|see"], li.is-current, li.is-checkpoint, li.is-folded (Do lines still behind "Show the
-   presses"), li.is-skipped, li[data-risk]. Yellow stays for keycaps: in the player the keys of the step on screen are
+   .skip-box, .once-note, .recall (a recap's moves as closed rows), .recall-show ("Show the presses"), .preflight,
+   .gate, .step-do, .step-check[data-sense="hear|see"], li.is-current, li.is-checkpoint, li.is-folded (Do lines still
+   behind "Show the presses"), li.is-skipped, li[data-risk]. Yellow stays for keycaps: in the player the keys of the step on screen are
    hot, except inside its check. */
 :root{
   --bar-h:72px;   /* the action bar, without the safe area; a 48px row on short viewports */
@@ -1128,13 +1128,11 @@ main > .safety-short{display:none}
 .player-safety .safety-short li{margin:0}
 .player-safety .meta{margin:0}
 .player-safety .safety-more{list-style:none;margin-left:-1.25em;color:var(--ink-2)}
-.player-parts{margin:var(--sp-4) 0}
-/* "Needs Chapters 1–2" (player.js, a .chips list) on the Parts heading's line, at its right; the list takes the full
-   width below. */
-.player-parts{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;column-gap:var(--sp-3)}
-.pp-list{flex-basis:100%}
+/* "Needs Chapters 1–2" (player.js, a .chips list) sits on the Parts heading's line, at its right; the list takes the
+   full width below. */
+.player-parts{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;column-gap:var(--sp-3);margin:var(--sp-4) 0}
 html[data-player="start"] .player-parts{margin-top:var(--sp-3)}
-.pp-list{margin:0;padding:0;overflow:hidden;list-style:none;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
+.pp-list{flex-basis:100%;margin:0;padding:0;overflow:hidden;list-style:none;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface-1);box-shadow:var(--e1)}
 .pp-list li{max-width:none;margin:0;border-top:1px solid var(--line)}
 .pp-list li:first-child{border-top:0}
 .pp-list a{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-4);color:var(--ink);font-weight:600;line-height:1.3;text-decoration:none}

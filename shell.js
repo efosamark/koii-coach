@@ -411,8 +411,8 @@ document.addEventListener('click',e=>{
 
 // ---------- Install ----------
 // Chrome and Edge offer an install prompt (beforeinstallprompt); Safari on iPhone and iPad only has Share > Add to
-// Home Screen, so it gets that hint. The installed copy there starts with its own empty storage, so the hint says to
-// bring the progress file across. An installed copy says so.
+// Home Screen, so it gets that hint. The installed copy there keeps its own storage, apart from Safari's, so the hint
+// says to bring a progress file across. An installed copy says so.
 let prompt=null;
 const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 const ios=/iP(?:hone|ad|od)/.test(navigator.userAgent)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1;
