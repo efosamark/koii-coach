@@ -23,7 +23,9 @@
               page in front of it has a different number: update it here when steps are added or removed
      minutes  [shortest, longest] time to work through it
      made     what the learner has at the end, as the page's "You will make" line says it (Home's course-complete card)
-              Keep it in step with that line. */
+              Keep it in step with that line.
+     needs    the slugs of the chapters to finish first, in course order: a "Needs Chapters 1–2" chip on the start
+              screen, and the done screen of the last one named lists this chapter as ready to start (player.js) */
 window.COACH_SITE={
   name:'K.O. II Coach',
   version:'2026.10.15.5',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
@@ -36,11 +38,11 @@ window.COACH_SITE={
     {num:'0',title:'Set up your K.O. II',short:'Set up',oldTitle:'Start here',href:'./setup.html',slug:'setup',steps:54,minutes:[45,60],made:'a K.O. II on OS 2.5.1, backed up, with your course project chosen'},
     {num:'1',title:'First beat',short:'First beat',href:'./first-beat.html',slug:'first-beat',steps:40,minutes:[30,50],made:'a one-bar drum and bass loop at 90 BPM, kept as two scenes, DRUMS and BEAT'},
     {num:'2',title:'Make it a song',short:'Song',href:'./song.html',slug:'song',steps:33,minutes:[60,90],made:'a 16-bar song, about 43 seconds, from four scenes in a song list'},
-    {num:'3',formerly:'07',title:'Sample, chop & resample',short:'Sample',href:'./sampling.html',slug:'sampling',steps:89,minutes:[120,180],made:'a drum kit from your voice, slices and a bounced beat'},
-    {num:'4',formerly:'08',title:'Play & perform',short:'Perform',href:'./perform.html',slug:'perform',steps:113,minutes:[120,180],made:'a live performance of your own beat, and a recording of it'},
-    {num:'5',formerly:'09',title:'Full hip-hop beat',short:'Hip-hop',href:'./hiphop.html',slug:'hiphop',legacy:'koii-hiphop-vocal-checklist-v2',steps:110,minutes:[120,180],made:'a 64-bar hip-hop beat around a phrase you sampled, in project 8'},
-    {num:'6',formerly:'10',title:'Tech house',short:'Tech house',href:'./tech-house.html',slug:'tech-house',legacy:'koii-tech-house-checklist-v1',steps:109,minutes:[120,180],made:'a 3½-minute, 112-bar tech-house track'},
-    {num:'7',formerly:'11',title:'Vocal house',oldTitle:'House with your own vocal samples',short:'Vocal house',href:'./thodorakis-house.html',slug:'vocal-house',legacy:'koii-thodorakis-club-checklist-v1',steps:107,minutes:[120,180],made:'a 128 BPM house track that plays all 4 minutes by itself'}
+    {num:'3',formerly:'07',title:'Sample, chop & resample',short:'Sample',href:'./sampling.html',slug:'sampling',needs:['first-beat','song'],steps:89,minutes:[120,180],made:'a drum kit from your voice, slices and a bounced beat'},
+    {num:'4',formerly:'08',title:'Play & perform',short:'Perform',href:'./perform.html',slug:'perform',needs:['first-beat','song'],steps:113,minutes:[120,180],made:'a live performance of your own beat, and a recording of it'},
+    {num:'5',formerly:'09',title:'Full hip-hop beat',short:'Hip-hop',href:'./hiphop.html',slug:'hiphop',needs:['first-beat','song'],legacy:'koii-hiphop-vocal-checklist-v2',steps:110,minutes:[120,180],made:'a 64-bar hip-hop beat around a phrase you sampled, in project 8'},
+    {num:'6',formerly:'10',title:'Tech house',short:'Tech house',href:'./tech-house.html',slug:'tech-house',needs:['first-beat','song'],legacy:'koii-tech-house-checklist-v1',steps:109,minutes:[120,180],made:'a 3½-minute, 112-bar tech-house track'},
+    {num:'7',formerly:'11',title:'Vocal house',oldTitle:'House with your own vocal samples',short:'Vocal house',href:'./thodorakis-house.html',slug:'vocal-house',needs:['first-beat','song','sampling'],legacy:'koii-thodorakis-club-checklist-v1',steps:107,minutes:[120,180],made:'a 128 BPM house track that plays all 4 minutes by itself'}
   ],
   // Tools are never numbered. icon is a symbol in icons.svg (without the "i-" prefix).
   tools:[

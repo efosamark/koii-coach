@@ -65,8 +65,11 @@
    fixes open keeps 'not-yet' (the button then has no "Yes ·"), and the chapter-complete screen offers those parts
    again under "Worth another go"; a later Yes clears it.
 
-   The start screen's chips include "Formerly 07" for a chapter renumbered in 2026.10.14.4 (site.js formerly), once
-   the learner has progress anywhere in the course.
+   The start screen's chips include "Needs Chapters 1–2" (site.js needs), and "Formerly 07" for a chapter renumbered
+   in 2026.10.14.4 (site.js formerly), once the learner has progress anywhere in the course.
+   The chapter-complete screen adds, when every step is settled: the system settings the chapter left changed (SYS),
+   "Save your progress file" (CoachProgress.saveFile), the chapters that open up now (site.js needs) and, after the last
+   chapter or with the course complete, "Make your own track" (cheat-sheet.html#own-track).
 
    What it adds (all marked .pl-own): the app bar's two-line title and 4px meter (CoachShell.setTitle, setMeter); the
    menu's "This chapter" part and the desktop rail's chapter contents (CoachShell.registerChapter: progress, Player |
@@ -303,8 +306,11 @@ const longPre=document.querySelector('main > .promise')?preSteps().filter(e=>e!=
   const osText=os?'OS '+esc(os[1])+(os[2]?'+':''):'';
   // "About 2–3 hours" in the eyebrow is "2–3 h" on its chip (plan 5.2).
   const short=time.replace(/^about\s+/,'').replace(/\s*hours?$/,' h').replace(/\s*minutes?$/,' min');
+  // "Needs Chapters 1–2": the chapters site.js needs names, by number (a run of numbers as "1–3").
+  const nums=(info&&info.needs||[]).map(s=>+(site.chapters.find(c=>c.slug===s)||{num:NaN}).num).filter(n=>n>=0).sort((a,b)=>a-b);
+  const needs=nums.length?'Needs Chapter'+(nums.length>1?'s ':' ')+(nums.length>1&&nums[nums.length-1]-nums[0]===nums.length-1?nums[0]+'–'+nums[nums.length-1]:nums.join(', ')):'';
   chips.innerHTML=[short?esc(short):'',proj?'Project '+proj[1]:'',
-    os&&!old?osText:'',
+    os&&!old?osText:'',needs,
     info&&info.formerly&&returning?'Formerly '+esc(info.formerly):''].filter(Boolean).map(t=>`<li>${t}</li>`).join('')+
     (old?`<li class="warn">${icon('warning')}<span>Needs ${osText} · <a href="./setup.html#s-update-open-utility">Update first</a></span></li>`:'');
   const intro=pageHead&&pageHead.nextElementSibling&&pageHead.nextElementSibling.tagName==='P'?pageHead.nextElementSibling:pageHead;
@@ -684,6 +690,18 @@ function fixCards(P,bare){
     return`<div class="fix-card">${x.sym?`<p class="fix-sym">${cap(x.sym)}</p>`:''}${fix?`<p>${cap(fix)}</p>`:''}${redo}</div>`;
   }).join('');
 }
+// The system settings this chapter left changed (plan 5.4c): per family (the code's first two digits), the last code
+// ticked in page order, when it is not the default (the official guide's System page). A reminder, never a warning:
+// some are kept on purpose (301, 412). What each code does is said as the steps say it.
+const SYS={30:'300',40:'401',41:'410',42:'420',50:'502',51:'510'},SAYS={301:'Pad velocity is on.',400:'The metronome clicks while you practise too.',
+  411:'Scene changes wait for the end of the bar.',412:'Scenes wait for the pattern.',421:'The song loops.',500:'Every sample you record is lo-fi.',511:'You hear the phone through the K.O. II while you sample.'};
+function stillSet(){
+  const last={};
+  steps.forEach(li=>{const c=clean(li.dataset.setting);if(/^\d{3}$/.test(c)&&SYS[c.slice(0,2)]&&isDone(li))last[c.slice(0,2)]=[c,li];});
+  const l=Object.keys(last).filter(f=>last[f][0]!==SYS[f]);
+  return l.length?'<div class="notice info pd-settings"><p><b>Still set on your K.O. II.</b> This chapter left these system settings changed:</p><ul>'+l.map(f=>{const [c,li]=last[f];
+    return`<li><samp class="lcd">${c}</samp> ${SAYS[c]||''} Type <samp class="lcd">${SYS[f]}</samp> <a href="#s-${esc(li.dataset.step)}">the same way</a> to switch back.</li>`;}).join('')+'</ul></div>':'';
+}
 // "You made: …" from the page's "You will make" line.
 function made(){
   const c=copy(makes),b=c.querySelector('b');
@@ -701,6 +719,10 @@ function showDone(opt){
   const course=complete&&window.CoachProgress?CoachProgress.chapters():[],all=course.length&&course.every(p=>p.done||p.c.slug===slug);
   // Parts whose checkpoint was left at "Not quite" (koii-coach-meta.checkpoints), to try again.
   const marks=sub(sub(readObj(META)||{},'checkpoints'),slug),again=parts.filter(p=>marks[p.id]==='not-yet');
+  // After the last chapter, and once the whole course is done: the route to a track of your own (cheat-sheet.html).
+  const own=complete&&(all||!nextLink)?'<p><a href="./cheat-sheet.html#own-track">Make your own track</a>: the parts you have done, in order, from an empty project to a finished track.</p>':'';
+  // Chapters that open up now (this is the last chapter their site.js needs names), other than Next, not done yet.
+  const nx=nextLink&&nextLink.getAttribute('href'),opens=course.filter(p=>!p.done&&p.c.href!==nx&&(p.c.needs||[]).slice(-1)[0]===slug);
   const head=complete?'Chapter '+esc(chNum)+' done':'Chapter '+esc(chNum)+' · '+esc(plural(open.length,'step','steps'))+' not ticked yet';
   doneCard.innerHTML=`<p class="pl-eyebrow">Chapter ${esc(chNum)} · ${esc(chName)}</p><h2 class="pd-title" id="player-done-title" tabindex="-1">${head}</h2>`+
     (complete?`<p class="pd-leds">${leds(Array.from({length:16}),()=>true)}</p>`+(makes?`<p class="pd-made">${made()}</p>`:'')+
@@ -716,9 +738,12 @@ function showDone(opt){
       again.map(p=>`<p>${esc(p.title)}<br><button class="btn" type="button" data-redo-part="${p.i}">${icon('back')}Redo Part ${p.n} from its first step</button></p>`).join(''):'')+
     (all?`<section class="pd-course"><h3>Course complete</h3><p>All ${course.length} chapters are done. What you made:</p><ul class="made-list">`+
       course.map(p=>`<li><span class="num">${esc(p.c.num)}</span> <a href="${esc(p.c.href)}">${esc(p.c.title)}</a>${p.c.made?`<span class="sub meta">${esc(p.c.made.charAt(0).toUpperCase()+p.c.made.slice(1))}.</span>`:''}</li>`).join('')+
-      `</ul><p><a href="./cheat-sheet.html">The cheat sheet</a> keeps every move and reference table in one place.</p></section>`:'')+
+      `</ul>${own}<p><a href="./cheat-sheet.html">The cheat sheet</a> keeps every move and reference table in one place.</p></section>`:own)+
+    (complete?stillSet():'')+
     (slug!=='setup'&&complete?`<div class="notice tip pd-backup"><p><b>Back up now.</b> Save a copy of your work with the official EP sample tool, as in <a href="./setup.html#s-backup-open-tool">Chapter 0 · Set up your K.O. II, Part 4</a>.</p>`+
       (backupModal?`<p><button class="btn" type="button" data-backup aria-haspopup="dialog" aria-controls="player-backup">${icon('list')}Show the backup steps</button></p>`:'')+'</div>':'')+
+    (complete&&window.CoachProgress?'<div class="row pd-file"><button class="btn" type="button" data-save>Save your progress file</button><span class="meta">Your ticks, your place and your notes, kept outside this browser.</span></div>':'')+
+    (opens.length?'<h3 class="pd-moves-title">Also ready to start</h3><ul class="pd-also">'+opens.map(p=>`<li><a href="${esc(p.c.href)}">Chapter ${esc(p.c.num)} · ${esc(p.c.title)}</a></li>`).join('')+'</ul>':'')+
     `<div class="row pd-actions">${complete?`<a class="btn" href="#all" data-review>${icon('list')}Review steps</a>`:''}${nextLink?'<a class="btn" href="./index.html">Back to the course</a>':''}`+
     (complete?`<button class="btn ghost" type="button" data-act="restart">${icon('undo')}Restart this chapter</button>`:'')+'</div>';
   render();
@@ -851,6 +876,7 @@ listModes.addEventListener('click',e=>{
 doneCard.addEventListener('click',e=>{
   if(e.target.closest('[data-review]')){e.preventDefault();showList();setUrl('#all');scrollTo(0,0);return;}
   const bk=e.target.closest('[data-backup]');if(bk&&backupModal){backupOpener=bk;backupModal.open();return;}
+  if(e.target.closest('[data-save]')){CoachProgress.saveFile();C.say('Progress file saved. Keep it somewhere safe.');return;}
   const rp=e.target.closest('[data-redo-part]'),P=rp&&parts[+rp.dataset.redoPart];
   if(P){C.setCurrent(P.steps[0].dataset.step);showStep(P.steps[0]);return;}
   act(e,now);

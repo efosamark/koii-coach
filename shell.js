@@ -411,7 +411,8 @@ document.addEventListener('click',e=>{
 
 // ---------- Install ----------
 // Chrome and Edge offer an install prompt (beforeinstallprompt); Safari on iPhone and iPad only has Share > Add to
-// Home Screen, so it gets that hint. An installed copy says so.
+// Home Screen, so it gets that hint. The installed copy there starts with its own empty storage, so the hint says to
+// bring the progress file across. An installed copy says so.
 let prompt=null;
 const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 const ios=/iP(?:hone|ad|od)/.test(navigator.userAgent)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1;
@@ -420,7 +421,7 @@ addEventListener('appinstalled',()=>{prompt=null;install();});
 function install(){
   const html=standalone()?'<p class="meta">Installed: open the coach from your home screen.</p>':
     prompt?'<p><button class="btn" type="button" data-install>Install the app</button></p>':
-    ios?'<p class="meta">To install: tap Share, then Add to Home Screen.</p>':'';
+    ios?'<p class="meta">To install: tap Share, then Add to Home Screen. <a href="./settings.html#export">Save a progress file</a> first, then load it in the installed app.</p>':'';
   document.querySelectorAll('.install-slot').forEach(e=>{e.innerHTML=html;});
 }
 document.addEventListener('click',e=>{

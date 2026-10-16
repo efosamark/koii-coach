@@ -189,9 +189,12 @@ function go(j){
 const listeners=[];
 function emit(type,id){listeners.forEach(fn=>{try{fn({type,id});}catch(e){console.error(e);}});}
 // Tick or untick one step: the checkbox and CoachChapter.setDone both come here. Returns false when nothing changed.
-const boxes={};
+// The first tick of a visit asks the browser to keep the site's storage (progress.js persist): without that, a browser
+// may clear it after a break without a visit.
+const boxes={};let asked=false;
 function tick(id,on){
   if(!id||!ids.includes(id)||on===done.has(id))return false;
+  if(on&&!asked){asked=true;if(window.CoachProgress)CoachProgress.persist();}
   if(on){done.add(id);state.last=id;skip.delete(id);}
   else{done.delete(id);if(state.last===id)state.last=[...done].pop()||null;}
   if(boxes[id])boxes[id].checked=on;

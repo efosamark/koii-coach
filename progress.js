@@ -44,7 +44,9 @@
      mirror(slug, record)    called by chapter.js before it saves a 01/02 record
      order(slug)             01/02: the step ids in page order (chapter.js checks them against the page)
      migrateRecord(slug, record), level(slug)   split migrations (below), for chapter.js
-     exportFile(), readFile(object), applyFile(keys), resetAll(), restore(snapshot)   for Settings */
+     exportFile(), readFile(object), applyFile(keys), resetAll(), restore(snapshot)   for Settings
+     saveFile()              downloads the progress file (Settings, and the chapter-complete card in player.js)
+     persist()               asks the browser to keep this site's storage (saveFile, and chapter.js on a first tick) */
 (()=>{
 const V2='koii-coach-v2',PREFS='koii-coach-prefs',META='koii-coach-meta',CH='koii-coach-ch-';
 // Old checklist keys of Chapters 5-7, by chapter; chapter.js migrates them. Export and Reset cover them as well.
@@ -187,6 +189,16 @@ function migrateSetup(){
 // ---------- Progress file and Reset (Settings) ----------
 function keys(){const ks=[];try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(ours(k))ks.push(k);}}catch(e){}return ks;}
 const exportFile=()=>{const data={};keys().forEach(k=>{data[k]=localStorage.getItem(k);});return{app:'koii-coach',version:1,exported:new Date().toISOString(),data};};
+// Kept storage is not cleared after a break without a visit (Safari) or when space runs low. The browser decides.
+const persist=()=>{try{navigator.storage.persisted().then(p=>p||navigator.storage.persist()).catch(()=>{});}catch(e){}};
+function saveFile(){
+  persist();
+  const file=exportFile(),a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(file,null,1)],{type:'application/json'}));
+  a.download=`koii-coach-progress-${file.exported.slice(0,10)}.json`;
+  document.body.append(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+}
 // The keys of a progress file that this app can load: ours, and each one valid JSON. Empty when it is not a progress file.
 function readFile(j){
   const src=j&&j.app==='koii-coach'&&j.data&&typeof j.data==='object'?j.data:{};
@@ -297,5 +309,5 @@ function run(){start=0;derive('first-beat');derive('song');migrateAll();cleanup(
 const migratedSetup=run();
 
 window.CoachProgress={v2,writeV2,prefs,meta,patch,chapters,continueTarget,v2Progress,firstRun,migratedSetup,mirror,order:slug=>(ORDER[slug]||[]).slice(),migrateRecord,level,
-  exportFile,readFile,applyFile,resetAll,restore,keys};
+  exportFile,readFile,applyFile,resetAll,restore,keys,saveFile,persist};
 })();

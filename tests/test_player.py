@@ -478,6 +478,55 @@ def test_chapter_complete_ticks_the_recap(run):
 
 
 @pytest.mark.browser
+def test_chapter_complete_settings_file_and_what_opens(run):
+    """The done screen: the system settings the chapter left changed (per family the last code ticked, when it is not
+    the default), Save your progress file, the chapters that open up now (site.js needs) and, after Chapter 7, Make
+    your own track. The start screen names the chapters a chapter needs."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    tick_all = "() => CoachChapter.ids().filter(id => !/recap/.test(id)).forEach(id => CoachChapter.setDone(id, true))"
+
+    def finish(ch):
+        run.go(f'./{ch}.html#all')
+        page.evaluate(tick_all)
+        run.go(f'./{ch}.html#done')
+        page.locator('#player-done').wait_for(state='visible')
+        return page.locator('#player-done')
+
+    card = finish('first-beat')
+    still = card.locator('.pd-settings li')
+    assert still.all_text_contents() == ['411 Scene changes wait for the end of the bar. Type 410 the same way to switch back.']
+    assert still.locator('a').get_attribute('href') == '#s-beat-scene-sync', 'The way back is the step that set it'
+    assert card.locator('.pd-settings').get_attribute('class') == 'notice info pd-settings', 'A reminder, not a warning'
+    assert card.locator('.pd-also').count() == 0 and card.locator('a[href$="#own-track"]').count() == 0
+    with page.expect_download() as download:
+        card.locator('[data-save]').click()
+    assert download.value.suggested_filename.startswith('koii-coach-progress-')
+    assert json.loads(pathlib.Path(download.value.path()).read_text(encoding='utf-8'))['data']['koii-coach-ch-first-beat']
+    page.locator('#toast', has_text='Progress file saved').wait_for()
+    # The optional 411 skipped instead: nothing is left changed.
+    page.evaluate("() => { CoachChapter.setDone('beat-scene-sync', false); CoachChapter.setSkipped(['beat-scene-sync'], true); }")
+    run.go('./first-beat.html#done')
+    assert page.locator('#player-done .pd-settings').count() == 0
+    # After Chapter 2: Chapters 4, 5 and 6 open up beside the Next chapter (3).
+    card = finish('song')
+    assert card.locator('.pd-also a').all_text_contents() == ['Chapter 4 · Play & perform', 'Chapter 5 · Full hip-hop beat', 'Chapter 6 · Tech house']
+    assert card.locator('.pd-also a').first.get_attribute('href') == './perform.html'
+    assert finish('sampling').locator('.pd-also a').all_text_contents() == ['Chapter 7 · Vocal house']
+    # Perform puts the click, the scenes and the loop back; pad velocity stays on, and says so.
+    assert finish('perform').locator('.pd-settings li').all_text_contents() == ['301 Pad velocity is on. Type 300 the same way to switch back.']
+    # The last chapter leads on to a track of your own, even before the whole course is done.
+    card = finish('thodorakis-house')
+    assert card.locator('a[href="./cheat-sheet.html#own-track"]').text_content() == 'Make your own track'
+    assert card.locator('.pd-course').count() == 0
+    # Start screens: what a chapter needs, by number.
+    for ch, chip in (('hiphop', 'Needs Chapters 1–2'), ('thodorakis-house', 'Needs Chapters 1–3'), ('song', None)):
+        run.go(f'./{ch}.html#start')
+        chips = page.locator('.player-chips li').all_text_contents()
+        assert (chip in chips) if chip else not [c for c in chips if c.startswith('Needs')], f'{ch}: {chips}'
+
+
+@pytest.mark.browser
 def test_tools_sheet(run):
     page = run.page
     run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})

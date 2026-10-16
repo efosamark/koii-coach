@@ -88,12 +88,7 @@ function summary(){
 summary();
 $('#export').addEventListener('click',()=>{
   alertText('');
-  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{});}catch(e){}
-  const file=P.exportFile(),a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([JSON.stringify(file,null,1)],{type:'application/json'}));
-  a.download=`koii-coach-progress-${file.exported.slice(0,10)}.json`;
-  document.body.append(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+  P.saveFile();
   toast('Progress file saved. Keep it somewhere safe.');
 });
 $('#import-file').addEventListener('change',async e=>{

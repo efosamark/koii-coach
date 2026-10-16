@@ -7,7 +7,8 @@
      set-up is not 'ready'; else the unfinished chapter that moved last (its record's "at"); else meta.lastChapter;
      else the first one with progress; else the next one not started (CoachProgress.continueTarget). The card names
      the part and the step it opens at, read from the chapter's own page (precached; without it the card still works).
-     All eight done: a course-complete card that lists what each chapter made (site.js "made").
+     All eight done: a course-complete card that lists what each chapter made (site.js "made"), and leads to the
+     cheat sheet's route for a track of your own (cheat-sheet.html#own-track).
    - each course row shows its state (LED, x/N, a name that says it) and links to where that chapter continues; the
      Continue chapter is marked "You are here". 00, when the learner said their unit is set up, reads "Skipped · do it
      any time", or "Optional · set-up checks" when Home moved an existing learner past it (meta.setupReason).
@@ -30,7 +31,8 @@ function continueCard(all){
   const p=P.continueTarget(all);
   if(!p)return`<section class="card continue complete" aria-labelledby="continue-title"><p class="eyebrow">Course complete</p><h2 id="continue-title">All ${all.length} chapters done</h2>`+
     `<p>What you made:</p><ul class="made-list">${all.map(q=>`<li><span class="num">${esc(q.c.num)}</span> <a href="${esc(q.c.href)}">${esc(q.c.title)}</a>${q.c.made?`<span class="sub meta">${esc(q.c.made.charAt(0).toUpperCase()+q.c.made.slice(1))}.</span>`:''}</li>`).join('')}</ul>`+
-    `<p>The cheat sheet keeps the moves you learned in one place.</p><a class="btn primary lg" id="resume" href="./cheat-sheet.html">Open the cheat sheet${icon('next')}</a></section>`;
+    `<p>The cheat sheet keeps the moves you learned in one place. It also lists the parts you have done, in order, from an empty project to a finished track.</p>`+
+    `<a class="btn primary lg" id="resume" href="./cheat-sheet.html#own-track">Make your own track${icon('next')}</a></section>`;
   const{c,x,n}=p,started=x>0||p.at>0;
   return`<section class="card continue" aria-labelledby="continue-title"><p class="eyebrow">${started?'Continue':'Next'} · Chapter ${esc(c.num)}</p><h2 id="continue-title">${esc(c.title)}</h2>`+
     `<p class="where" id="continue-part" hidden></p><p class="where-step meta" id="continue-step" hidden></p>`+
