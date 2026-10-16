@@ -14,8 +14,8 @@
      any time", or "Optional · set-up checks" when Home moved an existing learner past it (meta.setupReason).
      The rows are #course-list li, in site.js order, in two labelled lists: Chapters 0-2 in order, then 3-7 in any order
      (guided order, Continue and numbering stay 0-7). A row's one-line goal (.goal, written in index.html) is kept.
-   - the first-run card links to Settings' progress card (settings.html#your-progress, focus on Load progress file), for a learner whose
-     progress is in another browser or was cleared.
+   - the first-run card links to Settings' progress card (settings.html#your-progress, where Load progress file gets
+     the focus), for a learner whose progress is in another browser or was cleared.
    Old addresses (index.html#first and the other views of the retired single-page app) are sent to their pages by the
    script at the top of <head>; any other hash is dropped, so "/" always means Home. */
 (()=>{
