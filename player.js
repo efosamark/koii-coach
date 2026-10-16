@@ -27,12 +27,23 @@
      li[data-os="2.5"]                  "Needs OS 2.5+" tag (chapter.js's badge then shows only when it warns)
      li[data-optional]                  "Optional" tag; a run of optional steps in one part can be skipped at once
      li[data-kind="recap"]              the chapter's recap: ticked by itself on the chapter-complete screen once
-                                        every other step is done; its ul.step-moves show there as "New moves"
+                                        every other step is done; its ul.step-moves show there as "New moves". In the
+                                        player, each move that reads "Label: answer" (the text before the first ": ",
+                                        at most 48 characters, no key in it) is a closed row: the label, and the
+                                        answer once tapped. Its keys show only then. A move without such a label stays
+                                        as written. The rows are a copy: All steps, print and the done screen keep
+                                        the list as written
+     li[data-recall]                    a step done from memory (not on a risk step): the title and Check show, the
+                                        Do lines wait behind "Show the presses" (per visit, never saved), and their
+                                        keys stay unlit and out of the Tools sheet until then (li.is-folded).
+                                        Done · Next stays enabled. All steps, print and no JavaScript show everything
      a step whose text starts with a bold "Checkpoint." gets the checkpoint styling
      kbd.key inside the current step render hot (yellow) in the player, except inside p.step-check
    Around the steps: p.makes ("You will make: …": the start screen, and "You made" when the chapter is complete),
    .reference cards (folded into "Reference for this chapter" on the start screen) and .reentry (perform's "How every
-   section starts": a "Get back in" card above the step when the last tick is more than 30 minutes old).
+   section starts"). "Get back in", above the step when the chapter opens at the step to continue at (no hash, or
+   Continue's #s-<cur>) and the last tick is more than 30 minutes old, shows the part's Goal line, the .reentry card
+   and the numbers on your notes: never the last Check, which described the K.O. II before the break.
 
    Views and routes (the hash is the address of what is on screen; moving between steps uses replaceState):
      #start     the start screen          #s-<id>   the player at that step (list mode when the learner chose it)
@@ -45,7 +56,9 @@
    read-modify-write, so the other preferences stay. Only the switch saves it; a #all link does not.
    Opening a step from the menu, a link or search marks nothing and leaves cur where it is; a "Back to step N" pill
    then leads back to the step to continue at. A part's checkpoint answer (Yes / Not quite) is kept for the learner
-   in koii-coach-meta.checkpoints[<slug>][<part id>] = 'yes' | 'not-yet'; it never changes a tick.
+   in koii-coach-meta.checkpoints[<slug>][<part id>] = 'yes' | 'not-yet'; it never changes a tick. Going on with the
+   fixes open keeps 'not-yet' (the button then has no "Yes ·"), and the chapter-complete screen offers those parts
+   again under "Worth another go"; a later Yes clears it.
 
    The start screen's chips include "Formerly 07" for a chapter renumbered in 2026.10.14.4 (site.js formerly), once
    the learner has progress anywhere in the course.
@@ -62,7 +75,8 @@
    while the player shows one of its views.
    After every change of view it fires a "coach:view" event on document, detail {view: 'start'|'step'|'check'|'done'|
    'list', step: the id on screen or null}; first-beat.js and the Tools sheet (toolsheet.js) use it.
-   window.CoachPlayer = {view(), current()}: what is on screen. */
+   window.CoachPlayer = {view(), current()}: what is on screen; partFixes(li): the "If it doesn't" of li's part as
+   symptom cards (HTML, no Redo buttons), for the Tools sheet. */
 (()=>{
 const C=window.CoachChapter,main=document.getElementById('main'),wrap=document.querySelector('.steps');
 if(!C||!main||!wrap)return;
@@ -221,6 +235,28 @@ groups.forEach((run,li)=>{
   (li.querySelector(':scope > .step-title')||heads.get(li)).after(box);
   box.querySelector('[data-skip]').addEventListener('click',()=>skipRun(run));
 });
+// Recall before reading. In a recap, each move that reads "Label: answer" becomes a closed row: the label, and the
+// answer once opened. The label is the text before the first ": ", at most 48 characters and without a key in it.
+// The rows are a copy, shown only while the recap is on screen; the list as written stays for All steps, print and
+// the done screen's New moves. A data-recall step (never a risk step) keeps its Do lines behind "Show the presses".
+const cap=h=>h.replace(/^((?:<[^>]+>|\s)*)([a-z])/,(m,a,l)=>a+l.toUpperCase());   // only a lower-case first letter
+const recapRows=new Map(),recalls=new Map();   // recap -> [its ul.step-moves, the rows]; data-recall step -> its button line
+steps.forEach(li=>{
+  const ul=li.dataset.kind==='recap'&&li.querySelector(':scope > .step-moves'),d=li.querySelector(':scope > .step-do');
+  if(ul){
+    let n=0;
+    const rows=el('ul','recall pl-own',[...ul.children].map(m=>{
+      const h=m.innerHTML.trim(),k=h.indexOf(': '),cue=h.slice(0,k);
+      if(k<1||/<kbd|<[^>]*$/.test(cue)||clean(cue.replace(/<[^>]*>/g,'')).length>48)return`<li>${h}</li>`;
+      n++;return`<li><details><summary>${cue}</summary><p>${cap(h.slice(k+2))}</p></details></li>`;
+    }).join(''));
+    if(n){rows.hidden=true;ul.after(rows);recapRows.set(li,[ul,rows]);}
+  }
+  if(!('recall' in li.dataset)||li.dataset.risk||!d)return;
+  const p=el('p','recall-show pl-own','<button class="btn" type="button" aria-expanded="false">Show the presses</button> <span class="meta">Try it from memory first.</span>');
+  p.hidden=true;d.before(p);recalls.set(li,p);
+  p.firstChild.addEventListener('click',()=>{shown=shown===li?null:li;render();});
+});
 
 // ---------- Elements the player adds ----------
 // "About this part": the goal and the notes of the part on screen (copies; the originals stay where they are).
@@ -303,7 +339,7 @@ listBanner.addEventListener('click',e=>{if(!e.target.closest('[data-resume]'))re
 const pill=el('button','back-pill pl-own');pill.type='button';pill.hidden=true;
 // It shows perform's "How every section starts" (.reentry) and the scene and sample numbers on your notes (chapter.js).
 const getback=el('section','getback pl-own');getback.hidden=true;getback.setAttribute('aria-labelledby','getback-title');
-getback.innerHTML='<h2 id="getback-title">Get back in</h2><p class="meta">It has been a while since your last tick. Before you go on:</p><div class="getback-body"></div><div class="getback-notes"></div><p><button class="btn" type="button" data-getback>Got it</button></p>';
+getback.innerHTML='<h2 id="getback-title">Get back in</h2><p class="meta">It has been a while since your last tick. Before you go on:</p><div class="getback-goal"></div><div class="getback-body"></div><div class="getback-notes"></div><p><button class="btn" type="button" data-getback>Got it</button></p>';
 if(reentry){const c=copy(reentry);c.querySelectorAll('h2').forEach(h=>h.remove());getback.querySelector('.getback-body').append(...c.childNodes);}
 getback.querySelector('[data-getback]').addEventListener('click',()=>{getback.hidden=true;if(cur)focusStep(cur);});
 const notesHTML=()=>window.CoachNotes?CoachNotes.html():'';
@@ -418,7 +454,7 @@ if(Shell&&slug!=='setup'){
 }
 
 // ---------- State and rendering ----------
-let view='',cur=null,part=null,confirmed=null,printing=false,fixOpen=false;
+let view='',cur=null,part=null,confirmed=null,shown=null,printing=false,fixOpen=false;
 function setHidden(want){
   managed.forEach(e=>{if(!want.has(e)){e.hidden=false;managed.delete(e);}});
   want.forEach(e=>{if(!managed.has(e)&&!e.hidden){e.hidden=true;managed.add(e);}});
@@ -445,12 +481,16 @@ function render(){
     [...P.el.querySelectorAll(':scope > ol')].forEach(ol=>{if(!ol.contains(cur))want.add(ol);});
     P.steps.forEach(li=>{if(li!==cur)want.add(li);});
     if(isGated())[...cur.children].forEach(e=>{if(!e.matches('.step-head,.step-title,.preflight,.step-consequence,.gate,.check,.here-tag'))want.add(e);});
+    if(recapRows.has(cur))want.add(recapRows.get(cur)[0]);   // its rows show instead
+    if(recalls.has(cur)&&shown!==cur)cur.querySelectorAll(':scope > .step-do').forEach(e=>want.add(e));
   }else if(v==='check'||v==='done'){
     k.forEach(e=>{if(e!==note)want.add(e);});
     if(v==='check'&&foot)want.add(foot);
   }
   setHidden(want);
-  steps.forEach(li=>li.classList.toggle('is-current',v==='step'&&li===cur));
+  steps.forEach(li=>{const on=v==='step'&&li===cur;li.classList.toggle('is-current',on);li.classList.toggle('is-folded',on&&recalls.has(li)&&shown!==li);});
+  recapRows.forEach(([,r],li)=>{r.hidden=!(v==='step'&&li===cur);});
+  recalls.forEach((p,li)=>{const open=shown===li,b=p.firstChild;p.hidden=!(v==='step'&&li===cur);b.setAttribute('aria-expanded',String(open));b.textContent=open?'Hide the presses':'Show the presses';p.lastChild.hidden=open;});
   gates.forEach((g,li)=>{
     const on=v==='step'&&li===cur,ok=confirmed===li;
     g.box.hidden=!on;g.btn.hidden=ok;g.hint.hidden=ok;g.ok.hidden=!ok;
@@ -503,7 +543,7 @@ function paint(){
     else{const P=partOf(cur),last=P.steps[P.steps.length-1]===cur;label=isDone(cur)?'Next':last&&P.checkpoint?'Done · Checkpoint':'Done · Next';}
   }else if(view==='check'&&part){
     const np=parts[part.i+1];
-    label=(part.checkpoint?'Yes · ':'')+(np?'Part '+np.n+': '+np.title:'Finish the chapter');
+    label=(part.checkpoint&&!fixOpen?'Yes · ':'')+(np?'Part '+np.n+': '+np.title:'Finish the chapter');
   }else if(view==='done')go=nextLink?'Next: '+nextName:'Back to the course';
   nextBtn.hidden=Boolean(go)||view==='list';goLink.hidden=!go;
   nextBtn.querySelector('.pa-label').textContent=label;
@@ -547,7 +587,7 @@ function focusStep(li){
 // ---------- Views ----------
 function showStep(li,opt){
   opt=opt||{};
-  if(li!==cur)confirmed=null;
+  if(li!==cur)confirmed=shown=null;
   const P=partOf(li),moved=view==='step'&&cur&&cur!==li;
   if(moved)getback.hidden=true;
   view='step';cur=li;part=P;P.el.open=true;manual(true);
@@ -584,11 +624,14 @@ function showStart(){
 const leds=(list,lit)=>`<span class="led-row" aria-hidden="true">${list.map((x,i)=>`<span class="led${lit(x)?' on':''}" style="--i:${i}"></span>`).join('')}</span>`;
 function showCheck(P,opt){
   view='check';part=P;cur=P.steps[P.steps.length-1];fixOpen=false;manual(true);
-  const np=parts[P.i+1],full=p=>p.steps.every(settled),doneParts=parts.filter(full).length;
+  const np=parts[P.i+1],full=p=>p.steps.every(settled),doneParts=parts.filter(full).length,left=steps.filter(li=>!settled(li)).length;
   checkCard.innerHTML=`<h2 class="pl-eyebrow" id="player-check-title">Part ${P.n} done${P.checkpoint?' · Checkpoint':''}</h2>`+
     `<p class="pc-leds">${leds(parts,full)}<span class="meta">${doneParts} of ${plural(parts.length,'part','parts')} done</span></p>`+
     (P.checkpoint?'<div class="pc-q"></div>':`<p class="pc-q">You have reached the end of Part ${P.n}: ${esc(P.title)}.</p>`)+
-    (np?`<p class="meta">Next: Part ${np.n} · ${esc(np.title)}</p>`:'<p class="meta">This was the last part of the chapter.</p>')+
+    (np?`<p class="meta">Next: Part ${np.n} · ${esc(np.title)} · ${esc(tally(np.steps).text)}</p>`:'<p class="meta">This was the last part of the chapter.</p>')+
+    (left?`<p class="meta">${plural(left,'step','steps')} left in this chapter</p>`:'')+
+    // A place to stop: the coach keeps your place, and the K.O. II's own switch-off line (setup.html, Part 1).
+    `<p class="meta">${C.saved()?'Your place is saved. ':''}Switching off? Wait until the floppy icon (saving) goes out, then slide the power switch back.</p>`+
     (P.checkpoint?'<div class="row"><button class="btn lg pc-not" type="button" aria-expanded="false">Not quite</button></div>':'')+
     `<div class="pc-fix" hidden><div class="pc-fix-text"></div><p><button class="btn" type="button" data-redo>${icon('back')}Redo Part ${P.n} from its first step</button></p></div>`;
   if(P.checkpoint){const q=copy(P.checkpoint);q.className='';checkCard.querySelector('.pc-q').append(...q.childNodes);}
@@ -596,7 +639,7 @@ function showCheck(P,opt){
   if(P.ifnot)fix.querySelector('.pc-fix-text').innerHTML=fixCards(P);
   fix.querySelectorAll('[data-redo-step]').forEach(b=>b.addEventListener('click',()=>{const li=byId.get(b.dataset.redoStep);if(li){C.setCurrent(li.dataset.step);showStep(li);}}));
   const nb=checkCard.querySelector('.pc-not');
-  if(nb)nb.addEventListener('click',()=>{fixOpen=!fixOpen;nb.setAttribute('aria-expanded',String(fixOpen));fix.hidden=!fixOpen;if(fixOpen)answer(P,'not-yet');});
+  if(nb)nb.addEventListener('click',()=>{fixOpen=!fixOpen;nb.setAttribute('aria-expanded',String(fixOpen));fix.hidden=!fixOpen;if(fixOpen)answer(P,'not-yet');paint();});
   fix.querySelector('[data-redo]').addEventListener('click',()=>{C.setCurrent(P.steps[0].dataset.step);showStep(P.steps[0]);});
   render();
   setUrl('#s-'+cur.dataset.step);
@@ -606,12 +649,12 @@ function showCheck(P,opt){
 }
 // "Not quite": the part's "If it doesn't" text as one card per symptom (plan 5.9). A sentence ending in "?" starts a
 // card ("No bass? Tap B…"), and so does "symptom: fix" ("the bass repeats after one bar: repeat…"); the sentences
-// after it are its fix. A fix that links to a step of this chapter gets a "Redo step N" button. Text without a
-// symptom stays one card.
-function fixCards(P){
+// after it are its fix. A fix that links to a step of this chapter gets a "Redo step N" button (not when bare: the
+// Tools sheet, where the link in the text leads there). Text without a symptom stays one card.
+function fixCards(P,bare){
   const c=copy(P.ifnot),b=c.querySelector('b');
   if(b&&/^If it doesn['’]t/i.test(b.textContent))b.remove();
-  const plain=h=>h.replace(/<[^>]+>/g,'').trim(),cap=h=>h.replace(/^((?:<[^>]+>|\s)*)([a-z])/,(m,a,l)=>a+l.toUpperCase());   // only a lower-case first letter
+  const plain=h=>h.replace(/<[^>]+>/g,'').trim();
   const parts=c.innerHTML.trim().replace(/K\.O\. /g,'K.O.\u00a0').replace(/([.?!])\s+(?=[A-Z0-9<“"])/g,'$1\u0000').split('\u0000').map(s=>s.trim()).filter(Boolean);
   // With "?" symptoms, a "label: …" sentence starts a card only for a short label ("USB:", "Older OS:"), never an instruction.
   const asks=parts.some(s=>/\?$/.test(plain(s))),cards=[];
@@ -626,7 +669,7 @@ function fixCards(P){
   return cards.map(x=>{
     const fix=x.fix.join(' '),m=/href="#s-([^"]+)"/.exec(fix),li=m&&byId.get(m[1]);
     let redo='';
-    if(li){const [k]=inPart(li),Q=partOf(li);redo=`<p><button class="btn" type="button" data-redo-step="${esc(li.dataset.step)}">${icon('back')}Redo ${Q===P?'':'Part '+Q.n+', '}step ${k}</button></p>`;}
+    if(li&&!bare){const [k]=inPart(li),Q=partOf(li);redo=`<p><button class="btn" type="button" data-redo-step="${esc(li.dataset.step)}">${icon('back')}Redo ${Q===P?'':'Part '+Q.n+', '}step ${k}</button></p>`;}
     return`<div class="fix-card">${x.sym?`<p class="fix-sym">${cap(x.sym)}</p>`:''}${fix?`<p>${cap(fix)}</p>`:''}${redo}</div>`;
   }).join('');
 }
@@ -645,6 +688,8 @@ function showDone(opt){
   const moves=recaps.map(li=>li.querySelector(':scope > .step-moves')).filter(Boolean),kept=window.CoachNotes&&CoachNotes.chapter?CoachNotes.chapter():[];
   // Every chapter done: the course-complete list (plan 5.9), what each one made.
   const course=complete&&window.CoachProgress?CoachProgress.chapters():[],all=course.length&&course.every(p=>p.done||p.c.slug===slug);
+  // Parts whose checkpoint was left at "Not quite" (koii-coach-meta.checkpoints), to try again.
+  const marks=sub(sub(readObj(META)||{},'checkpoints'),slug),again=parts.filter(p=>marks[p.id]==='not-yet');
   const head=complete?'Chapter '+esc(chNum)+' done':'Chapter '+esc(chNum)+' · '+esc(plural(open.length,'step','steps'))+' not ticked yet';
   doneCard.innerHTML=`<p class="pl-eyebrow">Chapter ${esc(chNum)} · ${esc(chName)}</p><h2 class="pd-title" id="player-done-title" tabindex="-1">${head}</h2>`+
     (complete?`<p class="pd-leds">${leds(Array.from({length:16}),()=>true)}</p>`+(makes?`<p class="pd-made">${made()}</p>`:'')+
@@ -656,6 +701,8 @@ function showDone(opt){
     :`<p>Tick them, or skip the optional ones, and this chapter is done:</p><ul class="pd-open">`+
       open.slice(0,8).map(li=>`<li><a href="#s-${esc(li.dataset.step)}"><span class="pd-n">${inPart(li)[0]}</span><span class="pd-t">${esc(gist(li))} <span class="meta">Part ${partOf(li).n}</span></span></a></li>`).join('')+'</ul>'+
       (open.length>8?`<p><a href="#all">${esc(plural(open.length-8,'more step','more steps'))}: see All steps</a></p>`:''))+
+    (again.length?'<h3 class="pd-moves-title">Worth another go</h3><p>You answered “Not quite” at the end of these parts.</p>'+
+      again.map(p=>`<p>${esc(p.title)}<br><button class="btn" type="button" data-redo-part="${p.i}">${icon('back')}Redo Part ${p.n} from its first step</button></p>`).join(''):'')+
     (all?`<section class="pd-course"><h3>Course complete</h3><p>All ${course.length} chapters are done. What you made:</p><ul class="made-list">`+
       course.map(p=>`<li><span class="num">${esc(p.c.num)}</span> <a href="${esc(p.c.href)}">${esc(p.c.title)}</a>${p.c.made?`<span class="sub meta">${esc(p.c.made.charAt(0).toUpperCase()+p.c.made.slice(1))}.</span>`:''}</li>`).join('')+
       `</ul><p><a href="./cheat-sheet.html">The cheat sheet</a> keeps every move and reference table in one place.</p></section>`:'')+
@@ -685,7 +732,7 @@ function showList(){
 // ---------- Moving ----------
 function next(){
   if(view==='start'){const r=C.hasProgress()&&C.resumeId();showStep(r?byId.get(r):steps[0]);return;}
-  if(view==='check'){if(part.checkpoint)answer(part,'yes');const np=parts[part.i+1];if(np)showStep(firstOpen(np));else showDone();return;}
+  if(view==='check'){if(part.checkpoint&&!fixOpen)answer(part,'yes');const np=parts[part.i+1];if(np)showStep(firstOpen(np));else showDone();return;}   // going on from "Not quite" keeps it
   if(view!=='step'||!cur)return;
   if(isGated()){const g=gates.get(cur);g.box.scrollIntoView({block:'center'});g.btn.focus({preventScroll:true});return;}
   if(!isDone(cur))C.setDone(cur.dataset.step,true);
@@ -793,6 +840,8 @@ listModes.addEventListener('click',e=>{
 doneCard.addEventListener('click',e=>{
   if(e.target.closest('[data-review]')){e.preventDefault();showList();setUrl('#all');scrollTo(0,0);return;}
   const bk=e.target.closest('[data-backup]');if(bk&&backupModal){backupOpener=bk;backupModal.open();return;}
+  const rp=e.target.closest('[data-redo-part]'),P=rp&&parts[+rp.dataset.redoPart];
+  if(P){C.setCurrent(P.steps[0].dataset.step);showStep(P.steps[0]);return;}
   act(e,now);
 });
 
@@ -803,12 +852,15 @@ function openDefault(welcome){
   if(C.count()>=C.total()){showDone();return;}
   const li=byId.get(C.resumeId())||steps[0];
   showStep(li);
-  if(!welcome)return;
+  if(welcome)welcomeBack(li);
+}
+// Opening the chapter at the step to continue at: "Welcome back", and "Get back in" when the last tick was more than
+// 30 minutes ago (the part's Goal line, perform's "How every section starts", your notes).
+function welcomeBack(li){
   C.say('Welcome back. '+C.count()+' of '+C.total()+' done; you continue at '+where(li)+'.');
-  // "Get back in" (perform's "How every section starts", your notes) when the last tick was more than 30 minutes ago.
-  const at=Date.parse(C.lastAt()||'');
-  const notes=notesHTML();
-  if((reentry||notes)&&Number.isFinite(at)&&Date.now()-at>30*60*1000){getback.querySelector('.getback-notes').innerHTML=notes;getback.hidden=false;}
+  const at=Date.parse(C.lastAt()||''),notes=notesHTML(),goal=partOf(li).notes.find(e=>/^Goal\b/.test(firstBold(e)));
+  getback.querySelector('.getback-goal').replaceChildren(...(goal?[copy(goal)]:[]));
+  if((reentry||goal||notes)&&Number.isFinite(at)&&Date.now()-at>30*60*1000){getback.querySelector('.getback-notes').innerHTML=notes;getback.hidden=false;}
 }
 function routeTo(hash){
   const was=first;first=false;
@@ -826,7 +878,9 @@ function routeTo(hash){
       openDefault(false);return true;   // where the learner continues, as a plain visit would (the start screen without progress)
     }
     if(mode()==='all'){showList();return false;}   // chapter.js opens its section, scrolls to it and marks it
-    showStep(li);return true;
+    showStep(li);
+    if(was&&C.hasProgress()&&id===C.current())welcomeBack(li);   // Continue (Home, the menu) links to the step to continue at
+    return true;
   }
   if(h){
     let target=null;try{target=document.getElementById(decodeURIComponent(h.slice(1)));}catch(e){}
@@ -854,5 +908,5 @@ C.onChange(e=>{
 
 C.route(routeTo);
 if(C.routed&&C.routed())routeTo(location.hash);
-window.CoachPlayer={view:()=>view,current:()=>view==='step'?cur:null};
+window.CoachPlayer={view:()=>view,current:()=>view==='step'?cur:null,partFixes:li=>{const P=byId.get(li&&li.dataset.step)&&partOf(li);return P&&P.ifnot?fixCards(P,true):'';}};
 })();

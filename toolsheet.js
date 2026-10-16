@@ -2,8 +2,9 @@
 /* The Tools sheet of the chapter pages (docs/overhaul-plan.md 4.6, 5.7): one tap from every step (the player's Tools
    button, or T on a keyboard). player.js loads it (see below), so no page names it in a <script>.
    It opens on "For this step": the keys of the step's Do lines lit on the control map, numbered in press order; the
-   troubleshooting topics the step links to, already open; the glossary words in the step; and the moves of the
-   chapters you have finished. A step without topics or words falls back to the troubleshooting groups. The other tabs
+   troubleshooting topics the step links to, already open; "Fixes for this part", the part's "If it doesn't" as
+   symptom cards (player.js, CoachPlayer.partFixes); the glossary words in the step; and the moves of the chapters
+   you have finished. A step without topics or words falls back to the troubleshooting groups. The other tabs
    hold the whole control map, Troubleshooting, the Glossary and the Cheat sheet, and the field at the top opens the
    site search with what you type (its overlay opens over the sheet; closing it comes back here).
 
@@ -114,9 +115,12 @@ function termRe(name){
 // ---------- A step's keys, topics and words ----------
 const step=()=>window.CoachPlayer&&CoachPlayer.current();
 // The controls named by the keycaps of a step's Do lines, in the order they appear. Before you press is left out: it
-// guards the press and often names keys not to press ("Never hold SHIFT + SOUND on the trim page").
+// guards the press and often names keys not to press ("Never hold SHIFT + SOUND on the trim page"). A data-recall
+// step's Do lines count once "Show the presses" has shown them (player.js drops li.is-folded then).
+const folded=li=>li.classList.contains('is-folded');
 function keysOf(li){
   const out=[],marked=li.querySelector(':scope > :is(.step-do,.step-body)');
+  if(folded(li))return out;   // its Do lines are not on screen yet
   // A step without a Do line (stage 1) is one text: its keys outside the check and the extras count.
   const caps=marked?li.querySelectorAll(':scope > .step-do kbd.key, :scope > .step-body kbd.key'):
     [...li.querySelectorAll('kbd.key')].filter(k=>!k.closest('.preflight,.step-check,.step-more,.step-note,.step-head,.pl-own'));
@@ -189,6 +193,8 @@ function stepPanel(d){
   let h=`<p class="tools-eyebrow">For ${pn?'Part '+pn+', step '+k:'this step'}${name?': '+esc(name):''}</p>`;
   if(keys.length&&d.device)h+=`<h3 class="sub">Keys in press order</h3>${keysHTML(d,keys,false,li)}`;
   if(topics.length)h+='<h3 class="sub">Fixes for this step</h3>'+topics.map(t=>topicHTML(t,true,4)).join('');
+  const part=window.CoachPlayer&&CoachPlayer.partFixes?CoachPlayer.partFixes(li):'';
+  if(part)h+='<h3 class="sub">Fixes for this part</h3>'+part;
   if(words.length)h+=`<h3 class="sub">Words in this step</h3><dl class="gloss tools-gloss">${words.map(termHTML).join('')}</dl>`;
   const mine=done(),moves=(d.cheat||[]).filter(s=>mine.includes(s.dataset.chapter)&&s.querySelector('.moves'));
   if(moves.length)h+='<h3 class="sub">Moves you know</h3>'+moves.map(s=>`<p class="meta">${esc(clean(s.querySelector('h2').textContent))}</p>${strip(s.querySelector('.moves')).outerHTML}`).join('');
@@ -262,7 +268,7 @@ async function device(){
   const li=step(),on=Boolean(side.matches&&document.documentElement.dataset.player==='step'&&li);
   dev.hidden=!on;document.documentElement.classList.toggle('has-device',on);
   if(!on){devFor='';return;}
-  const key=li.dataset.step+(wide.matches?':wide':':short');
+  const key=li.dataset.step+(folded(li)?':folded':'')+(wide.matches?':wide':':short');
   if(key===devFor)return;
   devFor=key;
   const d=await load();
@@ -270,7 +276,7 @@ async function device(){
   const keys=keysOf(li);
   dev.innerHTML=`<h2 class="device-title" id="player-device-title">Keys for this step</h2>`+
     (keys.length&&d.device?keysHTML(d,keys,wide.matches,li)+(wide.matches?'<div class="map-info card info" aria-live="polite"><p class="meta">Tap a control to see what it does.</p></div>':''):
-      d.device?'<p class="meta">No keys to press in this step.</p>':failed('The control map','./controls.html'));
+      d.device?`<p class="meta">${folded(li)?'The keys light up once you show the presses.':'No keys to press in this step.'}</p>`:failed('The control map','./controls.html'));
 }
 document.addEventListener('coach:view',device);
 [side,wide].forEach(m=>{const f=()=>{devFor='';device();};if(m.addEventListener)m.addEventListener('change',f);else if(m.addListener)m.addListener(f);});

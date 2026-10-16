@@ -975,9 +975,10 @@ html.pl-kbd .search-preview .preview-title:focus-visible{outline:3px solid var(-
    #player-actions (#player-back, #player-tools-btn, #player-next, #player-go, .pa-more), #chapter-actions (the ⋮
    sheet), #player-check, #player-done, .player-modes, .player-chips, .player-safety, .player-reference,
    .player-parts, .part-about, .back-pill, .getback, .led-row; inside a step: .step-head (.step-num and tags),
-   .skip-box, .preflight, .gate, .step-do, .step-check[data-sense="hear|see"], li.is-current, li.is-checkpoint,
-   li.is-skipped, li[data-risk]. Yellow stays for keycaps: in the player the keys of the step on screen are hot,
-   except inside its check. */
+   .skip-box, .recall (a recap's moves as closed rows), .recall-show ("Show the presses"), .preflight, .gate, .step-do,
+   .step-check[data-sense="hear|see"], li.is-current, li.is-checkpoint, li.is-folded (Do lines still behind "Show the
+   presses"), li.is-skipped, li[data-risk]. Yellow stays for keycaps: in the player the keys of the step on screen are
+   hot, except inside its check. */
 :root{
   --bar-h:72px;   /* the action bar, without the safe area; a 48px row on short viewports */
   --i-ear:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.5 9.5a5.5 5.5 0 0 1 11 0c0 3.5-3 4.5-3.5 7a3.5 3.5 0 0 1-6.5 1.5'/%3E%3Cpath d='M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.5-1.5 2-2.5 3'/%3E%3C/svg%3E");
@@ -1318,7 +1319,7 @@ html[data-text="larger"][data-player="step"] li.is-current > .step-check{margin-
   .player-actions{border:2px solid CanvasText}
   .led-row .led.on{forced-color-adjust:none;background:CanvasText}
 }
-@media print{.player-actions,.player-modes,.actions-sheet,.part-about,.player-chips,.player-safety,.player-reference,.player-parts,.player-card,.gate,.step-num,.skip-box,.back-pill,.getback,.appbar-meter{display:none!important}}
+@media print{.player-actions,.player-modes,.actions-sheet,.part-about,.player-chips,.player-safety,.player-reference,.player-parts,.player-card,.gate,.step-num,.skip-box,.recall,.recall-show,.back-pill,.getback,.appbar-meter{display:none!important}}
 
 /* ---------- Every chapter in the player: the parts of a 01/02 step, and the rhythm helpers of 01 ---------- */
 /* A part's title is an <h2> inside its <summary> (01, 02); it reads as the summary text. */
@@ -1330,6 +1331,13 @@ html[data-text="larger"][data-player="step"] li.is-current > .step-check{margin-
 .steps li > .step-undo::before,.risk .step-undo::before{content:"";position:absolute;left:var(--sp-3);top:calc(var(--sp-2) + 3px);width:22px;height:22px;background:var(--ink-2);-webkit-mask:var(--i-undo) center/contain no-repeat;mask:var(--i-undo) center/contain no-repeat}
 .step-moves,.moves{margin:var(--sp-2) 0 var(--sp-3);padding-left:1.25em}
 .step-moves li,.moves li{margin:var(--sp-1) 0}
+/* A recap in the player (player.js): each move is a closed row, its label first; the answer shows once opened, in line
+   with the label (past the 20px chevron). */
+.recall{margin:var(--sp-2) 0 var(--sp-3);padding:0;list-style:none}
+.recall > li{border-bottom:1px solid var(--line)}
+.recall p{margin:0 0 var(--sp-3) calc(20px + var(--sp-3))}
+/* "Show the presses" (a data-recall step): the button, its hint beside it or wrapped below as one block. */
+.recall-show{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3)}
 .step-extras{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:var(--sp-3) 0 var(--sp-2)}
 .step-more{border:1px solid var(--line);border-radius:var(--r-control);background:transparent;transition:background-color var(--dur-press) var(--ease)}
 .step-more:hover,.step-more[open]{background:var(--surface-2)}
@@ -1355,7 +1363,7 @@ html:not([data-player="step"]) .steps li > .part-source{display:none}
 .steps li > .step-title:focus{outline:none}
 html.pl-kbd .steps li > .step-title:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:4px}
 /* In the player the step's parts keep their own sizes: only the Do line (and the preflight) is large. */
-html[data-player="step"] li.is-current > :is(.step-consequence,.step-extras,.step-source,.step-report,.step-moves,.pattern,.runner,.step-undo,.step-noundo,.step-note,.badge,.skip-box){font-size:var(--t-body);line-height:var(--t-body-lh)}
+html[data-player="step"] li.is-current > :is(.step-consequence,.step-extras,.step-source,.step-report,.step-moves,.recall,.recall-show,.pattern,.runner,.step-undo,.step-noundo,.step-note,.badge,.skip-box){font-size:var(--t-body);line-height:var(--t-body-lh)}
 html[data-player="step"] li.is-current > :is(.step-source,.step-report){font-size:var(--t-cap);line-height:var(--t-cap-lh)}
 html[data-player="step"] li.is-current .step-more .key,html[data-player="step"] li.is-current .step-source .key{background:var(--cap-face);border-color:var(--line-strong);color:var(--ink);box-shadow:0 2px 0 var(--line-strong)}
 /* A risk tag is a link to safety.html: a tag, not underlined. */

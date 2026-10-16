@@ -3,10 +3,14 @@
 - Risk steps (static check of the HTML): the check that prevents loss comes before the press, the undo after it.
 - Every step has a Check, except info and recap steps; a risk step names what it clears or deletes.
 - Skipping a run of optional steps: they stop counting, the player moves past them, the toast can undo it.
-- A part's checkpoint: "Not quite" shows the fix and is kept in koii-coach-meta.checkpoints; it never changes a tick.
+- A part's checkpoint: the next part's size, the steps left and the switch-off line; "Not quite" shows the fix and is
+  kept in koii-coach-meta.checkpoints (going on from it keeps it, the done screen offers the part again, a later Yes
+  clears it); it never changes a tick.
 - Chapter complete: arriving ticks the recap once everything else is done, and shows what you made and the new moves.
-- The Tools sheet: the step's keys on the map in press order, its help topics, the other tabs, T to open it, and a
-  help link in a step opening it at that topic.
+- The Tools sheet: the step's keys on the map in press order, its help topics, its part's fixes, the other tabs, T to
+  open it, and a help link in a step opening it at that topic.
+- Recall: a recap's "Label: answer" moves as closed rows; a data-recall step's presses behind "Show the presses".
+- Get back in on Continue's #s-<cur> after a break: the part's Goal and the notes, never the last Check.
 - The menu's "This chapter" tab jumps to a step without ticking it; keyboard shortcuts and their off switch.
 Run after a build, like test_smoke.py:  python -m pytest tests/test_player.py
 """
@@ -345,9 +349,42 @@ def test_part_checkpoint_not_quite(run):
     page.locator('#player-check').wait_for(state='visible')
     assert 'Part 1 done' in page.locator('#player-check h2').text_content()
     assert page.locator('#player-check .led-row .led').count() == page.locator('.steps > details').count(), 'One LED per part'
+    # A place to stop: the next part's size, the steps left, and Chapter 0's own switch-off line, word for word.
+    card = page.locator('#player-check').text_content()
+    size, left, off = page.evaluate("""() => [document.querySelectorAll('.steps > details')[1].querySelectorAll('li[data-step]').length, CoachChapter.ids().length - 1,
+        [...document.querySelectorAll('.steps > details > p')].find(p => p.textContent.startsWith('Switching off?')).textContent]""")
+    assert f'Next: Part 2 · Read the screen and the button language · {size} steps' in card, card
+    assert f'{left} steps left in this chapter' in card, card
+    assert 'Your place is saved. ' + off in card, card
+    label = page.locator('#player-next .pa-label')
+    assert label.text_content() == 'Yes · Part 2: Read the screen and the button language'
     page.locator('#player-check .pc-not').click()
     assert page.locator('#player-check .pc-fix').is_visible() and page.locator('#player-check .fix-card').count() >= 1, 'The fixes, as symptom cards'
     assert run.get('koii-coach-meta')['checkpoints'] == {'setup': {'part-1': 'not-yet'}}
+    # Going on with the fixes open is not a Yes: the button says so, and 'not-yet' stays.
+    assert label.text_content() == 'Part 2: Read the screen and the button language'
+    page.locator('#player-next').click()
+    page.wait_for_function(STEP + " === 'button-language'")
+    assert run.get('koii-coach-meta')['checkpoints'] == {'setup': {'part-1': 'not-yet'}}
+    # The chapter's done screen offers that part again.
+    run.go('./setup.html#done')
+    again = page.locator('#player-done [data-redo-part]')
+    assert 'Worth another go' in page.locator('#player-done').text_content() and again.count() == 1
+    assert again.text_content() == 'Redo Part 1 from its first step'
+    again.click()
+    page.wait_for_function(STEP + " === 'power-batteries'")
+    assert run.get('koii-coach-ch-setup')['cur'] == 'power-batteries'
+    # A Yes on a later pass clears it.
+    run.go('./setup.html#s-listen-headphones-volume')
+    page.locator('#player-next').click()
+    page.locator('#player-check').wait_for(state='visible')
+    page.locator('#player-next').click()
+    assert run.get('koii-coach-meta')['checkpoints'] == {'setup': {'part-1': 'yes'}}
+    run.go('./setup.html#done')
+    assert page.locator('#player-done [data-redo-part]').count() == 0
+    run.go('./setup.html#s-listen-headphones-volume')
+    page.locator('#player-next').click()
+    page.locator('#player-check .pc-not').click()
     page.locator('#player-check [data-redo]').click()
     page.wait_for_function(STEP + " === 'power-batteries'")
     assert run.get('koii-coach-ch-setup')['done'] == ['listen-headphones-volume'], 'A checkpoint answer never changes ticks'
@@ -441,6 +478,106 @@ def test_tools_sheet(run):
     topic = page.locator('#tools-panel-fixes details[data-topic="a-pad-is-silent"]')
     topic.wait_for()
     assert topic.evaluate('d => d.open') and page.url.endswith('#s-beat-hear-kick'), 'The topic opens in the sheet; the page stays'
+    # Fixes for this part: the part's "If it doesn't" as symptom cards, mid-part, without the checkpoint's Redo buttons.
+    run.go('./sampling.html#s-record-first-sample')
+    page.locator('#player-tools-btn').click()
+    card = page.locator('#tools-panel-step .fix-card', has_text='still blinks?')
+    card.wait_for()
+    assert card.locator('.fix-sym').text_content() == 'D1 still blinks?' and 'Nothing was recorded' in card.text_content()
+    assert page.locator('#tools-panel-step h3.sub', has_text='Fixes for this part').count() == 1
+    assert page.locator('#tools-panel-step [data-redo-step]').count() == 0, 'No Redo buttons in the sheet'
+
+
+@pytest.mark.browser
+def test_recap_asks_before_it_shows(run):
+    """In the player a recap's "Label: answer" moves are closed rows: the label, then the answer once opened. Their keys
+    stay out of sight until then; All steps and the done screen keep the list as written."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./first-beat.html#s-beat-recap')
+    li = page.locator('li[data-step="beat-recap"]')
+    rows = li.locator('.recall > li')
+    assert rows.count() == 6 and not li.locator(':scope > .step-moves').is_visible()
+    assert li.locator('.recall summary').all_text_contents() == ['Navigate', 'Write', 'Erase one note', 'Undo', 'Commit', 'Select a scene']
+    assert li.locator('.recall details[open]').count() == 0
+    lit = "() => [...document.querySelectorAll('li.is-current kbd.key')].filter(k => k.checkVisibility()).length"
+    assert page.evaluate(lit) == 0, 'No key shows before a move is opened'
+    row = rows.nth(4)
+    row.locator('summary').click()
+    assert row.locator('p').text_content() == 'SHIFT + MAIN.' and page.evaluate(lit) == 2
+    page.locator('#player-tools-btn').click()
+    page.locator('#tools-panel-step .tools-eyebrow').wait_for()
+    assert page.locator('#tools-panel-step .press-order').count() == 0, 'The Tools sheet lights no recap move'
+    page.keyboard.press('Escape')
+    run.go('./first-beat.html#all')
+    assert li.locator('.recall').evaluate('e => e.hidden') and not li.locator(':scope > .step-moves').evaluate('e => e.hidden')
+
+
+@pytest.mark.browser
+def test_recall_step_keeps_its_presses_behind_a_button(run):
+    """data-recall (written by the content lane; here set on a real step before the player reads the page): the title and
+    Check show, the Do lines wait behind "Show the presses", and their keys are unlit and out of the Tools sheet."""
+    page = run.page
+    page.add_init_script("""document.addEventListener('readystatechange', () => {
+      if (document.readyState !== 'interactive') return;
+      for (const id of ['write-kicks-four', 'drop-hook-bass']) { const li = document.querySelector('li[data-step="' + id + '"]'); if (li) li.dataset.recall = ''; } });""")
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    run.go('./hiphop.html#s-write-kicks-four')
+    li = page.locator('li[data-step="write-kicks-four"]')
+    btn = li.locator('.recall-show button')
+    assert btn.is_visible() and btn.text_content() == 'Show the presses' and btn.get_attribute('aria-expanded') == 'false'
+    assert not li.locator(':scope > .step-do').is_visible() and li.locator(':scope > .step-check').is_visible()
+    assert page.locator('#player-next .pa-label').text_content() == 'Done · Next' and page.locator('#player-next').get_attribute('aria-disabled') is None
+    page.locator('#player-tools-btn').click()
+    page.locator('#tools-panel-step .tools-eyebrow').wait_for()
+    assert page.locator('#tools-panel-step .press-order').count() == 0, 'No keys in the Tools sheet before the presses show'
+    page.keyboard.press('Escape')
+    page.wait_for_function("() => !document.querySelector('dialog[open]') && !(history.state && history.state.coachDialog)")
+    btn.click()
+    assert li.locator(':scope > .step-do').is_visible() and btn.text_content() == 'Hide the presses' and btn.get_attribute('aria-expanded') == 'true'
+    page.locator('#player-tools-btn').click()
+    page.locator('#tools-panel-step .press-order').wait_for()
+    page.keyboard.press('Escape')
+    page.wait_for_function("() => !document.querySelector('dialog[open]') && !(history.state && history.state.coachDialog)")
+    # Per visit: back on the step, the presses are folded again.
+    page.locator('#player-next').click()
+    page.locator('#player-back').click()
+    page.wait_for_function(STEP + " === 'write-kicks-four'")
+    assert btn.get_attribute('aria-expanded') == 'false' and not li.locator(':scope > .step-do').is_visible()
+    # A risk step never folds; All steps shows everything.
+    run.go('./hiphop.html#s-drop-hook-bass')
+    risk = page.locator('li[data-step="drop-hook-bass"]')
+    assert risk.get_attribute('data-risk') == 'erase' and risk.locator('.recall-show').count() == 0 and risk.locator(':scope > .step-do').first.is_visible()
+    run.go('./hiphop.html#all')
+    assert not li.locator(':scope > .step-do').evaluate('e => e.hidden') and li.locator('.recall-show').evaluate('e => e.hidden')
+    assert 'is-folded' not in (li.get_attribute('class') or '')
+
+
+@pytest.mark.browser
+def test_get_back_in_on_continue(run):
+    """Home's and the menu's Continue link to #s-<the step to continue at>: after more than 30 minutes that shows Get back
+    in, with the part's Goal and your notes, never the last Check. Another step's link keeps the plain step."""
+    page = run.page
+    rec = lambda minutes: {'v': 1, 'done': ['song-find-beat'], 'last': 'song-find-beat', 'cur': 'song-select-beat', 'n': 1,
+                           'at': page.evaluate('m => new Date(Date.now() - m * 60e3).toISOString()', minutes)}
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}, 'koii-coach-ch-song': rec(180), 'koii-coach-notes': {'v': 1, 'values': {'project-6/BEAT': '4'}}})
+    run.go('./song.html#s-song-select-beat')
+    box = page.locator('.getback')
+    box.wait_for()
+    text = box.text_content()
+    goal = page.evaluate("() => document.querySelector('#make-the-intro > p').textContent")
+    check = page.evaluate("() => document.querySelector('li[data-step=\"song-find-beat\"] > .step-check').textContent.replace('Check: ', '')")
+    assert goal in text and 'BEAT 4' in text and check not in text, text
+    assert page.locator('#toast').text_content().startswith('Welcome back.')
+    # A link to another step (search, a link in a step) keeps today's view.
+    run.go('./song.html#s-song-copy-intro')
+    page.wait_for_function(STEP + " === 'song-copy-intro'")
+    assert not box.is_visible()
+    # A recent tick: no card.
+    page.evaluate('r => localStorage.setItem("koii-coach-ch-song", JSON.stringify(r))', rec(5))
+    run.go('./song.html#s-song-select-beat')
+    page.wait_for_function(STEP + " === 'song-select-beat'")
+    assert not box.is_visible()
 
 
 @pytest.mark.browser

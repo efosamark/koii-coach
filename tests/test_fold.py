@@ -4,6 +4,7 @@
   above Done · Next; a risk step shows Before you press through its last Do line;
 - at 844×390 (a phone on its side): every Do line of every step, beside the keys panel;
 - with the Larger text setting at 390×844: at least 90% of the steps, as above.
+A data-recall step (player.js) keeps its Do lines behind "Show the presses": that line stands in for them.
 Every step of every chapter is measured. Run after a build, like test_smoke.py:  python -m pytest tests/test_fold.py
 """
 from urllib.parse import urljoin
@@ -28,7 +29,7 @@ MEASURE = """async ([portrait, inset]) => {
     await new Promise(r => setTimeout(r, 20));
     window.scrollTo(0, 0);
     const li = document.querySelector('li.is-current');
-    const dos = [...li.querySelectorAll(':scope > .step-do')].filter(d => d.offsetParent);
+    const dos = [...li.querySelectorAll(':scope > :is(.step-do, .recall-show)')].filter(d => d.offsetParent);
     const check = li.querySelector(':scope > .step-check');
     const risk = /^(erase|delete|overwrite|erase-scene)$/.test(li.dataset.risk || '');
     const last = dos[dos.length - 1];
