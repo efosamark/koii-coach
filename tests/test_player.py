@@ -2,6 +2,7 @@
 
 - Risk steps (static check of the HTML): the check that prevents loss comes before the press, the undo after it.
 - Every step has a Check, except info and recap steps; a risk step names what it clears or deletes.
+- Every Troubleshooting topic is linked from a chapter page.
 - Skipping a run of optional steps, or a route (data-route): they stop counting, the player moves past them, the toast
   can undo it.
 - A ticked data-once step shown again (Back, a menu jump, Redo Part N) says not to press again; Restart says what the
@@ -121,6 +122,16 @@ def test_pad_plans():
             pads = re.findall(r'<span[^>]*>([^<]+)</span>', re.search(r'<div class="pads" aria-hidden="true">(.*?)</div>', g, re.S).group(1))
             assert pads == ['7', '8', '9', '4', '5', '6', '1', '2', '3', '.', '0', 'ENTER'], f'{name}: {pads}'
             assert re.search(r'<p class="pad-legend">.+</p>', g), f'{name}: every grid has its legend'
+
+
+def test_every_help_topic_is_linked_from_a_chapter():
+    """Every Troubleshooting topic is linked from a step or a part on a chapter page, so Tools › Fixes offers it where
+    the problem happens. The OS 2.5 overview is reference, reached from Learn and search."""
+    topics = re.findall(r'<details[^>]*\bid="([^"]+)"', (ROOT / 'help.html').read_text(encoding='utf-8'))
+    pages = ''.join((ROOT / f'{c}.html').read_text(encoding='utf-8') for c in CHAPTERS)
+    linked = set(re.findall(r'help\.html#([\w-]+)"', pages))
+    missing = [t for t in topics if t not in linked and t != 'where-are-the-new-os-2-5-features']
+    assert len(topics) > 20 and not missing, 'Topics no chapter links to: ' + ', '.join(missing)
 
 
 def test_plain_words_on_every_page():

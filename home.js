@@ -36,6 +36,7 @@ function continueCard(all){
   if(!p)return`<section class="card continue complete" aria-labelledby="continue-title"><p class="eyebrow">Course complete</p><h2 id="continue-title">All ${all.length} chapters done</h2>`+
     `<p>What you made:</p><ul class="made-list">${all.map(q=>`<li><span class="num">${esc(q.c.num)}</span> <a href="${esc(q.c.href)}">${esc(q.c.title)}</a>${q.c.made?`<span class="sub meta">${esc(q.c.made.charAt(0).toUpperCase()+q.c.made.slice(1))}.</span>`:''}</li>`).join('')}</ul>`+
     `<p>The cheat sheet keeps the moves you learned in one place. It also lists the parts you have done, in order, from an empty project to a finished track.</p>`+
+    `<p><a href="./learn.html#advanced-features-check-firmware">More the K.O. II can do</a>, beyond this course, with the guide’s pages.</p>`+
     `<a class="btn primary lg" id="resume" href="./cheat-sheet.html#own-track">Make your own track${icon('next')}</a></section>`;
   const{c,x,n}=p,started=x>0||p.at>0;
   return`<section class="card continue" aria-labelledby="continue-title"><p class="eyebrow">${started?'Continue':'Next'} · Chapter ${esc(c.num)}</p><h2 id="continue-title">${esc(c.title)}</h2>`+

@@ -6,6 +6,7 @@ How to add, change or split a step in K.O. II Coach, and release it. The chapter
 
 - **The official guide is the source.** Re-read the matching page of the [official EP-133 guide](https://teenage.engineering/guides/ep-133) and, for anything it does not cover, the [What's new](https://teenage.engineering/guides/ep-133/whats-new) and [downloads](https://teenage.engineering/downloads/ep-133) pages. Where the guide is silent, look for owner reports (the Elektronauts EP-133 threads, owner-written cheat sheets), link them, and label them as owners' reports, never as the guide's. If nothing answers it, say so in the step and give the safe way to find out ("watch the TIME icon as you turn X") instead of guessing.
 - **Never change a button sequence without trying it on the unit** (see section 8). A rewording that keeps every key, pad and display value in the same order is a text change; anything else is an instruction change.
+- **Glossary matching.** The Tools sheet finds a glossary word in a step by the term's name. When that name also matches words that mean something else ("key" in "play mode key"), put `data-match="<pattern>"` on the glossary `div.term`: a JavaScript regular expression source (no lookbehind), matched case-insensitively as a whole word.
 - **Keep the tool pages in step.** When a step changes a move, grep `learn.html`, `help.html`, `glossary.html`, `controls.html`, `safety.html` and `cheat-sheet.html` for that move and change them with it. A learner who tries it from a tool page gets the move the chapters teach.
 - **Keep every link and every saved tick working.** A step's `data-step` id is part of its address (`sampling.html#s-record-kick`) and of every learner's saved progress. Never rename or reuse an id. Never change the shape of an existing `koii-coach…` storage key: add fields, never remove or repurpose one.
 
@@ -36,7 +37,7 @@ Every step needs `h3.step-title`, one or more `p.step-do` and exactly one `p.ste
 | A button | `<kbd class="key">SOUND</kbd>` |
 | A pad | Always with its group: `<kbd class="key pad">B1</kbd>` (group B, then pad 1). Write `<kbd class="key pad">pad 6</kbd>` only where the group does not matter: choosing a project (MAIN + pad 6), punch-in effects (FX + pad 1) and picking a sidechain source after its group button |
 | Knob X or Y | `<kbd class="key knob">X</kbd>` |
-| Two keys together | `<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd>` |
+| Two keys together | `<kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">B</kbd></kbd>`. The Tools sheet's press order shows a chord as one item, marked HOLD when "hold" comes right before it or "until" and a display value right after it. A pad written right after "write", in Do lines with no RECORD keycap, shows as HOLD RECORD + that pad |
 | What the display shows | `<samp class="lcd">1.2.3</samp>` |
 | Another chapter | "Chapter 3 · Sample, chop & resample", and its parts as "Part 4". Never an old two-digit number ("07", "section 03"): the build check fails on it |
 | A step on the same or another page | `<a href="./song.html#s-song-plan">…</a>`. The build check fails if the step does not exist |
@@ -54,12 +55,12 @@ Every step needs `h3.step-title`, one or more `p.step-do` and exactly one `p.ste
 
 **Hear the goal.** A long writing run whose pattern is first played several steps later may show the finished pattern on its first writing step, before it is built. Its caption starts with "Goal:" ("Goal: drums and bass, four bars at 128 BPM"), and its text list is the part's finished pattern, not the scene after that step. Keep the reference figure on the step that plays it.
 
-**Hear the difference.** For a step judged by feel (a note a few ticks late, a pitch that clashes), put two figures in one `details.step-more.step-hear` whose summary is "Hear the difference", each with its own figcaption ("On the grid", "Snare 3 ticks late"). One plays at a time. Two attributes on a `figure.pattern` change how a row plays, while the grid still shows it on its step:
+**Hear the difference.** For a step judged by feel (a note a few ticks late, a pitch that clashes), put two figures in one `details.step-more.step-hear` whose summary is "Hear the difference", each with its own figcaption ("On the grid", "Snare 3 ticks late"). One plays at a time. A pair may hold a row the steps never place, such as a second bass a semitone up to show a clash, when its caption says what it demonstrates. Two attributes on a `figure.pattern` change how a row plays, while the grid still shows it on its step:
 
 | Attribute | Use |
 |---|---|
 | `data-late="A2:3"` | That pad's row plays 3 ticks late (96 ticks per beat, 24 per 16th step). Several: `"A2:3;A3:6"`. Use only the step's own amount. |
-| `data-pitch="B2:+1"` | That pad's row plays transposed by that many semitones. Negative is allowed (`"B2:-12"`). |
+| `data-pitch="B2:+1"` | That pad's row plays transposed by that many semitones. Negative is allowed (`"B2:-12"`). Only pitched sounds move (kick, tom, bass, Bass 2, melody, rim); snare, clap, hats and shaker keep their sound. |
 
 Steps are numbered within their part ("Part 2, step 4"), everywhere a learner reads a number, and each part's `<ol>` starts at 1 (the build checks it). A number in the text ("go back to step 3") changes whenever a step before it in that part is split: prefer a link to the step, or its title.
 
@@ -73,9 +74,9 @@ Steps are numbered within their part ("Part 2, step 4"), everywhere a learner re
 | `data-route="Using USB audio, not the line input?"` | The step belongs to one of two or more routes through a part (line input or USB, recording or audio files, an empty or a reused project). Consecutive steps with the same question form a run that learners on the other route skip in one tap, like optional steps: the box reads "Using USB audio, not the line input? You can skip these 5 steps." Write the question for the learner who is not on this route, ending in "?". The steps stay required for learners on it, and each title says its condition. |
 | `data-once` | The press must happen only once on the unit: every commit (SHIFT + MAIN) and every step that doubles or lengthens a pattern. When the step is shown again after its tick (Back, a menu jump, Redo), the player says it is done on the K.O. II already and points to its Check, so nobody commits or doubles twice. |
 | `data-recall` | A note-writing step the learner has done before: the player shows the title and Check and folds the Do lines behind "Show the presses". Never on a risk step, a step with Before you press, a commit or scene step, or a project choice. List mode and print show everything. |
-| `data-setting="411"` | The step sets a system setting; shows a "System setting 411" tag. |
+| `data-setting="411"` | The step sets a system setting; shows a "System setting 411" tag. The chapter-complete screen lists a setting the chapter left away from its default (families 30x, 40x, 41x, 42x, 50x and 51x; the last ticked step of each family wins), linked to the step that set it. |
 | `data-os="2.0"` | Needs that OS or newer; the badge follows the OS chosen in Settings. Add `<p class="badge os-badge">Needs OS 2.0 or newer</p>` under the title as the fallback text. |
-| `data-kind="recap"` | The chapter's recap; ticked by itself on the chapter-complete screen. Its `ul.step-moves` lists the moves learned, each as "Label: answer" ("Commit: SHIFT + MAIN, which moves you into a copy."): the player shows the label and asks for the presses before it shows the answer. |
+| `data-kind="recap"` | The chapter's recap; ticked by itself on the chapter-complete screen. Its `ul.step-moves` lists the moves learned, each as "Label: answer" ("Commit: SHIFT + MAIN, which moves you into a copy."): the player shows the label and asks for the presses before it shows the answer. The label is at most 48 characters and holds no keycap; a move without one shows as written. |
 | `data-kind="info"` | Nothing to check on the K.O. II: the step is reading, writing on paper, or work on a phone or computer with no visible result. It has no Check (and never `data-risk`). |
 | `data-note="DRUMS"` | The step asks you to write a scene number down; it gets an optional field, kept per project. Several names: `"V1\|V2\|V3"`. Add `data-note-kind="sample"` for sample numbers. |
 | `data-place="A1 1.1.1 1.2.3"` | Chapter 1 only: the placement helper's positions. |
