@@ -105,7 +105,7 @@
           <li data-step="set-grid-16">
             <h3 class="step-title">Set the grid to 16 steps</h3>
             <p class="step-do">Press <kbd class="key">TIMING</kbd>, turn <kbd class="key knob">X</kbd> until the display shows <samp class="lcd">16</samp> (not <samp class="lcd">16T</samp>) and press <kbd class="key">−</kbd> for quantize. Press <kbd class="key">MAIN</kbd>.</p>
-            <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">16</samp>, not <samp class="lcd">16T</samp>. The MAIN icon is lit again.</p>
+            <p class="step-check"><span class="sr">Check: </span>The display showed <samp class="lcd">16</samp> and the Q icon, not <samp class="lcd">16T</samp>.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Quantize snaps notes to this grid, so every position means what it meant in Chapters 1 and 2.</p></details></div>
           </li>
           <li data-step="choose-mic-source">
@@ -119,19 +119,19 @@
             <p class="preflight">Check that the pads are still blinking before you turn.</p>
             <p class="step-do">Turn <kbd class="key knob">Y</kbd> (threshold) all the way down, so recording starts as soon as you hold a pad. Set <kbd class="key knob">X</kbd> (input level) to about halfway.</p>
             <p class="step-check"><span class="sr">Check: </span>The pads keep blinking, still in sample mode.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>In sample mode, <kbd class="key knob">X</kbd> sets the input level and <kbd class="key knob">Y</kbd> the threshold: how loud a sound must be to start recording.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>In sample mode, <kbd class="key knob">X</kbd> sets the input level and <kbd class="key knob">Y</kbd> the threshold: how loud a sound must be to start recording.</p></details><details class="step-more"><summary>Not working?</summary><p>See help: “<a href="./help.html#my-sample-is-too-quiet-or-noisy">My sample is too quiet or noisy</a>”.</p></details></div>
           </li>
           <li data-step="record-first-sample">
             <h3 class="step-title">D1: record your first sample</h3>
             <p class="step-do">Get close to the K.O. II. Hold <kbd class="key pad">D1</kbd>, say “hey!” or clap once, then release <kbd class="key pad">D1</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> stops blinking and stays lit: it holds your recording.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Recording stops as soon as you let go.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Recording stops as soon as you let go.</p></details><details class="step-more"><summary>Not working?</summary><p>See help: “<a href="./help.html#my-sample-will-not-start-recording">My sample will not start recording</a>”.</p></details></div>
           </li>
           <li data-step="audition-first-sample">
             <h3 class="step-title">Listen, and set the level</h3>
             <p class="step-do">Tap <kbd class="key pad">D1</kbd> to hear it. Too quiet or distorted? Turn <kbd class="key knob">X</kbd> (input level) up or down, press <kbd class="key">SAMPLE</kbd> and record <kbd class="key pad">D1</kbd> again.</p>
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D1</kbd> plays back your sound.</p>
-            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>To retake it, press <kbd class="key">SAMPLE</kbd>, hold <kbd class="key pad">D1</kbd> and record again.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>To retake it, press <kbd class="key">SAMPLE</kbd>, hold <kbd class="key pad">D1</kbd> and record again. See help: “<a href="./help.html#my-sample-is-too-quiet-or-noisy">My sample is too quiet or noisy</a>”.</p></details></div>
           </li>
           <li data-step="note-sample-number" data-note="FIRST" data-note-kind="sample">
             <h3 class="step-title">Write down the sample number</h3>
@@ -230,11 +230,11 @@
             <p class="step-check"><span class="sr">Check: </span>Your voice kick, snare and hats play the Chapter 1 rhythm.</p>
             <div class="step-extras"><details class="step-more step-hear"><summary>Hear the beat</summary><figure class="pattern" data-bpm="90"><figcaption>VOICE KIT, one bar at 90 BPM</figcaption><p class="pattern-text">Voice kick (A1): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.4.3</samp><br>Voice snare (A2): <samp class="lcd">1.2.1</samp> <samp class="lcd">1.4.1</samp><br>Voice hat (A3): <samp class="lcd">1.1.1</samp> <samp class="lcd">1.1.3</samp> <samp class="lcd">1.2.1</samp> <samp class="lcd">1.2.3</samp> <samp class="lcd">1.3.1</samp> <samp class="lcd">1.3.3</samp> <samp class="lcd">1.4.1</samp> <samp class="lcd">1.4.3</samp></p><p class="pattern-note meta">Your kit is your own voice. The preview plays its rhythm with practice sounds.</p></figure></details></div>
             </li>
-          <li data-step="commit-voice-kit-copy" data-note="VOICE KIT">
+          <li data-step="commit-voice-kit-copy" data-note="VOICE KIT" data-once>
             <h3 class="step-title">Commit it as VOICE KIT</h3>
             <p class="step-do">Hold <kbd class="key">MAIN</kbd>, read the scene number and write it down as VOICE KIT. Release <kbd class="key">MAIN</kbd> and press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">MAIN</kbd></kbd> once to commit.</p>
             <p class="step-check"><span class="sr">Check: </span>Holding <kbd class="key">MAIN</kbd> now shows a different number.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>You are working in a copy, and VOICE KIT stays as it is.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>VOICE KIT keeps its notes. Part 5’s sound edits change <kbd class="key pad">A2</kbd> in every scene.</p></details></div>
           </li>
         </ol>
         <p class="checkpoint"><b>Checkpoint:</b> your voice kick, snare and hats play the Chapter 1 rhythm.</p>
@@ -263,61 +263,64 @@
             <p class="step-check"><span class="sr">Check: </span><kbd class="key pad">D2</kbd> stays lit, and tapping it plays your count.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>You will chop this in Part 6, so the spacing matters.</p></details><details class="step-more"><summary>Not working?</summary><p>Uneven? Record it again on an empty pad such as <kbd class="key pad">D6</kbd> and use that pad instead of <kbd class="key pad">D2</kbd>.</p></details></div>
           </li>
-          <li data-step="line-connect">
-            <h3 class="step-title">Connect your phone to the line input</h3>
+          <li data-step="line-connect" data-route="Using USB audio, not the line input?">
+            <h3 class="step-title">Line cable? Connect the phone to INPUT</h3>
             <p class="step-do">Connect your phone’s headphone output, or its headphone adapter, to the K.O. II’s INPUT with a 3.5 mm stereo cable.</p>
             <p class="step-check"><span class="sr">Check: </span>The cable runs from the phone into INPUT.</p>
             <p class="step-note">INPUT sits on the top side with the other sockets. Do not use OUTPUT, MIDI or SYNC.</p>
           </li>
-          <li data-step="line-connect-volume" data-kind="info">
+          <li data-step="line-connect-volume" data-kind="info" data-route="Using USB audio, not the line input?">
             <h3 class="step-title">Set the phone’s volume to half</h3>
             <p class="step-do">Set the phone’s volume to about half.</p>
           </li>
-          <li data-step="line-handsfree-record" data-kind="info">
+          <li data-step="line-handsfree-record" data-kind="info" data-route="Using USB audio, not the line input?">
             <h3 class="step-title">Choose what to sample</h3>
             <p class="step-do">Choose 2–8 seconds of something you made or may use, such as a voice memo or your own loop.</p>
           </li>
-          <li data-step="line-select-input">
+          <li data-step="line-select-input" data-route="Using USB audio, not the line input?">
             <h3 class="step-title">Select the line input</h3>
             <p class="step-do">Tap <kbd class="key">D</kbd>, press <kbd class="key">SAMPLE</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">in</samp>. Leave <kbd class="key knob">Y</kbd> slightly up.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">in</samp>, and empty pads blink.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>That is the line input. Its mono and stereo versions share this label, and either works here.</p></details></div>
           </li>
-          <li data-step="line-record-d3" data-os="2.0">
+          <li data-step="line-record-d3" data-os="2.0" data-route="Using USB audio, not the line input?">
             <h3 class="step-title">D3: record the phone, hands-free</h3>
             <p class="badge os-badge">Needs OS 2.0 or newer</p>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key pad">D3</kbd>, start the phone, and press <kbd class="key">SAMPLE</kbd> when your part has finished. Tap <kbd class="key pad">D3</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>You hear the phone’s sound, clean and undistorted.</p>
+            <p class="step-note">Same phone as the coach? Switch on Do Not Disturb, so alerts aren’t sampled. Read this step before you switch apps. Playing from another device keeps the coach in view.</p>
             <div class="step-extras"><details class="step-more"><summary>Not working?</summary><p>Distorted: turn <kbd class="key knob">X</kbd> down and record again on an empty pad. Too quiet: raise <kbd class="key knob">X</kbd> or the phone’s volume.</p></details></div>
           </li>
-          <li data-step="usb-connect" data-os="2.5">
-            <h3 class="step-title">Connect over USB audio</h3>
+          <li data-step="usb-connect" data-os="2.5" data-route="Using the line input, not USB?">
+            <h3 class="step-title">USB-C instead? Connect over USB audio</h3>
             <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Connect the K.O. II to the phone or a computer with a USB-C cable.</p>
             <p class="step-check"><span class="sr">Check: </span>The K.O. II appears as an audio device.</p>
-            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>USB audio works even when your phone has no headphone output.</p></details></div>
+            <div class="step-extras"><details class="step-more"><summary>Why</summary><p>USB audio works even when your phone has no headphone output.</p></details><details class="step-more"><summary>Not working?</summary><p>See help: “<a href="./help.html#usb-audio-is-not-detected-or-sounds-choppy">USB audio is not detected or sounds choppy</a>”.</p></details></div>
           </li>
-          <li data-step="usb-connect-output">
+          <li data-step="usb-connect-output" data-route="Using the line input, not USB?">
             <h3 class="step-title">Choose the K.O. II as audio output</h3>
             <p class="step-do">On the phone or computer, choose the K.O. II as the audio output device.</p>
             <p class="step-check"><span class="sr">Check: </span>The phone or computer shows the K.O. II as its output.</p>
+            <p class="step-note">Same phone as the coach? Switch on Do Not Disturb, so alerts aren’t sampled. Read the next steps before you switch apps. Playing from another device keeps the coach in view.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>Any phone or computer that supports standard USB audio works.</p></details></div>
           </li>
-          <li data-step="usb-live-monitor" data-optional data-setting="511">
+          <li data-step="usb-live-monitor" data-os="2.5" data-optional data-setting="511" data-route="Using the line input, not USB?">
             <h3 class="step-title">Optional: hear the phone while sampling</h3>
+            <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="preflight">With the K.O. II already on.</p>
             <p class="step-do">Press <kbd class="chord"><kbd class="key">SHIFT</kbd> + <kbd class="key">ERASE</kbd></kbd> to open system settings. Type <kbd class="key">5</kbd>, <kbd class="key">1</kbd>, <kbd class="key">1</kbd> on the pads, press <kbd class="key">ENTER</kbd>, then press <kbd class="key">MAIN</kbd>.</p>
             <p class="step-check"><span class="sr">Check: </span>The SYSTEM icon goes out.</p>
             <p class="step-note">Type <kbd class="key">5</kbd><kbd class="key">1</kbd><kbd class="key">0</kbd> the same way to switch back.</p>
             <div class="step-extras"><details class="step-more"><summary>Why</summary><p>You hear the phone through the K.O. II while you sample. <samp class="lcd">511</samp> is sampler + live monitoring, and <samp class="lcd">510</samp>, the default, is sampler only.</p></details></div>
           </li>
-          <li data-step="usb-handsfree-record" data-os="2.5">
+          <li data-step="usb-handsfree-record" data-os="2.5" data-route="Using the line input, not USB?">
             <h3 class="step-title">Select USB as the source</h3>
             <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Tap <kbd class="key">D</kbd>, press <kbd class="key">SAMPLE</kbd> and press <kbd class="key">−</kbd> / <kbd class="key">+</kbd> until the display shows <samp class="lcd">usb</samp>. Leave <kbd class="key knob">Y</kbd> slightly up.</p>
             <p class="step-check"><span class="sr">Check: </span>The display shows <samp class="lcd">usb</samp>, and empty pads blink.</p>
           </li>
-          <li data-step="usb-record-d3" data-os="2.5">
+          <li data-step="usb-record-d3" data-os="2.5" data-route="Using the line input, not USB?">
             <h3 class="step-title">D3: record over USB, hands-free</h3>
             <p class="badge os-badge">Needs OS 2.5 or newer</p>
             <p class="step-do">Hold <kbd class="key">SHIFT</kbd> and press <kbd class="key pad">D3</kbd>, start the audio on the phone and press <kbd class="key">SAMPLE</kbd> when it has finished. Tap the pad.</p>
