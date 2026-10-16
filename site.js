@@ -29,7 +29,7 @@
               start (player.js) */
 window.COACH_SITE={
   name:'K.O. II Coach',
-  version:'2026.10.15.5',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
+  version:'2026.10.16',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
   repo:'https://github.com/efosamark/koii-coach',
   report:'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml',
   // An address here adds "or by email" to every report link (no GitHub account needed), prefilled with the chapter,
