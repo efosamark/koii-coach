@@ -1,7 +1,8 @@
 'use strict';
 /* The Tools sheet of the chapter pages (docs/overhaul-plan.md 4.6, 5.7): one tap from every step (the player's Tools
    button, or T on a keyboard). player.js loads it (see below), so no page names it in a <script>.
-   It opens on "For this step": the keys of the step's Do lines lit on the control map, numbered in press order; the
+   It opens on "For this step": the keys of the step's Do lines lit on the control map, numbered in press order (a
+   chord is one item with one number, marked HOLD when the step says hold; see keysOf); the
    troubleshooting topics the step links to, already open; "Fixes for this part", the part's "If it doesn't" as
    symptom cards (player.js, CoachPlayer.partFixes); the glossary words in the step; and the moves of the chapters
    you have finished. A step without topics or words falls back to the troubleshooting groups. The other tabs
@@ -38,7 +39,6 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 const icon=n=>`<svg class="icon" aria-hidden="true" focusable="false"><use href="icons.svg#i-${n}"></use></svg>`;
 const clean=s=>String(s||'').replace(/\s+/g,' ').trim();
 const el=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;};
-const site=window.COACH_SITE||{};
 
 // ---------- The sheet ----------
 const TABS=[['step','For this step'],['map','Map'],['fixes','Fixes'],['words','Words'],['cheat','Cheat sheet']];
@@ -96,7 +96,7 @@ function load(){
     const out={};
     if(!help||!gloss||!ctrl||!cheat)data=null;   // a page that failed is fetched again next time (page() dropped it)
     if(help)out.groups=[...help.querySelectorAll('.help-group')].map(g=>({title:clean((g.querySelector('h2')||{}).textContent),topics:[...g.querySelectorAll('details.topic')].map(d=>({id:d.id,title:clean(d.querySelector('summary').textContent),body:d.querySelector('.inside')}))}));
-    if(gloss)out.terms=[...gloss.querySelectorAll('.term')].map(t=>{const name=clean(t.querySelector('dt').textContent);return{id:t.id,name,dd:t.querySelector('dd'),beginner:t.hasAttribute('data-beginner'),re:termRe(name)};});
+    if(gloss)out.terms=[...gloss.querySelectorAll('.term')].map(t=>{const name=clean(t.querySelector('dt').textContent);return{id:t.id,name,dd:t.querySelector('dd'),beginner:t.hasAttribute('data-beginner'),re:termRe(name,t.dataset.match)};});
     if(ctrl){out.device=ctrl.querySelector('.device');out.controls=new Map([...ctrl.querySelectorAll('[data-key][id^="control-"]')].map(d=>[d.dataset.key,d]));}
     if(cheat)out.cheat=[...cheat.querySelectorAll('main > section.card')];
     return out;
@@ -104,34 +104,55 @@ function load(){
   return data;
 }
 // "Amplitude (AMP)" is found as "amplitude" or "AMP"; "Backup / restore" as either word; plurals and -ed count.
-function termRe(name){
+// data-match="<pattern>" on a glossary .term (beside data-beginner) replaces the name, for a term whose words mean
+// something else in some steps ("Scale / key / octave" against KEYS, a bunch of keys and the play mode "key"). The
+// pattern is a JavaScript regular expression, read with the i and u flags and matched in the same text (the step's
+// words, keycaps and display values), between the same word edges (no letter, digit or hyphen touching it), with no
+// plural endings added: write them ("scales?"). An empty pattern, or one the browser cannot compile (lookbehind needs
+// Safari 16.4 or newer), falls back to the name.
+function termRe(name,src){
+  const re=s=>new RegExp('(^|[^\\p{L}\\p{N}-])('+s+')(?![\\p{L}\\p{N}-])','iu');
+  if(src&&src.trim())try{return re(src);}catch(e){}
   const alts=[];
   const base=name.replace(/\s*\(([^)]*)\)\s*/g,(m,inner)=>{if(/^[A-Z]{2,4}$/.test(inner))alts.push(inner);return ' ';}).trim();
   base.split(/\s+\/\s+/).forEach(a=>{if(a.length>2)alts.push(a);});
   if(!alts.length)return null;
   const q=alts.map(a=>a.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/\s+/g,'\\s+')).sort((a,b)=>b.length-a.length);
-  return new RegExp('(^|[^\\p{L}\\p{N}-])('+q.join('|')+')(?:s|es|d|ed)?(?![\\p{L}\\p{N}-])','iu');
+  return re('(?:'+q.join('|')+')(?:s|es|d|ed)?');
 }
 
 // ---------- A step's keys, topics and words ----------
 const step=()=>window.CoachPlayer&&CoachPlayer.current();
-// The controls named by the keycaps of a step's Do lines, in the order they appear. Before you press is left out: it
-// guards the press and often names keys not to press ("Never hold SHIFT + SOUND on the trim page"). A data-recall
-// step's Do lines count once "Show the presses" has shown them (player.js drops li.is-folded then).
+// The press order of a step's Do lines: one item per keycap, or per chord (kbd.chord, "ERASE + A1"), in the order they
+// appear. Each item is {keys: the keycaps' labels, ch: its chord, hold}; idsOf gives the controls a label lights.
+// Before you press is left out: it guards the press and often names keys not to press ("Never hold SHIFT + SOUND on
+// the trim page"). A data-recall step's Do lines count once "Show the presses" has shown them (player.js drops
+// li.is-folded then).
+// - A chord is marked HOLD only when the text says so: "hold" right before it, or "until" and a display value right
+//   after it ("hold ERASE + A1 until TRK blinks"). "Briefly press ERASE + A1" is marked nothing.
+// - "write <pad>" in a step whose Do lines name no RECORD keycap becomes HOLD RECORD + that pad, as the course teaches
+//   writing a note ("Hold RECORD, tap A1, then release RECORD").
 const folded=li=>li.classList.contains('is-folded');
+// The controls a keycap names: a button, a pad by its number, or a group and its pad (B1: group B, then pad 1).
+const idsOf=t=>{const u=t.toUpperCase(),m=/^(?:pad\s*)?([0-9.])$/i.exec(t);
+  return/^(MAIN|SOUND|TEMPO|TIMING|SAMPLE|KEYS|FX|SHIFT|ERASE|RECORD|PLAY|ENTER|FADER|X|Y|A|B|C|D)$/.test(u)?[u]:t==='−'||t==='-'?['MINUS']:t==='+'?['PLUS']:/^[A-D][1-9]$/.test(u)?[u[0],'PAD'+u[1]]:m&&['PAD'+m[1]];};
+// The text of its line before a keycap or chord.
+const before=n=>{const r=document.createRange();r.selectNodeContents(n.closest('p,li'));r.setEndBefore(n);return r.toString();};
 function keysOf(li){
   const out=[],marked=li.querySelector(':scope > :is(.step-do,.step-body)');
   if(folded(li))return out;   // its Do lines are not on screen yet
   // A step without a Do line (stage 1) is one text: its keys outside the check and the extras count.
-  const caps=marked?li.querySelectorAll(':scope > .step-do kbd.key, :scope > .step-body kbd.key'):
-    [...li.querySelectorAll('kbd.key')].filter(k=>!k.closest('.preflight,.step-check,.step-more,.step-note,.step-head,.pl-own'));
+  const caps=[...(marked?li.querySelectorAll(':scope > .step-do kbd.key, :scope > .step-body kbd.key'):
+    [...li.querySelectorAll('kbd.key')].filter(k=>!k.closest('.preflight,.step-check,.step-more,.step-note,.step-head,.pl-own')))];
+  const rec=caps.some(k=>/RECORD/.test(k.textContent));
   caps.forEach(k=>{
-    const t=clean(k.textContent),u=t.toUpperCase();let key=null;
-    if(/^(MAIN|SOUND|TEMPO|TIMING|SAMPLE|KEYS|FX|SHIFT|ERASE|RECORD|PLAY|ENTER|FADER|X|Y|A|B|C|D)$/.test(u))key=u;
-    else if(t==='−'||t==='-')key='MINUS';else if(t==='+')key='PLUS';
-    else if(/^[A-D][1-9]$/.test(u)){out.push({key:u[0],pad:'PAD'+u[1],label:t});return;}   // B1: group B, then pad 1
-    else{const m=/^(?:pad\s*)?([0-9.])$/i.exec(t);if(m)key='PAD'+m[1];}
-    if(key)out.push({key,label:t});
+    const t=clean(k.textContent),ch=k.closest('.chord'),last=out[out.length-1];
+    if(!idsOf(t))return;
+    if(ch&&last&&last.ch===ch)return last.keys.push(t);   // the next key of the same chord
+    const it={keys:[t],ch};
+    if(ch)it.hold=/\bhold\s+$/i.test(before(ch))||/^\s*until\s+$/i.test((ch.nextSibling||{}).nodeValue)&&(ch.nextElementSibling||ch).matches('samp.lcd');
+    else if(!rec&&k.matches('.pad')&&/\bwrite\s+$/i.test(before(k)))it.keys.unshift('RECORD'),it.hold=1;
+    out.push(it);
   });
   return out;
 }
@@ -144,7 +165,7 @@ function mapHTML(d,lit,interactive,readout){
   if(!d.device)return'';
   const c=strip(d.device),order=new Map();
   const screen=c.querySelector('.schem-display');if(screen&&readout!=null)screen.textContent=readout;
-  lit.forEach((k,i)=>[k.key,k.pad].forEach(x=>{if(x&&!order.has(x))order.set(x,i+1);}));
+  lit.forEach((k,i)=>k.keys.forEach(t=>idsOf(t).forEach(x=>{if(!order.has(x))order.set(x,i+1);})));   // a chord's keys share its number
   c.querySelectorAll('[role]').forEach(x=>x.removeAttribute('role'));
   c.querySelectorAll('.control').forEach(b=>{
     b.removeAttribute('aria-checked');b.removeAttribute('tabindex');
@@ -173,14 +194,15 @@ async function fill(k){
   else if(k==='fixes')box.innerHTML=d.groups?groupsHTML(d,3):failed('Troubleshooting','./help.html');
   else if(k==='words')box.innerHTML=d.terms?`<dl class="gloss tools-gloss">${d.terms.map(termHTML).join('')}</dl>`:failed('The glossary','./glossary.html');
   else if(k==='cheat')box.innerHTML=d.cheat?cheatHTML(d):failed('The cheat sheet','./cheat-sheet.html');
-  if(window.CoachShell&&CoachShell.glue)CoachShell.glue(box);   // punctuation stays with its keycap (shell.js)
+  if(Shell.glue)Shell.glue(box);   // punctuation stays with its keycap (shell.js)
   filled[k]=true;
   after(k);
 }
 // What the display should show in this step: the display values of its Do and Check lines, in order.
 const readoutOf=li=>{const v=[...new Set([...li.querySelectorAll(':scope > :is(.step-do,.step-check) samp.lcd')].map(s=>clean(s.textContent)))];return v.length?v.slice(0,3).join(' · ')+(v.length>3?' …':''):'';};
 const keysHTML=(d,keys,interactive,li)=>mapHTML(d,keys,interactive,li?readoutOf(li):null)+
-  `<ol class="press-order">${keys.map((k,i)=>`<li><span class="po-n" aria-hidden="true">${i+1}</span><kbd class="key">${esc(k.label)}</kbd></li>`).join('')}</ol>`;
+  `<ol class="press-order">${keys.map((k,i)=>{const caps=k.keys.map((c,j)=>`<kbd class="key${k.hold&&!j?' hold':''}">${esc(c)}</kbd>`).join(' + ');
+    return`<li><span class="po-n" aria-hidden="true">${i+1}</span>${k.keys[1]?`<kbd class="chord">${caps}</kbd>`:caps}</li>`;}).join('')}</ol>`;
 function stepPanel(d){
   const li=step();
   if(!li)return`<p>Open a step to see its keys, fixes and words here.</p>`+(d.groups?'<h3 class="sub">Troubleshooting</h3>'+groupsHTML(d,4):failed('Troubleshooting','./help.html'));

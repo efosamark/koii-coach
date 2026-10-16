@@ -637,6 +637,78 @@ def test_tools_sheet(run):
 
 
 @pytest.mark.browser
+def test_tools_press_order_chords_hold_and_write(run):
+    """Keys in press order: a chord is one item, with one number on all its keys on the map. It is marked HOLD only when
+    the Do line says hold right before it (or "until" a display value right after it). "write <pad>" in a step whose Do
+    lines have no RECORD keycap is HOLD RECORD + that pad."""
+    page = run.page
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    items = """() => [...document.querySelectorAll('#tools-panel-step .press-order > li')].map(li =>
+      [...li.querySelectorAll('kbd.key')].map(k => (k.classList.contains('hold') ? 'HOLD ' : '') + k.textContent).join(' + '))"""
+    lit = "() => Object.fromEntries([...document.querySelectorAll('#tools-panel-step .control.hot')].map(c => [c.dataset.key, c.querySelector('.order').textContent]))"
+
+    def tools(href):
+        run.go(href)
+        page.locator('#player-tools-btn').click()
+        page.locator('#tools-panel-step .press-order').wait_for()
+        return page.evaluate(items), page.evaluate(lit)
+
+    order, keys = tools('./song.html#s-song-break-clear')
+    assert order == ['MAIN', 'A', 'HOLD ERASE + A1', 'B', 'B1'], order
+    assert keys['ERASE'] == keys['PAD1'] == '3' and keys['A'] == '2' and keys['B'] == '4', f'One number for the chord ({keys})'
+    chord = page.locator('#tools-panel-step .press-order > li').nth(2)
+    assert chord.locator('kbd.chord').count() == 1 and chord.locator('.po-n').text_content() == '3'
+    assert chord.locator('kbd.key.hold').evaluate("k => getComputedStyle(k, '::before').content") == '"HOLD"', 'HOLD is text, not colour'
+    page.keyboard.press('Escape')
+    # "Briefly press" is marked nothing.
+    order, keys = tools('./first-beat.html#s-beat-bass-trim')
+    assert order[:2] == ['B1', 'SHIFT + SOUND'] and keys['SHIFT'] == keys['SOUND'] == '2', order
+    page.keyboard.press('Escape')
+    # Writing a note: RECORD lights with the pad.
+    order, keys = tools('./tech-house.html#s-add-open-hats')
+    assert order == ['HOLD RECORD + A4', 'ERASE + A3'], order
+    assert keys['RECORD'] == keys['A'] == keys['PAD4'] == '1' and keys['ERASE'] == keys['PAD3'] == '2', keys
+    page.keyboard.press('Escape')
+    order, keys = tools('./thodorakis-house.html#s-place-answer-d2')   # "Write D2, the answer.": the pad is glued to its comma
+    assert order == ['SHIFT + +', '+', 'HOLD RECORD + D2'], order
+    page.keyboard.press('Escape')
+    # A step that names RECORD itself keeps its own order.
+    order, keys = tools('./hiphop.html#s-place-repeat-write')
+    assert order[:2] == ['RECORD', 'D1'] and 'RECORD + D1' not in ' '.join(order), order
+
+
+@pytest.mark.browser
+def test_tools_words_follow_data_match(run):
+    """data-match on a glossary term (glossary.html, written by the content lane; here added to the fetched page) replaces
+    the name in "Words in this step": Scale / key / octave stays out of the play-mode "not key" step and the jingled
+    keys. A pattern the browser cannot compile falls back to the name."""
+    page = run.page
+    page.add_init_script("""(() => { const f = window.fetch; window.fetch = (u, o) => f(u, o).then(r => {
+      const m = localStorage.getItem('test-match');
+      if (m === null || !String(u).includes('glossary.html')) return r;
+      return r.text().then(t => new Response(t.replace('id="term-scale-key-octave"', 'id="term-scale-key-octave" data-match="' + m + '"'), {headers: {'Content-Type': 'text/html'}}));
+    }); })();""")
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'}})
+    page.evaluate("m => localStorage.setItem('test-match', m)", r'\b(?:scales?|octaves?|(?:a|the|its|any)\s+key(?!\s+mode))\b')
+
+    def words(href):
+        run.go(href)
+        page.locator('#player-tools-btn').click()
+        page.locator('#tools-panel-step .tools-eyebrow').wait_for()
+        found = page.evaluate("() => [...document.querySelectorAll('#tools-panel-step .tools-gloss .term')].map(t => t.dataset.term)")
+        page.keyboard.press('Escape')
+        page.wait_for_function("() => !document.querySelector('dialog[open]') && !(history.state && history.state.coachDialog)")
+        return found
+
+    for step in ('perform.html#s-arp-sound-mode', 'hiphop.html#s-oneshot-phrase-answer', 'sampling.html#s-quality-record-hi-keys', 'perform.html#s-keys-off'):
+        assert 'term-scale-key-octave' not in words('./' + step), step
+    for step in ('perform.html#s-keys-key-scale', 'perform.html#s-keys-octave'):
+        assert 'term-scale-key-octave' in words('./' + step), step
+    page.evaluate("() => localStorage.setItem('test-match', '(')")
+    assert 'term-scale-key-octave' in words('./perform.html#s-arp-sound-mode'), 'An invalid pattern falls back to the name'
+
+
+@pytest.mark.browser
 def test_recap_asks_before_it_shows(run):
     """In the player a recap's "Label: answer" moves are closed rows: the label, then the answer once opened. Their keys
     stay out of sight until then; All steps and the done screen keep the list as written."""
@@ -989,8 +1061,8 @@ def test_device_panel_landscape_and_desktop(run):
     panel = page.locator('#player-device')
     panel.locator('.control.hot').first.wait_for()
     assert panel.is_visible() and panel.bounding_box()['x'] == 0, 'A short landscape screen puts the keys on the left'
-    order = page.evaluate("() => [...document.querySelectorAll('#player-device .press-order kbd')].map(k => k.textContent)")
-    assert order[:3] == ['B1', 'SHIFT', 'SOUND'], f'Only the Do line\'s keys, in press order, not the Before you press warning ({order})'
+    order = page.evaluate("() => [...document.querySelectorAll('#player-device .press-order > li > kbd')].map(k => k.textContent)")
+    assert order[:2] == ['B1', 'SHIFT + SOUND'], f'Only the Do line\'s keys, in press order, not the Before you press warning ({order})'
     # Every Do line of every step in Chapter 1 ends above the action bar.
     over = page.evaluate("""async () => {
       const out = [];
