@@ -13,7 +13,8 @@
                            Writes keep all twelve fields: the old app rebuilt it from these and dropped anything else.
      koii-coach-ch-<slug>  a chapter's ticks, {v:1, done:[ids], last, n, cur?, at?, derivedFrom?, skip?, m?} (chapter.js
                            owns it; m is the last split migration applied to it, below)
-     koii-coach-prefs      settings, {v:1, setup, wake, modes, keys, text, hand, look}: Reset and loading a file keep it
+     koii-coach-prefs      settings, {v:1, setup, wake, modes, keys, text, hand, look, osChosen}: Reset and loading a
+                           file keep it. osChosen is true once the learner picked an OS in Settings (settings.js)
      koii-coach-meta       {v:1, lastChapter, appAt, setupReason, notices:[{chapter, text}], since}
      koii-coach-notes      {v:1, values:{'<project>/<NAME>': '<number>'}}: scene and sample numbers typed in a chapter
                            (chapter.js); in the progress file, and cleared with Reset all progress
@@ -40,7 +41,8 @@
                              out the optional steps the learner skipped (record.skip) and has not ticked
      continueTarget(all)     the chapter Continue opens (plan 5.1), or null when every chapter is done
      v2Progress(), firstRun()
-     migratedSetup           true when this page load moved an existing learner past the set-up question
+     migratedSetup           true when this page load moved an existing learner past the set-up question (one who
+                             had ticked nothing in Chapter 0)
      mirror(slug, record)    called by chapter.js before it saves a 01/02 record
      order(slug)             01/02: the step ids in page order (chapter.js checks them against the page)
      migrateRecord(slug, record), level(slug)   split migrations (below), for chapter.js
@@ -69,7 +71,9 @@ const ORDER={
 // Schema 2 (until 2026-10-12) saved 01's step as a position in that day's 19 steps, and the Learn lessons as positions.
 const V2_FIRST='beat-empty-project beat-tempo-grid beat-load-kick beat-load-snare beat-load-hat beat-hats-quieter beat-placement-move beat-kicks beat-snares beat-hats beat-listen-drums beat-balance beat-commit-drums beat-bass-sound beat-bass-pulses beat-bass-trim beat-reverb beat-performance beat-recap'.split(' ');
 const V2_LESSONS='samples-notes-and-patterns groups-and-scenes choosing-and-balancing-sounds live-recording-without-panic precise-step-recording timing-swing-and-correction longer-loops keys-one-sample-many-pitches record-your-own-sound trim-and-envelope-safely effects-and-fader automatic-song-arrangement-os-2-0 undo-and-careful-erasing advanced-features-check-firmware'.split(' ');
-const FW=['2.5','2','older','unknown'];
+// The OS choices in Settings. 'newer' (newer than the OS the course is written for) counts as having every 2.5 feature;
+// an older release of the site reads it as '2.5'.
+const FW=['2.5','2','older','unknown','newer'];
 
 const read=k=>{try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}};
 const obj=k=>{const v=read(k);return v&&typeof v==='object'&&!Array.isArray(v)?v:null;};
@@ -180,10 +184,12 @@ function continueTarget(all){
 // First run is defined by what the learner has done, never by which keys exist (plan 5.1).
 const firstRun=()=>!prefs().setup&&!v2Progress()&&!v2().done.length&&!chapters().some(p=>p.x>0);
 // Learners who already have progress are never sent back to Chapter 0. Ticks in Chapter 0 alone do not count.
+// setupReason (Home's "carried over" line) is only for those who never ticked a step in Chapter 0: anyone who did came
+// the guided way, and setup 'ready' alone releases Continue from Chapter 0's optional steps.
 function migrateSetup(){
   if(prefs().setup||!(v2Progress()||chapters().some(p=>p.c.slug!=='setup'&&p.x>0)))return false;
-  patch(PREFS,{setup:'ready'});patch(META,{setupReason:'existing-progress'});
-  return true;
+  patch(PREFS,{setup:'ready'});
+  return !chapters().some(p=>p.c.slug==='setup'&&p.x>0)&&patch(META,{setupReason:'existing-progress'});
 }
 
 // ---------- Progress file and Reset (Settings) ----------

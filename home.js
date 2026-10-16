@@ -12,6 +12,10 @@
    - each course row shows its state (LED, x/N, a name that says it) and links to where that chapter continues; the
      Continue chapter is marked "You are here". 00, when the learner said their unit is set up, reads "Skipped · do it
      any time", or "Optional · set-up checks" when Home moved an existing learner past it (meta.setupReason).
+     The rows are #course-list li, in site.js order, in two labelled lists: Chapters 0-2 in order, then 3-7 in any order
+     (guided order, Continue and numbering stay 0-7). A row's one-line goal (.goal, written in index.html) is kept.
+   - the first-run card links to Settings' progress card (settings.html#your-progress, focus on Load progress file), for a learner whose
+     progress is in another browser or was cleared.
    Old addresses (index.html#first and the other views of the retired single-page app) are sent to their pages by the
    script at the top of <head>; any other hash is dropped, so "/" always means Home. */
 (()=>{
@@ -59,15 +63,16 @@ async function where(p){
   }catch(e){}
 }
 function rows(all){
-  const ready=P.prefs().setup==='ready',moved=P.meta().setupReason==='existing-progress',list=$$('#course-list > li'),here=P.continueTarget(all);
+  const ready=P.prefs().setup==='ready',moved=P.meta().setupReason==='existing-progress',list=$$('#course-list li'),here=P.continueTarget(all);
   all.forEach((p,i)=>{
     const li=list[i];if(!li)return;
+    const goal=li.querySelector('.goal');
     const{c,x,n,done}=p,st=done?'done':x>0?'doing':'todo',opt=st==='todo'&&c.slug==='setup'&&ready,now=p===here&&!P.firstRun();
     const label=moved?'Optional · set-up checks':'Skipped · do it any time';
     const count=done?'Done':x>0?`${x}/${n}`:opt?label:'Not started',said=done?'done':x>0?`in progress, ${x} of ${n} steps`:opt?label.toLowerCase().replace(' · ',', '):'not started';
     li.dataset.state=st;li.classList.toggle('here',now);
     li.innerHTML=`<span class="led" aria-hidden="true"></span><span><span class="num">${esc(c.num)}</span> <a href="${esc(p.href)}">${esc(c.title)}<span class="sr">, ${said}${now?', where you continue':''}</span></a>`+
-      `${now?'<span class="tag here-tag" aria-hidden="true">You are here</span>':''}<span class="sub meta">${esc(about(p))}</span></span><span class="meta" aria-hidden="true">${count}</span>`;
+      `${now?'<span class="tag here-tag" aria-hidden="true">You are here</span>':''}${goal?goal.outerHTML:''}<span class="sub meta">${esc(about(p))}</span></span><span class="meta" aria-hidden="true">${count}</span>`;
   });
   const done=all.filter(p=>p.done).length;
   $('#course-meta').textContent=`Guided order · ${hours(all)} · ${done} of ${all.length} done`;

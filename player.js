@@ -158,6 +158,7 @@ const nextName=nextLink?clean([...nextLink.childNodes].filter(n=>!(n.nodeType===
 const makes=main.querySelector(':scope > .makes');
 const references=[...main.querySelectorAll(':scope > .reference')];
 const reentry=main.querySelector('.reentry');
+// The OS chosen in Settings. "Not sure" and "Newer than OS 2.5.1" read as 0 here, so the start screen never warns for them.
 const fw=window.CoachProgress?CoachProgress.v2().firmware:'2.5',fwNum={'2.5':2.5,'2':2,older:1}[fw]||0;
 // "Formerly 07" helps someone who knew the old numbers (decision 1): it shows once you have progress anywhere in the
 // course, never to a first-time learner. Search finds the old numbers for everyone.
@@ -406,7 +407,7 @@ function reportFields(li){
   const said=['.preflight','.step-do','.step-undo','.step-check'].map(q=>[...li.querySelectorAll(':scope > '+q)]).flat().map(e=>clean(e.textContent)).join(' ')||gist(li);
   const q={title:'[Wrong instruction] Chapter '+chNum+' · '+chName+', '+where(li).toLowerCase(),page:'Chapter '+chNum+' · '+chName,
     step:where(li)+' / '+(title?gist(li):'Part '+P.n+' · '+P.title)+' ['+li.dataset.step+']','app-says':said.slice(0,1500),
-    firmware:{'2.5':'2.5.x','2':'2.0.x',older:'older than 2.0',unknown:'not sure'}[fw]||'',guide:src?src.href:''};
+    firmware:{'2.5':'2.5.x','2':'2.0.x',older:'older than 2.0',unknown:'not sure',newer:'newer than 2.5.1'}[fw]||'',guide:src?src.href:''};
   return q;
 }
 function reportUrl(li){

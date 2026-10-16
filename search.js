@@ -35,7 +35,10 @@
    ("hat" finds "hats" and "hi-hat", never "that"); case and accents folded; plurals and -ing/-ed folded; a few synonyms;
    filler words like "the" and "my" ignored. Ranking: the query as the title, then title words, then key names (ERASE
    written as a button in the text), then the body. Results are grouped (Steps, Troubleshooting, Learn, Glossary, Cheat sheet), the group with the
-   best match first (Words second at most), so Enter opens the best link. Arrow keys move real focus through the field and the results. */
+   best match first (Words second at most), so Enter opens the best link. Arrow keys move real focus through the field and the results.
+   Symptom words ("not working", "can't", "broken", "anything": SYMPTOM) need not be in a result, and a query with one
+   ranks the Troubleshooting topics higher ("arpeggio not working" leads with "The arpeggio does not play"). When no
+   result has every word, the best partial matches are listed under "Close matches", above the link to Troubleshooting. */
 (()=>{
 const site=window.COACH_SITE;
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -62,23 +65,30 @@ function stem(w){
   if(w.length>2&&/([^aeiouylsz])\1$/.test(w))w=w.slice(0,-1);                // chopping -> chop
   return w.length>4&&w.endsWith('e')?w.slice(0,-1):w;                        // sample and sampling meet at "sampl"; note stays apart from "not"
 }
-// Any phrase in a group finds the others. Longest phrase first, so "hi hat" is read as one thing.
-const SYNONYMS=[['hi hat','hihat','hat'],['sidechain','side chain','pump'],['hip hop','hiphop'],['vocal','voice'],['bpm','tempo']]
-  .map(g=>g.map(p=>{const raws=words(p);return{raws,stems:raws.map(stem)};}).sort((a,b)=>b.raws.length-a.raws.length));
+// Words that say something is wrong. "can't" and "doesn't" are two words each ("can" "t"), so their halves are here too.
+const SYMPTOM=new Set('not no working work works doesnt doesn dont don wont won cant can t broken problem anything'.split(' '));
+// Any phrase in a group finds the others. Longest phrase first, so "hi hat" is read as one thing. A phrase marked ">"
+// finds the others but is not found by them: "slow" finds "tempo", "tempo" does not find "slow". Never group save with
+// commit or backup, or delete with erase: the course teaches that they differ.
+const SYNONYMS=[['hi hat','hihat','hat'],['sidechain','side chain','pump'],['hip hop','hiphop'],['vocal','voice'],['click','metronome'],
+  ['split','slice','chop'],['backwards','reverse'],['effect','fx'],['louder','quieter','volume','level'],['tempo','>slow down','>speed up','>slow','>slower','>fast','>faster','>speed'],['bpm','tempo']]
+  .map(g=>g.map(p=>{const raws=words(p);return{raws,stems:raws.map(stem),from:p[0]==='>'};}).sort((a,b)=>b.raws.length-a.raws.length));
 const at=(hay,needle)=>{for(let i=0;i+needle.length<=hay.length;i++)if(needle.every((x,j)=>hay[i+j]===x))return i;return -1;};
 
 // A query is a list of alternatives (the words as typed, then each synonym swap); a result needs all the words of one.
+// alts.fix: the query had a symptom word.
 function parse(q){
   let raws=words(q).slice(0,8);   // a pasted paragraph is not a query
-  const kept=raws.filter(w=>!STOP.has(w));
-  if(kept.length)raws=kept;
+  const kept=raws.filter(w=>!STOP.has(w)),need=kept.filter(w=>!SYMPTOM.has(w));
+  if(kept.length)raws=need.length?need:kept;
   if(!raws.length)return null;
   const alts=[{raws,stems:raws.map(stem),weight:1}];
+  alts.fix=need.length<kept.length;
   for(const group of SYNONYMS)for(const a of [...alts]){
     const p=group.find(x=>at(a.stems,x.stems)>=0);
     if(!p)continue;
     const i=at(a.stems,p.stems);
-    for(const o of group)if(o!==p){
+    for(const o of group)if(o!==p&&!o.from){
       const r=[...a.raws.slice(0,i),...o.raws,...a.raws.slice(i+p.raws.length)],s=r.map(stem);
       if(!alts.some(x=>x.stems.join(' ')===s.join(' ')))alts.push({raws:r,stems:s,weight:.8});
     }
@@ -200,7 +210,8 @@ function phrase(hay,needle){   // the words in a row; the last may still be a pr
   }
   return false;
 }
-function score(d,a){
+// loose: a word that is missing scores nothing instead of ruling the result out (Close matches).
+function score(d,a,loose){
   const n=a.stems.length;
   let s=0;
   for(let i=0;i<n;i++){
@@ -208,7 +219,7 @@ function score(d,a){
     if(hasWord(d.tStem,d.tRaw,a.stems[i],a.raws[i],typing))s+=W.title;
     else if(d.keys.has(a.raws[i]))s+=W.key;
     else if(hasWord(d.bStem,d.bRaw,a.stems[i],a.raws[i],typing))s+=W.body;
-    else return 0;
+    else if(!loose)return 0;
   }
   if(d.tStem.length===n&&phrase(d.tStem,a.stems))s+=W.exactTitle;
   else if(n>1&&phrase(d.tStem,a.stems))s+=W.titlePhrase;
@@ -255,19 +266,21 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
   mount.done=true;
   const input=dlg.querySelector('#site-search'),list=dlg.querySelector('#site-results'),status=dlg.querySelector('#site-search-status'),
     body=dlg.querySelector('.search-body'),chips=[...dlg.querySelectorAll('[data-type]')];
-  let type='all',shown=PAGE,found={step:[],help:[],learn:[],word:[],cheat:[]},timer=0,openFirst=Boolean(enter);
+  let type='all',shown=PAGE,found={step:[],help:[],learn:[],word:[],cheat:[]},close=[],timer=0,openFirst=Boolean(enter);
 
   function run(){
     clearTimeout(timer);
     const alts=parse(input.value);
-    found={step:[],help:[],learn:[],word:[],cheat:[]};
+    // Every result with its best alternative, best first. A symptom word doubles a troubleshooting topic's score.
+    const rank=loose=>all.map(d=>{
+      let s=0,alt=null;
+      for(const a of alts){const x=score(d,a,loose)*a.weight*(alts.fix&&d.topic?2:1);if(x>s){s=x;alt=a;}}
+      return{d,s,alt};
+    }).filter(r=>r.s).sort((x,y)=>y.s-x.s);
+    found={step:[],help:[],learn:[],word:[],cheat:[]};close=[];
     if(alts&&ready){
-      for(const d of all){
-        let best=0,alt=null;
-        for(const a of alts){const s=score(d,a)*a.weight;if(s>best){best=s;alt=a;}}
-        if(best)found[d.type].push({d,s:best,alt});
-      }
-      GROUPS.forEach(([k])=>found[k].sort((x,y)=>y.s-x.s));
+      rank().forEach(r=>found[r.d.type].push(r));
+      if(GROUPS.every(([k])=>!found[k].length))close=rank(1);
     }
     shown=PAGE;body.scrollTop=0;
     render();
@@ -279,19 +292,19 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
     // A troubleshooting topic opens where it is; a step opens a preview (data-stay keeps the overlay open).
     if(d.topic)return`<li><details class="search-topic" data-href="${esc(d.href)}"><summary class="search-hit"><span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span></summary>`+
       `<div class="inside">${d.html}<p class="meta"><a href="${esc(d.href)}">Open in Troubleshooting</a></p></div></details></li>`;
-    if(d.type==='step'&&d.html)return`<li><a class="search-hit" href="${esc(d.href)}" data-stay data-preview="${all.indexOf(d)}">`+
+    return`<li><a class="search-hit" href="${esc(d.href)}"${d.type==='step'&&d.html?` data-stay data-preview="${all.indexOf(d)}"`:''}>`+
       `<span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span>${d.body?`<span class="search-hit-snip">${snippet(d.body,m)}</span>`:''}</a></li>`;
-    return`<li><a class="search-hit" href="${esc(d.href)}"><span class="search-hit-title">${title}</span><span class="search-hit-crumb">${esc(d.crumb.join(' · '))}</span>${d.body?`<span class="search-hit-snip">${snippet(d.body,m)}</span>`:''}</a></li>`;
   }
   function render(){
     // The group holding the best match comes first (ties keep the order Steps, Troubleshooting, Learn, Glossary, Cheat sheet).
     const best=k=>found[k].length?found[k][0].s:0;
-    const q=clean(input.value),alts=parse(q),kinds=GROUPS.filter(([k])=>type==='all'||k===type).sort((a,b)=>best(b[0])-best(a[0]));
+    const q=clean(input.value),alts=parse(q);
+    let kinds=GROUPS.filter(([k])=>type==='all'||k===type).sort((a,b)=>best(b[0])-best(a[0]));
     // A glossary word has no link and runs to several lines, so on a phone it would push every step below the fold:
     // it never leads while another group has results, and comes straight after the best one instead.
     if(kinds.length>1&&kinds[0][0]==='word'&&found[kinds[1][0]].length)kinds.splice(1,0,kinds.shift());
     const total=kinds.reduce((n,[k])=>n+found[k].length,0);
-    let html='',say='';
+    let html='',say='',tail='';
     if(!alts){
       html=`<div class="search-empty"><p class="meta">Search every step, help topic, lesson and word.</p><p class="eyebrow">Try</p><div class="search-try">${TRY.map(t=>`<button class="search-chip" type="button" data-try="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>`;
     }else if(!ready){
@@ -299,9 +312,12 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
     }else if(!parts.size){   // no page could be read (offline before the first full visit): the chapters alone are not an index
       html=NEEDS;say='Search needs the offline copy';
     }else{
+      // Nothing has every word: the best partial matches (in the chosen group) come first, as one more group.
+      const near=total?[]:close.filter(r=>type==='all'||r.d.type===type).slice(0,5);
       if(!total){
         const some=type==='all'?'':' in '+kinds[0][2];
-        html=`<p class="search-note">Nothing found for “${esc(q)}”${some}. Try a shorter or different word${type==='all'?'':' or choose All'}, or look through ${HELP}.</p>`;
+        tail=`<p class="search-note">${near.length?'Nothing has every word of':'Nothing found for'} “${esc(q)}”${some}. Try a shorter or different word${type==='all'?'':' or choose All'}, or look through ${HELP}.</p>`;
+        if(near.length){found.close=near;kinds=[['close','Close matches']];}
       }
       for(const [k,name,noun] of kinds){
         const hits=found[k];
@@ -310,8 +326,9 @@ function mount(dlg,enter){   // enter: Enter was pressed before this file had lo
         html+=`<div class="search-group" role="group" aria-labelledby="site-group-${k}"><h2 class="search-group-title" id="site-group-${k}">${name} <span class="search-count">${hits.length}</span></h2><ul class="search-list">${hits.slice(0,cap).map(item).join('')}</ul>`+
           (hits.length>cap?`<button class="btn ghost" type="button" ${type==='all'?`data-all="${k}"`:'data-more'}>${type==='all'?`Show all ${hits.length} ${noun}`:'Show more'}</button>`:'')+'</div>';
       }
+      html+=tail;
       if(missing)html+='<p class="search-note">Some pages could not be searched. Open the course once while online to save them.</p>';
-      say=total?`${total} result${total===1?'':'s'}`:'No results';
+      say=total?`${total} result${total===1?'':'s'}`:'No results'+(near.length?`. ${near.length} close match${near.length===1?'':'es'}`:'');
     }
     previewing=null;
     list.innerHTML=html;

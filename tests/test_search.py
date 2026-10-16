@@ -108,3 +108,38 @@ def test_search_says_when_pages_are_not_saved(browser, site_url):
     page.locator('#site-search').fill('sidechain')
     page.wait_for_function("""() => /Search needs the offline copy|could not be searched/.test(document.querySelector('#site-results').textContent)""", timeout=20000)
     context.close()
+
+
+def test_symptom_phrasing_finds_the_fixes(run):
+    """A learner types what is wrong, not the coach's words. Symptom words ("not working", "can't", "anything") need
+    not be in a result and rank the Troubleshooting topics higher; synonyms cover click/metronome, slow/tempo,
+    split/chop, effect/FX. When nothing has every word, the best partial matches come first, as "Close matches", above
+    the link to Troubleshooting."""
+    page = run.page
+    run.go('./learn.html')
+    groups = lambda: page.locator('#site-results .search-group-title').all_text_contents()
+    titles = lambda: page.locator('#site-results .search-hit-title').all_text_contents()
+    for q in ('arpeggio not working', 'cant hear anything', 'turn off the click', 'slow down the beat', 'no effect', 'split a sample'):
+        run.search(q)
+        assert page.locator('#site-results .search-hit').count() > 0, f'"{q}" finds something'
+        assert not groups()[0].startswith('Close matches'), f'"{q}": every word is matched ({groups()})'
+    run.search('arpeggio not working')
+    assert groups()[0].startswith('Troubleshooting') and titles()[0] == 'The arpeggio does not play', (groups(), titles()[:3])
+    run.search("can't hear anything")
+    assert any(g.startswith('Troubleshooting') for g in groups())
+    run.search('click')
+    assert page.locator('#site-results mark', has_text='metronome').count() > 0, 'click finds metronome'
+    run.search('slow down the beat')
+    assert any('tempo' in t.lower() for t in titles()[:3]), titles()[:3]
+    run.search('split a sample')
+    assert any('chop' in t.lower() for t in titles()[:3]), titles()[:3]
+    # Nothing has every word: close matches, then the way to Troubleshooting.
+    run.search('hats zebra')
+    assert groups()[0].startswith('Close matches') and 0 < page.locator('#site-results .search-hit').count() <= 5
+    assert 'close match' in page.locator('#site-search-status').text_content()
+    note = page.locator('#site-results .search-note')
+    assert 'Nothing has every word of “hats zebra”' in note.text_content() and note.locator('a[href="./help.html"]').count() == 1
+    assert page.evaluate("() => { const g = document.querySelector('#site-results .search-group'), n = document.querySelector('#site-results .search-note');"
+                         " return Boolean(g.compareDocumentPosition(n) & Node.DOCUMENT_POSITION_FOLLOWING); }"), 'Close matches come above the note'
+    run.search('zebra')
+    assert page.locator('#site-results .search-group').count() == 0 and 'Nothing found for “zebra”' in page.locator('#site-results').text_content()

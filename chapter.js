@@ -11,7 +11,8 @@
    01 and 02 (slugs first-beat and song) were views of the old single-page app: progress.js derives their records from
    its saved position, and every save here passes the record to CoachProgress.mirror() first, which writes the position
    back for that older app and notes it in the record's derivedFrom.
-   A step with data-os="2.0" gets a "Needs OS 2.0+" badge that follows the OS chosen in Settings (koii-coach-v2.firmware).
+   A step with data-os="2.0" gets a "Needs OS 2.0+" badge that follows the OS chosen in Settings (koii-coach-v2.firmware;
+   koii-coach-prefs.osChosen says the learner chose it).
    A link such as sampling.html#s-<step id> opens that step; wake.js (optional) keeps the screen on while ticking.
    How it all looks is up to coach.css and the shell (shell.js); this file only fills in the progress bar and its
    meter, the tick rows, the section tallies and the "You are here" mark on the step to continue at.
@@ -256,15 +257,18 @@ function update(){
   p.className='notice '+(saved?'info':'caution');   // a note about rewritten steps is information; ticks that cannot be saved need care
 }
 
-// "Needs OS x+" on the steps that need a newer OS than the one chosen in Settings (the old app's badge, kept as is).
+// "Needs OS x+" on the steps that need a newer OS than the one chosen in Settings. "· your OS 2.5.x has it" only once the
+// learner chose an OS (koii-coach-prefs.osChosen, or any choice but the default 2.5): until then the badge says what
+// the step needs and nothing about the learner's unit. 'newer' (newer than 2.5.1) has every feature the course uses:
+// "· your newer OS has it".
 (()=>{
-  const fw=window.CoachProgress?CoachProgress.v2().firmware:'2.5',num={'2.5':2.5,'2':2,older:1}[fw],
-    name={'2.5':'OS 2.5.x','2':'OS 2.0.x',older:'an OS older than 2.0'}[fw],upd='<a href="./setup.html">Chapter 0 · Set up your K.O. II</a> shows how';
+  const P=window.CoachProgress,fw=P?P.v2().firmware:'2.5',num={'2.5':2.5,'2':2,older:1,newer:9}[fw],chosen=P&&(P.prefs().osChosen||fw!=='2.5'),
+    name={'2.5':'OS 2.5.x','2':'OS 2.0.x',older:'an OS older than 2.0',newer:'newer OS'}[fw],upd='<a href="./setup.html">Chapter 0 · Set up your K.O. II</a> shows how';
   steps.forEach(li=>{
     const os=li.dataset.os;if(!os||!/^\d+(\.\d+){0,2}$/.test(os))return;
     const b=document.createElement(num>=parseFloat(os)?'p':'div'),tag='Needs OS '+os+'+';
-    if(num>=parseFloat(os)){b.className='badge ok';b.textContent=tag+' · your '+name+' has it.';}
-    else{b.className='badge warn';b.innerHTML='<b>'+tag+'</b> '+(num?'You chose '+name+' in <a href="./settings.html">Settings</a>, which doesn’t have this. Update to the latest OS first ('+upd+'), or skip this step.':'Not sure which OS you have? Update to the latest OS first ('+upd+'), then choose it in <a href="./settings.html">Settings</a>.');}
+    if(num>=parseFloat(os)){b.className='badge ok';b.textContent=tag+(chosen?' · your '+name+' has it.':'');}
+    else{b.className='badge warn';b.innerHTML='<b>'+tag+'</b> '+(num?'You chose '+name+' in <a href="./settings.html">Settings</a>, which doesn’t have this. Update to the latest OS first ('+upd+').':'Not sure which OS you have? Update to the latest OS first ('+upd+'), then choose it in <a href="./settings.html">Settings</a>.');}
     const old=li.querySelector(':scope > .os-badge');
     if(old)old.replaceWith(b);else{const t=li.querySelector(':scope > .step-title');if(t)t.after(b);else li.prepend(b);}
   });

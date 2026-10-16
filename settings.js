@@ -1,6 +1,7 @@
 'use strict';
 /* Settings (settings.html): the K.O. II's OS version (#firmware, saved as koii-coach-v2.firmware; chapter pages show
-   "Needs OS x+" badges from it), keeping the screen on (koii-coach-prefs.wake: wake.js, on the chapter pages, reads it
+   "Needs OS x+" badges from it; choosing one also sets koii-coach-prefs.osChosen, which Reset settings keeps; "Newer
+   than OS 2.5.1" is 'newer'), keeping the screen on (koii-coach-prefs.wake: wake.js, on the chapter pages, reads it
    on every poke(); this page loads no wake.js and holds no lock), keyboard shortcuts (koii-coach-prefs.keys: false switches the
    shell's letter shortcuts off), text size and which side Done · Next sits (koii-coach-prefs.text 'default' | 'larger'
    and .hand 'right' | 'left', applied by shell.js as html[data-text] and html[data-hand]), the look (koii-coach-prefs.look
@@ -33,7 +34,8 @@ function versionNote(){
     OS20='song mode, resampling and sidechain',
     OS25='USB audio, reverse, the arpeggiator, and scales in KEYS';
   const t={
-    '2.5':`OS 2.5.x is the latest release, and the course is written for it.`,
+    '2.5':`The course is written for OS 2.5.x.`,
+    newer:`If a step differs on your K.O. II, follow the official guide, and report the step.`,
     '2':`OS 2.0.x lacks ${OS25}. <b>Update first</b>: ${upd} shows how.`,
     older:`An OS older than 2.0 lacks ${OS20}, and much more. <b>Update first</b>: ${upd} shows how.`,
     unknown:`The coach can’t read the OS on your K.O. II. Keep it up to date with the official <a href="https://teenage.engineering/apps/update" target="_blank" rel="noopener noreferrer">update utility${icon('external')}${NEWTAB}</a>, and ${upd} walks you through it. Then choose OS 2.5.x here.`
@@ -43,7 +45,7 @@ function versionNote(){
   n.innerHTML=t;
 }
 fw.value=P.v2().firmware;
-fw.addEventListener('change',()=>{if(!P.writeV2({firmware:fw.value}))alertText('This browser is not saving settings (storage is blocked or full, or this is a private window).');versionNote();});
+fw.addEventListener('change',()=>{if(!P.writeV2({firmware:fw.value}))alertText('This browser is not saving settings (storage is blocked or full, or this is a private window).');P.patch('koii-coach-prefs',{osChosen:true});versionNote();});
 versionNote();
 
 // ---------- Keep the screen on ----------
@@ -74,8 +76,9 @@ $$('input[name="keys"]').forEach(r=>r.addEventListener('change',()=>{if(r.checke
 $$('input[name="look"]').forEach(r=>r.addEventListener('change',()=>{if(r.checked){P.patch('koii-coach-prefs',{look:r.value});CoachShell.setLook(r.value);}}));
 $$('input[name="setup"]').forEach(r=>r.addEventListener('change',()=>{if(r.checked){P.patch('koii-coach-prefs',{setup:r.value});refresh();}}));
 $('#reset-settings').addEventListener('click',()=>{
-  let before=null;
+  let before=null;const os=P.prefs().osChosen;
   try{before=localStorage.getItem('koii-coach-prefs');localStorage.removeItem('koii-coach-prefs');}catch(e){alertText('This browser is not saving settings (storage is blocked or full, or this is a private window).');return;}
+  if(os)P.patch('koii-coach-prefs',{osChosen:true});   // the OS choice stays, and with it the fact that it was made
   choices();refresh();
   toast('Settings reset.',()=>{try{if(before===null)localStorage.removeItem('koii-coach-prefs');else localStorage.setItem('koii-coach-prefs',before);}catch(e){}choices();refresh();toast('Settings restored.');});
 });
@@ -86,6 +89,9 @@ function summary(){
   $('#progress-summary').textContent=d&&d===all.length?`All ${all.length} chapters done.`:d||ip?`So far: ${d} of ${all.length} chapters done${ip?`, ${ip} in progress`:''}.`:'No chapter started yet.';
 }
 summary();
+// Home's first-run card links here (settings.html#your-progress, "Load your progress file"): the card scrolls into view
+// and Load progress file gets the focus, once the browser has moved focus to the link's target.
+if(location.hash==='#your-progress')addEventListener('load',()=>$('#import-file').focus({preventScroll:true}));
 $('#export').addEventListener('click',()=>{
   alertText('');
   P.saveFile();

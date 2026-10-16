@@ -1057,12 +1057,15 @@ def test_notes_scene_numbers(run):
 
 def test_os_badges_follow_settings_in_every_chapter(run):
     """Plan 7.2 and 8.1: every step that needs a newer OS says so in every chapter, following the OS chosen in Settings
-    (koii-coach-v2.firmware): a warning for an older OS; for a new enough one, the step player's head tag only."""
+    (koii-coach-v2.firmware): a warning for an older OS; for a new enough one, the step player's head tag only.
+    The badges are honest: "your OS has it" only once an OS was chosen (koii-coach-prefs.osChosen, or a choice other
+    than the default 2.5), and the warning promises no skip. "Newer than OS 2.5.1" ('newer') has every 2.5 feature."""
     page = run.page
     base = {'schema': 4, 'step': 0, 'stepId': 'beat-empty-project', 'note': 0, 'song': 0, 'songId': 'song-find-beat', 'view': 'first',
             'done': [], 'finished': False, 'songFinished': False, 'lab': None}
     tagged = {}
-    for fw in ('older', '2.5'):
+    first = "() => document.querySelector('li[data-step=\"song-list-open\"] > .badge').textContent"
+    for fw, said in (('older', None), ('2.5', 'Needs OS 2.0+'), ('newer', 'Needs OS 2.0+ · your newer OS has it.')):
         run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready', 'modes': {}}, 'koii-coach-v2': dict(base, firmware=fw)})
         for ch in ('song', 'sampling', 'perform', 'hiphop', 'tech-house', 'thodorakis-house'):
             run.go(f'./{ch}.html#all')
@@ -1074,6 +1077,25 @@ def test_os_badges_follow_settings_in_every_chapter(run):
                 assert warn == n, f'{ch}: {warn} of {n} OS steps warn with an older OS chosen'
             else:
                 assert ok == n, f'{ch}: {ok} of {n} OS steps say the chosen OS has it'
+            if ch == 'song':
+                text = page.evaluate(first)
+                if said:
+                    assert text == said, f'{fw}: {text!r}'
+                else:
+                    assert 'Update to the latest OS first' in text and 'skip' not in text, f'No skip promised without a skip: {text!r}'
+    # Chosen in Settings: the badge names the OS. Reset settings keeps that it was chosen, as it keeps the choice.
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready', 'modes': {}}, 'koii-coach-v2': dict(base, firmware='2.5')})
+    run.go('./settings.html')
+    assert page.locator('#firmware').input_value() == '2.5' and page.locator('#firmware option').first.text_content() == 'Newer than OS 2.5.1'
+    assert 'latest' not in page.locator('#firmware-card').text_content(), 'OS 2.5 is not called the latest for ever'
+    page.locator('#firmware').select_option('newer')
+    assert 'follow the official guide' in page.locator('#version-note').text_content()
+    assert run.get('koii-coach-v2')['firmware'] == 'newer' and run.get('koii-coach-prefs')['osChosen'] is True
+    page.locator('#firmware').select_option('2.5')
+    page.locator('#reset-settings').click()
+    assert run.get('koii-coach-prefs') == {'v': 1, 'osChosen': True}, run.get('koii-coach-prefs')
+    run.go('./song.html#all')
+    assert page.evaluate(first) == 'Needs OS 2.0+ · your OS 2.5.x has it.'
     # In the step player, the head carries the tag and the "has it" badge stays out of the way.
     run.go('./perform.html#s-sc-open')
     page.wait_for_function("() => (document.querySelector('li.is-current') || {dataset: {}}).dataset.step === 'sc-open'")

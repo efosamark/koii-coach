@@ -349,3 +349,61 @@ def test_schema_3_and_unknown_firmware(run):
     run.seed({'koii-coach-v2': v2(firmware='banana')})
     run.go('./settings.html')
     assert run.page.evaluate('() => CoachProgress.v2().firmware') == '2.5'
+
+
+def test_home_does_not_say_carried_over_to_a_guided_learner(run):
+    """A learner who followed Chapter 0 and went on to Chapter 1 is set to setup='ready' (Continue leaves Chapter 0),
+    but Home does not tell them their progress was carried over: that line is for learners who never ticked a step in
+    Chapter 0 (meta.setupReason)."""
+    page = run.page
+    run.go('./setup.html#all')
+    setup = page.evaluate('() => CoachChapter.ids()')
+    assert len(setup) == 54
+    done = FIRST[:3]
+    run.seed({'koii-coach-ch-setup': {'v': 1, 'done': setup, 'last': setup[-1], 'n': len(setup), 'm': 2},
+              'koii-coach-ch-first-beat': {'v': 1, 'done': done, 'last': done[-1], 'n': 3, 'cur': 'beat-tempo-grid', 'derivedFrom': 'beat-tempo-grid', 'm': 1},
+              'koii-coach-v2': v2(step=1, stepId='beat-tempo-grid')})   # chapter.js mirrors Chapter 1 into the old key
+    run.go('./index.html')
+    assert run.get('koii-coach-prefs')['setup'] == 'ready'
+    assert 'setupReason' not in (run.get('koii-coach-meta') or {}), run.get('koii-coach-meta')
+    assert 'carried over' not in page.locator('.continue').text_content()
+    assert page.locator('#resume').get_attribute('href') == './first-beat.html#s-beat-tempo-grid'
+    assert page.locator('#course-list li').nth(0).get_attribute('data-state') == 'done'
+    # Some Chapter 0 ticks are enough: the guided way, and Chapter 0 reads as in progress, never "set-up checks".
+    run.seed({'koii-coach-ch-setup': {'v': 1, 'done': setup[:5], 'last': setup[4], 'n': 5, 'm': 2},
+              'koii-coach-ch-sampling': {'v': 1, 'done': ['open-empty-project'], 'last': 'open-empty-project', 'n': 1, 'm': 2}})
+    run.go('./index.html')
+    assert run.get('koii-coach-prefs')['setup'] == 'ready' and 'setupReason' not in (run.get('koii-coach-meta') or {})
+    assert 'carried over' not in page.locator('.continue').text_content()
+    assert 'set-up checks' not in page.locator('#course-list').text_content()
+
+
+def test_home_groups_the_course_and_offers_the_progress_file(run):
+    """Home's course list: Chapters 0-2 in order, then 3-7 in any order, each later chapter with a one-line goal. The
+    rows stay in guided order (#course-list li), so states and links line up. A first run offers the progress file."""
+    page = run.page
+    run.seed({})
+    run.go('./index.html')
+    labels = page.locator('#course-list .path-label').all_text_contents()
+    assert labels == ['First, in order: Chapters 0–2', 'After Chapter 2, in any order'], labels
+    rows = page.locator('#course-list li')
+    assert rows.count() == 8
+    assert [rows.nth(i).locator('.num').text_content() for i in range(8)] == [str(i) for i in range(8)]
+    assert page.locator('#course-list ol').nth(1).locator('li').count() == 5
+    assert rows.nth(3).locator('.goal').text_content() == 'Record and chop your own sounds', 'home.js keeps the goal'
+    assert rows.nth(7).locator('.goal').text_content().endswith('after Chapter 3')
+    assert rows.nth(0).locator('.goal').count() == 0
+    link = page.locator('#home-card a', has_text='Load your progress file')
+    assert link.get_attribute('href') == './settings.html#your-progress'
+    link.click()
+    page.wait_for_url('**/settings.html#your-progress')
+    page.wait_for_function("() => document.activeElement && document.activeElement.id === 'import-file'")
+    assert page.locator('#your-progress').is_visible()
+    # With progress, the rows show it in the right place.
+    run.seed({'koii-coach-prefs': {'v': 1, 'setup': 'ready'},
+              'koii-coach-ch-hiphop': {'v': 1, 'done': ['choose-fresh-project'], 'last': 'choose-fresh-project', 'n': 1, 'm': 2}})
+    run.go('./index.html')
+    hip = rows.nth(5)
+    assert hip.get_attribute('data-state') == 'doing' and 'here' in hip.get_attribute('class')
+    assert hip.locator('a').get_attribute('href').startswith('./hiphop.html')
+    assert hip.locator('.goal').count() == 1
