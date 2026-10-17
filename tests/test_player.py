@@ -153,7 +153,7 @@ VOICE = re.compile(
     # Sources cited in the text: the step's Source link is the only citation on a page.
     r'\bowners(’|\')? (report|agree|differ|say|tools)|as owners report|elektronauts|reddit|unofficial cheat sheet|'
     r'as the pictures in|labelled drawing|the guide calls|uses the same words|(isn’t|is not|not) documented|'
-    r'the likeliest way|last checked', re.I)
+    r'the likeliest way|last checked|\bpage says', re.I)
 # Links to forums and owners' cheat sheets, which the text no longer cites.
 FORUMS = re.compile(r'href="https?://(?:www\.)?(?:elektronauts\.com|reddit\.com|ep133\.joeyh\.org)', re.I)
 
