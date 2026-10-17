@@ -6,7 +6,7 @@
    The course is numbered 0-7 in teaching order (renumbered in release 2026.10.14.4; files, slugs and ids did not change).
 
    version       the release, the same value as VERSION in sw.js and the newest CHANGELOG.md heading (the build checks)
-   guideChecked  the date the instructions were last checked against the official guide; firmware: the OS they are for
+   firmware      the OS the instructions are for
 
    Chapter fields:
      num      the number shown everywhere ("3")
@@ -29,7 +29,7 @@
               start (player.js) */
 window.COACH_SITE={
   name:'K.O. II Coach',
-  version:'2026.10.16',guideChecked:'2026-10-13',firmware:'OS 2.5.1',
+  version:'2026.10.17',firmware:'OS 2.5.1',
   repo:'https://github.com/efosamark/koii-coach',
   report:'https://github.com/efosamark/koii-coach/issues/new?template=wrong-instruction.yml',
   // An address here adds "or by email" to every report link (no GitHub account needed), prefilled with the chapter,

@@ -149,7 +149,13 @@ VOICE = re.compile(
     r'teaching (text|recipe)|\bour (teaching )?recipe\b|\bthe recipe\b|hardware (steps|instructions)|checked against|'
     r'checked on \d|creative suggestions|manufacturer presets|(this|the) (page|app|coach|browser) (cannot|can’t|can not) '
     r'(see|check|capture|operate)|the official guide says|official guide (says|describes|is silent)|where the guide|'
-    r'\b(we|our|us)\b', re.I)
+    r'\b(we|our|us)\b|'
+    # Sources cited in the text: the step's Source link is the only citation on a page.
+    r'\bowners(’|\')? (report|agree|differ|say|tools)|as owners report|elektronauts|reddit|unofficial cheat sheet|'
+    r'as the pictures in|labelled drawing|the guide calls|uses the same words|(isn’t|is not|not) documented|'
+    r'the likeliest way|last checked', re.I)
+# Links to forums and owners' cheat sheets, which the text no longer cites.
+FORUMS = re.compile(r'href="https?://(?:www\.)?(?:elektronauts\.com|reddit\.com|ep133\.joeyh\.org)', re.I)
 
 
 def test_voice():
@@ -159,6 +165,7 @@ def test_voice():
         html = re.sub(r'<script.*?</script>|<style.*?</style>|<!--.*?-->', '', page.read_text(encoding='utf-8'), flags=re.S)
         text = re.sub(r'\s+', ' ', unescape(re.sub(r'<[^>]+>', ' ', html)))
         found += [f'{page.name}: …{text[max(0, m.start() - 40):m.end() + 30].strip()}…' for m in VOICE.finditer(text)]
+        found += [f'{page.name}: a link to {m.group(0)[6:]}' for m in FORUMS.finditer(html)]
     for script in sorted(ROOT.glob('*.js')):
         source = re.sub(r'/\*.*?\*/|^\s*//.*$', '', script.read_text(encoding='utf-8'), flags=re.S | re.M)
         for literal in re.findall(r"'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`", source):

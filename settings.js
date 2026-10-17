@@ -121,7 +121,4 @@ $('#reset').addEventListener('click',()=>{
 // ---------- Version and sources ----------
 const line=[site.version&&`Version ${site.version}`,site.firmware&&`written for ${site.firmware}`].filter(Boolean).join(' · ');
 if(line)$('#course-info').textContent=line+'.';
-// "13 October 2026" from site.guideChecked (2026-10-13).
-const day=d=>{const m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(d||'');return m?`${+m[3]} ${['January','February','March','April','May','June','July','August','September','October','November','December'][m[2]-1]} ${m[1]}`:d;};
-if(site.guideChecked)$('#guide-checked').textContent=`Based on teenage engineering’s EP-133 guide, last checked on ${day(site.guideChecked)}.`;
 })();
